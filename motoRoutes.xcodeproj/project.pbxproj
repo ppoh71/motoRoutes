@@ -13,6 +13,7 @@
 		553AB50A1C50056400AC12A5 /* motoRoutes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5081C50056400AC12A5 /* motoRoutes.xcdatamodeld */; };
 		553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50B1C50056400AC12A5 /* Assets.xcassets */; };
 		553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */; };
+		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		553AB50B1C50056400AC12A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		553AB50E1C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		553AB5101C50056400AC12A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +43,7 @@
 		553AB4F51C50056400AC12A5 = {
 			isa = PBXGroup;
 			children = (
+				553AB5161C5009B700AC12A5 /* MapKit.framework */,
 				553AB5001C50056400AC12A5 /* motoRoutes */,
 				553AB4FF1C50056400AC12A5 /* Products */,
 			);
@@ -99,6 +103,12 @@
 				TargetAttributes = {
 					553AB4FD1C50056400AC12A5 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4RGRETYKQ9;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -251,6 +261,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = motoRoutes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutes;
@@ -262,6 +273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = motoRoutes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutes;
