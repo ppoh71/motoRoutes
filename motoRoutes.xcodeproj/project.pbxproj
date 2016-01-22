@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
+		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
 		553AB5041C50056400AC12A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5031C50056400AC12A5 /* ViewController.swift */; };
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
+		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
 		553AB4FE1C50056400AC12A5 /* motoRoutes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motoRoutes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		553AB5011C50056400AC12A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		553AB5031C50056400AC12A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -67,6 +71,8 @@
 				553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */,
 				553AB5101C50056400AC12A5 /* Info.plist */,
 				553AB5081C50056400AC12A5 /* motoRoutes.xcdatamodeld */,
+				5522D1C61C512FFC005339BD /* addRouteController.swift */,
+				5522D1C81C5132B1005339BD /* motoRouteController.swift */,
 			);
 			path = motoRoutes;
 			sourceTree = "<group>";
@@ -148,9 +154,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				553AB5041C50056400AC12A5 /* ViewController.swift in Sources */,
 				553AB50A1C50056400AC12A5 /* motoRoutes.xcdatamodeld in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
+				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +308,7 @@
 				553AB5151C50056400AC12A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
