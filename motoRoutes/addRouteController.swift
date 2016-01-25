@@ -10,9 +10,13 @@ import UIKit
 import CoreLocation
 import HealthKit
 import Foundation
+import CoreData
 
 
 class addRouteController: UIViewController {
+    
+    // managedObjectContext var
+    //var managedObjectContext: NSManagedObjectContext?
 
     //Outlets
     @IBOutlet var cancelButton:UIButton!
@@ -24,7 +28,9 @@ class addRouteController: UIViewController {
     @IBOutlet var altitudeLabel:UILabel!
     @IBOutlet var longitudeLabel:UILabel!
     @IBOutlet var latitudeLabel:UILabel!
-    @IBOutlet var recRoute:UIButton!
+    @IBOutlet var recRouteBtn:UIButton!
+    @IBOutlet var saveRouteBtn:UIButton!
+    
     
  
     //location manager
@@ -39,9 +45,10 @@ class addRouteController: UIViewController {
         return _locationManager
     }()
     
-    //location and timer vars
+    //route, location and timer vars
     lazy var locationsRoute = [CLLocation]()
     lazy var timer = NSTimer()
+    var motoRoute:Route!
     var second = 0
     var distance = 0.0
     var latitude:Double = 0
@@ -87,7 +94,8 @@ class addRouteController: UIViewController {
         
         second++
         //let secondsQuantity = HKQuantity(unit: HKUnit.secondUnit(), doubleValue: seconds)
-        timeLabel.text = timeFormatted(second)
+        //timeLabel.text = timeFormatted(second)
+        timeLabel.text = numberFormats.clockFormat(second)
         
         let distanceQuantity = HKQuantity(unit: HKUnit.meterUnit(), doubleValue: distance)
         distanceLabel.text = distanceQuantity.description
@@ -116,38 +124,57 @@ class addRouteController: UIViewController {
     
     
     //
-    // save route to core data
+    // save motoRoute to core data
     //
     func saveRoute() {
-        // 1
         
+        // prepare save motoRoute basic infos
+        if let managedObjectContextRoute = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext {
+
+            let savedRoute = NSEntityDescription.insertNewObjectForEntityForName("Route", inManagedObjectContext: managedObjectContextRoute) as! Route
+            savedRoute.distance = distance
+            savedRoute.duration = second
+            savedRoute.timestamp = NSDate()
+            
+      
+            //prepare sve of all locations into "Locations" data model
+            var savedLocations = [Location]()
+            for location in locationsRoute {
+                let savedLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContextRoute) as! Location
+                savedLocation.timestamp = location.timestamp
+                savedLocation.latitude = location.coordinate.latitude
+                savedLocation.longitude = location.coordinate.longitude
+                savedLocations.append(savedLocation)
+
+            }
+            
+            savedRoute.locationRelations = NSOrderedSet(array: savedLocations)
+            
+            //save new object
+            do{
+                try managedObjectContextRoute.save()
+                
+                print("route saved")
+                
+            } catch{
+                print(error)
+                return
+            }
+            
+          }
+    
+            // "Route" relation of locations with NSOrderedSet
+            //savedRoute.locationRelations = NSOrderedSet(array: savedLocations)
+           // motoRoute = savedRoute
         
-        let savedRun = NSEntityDescription.insertNewObjectForEntityForName("Route", inManagedObjectContext: managedObjectContext!) as! Route
-        savedRun.distance = distance
-        savedRun.duration = second
-        savedRun.timestamp = NSDate()
+            
+       
         
-        
-        // 2
-        var savedLocations = [Location]()
-        for location in locationsRoute {
-            let savedLocation = NSEntityDescription.insertNewObjectForEntityForName("Location",
-                inManagedObjectContext: managedObjectContext!) as! Location
-            savedLocation.timestamp = location.timestamp
-            savedLocation.latitude = location.coordinate.latitude
-            savedLocation.longitude = location.coordinate.longitude
-            savedLocations.append(savedLocation)
-        }
-        
-        savedRun.locations = NSOrderedSet(array: savedLocations)
-        run = savedRun
-        
-        // 3
-        var error: NSError?
-        let success = managedObjectContext!.save(&error)
-        if !success {
-            print("Could not save the run!")
-        }
+
+   
+//     }
+      //  print(motoRoute)
+
     }
     
     
@@ -172,6 +199,16 @@ class addRouteController: UIViewController {
         
         startLocationUpdates()
     }
+
+    // save route
+    @IBAction func saveRoute(sender: UIButton) {
+        
+        //save route
+        saveRoute()
+        timer.invalidate() //stop timer
+    
+    }
+    
     
     
     //
@@ -230,10 +267,11 @@ extension addRouteController: CLLocationManagerDelegate {
             altitude = location.altitude
             
             
+            
             //save location
             self.locationsRoute.append(location)
             
-            print(locationsRoute)
+          //  print(locationsRoute)
             
             // }
         }

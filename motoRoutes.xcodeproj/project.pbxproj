@@ -12,10 +12,11 @@
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
 		553AB5041C50056400AC12A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5031C50056400AC12A5 /* ViewController.swift */; };
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
-		553AB50A1C50056400AC12A5 /* motoRoutes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5081C50056400AC12A5 /* motoRoutes.xcdatamodeld */; };
 		553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50B1C50056400AC12A5 /* Assets.xcassets */; };
 		553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */; };
 		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
+		55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D491C569220005E8A26 /* numberFormats.swift */; };
+		55AB5D511C56A58F005E8A26 /* motoRoute.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
 		A983FD751C55261E00C99F83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD741C55261E00C99F83 /* Location.swift */; };
 		A983FD771C55263000C99F83 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD761C55263000C99F83 /* Route.swift */; };
@@ -28,11 +29,12 @@
 		553AB5011C50056400AC12A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		553AB5031C50056400AC12A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		553AB5061C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		553AB5091C50056400AC12A5 /* motoRoutes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = motoRoutes.xcdatamodel; sourceTree = "<group>"; };
 		553AB50B1C50056400AC12A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		553AB50E1C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		553AB5101C50056400AC12A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		55AB5D491C569220005E8A26 /* numberFormats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = numberFormats.swift; sourceTree = "<group>"; };
+		55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = motoRoute.xcdatamodel; sourceTree = "<group>"; };
 		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
 		A983FD741C55261E00C99F83 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		A983FD761C55263000C99F83 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
@@ -77,12 +79,21 @@
 				553AB50B1C50056400AC12A5 /* Assets.xcassets */,
 				553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */,
 				553AB5101C50056400AC12A5 /* Info.plist */,
-				553AB5081C50056400AC12A5 /* motoRoutes.xcdatamodeld */,
 				5522D1C61C512FFC005339BD /* addRouteController.swift */,
 				5522D1C81C5132B1005339BD /* motoRouteController.swift */,
-				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
+				55AB5D4B1C5694FE005E8A26 /* Utils */,
+				55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */,
 			);
 			path = motoRoutes;
+			sourceTree = "<group>";
+		};
+		55AB5D4B1C5694FE005E8A26 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
+				55AB5D491C569220005E8A26 /* numberFormats.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		A983FD731C5525F600C99F83 /* Models */ = {
@@ -171,11 +182,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */,
 				A983FD751C55261E00C99F83 /* Location.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
+				55AB5D511C56A58F005E8A26 /* motoRoute.xcdatamodeld in Sources */,
 				553AB5041C50056400AC12A5 /* ViewController.swift in Sources */,
-				553AB50A1C50056400AC12A5 /* motoRoutes.xcdatamodeld in Sources */,
 				A983FD771C55263000C99F83 /* Route.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
@@ -333,13 +345,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		553AB5081C50056400AC12A5 /* motoRoutes.xcdatamodeld */ = {
+		55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				553AB5091C50056400AC12A5 /* motoRoutes.xcdatamodel */,
+				55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */,
 			);
-			currentVersion = 553AB5091C50056400AC12A5 /* motoRoutes.xcdatamodel */;
-			path = motoRoutes.xcdatamodeld;
+			currentVersion = 55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */;
+			path = motoRoute.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

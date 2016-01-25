@@ -15,7 +15,7 @@ class Location: NSManagedObject {
     @NSManaged var latitude: NSNumber
     @NSManaged var longitude: NSNumber
     @NSManaged var altitude: NSNumber
-    @NSManaged var pace: NSNumber
+    @NSManaged var speed: NSNumber
     
     @NSManaged var routeRelation: NSManagedObject 
     

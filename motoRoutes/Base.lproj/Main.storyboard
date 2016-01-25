@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -46,7 +46,7 @@
                                 <rect key="frame" x="0.0" y="101" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.451237364657608" green="1" blue="0.43975402673036568" alpha="1" colorSpace="calibratedRGB"/>
@@ -83,9 +83,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="BGf-FQ-M29">
-                                <rect key="frame" x="0.0" y="41" width="600" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="341"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="Mcc-Q3-ojw"/>
+                                    <constraint firstAttribute="height" constant="341" id="Mcc-Q3-ojw"/>
                                 </constraints>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCJ-eP-SIi">
@@ -102,7 +102,7 @@
                                         <rect key="frame" x="0.0" y="8" width="250" height="63"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Altitude" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfr-YO-v56">
-                                                <rect key="frame" x="140" y="41" width="45" height="12"/>
+                                                <rect key="frame" x="141" y="41" width="45" height="12"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -114,7 +114,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latitude" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tft-ri-Vf1">
-                                                <rect key="frame" x="140" y="15" width="42" height="8"/>
+                                                <rect key="frame" x="141" y="15" width="42" height="8"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="42" id="IOn-Uf-N67"/>
                                                 </constraints>
@@ -212,6 +212,18 @@
                                             <action selector="startRecRoute:" destination="vMy-ZL-3Vq" eventType="touchDown" id="mvk-17-gZc"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0A-Pq-7zG" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
+                                        <rect key="frame" x="343" y="61" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="uiS-u5-G9l"/>
+                                            <constraint firstAttribute="height" constant="70" id="xVh-oG-Gda"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <state key="normal" image="ic_check_circle_48pt"/>
+                                        <connections>
+                                            <action selector="saveRoute:" destination="vMy-ZL-3Vq" eventType="touchUpInside" id="P2H-Y4-D6t"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -219,11 +231,13 @@
                                     <constraint firstItem="jZU-Gu-ejo" firstAttribute="firstBaseline" secondItem="uMs-kW-sUA" secondAttribute="baseline" id="Dg5-C0-uhH"/>
                                     <constraint firstAttribute="trailing" secondItem="n1V-Am-S91" secondAttribute="trailing" constant="40" id="N04-dp-DAB"/>
                                     <constraint firstItem="jZU-Gu-ejo" firstAttribute="top" secondItem="n1V-Am-S91" secondAttribute="bottom" constant="18" id="QNE-Mp-Bmn"/>
+                                    <constraint firstItem="M0A-Pq-7zG" firstAttribute="leading" secondItem="YLN-R0-HQw" secondAttribute="trailing" constant="8" id="S1W-H4-pca"/>
                                     <constraint firstItem="OJ8-Ww-94R" firstAttribute="leading" secondItem="aBl-to-Cj5" secondAttribute="leading" constant="20" id="Xnv-kz-UFW"/>
                                     <constraint firstItem="uMs-kW-sUA" firstAttribute="top" secondItem="OJ8-Ww-94R" secondAttribute="bottom" constant="18" id="bBE-9p-gHM"/>
                                     <constraint firstItem="YLN-R0-HQw" firstAttribute="top" secondItem="aBl-to-Cj5" secondAttribute="top" constant="61" id="fRD-ei-ulH"/>
                                     <constraint firstItem="uMs-kW-sUA" firstAttribute="leading" secondItem="aBl-to-Cj5" secondAttribute="leading" constant="20" id="jFh-x7-mag"/>
                                     <constraint firstItem="jZU-Gu-ejo" firstAttribute="leading" secondItem="n1V-Am-S91" secondAttribute="leading" id="jMH-HZ-60M"/>
+                                    <constraint firstItem="M0A-Pq-7zG" firstAttribute="top" secondItem="aBl-to-Cj5" secondAttribute="top" constant="61" id="rmy-Um-ZG7"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -231,7 +245,7 @@
                         <constraints>
                             <constraint firstItem="wuy-R8-b0h" firstAttribute="top" secondItem="ZCJ-eP-SIi" secondAttribute="bottom" constant="8" id="1dq-96-VcE"/>
                             <constraint firstItem="OJ8-Ww-94R" firstAttribute="top" secondItem="BGf-FQ-M29" secondAttribute="bottom" constant="8" id="450-kl-QGF"/>
-                            <constraint firstItem="BGf-FQ-M29" firstAttribute="top" secondItem="Yk2-cZ-Z5F" secondAttribute="bottom" constant="21" id="C86-3I-lEe"/>
+                            <constraint firstItem="BGf-FQ-M29" firstAttribute="top" secondItem="Yk2-cZ-Z5F" secondAttribute="bottom" constant="-20" id="C86-3I-lEe"/>
                             <constraint firstItem="BGf-FQ-M29" firstAttribute="leading" secondItem="HRR-Nu-FDj" secondAttribute="leading" id="EbX-nc-90K"/>
                             <constraint firstItem="43g-FJ-38a" firstAttribute="leading" secondItem="HRR-Nu-FDj" secondAttribute="leadingMargin" constant="-16" id="GAr-xb-1Hi"/>
                             <constraint firstItem="wuy-R8-b0h" firstAttribute="top" secondItem="43g-FJ-38a" secondAttribute="bottom" constant="14" id="IAs-C0-oZB"/>
@@ -255,7 +269,8 @@
                         <outlet property="distanceLabel" destination="uMs-kW-sUA" id="Pq7-xR-WJV"/>
                         <outlet property="latitudeLabel" destination="tft-ri-Vf1" id="vX6-vA-Tjg"/>
                         <outlet property="longitudeLabel" destination="aRh-6Y-KOM" id="JHI-kM-tvd"/>
-                        <outlet property="recRoute" destination="YLN-R0-HQw" id="f6T-FK-Zxi"/>
+                        <outlet property="recRouteBtn" destination="YLN-R0-HQw" id="Wog-FN-q7r"/>
+                        <outlet property="saveRouteBtn" destination="M0A-Pq-7zG" id="FEp-fk-iH5"/>
                         <outlet property="timeLabel" destination="jZU-Gu-ejo" id="RTX-0J-lDS"/>
                     </connections>
                 </viewController>
@@ -267,6 +282,7 @@
     </scenes>
     <resources>
         <image name="ic_add_circle_48pt" width="48" height="48"/>
+        <image name="ic_check_circle_48pt" width="48" height="48"/>
         <image name="ic_info_48pt" width="40" height="40"/>
         <image name="ic_play_circle_filled_48pt" width="48" height="48"/>
     </resources>
