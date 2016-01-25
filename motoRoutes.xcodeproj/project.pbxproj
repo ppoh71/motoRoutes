@@ -16,6 +16,9 @@
 		553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50B1C50056400AC12A5 /* Assets.xcassets */; };
 		553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */; };
 		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
+		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
+		A983FD751C55261E00C99F83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD741C55261E00C99F83 /* Location.swift */; };
+		A983FD771C55263000C99F83 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD761C55263000C99F83 /* Route.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		553AB50E1C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		553AB5101C50056400AC12A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
+		A983FD741C55261E00C99F83 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		A983FD761C55263000C99F83 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,7 @@
 		553AB5001C50056400AC12A5 /* motoRoutes */ = {
 			isa = PBXGroup;
 			children = (
+				A983FD731C5525F600C99F83 /* Models */,
 				553AB5011C50056400AC12A5 /* AppDelegate.swift */,
 				553AB5031C50056400AC12A5 /* ViewController.swift */,
 				553AB5051C50056400AC12A5 /* Main.storyboard */,
@@ -73,8 +80,18 @@
 				553AB5081C50056400AC12A5 /* motoRoutes.xcdatamodeld */,
 				5522D1C61C512FFC005339BD /* addRouteController.swift */,
 				5522D1C81C5132B1005339BD /* motoRouteController.swift */,
+				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
 			);
 			path = motoRoutes;
+			sourceTree = "<group>";
+		};
+		A983FD731C5525F600C99F83 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A983FD741C55261E00C99F83 /* Location.swift */,
+				A983FD761C55263000C99F83 /* Route.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,9 +171,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A983FD751C55261E00C99F83 /* Location.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
+				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
 				553AB5041C50056400AC12A5 /* ViewController.swift in Sources */,
 				553AB50A1C50056400AC12A5 /* motoRoutes.xcdatamodeld in Sources */,
+				A983FD771C55263000C99F83 /* Route.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 			);
