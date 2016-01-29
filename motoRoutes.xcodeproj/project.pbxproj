@@ -9,35 +9,58 @@
 /* Begin PBXBuildFile section */
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
+		5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654B1C5A7E53002628AD /* Realm.framework */; };
+		5535654E1C5A7E53002628AD /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654B1C5A7E53002628AD /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5535654F1C5A7E53002628AD /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654C1C5A7E53002628AD /* RealmSwift.framework */; };
+		553565501C5A7E53002628AD /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654C1C5A7E53002628AD /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RoutesRealm.swift */; };
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
-		553AB5041C50056400AC12A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5031C50056400AC12A5 /* ViewController.swift */; };
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
 		553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50B1C50056400AC12A5 /* Assets.xcassets */; };
 		553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */; };
 		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
+		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
 		55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D491C569220005E8A26 /* numberFormats.swift */; };
 		55AB5D511C56A58F005E8A26 /* motoRoute.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
-		A983FD751C55261E00C99F83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD741C55261E00C99F83 /* Location.swift */; };
-		A983FD771C55263000C99F83 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD761C55263000C99F83 /* Route.swift */; };
+		A983FD751C55261E00C99F83 /* LocationCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD741C55261E00C99F83 /* LocationCore.swift */; };
+		A983FD771C55263000C99F83 /* RouteCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD761C55263000C99F83 /* RouteCore.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		553565511C5A7E53002628AD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				553565501C5A7E53002628AD /* RealmSwift.framework in Embed Frameworks */,
+				5535654E1C5A7E53002628AD /* Realm.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
+		5535654B1C5A7E53002628AD /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		5535654C1C5A7E53002628AD /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		553565541C5A83A2002628AD /* RoutesRealm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutesRealm.swift; sourceTree = "<group>"; };
 		553AB4FE1C50056400AC12A5 /* motoRoutes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motoRoutes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		553AB5011C50056400AC12A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		553AB5031C50056400AC12A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		553AB5061C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		553AB50B1C50056400AC12A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		553AB50E1C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		553AB5101C50056400AC12A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
 		55AB5D491C569220005E8A26 /* numberFormats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = numberFormats.swift; sourceTree = "<group>"; };
 		55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = motoRoute.xcdatamodel; sourceTree = "<group>"; };
 		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
-		A983FD741C55261E00C99F83 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		A983FD761C55263000C99F83 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		A983FD741C55261E00C99F83 /* LocationCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCore.swift; sourceTree = "<group>"; };
+		A983FD761C55263000C99F83 /* RouteCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteCore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +68,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */,
 				553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */,
+				5535654F1C5A7E53002628AD /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +80,8 @@
 		553AB4F51C50056400AC12A5 = {
 			isa = PBXGroup;
 			children = (
+				5535654B1C5A7E53002628AD /* Realm.framework */,
+				5535654C1C5A7E53002628AD /* RealmSwift.framework */,
 				553AB5161C5009B700AC12A5 /* MapKit.framework */,
 				553AB5001C50056400AC12A5 /* motoRoutes */,
 				553AB4FF1C50056400AC12A5 /* Products */,
@@ -72,19 +99,34 @@
 		553AB5001C50056400AC12A5 /* motoRoutes */ = {
 			isa = PBXGroup;
 			children = (
+				559A5C511C57E54800B5261F /* addRouteController */,
+				559A5C501C57E51600B5261F /* motoRouteController */,
 				A983FD731C5525F600C99F83 /* Models */,
 				553AB5011C50056400AC12A5 /* AppDelegate.swift */,
-				553AB5031C50056400AC12A5 /* ViewController.swift */,
 				553AB5051C50056400AC12A5 /* Main.storyboard */,
 				553AB50B1C50056400AC12A5 /* Assets.xcassets */,
 				553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */,
 				553AB5101C50056400AC12A5 /* Info.plist */,
-				5522D1C61C512FFC005339BD /* addRouteController.swift */,
-				5522D1C81C5132B1005339BD /* motoRouteController.swift */,
 				55AB5D4B1C5694FE005E8A26 /* Utils */,
-				55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */,
 			);
 			path = motoRoutes;
+			sourceTree = "<group>";
+		};
+		559A5C501C57E51600B5261F /* motoRouteController */ = {
+			isa = PBXGroup;
+			children = (
+				559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */,
+				5522D1C81C5132B1005339BD /* motoRouteController.swift */,
+			);
+			name = motoRouteController;
+			sourceTree = "<group>";
+		};
+		559A5C511C57E54800B5261F /* addRouteController */ = {
+			isa = PBXGroup;
+			children = (
+				5522D1C61C512FFC005339BD /* addRouteController.swift */,
+			);
+			name = addRouteController;
 			sourceTree = "<group>";
 		};
 		55AB5D4B1C5694FE005E8A26 /* Utils */ = {
@@ -99,8 +141,10 @@
 		A983FD731C5525F600C99F83 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A983FD741C55261E00C99F83 /* Location.swift */,
-				A983FD761C55263000C99F83 /* Route.swift */,
+				55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */,
+				A983FD741C55261E00C99F83 /* LocationCore.swift */,
+				A983FD761C55263000C99F83 /* RouteCore.swift */,
+				553565541C5A83A2002628AD /* RoutesRealm.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -115,6 +159,8 @@
 				553AB4FA1C50056400AC12A5 /* Sources */,
 				553AB4FB1C50056400AC12A5 /* Frameworks */,
 				553AB4FC1C50056400AC12A5 /* Resources */,
+				553565511C5A7E53002628AD /* Embed Frameworks */,
+				553565531C5A8297002628AD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -177,18 +223,35 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		553565531C5A8297002628AD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework/strip-frameworks.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		553AB4FA1C50056400AC12A5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */,
 				55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */,
-				A983FD751C55261E00C99F83 /* Location.swift in Sources */,
+				A983FD751C55261E00C99F83 /* LocationCore.swift in Sources */,
+				559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
 				55AB5D511C56A58F005E8A26 /* motoRoute.xcdatamodeld in Sources */,
-				553AB5041C50056400AC12A5 /* ViewController.swift in Sources */,
-				A983FD771C55263000C99F83 /* Route.swift in Sources */,
+				A983FD771C55263000C99F83 /* RouteCore.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 			);
@@ -302,6 +365,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/RealmSwift.framework,
+				);
 				INFOPLIST_FILE = motoRoutes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutes;
@@ -314,6 +386,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/RealmSwift.framework,
+				);
 				INFOPLIST_FILE = motoRoutes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutes;

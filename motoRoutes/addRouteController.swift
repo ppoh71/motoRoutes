@@ -48,7 +48,7 @@ class addRouteController: UIViewController {
     //route, location and timer vars
     lazy var locationsRoute = [CLLocation]()
     lazy var timer = NSTimer()
-    var motoRoute:Route!
+    var motoRoute:RouteCore!
     var second = 0
     var distance = 0.0
     var latitude:Double = 0
@@ -56,7 +56,6 @@ class addRouteController: UIViewController {
     var altitude:Double = 0
     
     
-
     
     //
     // override func super init
@@ -131,16 +130,16 @@ class addRouteController: UIViewController {
         // prepare save motoRoute basic infos
         if let managedObjectContextRoute = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext {
 
-            let savedRoute = NSEntityDescription.insertNewObjectForEntityForName("Route", inManagedObjectContext: managedObjectContextRoute) as! Route
+            let savedRoute = NSEntityDescription.insertNewObjectForEntityForName("RouteCore", inManagedObjectContext: managedObjectContextRoute) as! RouteCore
             savedRoute.distance = distance
             savedRoute.duration = second
             savedRoute.timestamp = NSDate()
             
       
             //prepare sve of all locations into "Locations" data model
-            var savedLocations = [Location]()
+            var savedLocations = [LocationCore]()
             for location in locationsRoute {
-                let savedLocation = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContextRoute) as! Location
+                let savedLocation = NSEntityDescription.insertNewObjectForEntityForName("LocationCore", inManagedObjectContext: managedObjectContextRoute) as! LocationCore
                 savedLocation.timestamp = location.timestamp
                 savedLocation.latitude = location.coordinate.latitude
                 savedLocation.longitude = location.coordinate.longitude
@@ -167,10 +166,6 @@ class addRouteController: UIViewController {
             //savedRoute.locationRelations = NSOrderedSet(array: savedLocations)
            // motoRoute = savedRoute
         
-            
-       
-        
-
    
 //     }
       //  print(motoRoute)

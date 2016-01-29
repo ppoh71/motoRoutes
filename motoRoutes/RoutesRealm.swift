@@ -1,0 +1,35 @@
+//
+//  realmLocation.swift
+//  motoRoutes
+//
+//  Created by Peter Pohlmann on 28.01.16.
+//  Copyright © 2016 Peter Pohlmann. All rights reserved.
+//
+
+import RealmSwift
+import Foundation
+
+
+// Roue Data Model
+class Location: Object {
+    
+    dynamic var latitude = 0.0
+    dynamic var longitude = 0.0
+    dynamic var altitude = 0.0
+    dynamic var speed = 0.0
+    dynamic var timestamp = NSDate()
+    
+    dynamic var owner: Route? // Properties can be optional
+}
+
+// Person model
+class Route: Object {
+    
+    dynamic var name = ""
+    dynamic var duration = 0.0
+    dynamic var distance = 0.0
+    dynamic var timestamp = NSDate()
+    
+    let locationsList = List<Location>()
+    
+}
