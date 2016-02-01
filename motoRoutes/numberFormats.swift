@@ -9,11 +9,12 @@
 import Foundation
 
 
+//
+// format from seconds to clock format 00:00:00s
+//
 public class numberFormats  {
-
     
     static func clockFormat(totalSeconds:Int) -> String {
-    
     
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60) % 60
@@ -23,5 +24,11 @@ public class numberFormats  {
     
     }
     
+    
+    static func primaryLong(long:Double, lat:Double) {
+    
+      
+    }
 
 }
+

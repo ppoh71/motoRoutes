@@ -10,13 +10,11 @@ import UIKit
 import CoreData
 import RealmSwift
 
-class motoRouteController: UITableViewController, NSFetchedResultsControllerDelegate {
+class motoRouteController: UITableViewController {
     
-    // vars
-    var fetchResultController:NSFetchedResultsController!
-    var routes:[RouteCore] = [] // define restaurant core data empty array
+    // realm oblejt list
+    var motoRoutes =  Results<Route>!()
 
-    
     //Action methods
     @IBAction func close(segue:UIStoryboardSegue) {
         
@@ -30,33 +28,12 @@ class motoRouteController: UITableViewController, NSFetchedResultsControllerDele
         super.viewDidLoad()
         
         
+        //get realm db routes
+        // Get the default Realm
+        let realm = try! Realm()
+        motoRoutes = realm.objects(Route)
         
-        // (1) Create a Dog object and then set its properties
-//        let myDog = Dog()
-//        myDog.name = "Rex6"
-//        myDog.age = 8
-//       
-//        let myPerson = Person()
-//        myPerson.name = "Haa"
-//        
-//        
-//        // Get the default Realm
-//        let realm = try! Realm()
-//        // You only need to do this once (per thread)
-//        
-//        // Add to the Realm inside a transaction
-//        try! realm.write {
-//            realm.add(myDog)
-//            realm.add(myPerson)
-//        }
-        
-        // (2) Create a Dog object from a dictionary
-        //let myOtherDog = Dog(value: ["name" : "Pluto", "age": 3])
-        
-        //// (3) Create a Dog object from an array
-        //let myThirdDog = Dog(value: ["Fido", 5])
-
-        
+        print(motoRoutes.count)
         
     }
 
@@ -73,7 +50,7 @@ class motoRouteController: UITableViewController, NSFetchedResultsControllerDele
     
     // number of rows
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return routes.count
+          return motoRoutes.count
     }
     
     // data for each table cell
@@ -82,7 +59,7 @@ class motoRouteController: UITableViewController, NSFetchedResultsControllerDele
         let cellIdentifier = "Cell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! motoRouteCellView
         
-        let route = routes[indexPath.row]
+        let route = motoRoutes[indexPath.row]
         
         // Configure the cell...
         cell.distanceLabel.text = "Distance: \(route.distance)"
@@ -90,10 +67,6 @@ class motoRouteController: UITableViewController, NSFetchedResultsControllerDele
         return cell
     }
 
-    
-    
-    
-    
-    
+     
     
 }

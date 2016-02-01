@@ -8,9 +8,8 @@
 
 import UIKit
 import CoreLocation
-import HealthKit
 import Foundation
-import CoreData
+import RealmSwift
 
 
 class addRouteController: UIViewController {
@@ -48,12 +47,12 @@ class addRouteController: UIViewController {
     //route, location and timer vars
     lazy var locationsRoute = [CLLocation]()
     lazy var timer = NSTimer()
-    var motoRoute:RouteCore!
     var second = 0
     var distance = 0.0
     var latitude:Double = 0
     var longitude:Double = 0
     var altitude:Double = 0
+    var accuracy:Double = 0
     
     
     
@@ -96,17 +95,17 @@ class addRouteController: UIViewController {
         //timeLabel.text = timeFormatted(second)
         timeLabel.text = numberFormats.clockFormat(second)
         
-        let distanceQuantity = HKQuantity(unit: HKUnit.meterUnit(), doubleValue: distance)
-        distanceLabel.text = distanceQuantity.description
+        distanceLabel.text = "\(distance)"
         
         // let paceUnit = HKUnit.secondUnit().unitDividedByUnit(HKUnit.meterUnit())
         //let paceQuantity = HKQuantity(unit: paceUnit, intValue: seconds / distance)
         // accuracyLabel.text = "Pace: " + paceQuantity.description
-
+       
         //location updates
         latitudeLabel.text = "La: \(latitude)"
         longitudeLabel.text = "Lo: \(longitude)"
-        altitudeLabel.text = "Al: \(altitude)"
+        altitudeLabel.text = "Al: \(numberFormats.primaryLong(longitude, lat: latitude))"
+        accuracyLabel.text = "\(accuracy)"
         
         //print(distance)
     }
@@ -127,52 +126,37 @@ class addRouteController: UIViewController {
     //
     func saveRoute() {
         
-        // prepare save motoRoute basic infos
-        if let managedObjectContextRoute = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext {
-
-            let savedRoute = NSEntityDescription.insertNewObjectForEntityForName("RouteCore", inManagedObjectContext: managedObjectContextRoute) as! RouteCore
-            savedRoute.distance = distance
-            savedRoute.duration = second
-            savedRoute.timestamp = NSDate()
-            
-      
-            //prepare sve of all locations into "Locations" data model
-            var savedLocations = [LocationCore]()
-            for location in locationsRoute {
-                let savedLocation = NSEntityDescription.insertNewObjectForEntityForName("LocationCore", inManagedObjectContext: managedObjectContextRoute) as! LocationCore
-                savedLocation.timestamp = location.timestamp
-                savedLocation.latitude = location.coordinate.latitude
-                savedLocation.longitude = location.coordinate.longitude
-                savedLocations.append(savedLocation)
-
-            }
-            
-            savedRoute.locationRelations = NSOrderedSet(array: savedLocations)
-            
-            //save new object
-            do{
-                try managedObjectContextRoute.save()
-                
-                print("route saved")
-                
-            } catch{
-                print(error)
-                return
-            }
-            
-          }
-    
-            // "Route" relation of locations with NSOrderedSet
-            //savedRoute.locationRelations = NSOrderedSet(array: savedLocations)
-           // motoRoute = savedRoute
         
-   
-//     }
-      //  print(motoRoute)
-
+        // save to realm
+        let newRoute = Route()
+        
+        newRoute.timestamp = NSDate()
+        newRoute.distance = distance
+        newRoute.duration = second
+        
+        for location in locationsRoute {
+            
+            let newLocation = Location()
+           
+            newLocation.timestamp = location.timestamp
+            newLocation.latitude = location.coordinate.latitude
+            newLocation.longitude = location.coordinate.longitude
+            newLocation.altitude = location.altitude
+            newLocation.speed = location.speed
+            
+            newRoute.locationsList.append(newLocation)
+        
+        }
+        
+        // Get the default Realm
+        let realm = try! Realm()
+        // You only need to do this once (per thread)
+        
+        // Add to the Realm inside a transaction
+        try! realm.write {
+            realm.add(newRoute)
+        }
     }
-    
-    
     
     
     
@@ -248,7 +232,12 @@ extension addRouteController: CLLocationManagerDelegate {
         
         for location in locations {
             
-            print(location)
+            print(location.coordinate.longitude)
+            print(location.coordinate.latitude)
+            print(location.altitude)
+            print(location.speed)
+            print(location.horizontalAccuracy)
+            print("**********************")
             
             //if location.horizontalAccuracy < 20 {
             //update distance
@@ -260,8 +249,7 @@ extension addRouteController: CLLocationManagerDelegate {
             longitude = location.coordinate.longitude
             latitude = location.coordinate.latitude
             altitude = location.altitude
-            
-            
+            accuracy = location.horizontalAccuracy
             
             //save location
             self.locationsRoute.append(location)

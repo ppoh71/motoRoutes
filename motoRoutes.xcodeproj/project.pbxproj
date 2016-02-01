@@ -21,10 +21,7 @@
 		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
 		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
 		55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D491C569220005E8A26 /* numberFormats.swift */; };
-		55AB5D511C56A58F005E8A26 /* motoRoute.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
-		A983FD751C55261E00C99F83 /* LocationCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD741C55261E00C99F83 /* LocationCore.swift */; };
-		A983FD771C55263000C99F83 /* RouteCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD761C55263000C99F83 /* RouteCore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,10 +54,7 @@
 		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
 		55AB5D491C569220005E8A26 /* numberFormats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = numberFormats.swift; sourceTree = "<group>"; };
-		55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = motoRoute.xcdatamodel; sourceTree = "<group>"; };
 		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
-		A983FD741C55261E00C99F83 /* LocationCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCore.swift; sourceTree = "<group>"; };
-		A983FD761C55263000C99F83 /* RouteCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteCore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,9 +135,6 @@
 		A983FD731C5525F600C99F83 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */,
-				A983FD741C55261E00C99F83 /* LocationCore.swift */,
-				A983FD761C55263000C99F83 /* RouteCore.swift */,
 				553565541C5A83A2002628AD /* RoutesRealm.swift */,
 			);
 			name = Models;
@@ -246,12 +237,9 @@
 			files = (
 				553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */,
 				55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */,
-				A983FD751C55261E00C99F83 /* LocationCore.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
-				55AB5D511C56A58F005E8A26 /* motoRoute.xcdatamodeld in Sources */,
-				A983FD771C55263000C99F83 /* RouteCore.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 			);
@@ -424,19 +412,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		55AB5D4F1C56A58F005E8A26 /* motoRoute.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */,
-			);
-			currentVersion = 55AB5D501C56A58F005E8A26 /* motoRoute.xcdatamodel */;
-			path = motoRoute.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 553AB4F61C50056400AC12A5 /* Project object */;
 }

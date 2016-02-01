@@ -19,14 +19,18 @@ class Location: Object {
     dynamic var speed = 0.0
     dynamic var timestamp = NSDate()
     
-    dynamic var owner: Route? // Properties can be optional
+    var route: [Route] {
+        // Realm doesn't persist this property because it only has a getter defined
+        // Define "owners" as the inverse relationship to Person.dogs
+        return linkingObjects(Route.self, forProperty: "locationsList")
+    }
 }
 
 // Person model
 class Route: Object {
     
     dynamic var name = ""
-    dynamic var duration = 0.0
+    dynamic var duration = 0
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
     
