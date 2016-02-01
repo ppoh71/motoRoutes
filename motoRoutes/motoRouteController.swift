@@ -12,7 +12,7 @@ import RealmSwift
 
 class motoRouteController: UITableViewController {
     
-    // realm oblejt list
+    // realm object list
     var motoRoutes =  Results<Route>!()
 
     //Action methods
@@ -36,7 +36,12 @@ class motoRouteController: UITableViewController {
         print(motoRoutes.count)
         
     }
-
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData() // [2]
+    }
 
     
     //
@@ -66,7 +71,16 @@ class motoRouteController: UITableViewController {
         
         return cell
     }
-
-     
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showRouteController" {
+            
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! showRouteController
+                destinationController.motoRoute = motoRoutes[indexPath.row]
+            }
+        }
+    }
     
 }

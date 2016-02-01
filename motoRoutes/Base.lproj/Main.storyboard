@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -46,7 +46,7 @@
                                 <rect key="frame" x="0.0" y="101" width="600" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="119.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="119"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4F-e1-F88">
@@ -73,6 +73,7 @@
                                 <connections>
                                     <outlet property="distanceLabel" destination="Ogt-CA-zOx" id="Iyl-xa-tQR"/>
                                     <outlet property="nameLabel" destination="x4F-e1-F88" id="Ijy-Dd-48T"/>
+                                    <segue destination="iyu-JC-65F" kind="show" identifier="showRouteController" id="7WH-Bh-5na"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -111,6 +112,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="341" id="Mcc-Q3-ojw"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="vMy-ZL-3Vq" id="F4E-M0-j3M"/>
+                                </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCJ-eP-SIi">
                                 <rect key="frame" x="538" y="562" width="48" height="30"/>
@@ -293,6 +297,7 @@
                         <outlet property="distanceLabel" destination="uMs-kW-sUA" id="Pq7-xR-WJV"/>
                         <outlet property="latitudeLabel" destination="tft-ri-Vf1" id="vX6-vA-Tjg"/>
                         <outlet property="longitudeLabel" destination="aRh-6Y-KOM" id="JHI-kM-tvd"/>
+                        <outlet property="mapView" destination="BGf-FQ-M29" id="2zC-c7-nJm"/>
                         <outlet property="recRouteBtn" destination="YLN-R0-HQw" id="Wog-FN-q7r"/>
                         <outlet property="saveRouteBtn" destination="M0A-Pq-7zG" id="FEp-fk-iH5"/>
                         <outlet property="timeLabel" destination="jZU-Gu-ejo" id="RTX-0J-lDS"/>
@@ -301,7 +306,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bPd-ju-BWS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Ete-9J-bbM" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="868" y="639"/>
+            <point key="canvasLocation" x="968" y="275"/>
+        </scene>
+        <!--Show Route Controller-->
+        <scene sceneID="7a5-Ye-T9h">
+            <objects>
+                <viewController id="iyu-JC-65F" userLabel="Show Route Controller" customClass="showRouteController" customModule="motoRoutes" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bbU-2r-zv2"/>
+                        <viewControllerLayoutGuide type="bottom" id="hO5-hV-98Y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hl8-zk-aCs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LW-L1-BfS">
+                                <rect key="frame" x="533" y="518" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <segue destination="t2r-xs-urw" kind="unwind" unwindAction="close:" id="H4l-ef-7jL"/>
+                                </connections>
+                            </button>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="2Zy-qv-xdV">
+                                <rect key="frame" x="0.0" y="-7" width="600" height="348"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="348" id="XP8-Xf-7IG"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="iyu-JC-65F" id="Hz7-yU-1Cr"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2Zy-qv-xdV" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="topMargin" constant="-7" id="4Ib-Ue-mmN"/>
+                            <constraint firstItem="2Zy-qv-xdV" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leading" id="9sK-6i-GUl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7LW-L1-BfS" secondAttribute="trailing" constant="-1" id="iz9-0x-a2c"/>
+                            <constraint firstAttribute="trailing" secondItem="2Zy-qv-xdV" secondAttribute="trailing" id="yyF-Ie-0Xm"/>
+                            <constraint firstItem="hO5-hV-98Y" firstAttribute="top" secondItem="7LW-L1-BfS" secondAttribute="bottom" constant="8" symbolic="YES" id="z5f-TU-4Mr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
+                        <outlet property="mapView" destination="2Zy-qv-xdV" id="46R-cw-cn2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ieq-0x-0We" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="t2r-xs-urw" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="968" y="1044"/>
         </scene>
     </scenes>
     <resources>

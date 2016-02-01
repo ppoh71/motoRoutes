@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import Foundation
 import RealmSwift
+import MapKit
 
 
 class addRouteController: UIViewController {
@@ -29,6 +30,7 @@ class addRouteController: UIViewController {
     @IBOutlet var latitudeLabel:UILabel!
     @IBOutlet var recRouteBtn:UIButton!
     @IBOutlet var saveRouteBtn:UIButton!
+    @IBOutlet weak var mapView: MKMapView!
     
     
  
@@ -91,16 +93,10 @@ class addRouteController: UIViewController {
     func perSecond(timer: NSTimer) {
         
         second++
-        //let secondsQuantity = HKQuantity(unit: HKUnit.secondUnit(), doubleValue: seconds)
-        //timeLabel.text = timeFormatted(second)
+
         timeLabel.text = numberFormats.clockFormat(second)
-        
         distanceLabel.text = "\(distance)"
         
-        // let paceUnit = HKUnit.secondUnit().unitDividedByUnit(HKUnit.meterUnit())
-        //let paceQuantity = HKQuantity(unit: paceUnit, intValue: seconds / distance)
-        // accuracyLabel.text = "Pace: " + paceQuantity.description
-       
         //location updates
         latitudeLabel.text = "La: \(latitude)"
         longitudeLabel.text = "Lo: \(longitude)"
@@ -185,7 +181,7 @@ class addRouteController: UIViewController {
         //save route
         saveRoute()
         timer.invalidate() //stop timer
-    
+        
     }
     
     
@@ -219,6 +215,7 @@ class addRouteController: UIViewController {
             }, completion: nil)
     }
     
+    
 
 }
 
@@ -239,26 +236,56 @@ extension addRouteController: CLLocationManagerDelegate {
             print(location.horizontalAccuracy)
             print("**********************")
             
-            //if location.horizontalAccuracy < 20 {
-            //update distance
-            if self.locationsRoute.count > 0 {
-                distance += location.distanceFromLocation(self.locationsRoute.last!)
-            }
+            if location.horizontalAccuracy < 20 {
+                
+                //update distance
+                if self.locationsRoute.count > 0 {
+                    distance += location.distanceFromLocation(self.locationsRoute.last!)
+                    
+                    //set chords for routes
+                    var coords = [CLLocationCoordinate2D]()
+                    coords.append(self.locationsRoute.last!.coordinate)
+                    coords.append(location.coordinate)
+                    
+                    //add map routes
+                    mapView.addOverlay(MKPolyline(coordinates: &coords, count: coords.count))
+                    
+                    
+                    //center map region
+                    let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
+                    mapView.setRegion(region, animated: true)
+                }
+                
+                
+                //save location to locationRoute array object
+                self.locationsRoute.append(location)
+                
+            } // end horizontalAccur
             
             //set debug vars
             longitude = location.coordinate.longitude
             latitude = location.coordinate.latitude
             altitude = location.altitude
             accuracy = location.horizontalAccuracy
-            
-            //save location
-            self.locationsRoute.append(location)
-            
-          //  print(locationsRoute)
-            
-            // }
         }
     }
+}
 
 
+// MARK: - MKMapViewDelegate
+extension addRouteController: MKMapViewDelegate {
+    
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if !overlay.isKindOfClass(MKPolyline) {
+            return nil
+        }
+        
+        print("mapview it is")
+        
+        let polyline = overlay as! MKPolyline
+        let renderer = MKPolylineRenderer(polyline: polyline)
+        renderer.strokeColor = UIColor.blueColor()
+        renderer.lineWidth = 5
+        return renderer
+    }
 }
