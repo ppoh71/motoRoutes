@@ -38,11 +38,11 @@ class addRouteController: UIViewController {
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
         _locationManager.delegate = self
-        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         _locationManager.activityType = .AutomotiveNavigation
+        _locationManager.distanceFilter = 10.0  // Movement threshold for new events
+        _locationManager.allowsBackgroundLocationUpdates = true // allow in background
         
-        // Movement threshold for new events
-        _locationManager.distanceFilter = 10.0
         return _locationManager
     }()
     
@@ -55,7 +55,21 @@ class addRouteController: UIViewController {
     var longitude:Double = 0
     var altitude:Double = 0
     var accuracy:Double = 0
+    var locationActive = false
     
+    
+    
+    
+    //start timestamp of route start
+    var startTimestamp:Int = 0
+    
+    //current time timestamp
+    var currentTimestamp: Int {
+        return Int(NSDate().timeIntervalSince1970)
+    }
+    
+    //total time in sec /starttimstamp - currenttimestamp
+    var totalTime:Int = 0
     
     
     //
@@ -76,15 +90,36 @@ class addRouteController: UIViewController {
         //allow location use
         locationManager.requestAlwaysAuthorization()
         
+        //get current user location for startup
+        if CLLocationManager.locationServicesEnabled() {
+             locationManager.startUpdatingLocation()
+        }
+
     }
 
+    //
+    // view will disappear, stop location updates and timer
+    //
+    override func viewWillDisappear(animated:Bool) {
+  
+        locationManager.stopUpdatingLocation(); //stop locations
+        timer.invalidate() //stop timer
+        
+        super.viewWillDisappear(animated)
+    }
+    
     
     //
     // start function
     //
     func startLocationUpdates() {
         // init Location manger
-        locationManager.startUpdatingLocation()
+        //get current user location
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation() // start location manager
+            locationActive = true // set start of location manager true
+            startTimestamp = Int(NSDate().timeIntervalSince1970) // get timestamp for timer
+        }
     }
     
     //
@@ -93,28 +128,28 @@ class addRouteController: UIViewController {
     func perSecond(timer: NSTimer) {
         
         second++
+        
+        totalTime = currentTimestamp - startTimestamp
 
-        timeLabel.text = numberFormats.clockFormat(second)
+        timeLabel.text = numberFormats.clockFormat(totalTime)
         distanceLabel.text = "\(distance)"
         
         //location updates
         latitudeLabel.text = "La: \(latitude)"
         longitudeLabel.text = "Lo: \(longitude)"
-        altitudeLabel.text = "Al: \(numberFormats.primaryLong(longitude, lat: latitude))"
+        altitudeLabel.text = "Al: \(altitude)"
         accuracyLabel.text = "\(accuracy)"
         
-        //print(distance)
+       
+        
+        if UIApplication.sharedApplication().applicationState == .Active {
+             print("timer active ", totalTime)
+        } else {
+             print("timer background", totalTime)
+        }
+
     }
-    
-    //
-    // make clock from seconds
-    //
-    func timeFormatted(totalSeconds: Int) -> String {
-        let seconds: Int = totalSeconds % 60
-        let minutes: Int = (totalSeconds / 60) % 60
-        let hours: Int = totalSeconds / 3600
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
+
     
     
     //
@@ -128,7 +163,7 @@ class addRouteController: UIViewController {
         
         newRoute.timestamp = NSDate()
         newRoute.distance = distance
-        newRoute.duration = second
+        newRoute.duration = totalTime
         
         for location in locationsRoute {
             
@@ -174,6 +209,7 @@ class addRouteController: UIViewController {
         
         startLocationUpdates()
     }
+    
 
     // save route
     @IBAction func saveRoute(sender: UIButton) {
@@ -238,8 +274,8 @@ extension addRouteController: CLLocationManagerDelegate {
             
             if location.horizontalAccuracy < 20 {
                 
-                //update distance
-                if self.locationsRoute.count > 0 {
+                //update distance and coords if locationActive
+                if self.locationsRoute.count > 0 && locationActive==true{ //
                     distance += location.distanceFromLocation(self.locationsRoute.last!)
                     
                     //set chords for routes
@@ -250,24 +286,41 @@ extension addRouteController: CLLocationManagerDelegate {
                     //add map routes
                     mapView.addOverlay(MKPolyline(coordinates: &coords, count: coords.count))
                     
-                    
                     //center map region
                     let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
                     mapView.setRegion(region, animated: true)
+               
                 }
                 
+                 //get current location on start and stop after updating location
+                 if(locationActive==false){
+                    let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
+                     mapView.setRegion(region, animated: true)
+                    
+                     locationManager.stopUpdatingLocation();
+                 }
                 
                 //save location to locationRoute array object
                 self.locationsRoute.append(location)
                 
             } // end horizontalAccur
             
+            
             //set debug vars
             longitude = location.coordinate.longitude
             latitude = location.coordinate.latitude
             altitude = location.altitude
             accuracy = location.horizontalAccuracy
+            
         }
+        
+        
+        if UIApplication.sharedApplication().applicationState == .Active {
+            print("App is Foreground. New location is %@", second)
+        } else {
+            print("App is backgrounded. New location is %@", second)
+        }
+        
     }
 }
 

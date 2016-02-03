@@ -30,6 +30,7 @@ class showRouteController: UIViewController {
         super.viewDidLoad()
         
         print("showRouteController")
+        print(motoRoute)
         print(motoRoute.locationsList)
         //timer.invalidate()
         

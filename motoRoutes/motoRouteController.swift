@@ -18,6 +18,8 @@ class motoRouteController: UITableViewController {
     //Action methods
     @IBAction func close(segue:UIStoryboardSegue) {
         
+        
+        
     }
     
     
@@ -27,8 +29,6 @@ class motoRouteController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //get realm db routes
         // Get the default Realm
         let realm = try! Realm()
         motoRoutes = realm.objects(Route)
@@ -67,6 +67,7 @@ class motoRouteController: UITableViewController {
         let route = motoRoutes[indexPath.row]
         
         // Configure the cell...
+        cell.nameLabel.text = "Time: \(numberFormats.clockFormat(route.duration))"
         cell.distanceLabel.text = "Distance: \(route.distance)"
         
         return cell
