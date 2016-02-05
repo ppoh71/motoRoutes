@@ -31,8 +31,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1IjoicHBvaDcxIiwiYSI6ImNpazc1YmZqdzAxYTl2ZGt0OGtyanJ3aGgifQ.JHLKTUCpxD4CYfYDgevJWQ</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeCar</string>

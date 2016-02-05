@@ -11,16 +11,19 @@ import CoreLocation
 import Foundation
 import RealmSwift
 import MapKit
+import Mapbox
 
 class showRouteController: UIViewController {
     
     //Outlets
     @IBOutlet var cancelButton:UIButton!
-    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapView: MGLMapView!
     
     
     // realm object list
     var motoRoute =  Route()
+    
+    var speed:Double = 0 // need to draw colors on route
 
     
     //
@@ -40,9 +43,23 @@ class showRouteController: UIViewController {
         
         for location in motoRoute.locationsList {
             coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+            
+            
+            //get speed for polyline color in mapview func
+            speed = location.speed
+            
+            //create Polyline
+            let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+            
+            mapView.addAnnotation(line)
+            
         }
         
         
+        //center mapview by new coord
+        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoute.locationsList[0].latitude, longitude: motoRoute.locationsList[0].longitude),  zoomLevel: 11,  animated: false)
+        
+        /*
         //add map routes
         mapView.addOverlay(MKPolyline(coordinates: &coords, count: coords.count))
         
@@ -54,6 +71,8 @@ class showRouteController: UIViewController {
         let region = MKCoordinateRegionMakeWithDistance(startLocation, 3000, 3000)
         mapView.setRegion(region, animated: true)
 
+*/
+
         
         
     }
@@ -62,19 +81,24 @@ class showRouteController: UIViewController {
 
 
 // MARK: - MKMapViewDelegate
-extension showRouteController: MKMapViewDelegate {
+extension showRouteController: MGLMapViewDelegate {
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if !overlay.isKindOfClass(MKPolyline) {
-            return nil
-        }
+    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+        // Set the alpha for all shape annotations to 1 (full opacity)
+        return 1
+    }
+    
+    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+        // Set the line width for polyline annotations
+        return 4.0
+    }
+    
+    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
-        print("mapview it is")
+        print("Color Annotion by speed: \(speed)")
+        var polyColor:UIColor = colorStyles.polylineColors(speed*3.6)
+        print(polyColor)
         
-        let polyline = overlay as! MKPolyline
-        let renderer = MKPolylineRenderer(polyline: polyline)
-        renderer.strokeColor = UIColor.blueColor()
-        renderer.lineWidth = 5
-        return renderer
+        return polyColor //speed mps to kmh
     }
 }

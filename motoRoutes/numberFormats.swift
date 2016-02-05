@@ -14,7 +14,7 @@ import Foundation
 //
 public class numberFormats  {
 
-    
+
     
     //return full clock time hh:mm:ss
     static func clockFormat(totalSeconds:Int) -> String {

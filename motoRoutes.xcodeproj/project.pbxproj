@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5506E0D91C650A230091364B /* colorStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506E0D81C650A230091364B /* colorStyles.swift */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
 		5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654B1C5A7E53002628AD /* Realm.framework */; };
@@ -21,7 +22,9 @@
 		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
 		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
 		55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D491C569220005E8A26 /* numberFormats.swift */; };
+		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
+		A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC3E6448D743A03D95FFC8D /* Pods.framework */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +44,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5506E0D81C650A230091364B /* colorStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = colorStyles.swift; sourceTree = "<group>"; };
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
 		5535654B1C5A7E53002628AD /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
@@ -55,8 +60,11 @@
 		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
 		55AB5D491C569220005E8A26 /* numberFormats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = numberFormats.swift; sourceTree = "<group>"; };
+		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
+		6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
+		D70B2B48F615AC33AA90DB15 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,12 +75,21 @@
 				5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */,
 				553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */,
 				5535654F1C5A7E53002628AD /* RealmSwift.framework in Frameworks */,
+				A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52ACE237A2458B42E81E2C00 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3BC3E6448D743A03D95FFC8D /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		553AB4F51C50056400AC12A5 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +98,8 @@
 				553AB5161C5009B700AC12A5 /* MapKit.framework */,
 				553AB5001C50056400AC12A5 /* motoRoutes */,
 				553AB4FF1C50056400AC12A5 /* Products */,
+				56CF6A6D24A59E9F2DFCF658 /* Pods */,
+				52ACE237A2458B42E81E2C00 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,6 +114,7 @@
 		553AB5001C50056400AC12A5 /* motoRoutes */ = {
 			isa = PBXGroup;
 			children = (
+				55C567C21C6284E2008E045B /* Settings.bundle */,
 				55EF09E81C5FD6A200F2857E /* showRouteController */,
 				559A5C511C57E54800B5261F /* addRouteController */,
 				559A5C501C57E51600B5261F /* motoRouteController */,
@@ -130,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
+				5506E0D81C650A230091364B /* colorStyles.swift */,
 				55AB5D491C569220005E8A26 /* numberFormats.swift */,
 			);
 			name = Utils;
@@ -141,6 +162,15 @@
 				55EF09E91C5FD89000F2857E /* showRouteController.swift */,
 			);
 			name = showRouteController;
+			sourceTree = "<group>";
+		};
+		56CF6A6D24A59E9F2DFCF658 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D70B2B48F615AC33AA90DB15 /* Pods.debug.xcconfig */,
+				6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		A983FD731C5525F600C99F83 /* Models */ = {
@@ -158,11 +188,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 553AB5131C50056400AC12A5 /* Build configuration list for PBXNativeTarget "motoRoutes" */;
 			buildPhases = (
+				AAD8B38E78448B88C02739E5 /* Check Pods Manifest.lock */,
 				553AB4FA1C50056400AC12A5 /* Sources */,
 				553AB4FB1C50056400AC12A5 /* Frameworks */,
 				553AB4FC1C50056400AC12A5 /* Resources */,
 				553565511C5A7E53002628AD /* Embed Frameworks */,
 				553565531C5A8297002628AD /* ShellScript */,
+				730785E7596523B86C39B655 /* Embed Pods Frameworks */,
+				B89D7E4E1FCF75D199D2A36E /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -220,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55C567C31C6284E2008E045B /* Settings.bundle in Resources */,
 				553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */,
 				553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */,
 				553AB5071C50056400AC12A5 /* Main.storyboard in Resources */,
@@ -242,6 +276,51 @@
 			shellPath = /bin/sh;
 			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework/strip-frameworks.sh\"\n";
 		};
+		730785E7596523B86C39B655 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AAD8B38E78448B88C02739E5 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B89D7E4E1FCF75D199D2A36E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -257,6 +336,7 @@
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
+				5506E0D91C650A230091364B /* colorStyles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,6 +445,7 @@
 		};
 		553AB5141C50056400AC12A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D70B2B48F615AC33AA90DB15 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -386,6 +467,7 @@
 		};
 		553AB5151C50056400AC12A5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

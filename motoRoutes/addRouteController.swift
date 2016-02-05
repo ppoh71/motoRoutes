@@ -11,6 +11,7 @@ import CoreLocation
 import Foundation
 import RealmSwift
 import MapKit
+import Mapbox
 
 
 class addRouteController: UIViewController {
@@ -30,7 +31,8 @@ class addRouteController: UIViewController {
     @IBOutlet var latitudeLabel:UILabel!
     @IBOutlet var recRouteBtn:UIButton!
     @IBOutlet var saveRouteBtn:UIButton!
-    @IBOutlet weak var mapView: MKMapView!
+   
+    @IBOutlet var mapView:MGLMapView!
     
     
  
@@ -55,7 +57,8 @@ class addRouteController: UIViewController {
     var longitude:Double = 0
     var altitude:Double = 0
     var accuracy:Double = 0
-    var locationActive = false
+    var speed:Double = 0
+    var locationActive:Bool = false
     
     
     
@@ -89,6 +92,8 @@ class addRouteController: UIViewController {
         
         //allow location use
         locationManager.requestAlwaysAuthorization()
+        
+        print(locationActive)
         
         //get current user location for startup
         if CLLocationManager.locationServicesEnabled() {
@@ -137,7 +142,7 @@ class addRouteController: UIViewController {
         //location updates
         latitudeLabel.text = "La: \(latitude)"
         longitudeLabel.text = "Lo: \(longitude)"
-        altitudeLabel.text = "Al: \(altitude)"
+        altitudeLabel.text = "Al: \(speed)"
         accuracyLabel.text = "\(accuracy)"
         
        
@@ -261,21 +266,24 @@ extension addRouteController: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        print("extension")
+        print("Location Update:")
         
         for location in locations {
             
-            print(location.coordinate.longitude)
-            print(location.coordinate.latitude)
-            print(location.altitude)
-            print(location.speed)
-            print(location.horizontalAccuracy)
             print("**********************")
+            print("Long \(location.coordinate.longitude)")
+            print("Lati \(location.coordinate.latitude)")
+            print("Alt \(location.altitude)")
+            print("Sped \(location.speed)")
+            print("Accu \(location.horizontalAccuracy)")
+            print("Active \(locationActive)")
+            print("**********************")
+            print(location)
             
-            if location.horizontalAccuracy < 20 {
+            if location.horizontalAccuracy < 20 && locationActive==true {
                 
                 //update distance and coords if locationActive
-                if self.locationsRoute.count > 0 && locationActive==true{ //
+                if self.locationsRoute.count > 0 {
                     distance += location.distanceFromLocation(self.locationsRoute.last!)
                     
                     //set chords for routes
@@ -283,35 +291,34 @@ extension addRouteController: CLLocationManagerDelegate {
                     coords.append(self.locationsRoute.last!.coordinate)
                     coords.append(location.coordinate)
                     
-                    //add map routes
-                    mapView.addOverlay(MKPolyline(coordinates: &coords, count: coords.count))
+                    //create Polyline
+                    let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+                    mapView.addAnnotation(line)
                     
-                    //center map region
-                    let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
-                    mapView.setRegion(region, animated: true)
-               
+                    //center mapview by new coord
+                    mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  zoomLevel: 12,  animated: false)
                 }
                 
-                 //get current location on start and stop after updating location
-                 if(locationActive==false){
-                    let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
-                     mapView.setRegion(region, animated: true)
-                    
-                     locationManager.stopUpdatingLocation();
-                 }
-                
-                //save location to locationRoute array object
+                 //save location to locationRoute array object
                 self.locationsRoute.append(location)
                 
-            } // end horizontalAccur
+            }
             
+            
+            //get current location on start and stop after updating location
+            if(locationActive==false){
+    
+               mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  zoomLevel: 12, animated: true)
+               //locationManager.stopUpdatingLocation();
+               print("Center map in startup")
+            }
             
             //set debug vars
             longitude = location.coordinate.longitude
             latitude = location.coordinate.latitude
             altitude = location.altitude
             accuracy = location.horizontalAccuracy
-            
+            speed = location.speed
         }
         
         
@@ -321,24 +328,27 @@ extension addRouteController: CLLocationManagerDelegate {
             print("App is backgrounded. New location is %@", second)
         }
         
+        
     }
 }
 
 
 // MARK: - MKMapViewDelegate
-extension addRouteController: MKMapViewDelegate {
+extension addRouteController: MGLMapViewDelegate {
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if !overlay.isKindOfClass(MKPolyline) {
-            return nil
-        }
+    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+        // Set the alpha for all shape annotations to 1 (full opacity)
+        return 1
+    }
+    
+    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+        // Set the line width for polyline annotations
+        return 5.0
+    }
+    
+    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
-        print("mapview it is")
-        
-        let polyline = overlay as! MKPolyline
-        let renderer = MKPolylineRenderer(polyline: polyline)
-        renderer.strokeColor = UIColor.blueColor()
-        renderer.lineWidth = 5
-        return renderer
+        print("Color Annotion by speed: \(speed)")
+        return colorStyles.polylineColors(speed*3.6)
     }
 }
