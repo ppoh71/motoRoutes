@@ -10,8 +10,8 @@ import UIKit
 import CoreLocation
 import Foundation
 import RealmSwift
-import MapKit
 import Mapbox
+import Crashlytics
 
 
 class addRouteController: UIViewController {
@@ -65,11 +65,15 @@ class addRouteController: UIViewController {
     
     //start timestamp of route start
     var startTimestamp:Int = 0
+    var startLocationTimestamp:Int = 0
     
     //current time timestamp
     var currentTimestamp: Int {
         return Int(NSDate().timeIntervalSince1970)
     }
+
+    
+
     
     //total time in sec /starttimstamp - currenttimestamp
     var totalTime:Int = 0
@@ -144,14 +148,6 @@ class addRouteController: UIViewController {
         longitudeLabel.text = "Lo: \(longitude)"
         altitudeLabel.text = "Al: \(speed)"
         accuracyLabel.text = "\(accuracy)"
-        
-       
-        
-        if UIApplication.sharedApplication().applicationState == .Active {
-             print("timer active ", totalTime)
-        } else {
-             print("timer background", totalTime)
-        }
 
     }
 
@@ -179,6 +175,7 @@ class addRouteController: UIViewController {
             newLocation.longitude = location.coordinate.longitude
             newLocation.altitude = location.altitude
             newLocation.speed = location.speed
+            newLocation.accuracy = location.horizontalAccuracy
             
             newRoute.locationsList.append(newLocation)
         
@@ -278,13 +275,23 @@ extension addRouteController: CLLocationManagerDelegate {
             print("Accu \(location.horizontalAccuracy)")
             print("Active \(locationActive)")
             print("**********************")
-            print(location)
+
+   
+            //set location vars
+            longitude = location.coordinate.longitude
+            latitude = location.coordinate.latitude
+            altitude = location.altitude
+            accuracy = location.horizontalAccuracy
+            speed = location.speed
             
-            if location.horizontalAccuracy < 20 && locationActive==true {
+
+            if location.horizontalAccuracy < 50 && locationActive==true {
                 
                 //update distance and coords if locationActive
                 if self.locationsRoute.count > 0 {
+                    
                     distance += location.distanceFromLocation(self.locationsRoute.last!)
+                    
                     
                     //set chords for routes
                     var coords = [CLLocationCoordinate2D]()
@@ -295,8 +302,13 @@ extension addRouteController: CLLocationManagerDelegate {
                     let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                     mapView.addAnnotation(line)
                     
+                    if UIApplication.sharedApplication().applicationState == .Active {
                     //center mapview by new coord
-                    mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  zoomLevel: 12,  animated: false)
+                    mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                    } else{
+                        print("app not active, no map centering")
+                    }
+                        
                 }
                 
                  //save location to locationRoute array object
@@ -307,27 +319,14 @@ extension addRouteController: CLLocationManagerDelegate {
             
             //get current location on start and stop after updating location
             if(locationActive==false){
-    
+                
                mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  zoomLevel: 12, animated: true)
                //locationManager.stopUpdatingLocation();
                print("Center map in startup")
             }
             
-            //set debug vars
-            longitude = location.coordinate.longitude
-            latitude = location.coordinate.latitude
-            altitude = location.altitude
-            accuracy = location.horizontalAccuracy
-            speed = location.speed
+
         }
-        
-        
-        if UIApplication.sharedApplication().applicationState == .Active {
-            print("App is Foreground. New location is %@", second)
-        } else {
-            print("App is backgrounded. New location is %@", second)
-        }
-        
         
     }
 }
@@ -348,7 +347,6 @@ extension addRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
-        print("Color Annotion by speed: \(speed)")
-        return colorStyles.polylineColors(speed*3.6)
+       return colorStyles.polylineColors(speed*3.6)
     }
 }

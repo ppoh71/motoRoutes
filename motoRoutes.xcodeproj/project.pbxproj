@@ -19,7 +19,6 @@
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
 		553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50B1C50056400AC12A5 /* Assets.xcassets */; };
 		553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */; };
-		553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553AB5161C5009B700AC12A5 /* MapKit.framework */; };
 		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
 		55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D491C569220005E8A26 /* numberFormats.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
@@ -57,7 +56,6 @@
 		553AB50B1C50056400AC12A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		553AB50E1C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		553AB5101C50056400AC12A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		553AB5161C5009B700AC12A5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
 		55AB5D491C569220005E8A26 /* numberFormats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = numberFormats.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */,
-				553AB5171C5009B700AC12A5 /* MapKit.framework in Frameworks */,
 				5535654F1C5A7E53002628AD /* RealmSwift.framework in Frameworks */,
 				A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */,
 			);
@@ -95,7 +92,6 @@
 			children = (
 				5535654B1C5A7E53002628AD /* Realm.framework */,
 				5535654C1C5A7E53002628AD /* RealmSwift.framework */,
-				553AB5161C5009B700AC12A5 /* MapKit.framework */,
 				553AB5001C50056400AC12A5 /* motoRoutes */,
 				553AB4FF1C50056400AC12A5 /* Products */,
 				56CF6A6D24A59E9F2DFCF658 /* Pods */,
@@ -196,6 +192,7 @@
 				553565531C5A8297002628AD /* ShellScript */,
 				730785E7596523B86C39B655 /* Embed Pods Frameworks */,
 				B89D7E4E1FCF75D199D2A36E /* Copy Pods Resources */,
+				557605FD1C6B316400EBDAE3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -275,6 +272,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework/strip-frameworks.sh\"\n";
+		};
+		557605FD1C6B316400EBDAE3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 17ab2ed7217680b1e3edfec4c25ecb5145bba120 70f70745ec3380e81c1ef48f8d528559b6fcd8dd659cc4909db32f1bde8fa923";
 		};
 		730785E7596523B86C39B655 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -449,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

@@ -18,6 +18,7 @@ class Location: Object {
     dynamic var altitude = 0.0
     dynamic var speed = 0.0
     dynamic var timestamp = NSDate()
+    dynamic var accuracy = 0.0
     
     var route: [Route] {
         // Realm doesn't persist this property because it only has a getter defined

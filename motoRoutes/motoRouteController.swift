@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import CoreData
 import RealmSwift
+import Crashlytics
 
 class motoRouteController: UITableViewController {
     
@@ -33,10 +33,12 @@ class motoRouteController: UITableViewController {
         let realm = try! Realm()
         motoRoutes = realm.objects(Route)
         
+       
         print(motoRoutes.count)
         
     }
     
+
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

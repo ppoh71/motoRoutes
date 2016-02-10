@@ -403,7 +403,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <outlet property="delegate" destination="iyu-JC-65F" id="xhQ-Gd-S9j"/>
+                                    <outlet property="delegate" destination="iyu-JC-65F" id="Zea-4n-1ef"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LW-L1-BfS">
@@ -422,7 +422,7 @@
                     </view>
                     <connections>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
-                        <outlet property="mapView" destination="1hV-rc-YM3" id="3gx-Ii-MFX"/>
+                        <outlet property="mapViewShow" destination="1hV-rc-YM3" id="4JL-ss-03s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ieq-0x-0We" userLabel="First Responder" sceneMemberID="firstResponder"/>
