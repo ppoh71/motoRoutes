@@ -9,10 +9,10 @@
 import UIKit
 
 
+
 class colorStyles {
     
 
-    
     //random color
     static func randomColor() -> UIColor {
         let r = CGFloat(arc4random()) / CGFloat(UInt32.max)
@@ -25,91 +25,50 @@ class colorStyles {
     }
 
     
+    //get rgb color from hexcoler
+    static func hexTorgbColor(hexcolor:String) -> UIColor {
+
+        let hex = hexcolor.stringByTrimmingCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+        
+        var int = UInt32()
+        NSScanner(string: hex).scanHexInt(&int)
+        let a, r, g, b: UInt32
+        switch hex.characters.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            return UIColor.clearColor()
+        }
+        return UIColor(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
+    }
+
+    
     //get colors by speed
     static func polylineColors(speed:Double) -> UIColor{
+
+       //color spped palette in hex
+       var colorSpeed: [String] = ["#ffffff", "#b2dfdb", "#80cbc4", "#4db6ac", "#26a69a", "#81c784", "#66bb6a", "#4caf50", "#43a047", "#ffb74d", "#ffa726", "#ff9800", "#fb8c00", "#ff7043", "#ff5722", "#ff5722", "#f4511e", "#ec407a", "#e91e63", "#d81b60", "#c2185b", "#ba68c8", "#ab47bc", "#9c27b0", "#8e24aa", "#7b1fa2"]
         
         //color var
-        var polyRouteColor:UIColor = UIColor.redColor()
-        var colorTest = "TEst"
+        print("color operation")
         
-        
-        
-            //switch for colors by speed
-            switch true {
-                
-                case speed > 130:
-                    colorTest = "130"
-                    polyRouteColor = UIColor(red: 234/255, green: 54/255, blue: 0/255, alpha: 1.0) /* #ea3600 */
-                    
-                case speed > 120:
-                     colorTest = "120"
-                    polyRouteColor = UIColor(red: 239/255, green: 115/255, blue: 0/255, alpha: 1.0) /* #ef7300 */
-                    
-                case speed > 110:
-                     colorTest = "110"
-                    polyRouteColor = UIColor(red: 255/255, green: 161/255, blue: 0/255, alpha: 1.0) /* #ffa100 */
-                    
-                case speed > 100:
-                     colorTest = "100"
-                    polyRouteColor = UIColor(red: 255/255, green: 0/255, blue: 16/255, alpha: 1.0) /* #ff0010 */
-                    
-                case speed > 90:
-                    colorTest = "90"
-                    polyRouteColor = UIColor(red: 255/255, green: 0/255, blue: 114/255, alpha: 1.0) /* #ff0072 */
-                    
-                case speed > 80:
-                     colorTest = "80"
-                    polyRouteColor = UIColor(red: 229/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #e500ff */
-                    
-                case speed > 70:
-                     colorTest = "70"
-                    polyRouteColor = UIColor(red: 255/255, green: 191/255, blue: 0/255, alpha: 1.0) /* #ffbf00 */
-                    
-                case speed > 60:
-                     colorTest = "60"
-                    polyRouteColor = UIColor(red: 221/255, green: 255/255, blue: 0/255, alpha: 1.0) /* #ddff00 */
-                    
-                case speed > 50:
-                     colorTest = "50"
-                    polyRouteColor = UIColor(red: 0/255, green: 255/255, blue: 80/255, alpha: 1.0) /* #00ff50 */
-                    
-                case speed > 40:
-                     colorTest = "40"
-                    polyRouteColor = UIColor(red: 0/255, green: 255/255, blue: 199/255, alpha: 1.0) /* #00ffc7 */
-                    
-                case speed > 30:
-                     colorTest = "30"
-                    polyRouteColor = UIColor(red: 0/255, green: 242/255, blue: 255/255, alpha: 1.0) /* #00f2ff */
-                    
-                case speed > 20:
-                     colorTest = "20"
-                    polyRouteColor = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 1.0) /* #00b6ff */
-                    
-                case speed > 10:
-                     colorTest = "10"
-                    polyRouteColor = UIColor(red: 0/255, green: 148/255, blue: 255/255, alpha: 1.0)
-
-                
-            case speed > 7:
-                polyRouteColor = UIColor(red: 234/255, green: 54/255, blue: 0/255, alpha: 1.0) /* #ea3600 */
-
-                
-            case speed > 4:
-                polyRouteColor = UIColor(red: 255/255, green: 161/255, blue: 0/255, alpha: 1.0) /* #ffa100 */
-                
-
-                default:
-                    polyRouteColor = UIColor(red: 255/255, green: 216/255, blue: 249/255, alpha: 1.0) /* #ffd8f9 */
-                    
-                }
+        //get a speed int to look up the colorspeed array
+        var speedInt:Int = Int(round(speed/10))
 
         
-//        print(speed)
-       print(polyRouteColor)
-//        print(polyRouteColor)
+        //not faster than 250km/h
+        if(speedInt>=25){
+            speedInt = 25
+        }
         
-        return polyRouteColor
+        print(speedInt)
+        
+        //retrun converted color speed color in ui.color
+        return colorStyles.hexTorgbColor(colorSpeed[speedInt])
     }
-    
-    
 }
+
