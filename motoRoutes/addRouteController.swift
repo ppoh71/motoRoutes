@@ -347,6 +347,8 @@ extension addRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
-       return colorStyles.polylineColors(speed*3.6)
+       let speedIndex =  Int(round(speed/10))
+        
+       return colorStyles.polylineColors(speedIndex)
     }
 }

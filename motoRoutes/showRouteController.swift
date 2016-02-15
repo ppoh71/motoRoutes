@@ -21,8 +21,18 @@ class showRouteController: UIViewController {
     
     // realm object list
     var motoRoute =  Route()
-    var speed:Double = 0 // need to draw colors on route
+    var speed:Int = 0 // need to draw colors on route
+    var speedIndex:Int = 0
+    var speedSet:Int = 0
+    var speedDictonary = [[(Int, [CLLocationCoordinate2D])]]()
+    
+    struct routeInfo {
+        var speed : Int
+        var routes : [CLLocationCoordinate2D]
+    }
 
+    
+    var routeSpeeds = [routeInfo]()
     
     //
     // override func super init
@@ -32,30 +42,93 @@ class showRouteController: UIViewController {
         
         //print("showRouteController")
         //print(motoRoute)
-        print(motoRoute.locationsList)
+        //print(motoRoute.locationsList)
         
-        //set chords for routes from
+        //init speed set
+        speedSet = Int(round(motoRoute.locationsList[0].speed/10))
+        
+
+        //init coords
         var coords = [CLLocationCoordinate2D]()
+        
         
         for location in motoRoute.locationsList {
             
-            // keep only the last 2 coors in array, to draw colored speed sequcnces
+       
+            //get speed index
+            speedIndex = Int(round(location.speed/10))
+            
+           
+            
+          print("################### \(speedIndex) - \(speedSet)")
+//            print(location)
+//            print("################### \(speedIndex) - \(speedSet)")
+            
+            if(speedIndex == speedSet){ //put coord of same speed into choords
+                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+                //print(coords)
+            } else{
+            
+                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+                routeSpeeds.append(routeInfo(speed: speedSet, routes: coords))  //set dictonary for speed
+                
+                
+               //   print("########## change")
+                
+//                print("########## \(speedSet)")
+             //    print(routeSpeeds)
+//                
+                speedSet = speedIndex //set new speedindex
+                coords = [CLLocationCoordinate2D]() //empty coords to get new coord for this speedindex
+                
+              //   print(coords)
+                
+                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+                
+                //print(coords)
+            
+            }
+            
+            //append last elemnt, due it's not going into else statement
+            routeSpeeds.append(routeInfo(speed: speedSet, routes: coords))  //set dictonary for speed
+            
+
+            // print("speedSet: \(speedSet)  speedIndex: \(speedIndex)" )
+         
+            /*
             // + better performance of coord drawing
-            if(coords.count==2){
+            if(coords.count==3){
                coords.removeAtIndex(0)
             }
             
             coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-            
-            //get speed for polyline color in mapview func
-            speed = location.speed
-           
-            //create Polyline and add as annotation
-            let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
-            mapViewShow.addAnnotation(line)
+            */
             
         }
         
+      // print(speedDictonary)
+      // print("############################ ")
+       
+        for speedRoutes in routeSpeeds {
+          //  print("\(speedSet) ")
+          //  print("\(speedRoutes.routes) ############################ ")
+            
+            var coords:[CLLocationCoordinate2D] = speedRoutes.routes
+            
+              speed = speedRoutes.speed
+            
+              let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+               mapViewShow.addAnnotation(line)
+
+          }
+      
+        
+        
+        //create Polyline and add as annotation
+        //let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+        //mapViewShow.addAnnotation(line)
+
+      
         //center mapview by new coord
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoute.locationsList[0].latitude, longitude: motoRoute.locationsList[0].longitude),  zoomLevel: 13,  animated: false)
         
@@ -73,11 +146,13 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 5.0
+        return 8.0
     }
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
-        return colorStyles.polylineColors(speed*3.6)
+        //let speedIndex =  Int(round(speed/10))
+        
+        return colorStyles.polylineColors(speed)
     }
 }

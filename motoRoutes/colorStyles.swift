@@ -48,7 +48,7 @@ class colorStyles {
 
     
     //get colors by speed
-    static func polylineColors(speed:Double) -> UIColor{
+    static func polylineColors(speed:Int) -> UIColor{
 
        //color spped palette in hex
        var colorSpeed: [String] = ["#ffffff", "#b2dfdb", "#80cbc4", "#4db6ac", "#26a69a", "#81c784", "#66bb6a", "#4caf50", "#43a047", "#ffb74d", "#ffa726", "#ff9800", "#fb8c00", "#ff7043", "#ff5722", "#ff5722", "#f4511e", "#ec407a", "#e91e63", "#d81b60", "#c2185b", "#ba68c8", "#ab47bc", "#9c27b0", "#8e24aa", "#7b1fa2"]
@@ -57,7 +57,8 @@ class colorStyles {
         print("color operation")
         
         //get a speed int to look up the colorspeed array
-        var speedInt:Int = Int(round(speed/10))
+        var speedInt:Int = speed
+        
 
         
         //not faster than 250km/h
