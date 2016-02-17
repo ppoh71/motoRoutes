@@ -31,6 +31,7 @@ class addRouteController: UIViewController {
     @IBOutlet var latitudeLabel:UILabel!
     @IBOutlet var recRouteBtn:UIButton!
     @IBOutlet var saveRouteBtn:UIButton!
+    @IBOutlet var screenShotRoute:UIImageView!
    
     @IBOutlet var mapView:MGLMapView!
     
@@ -86,6 +87,7 @@ class addRouteController: UIViewController {
         super.viewDidLoad()
         
         //timer.invalidate()
+        mapView.
     }
     
     //
@@ -189,10 +191,49 @@ class addRouteController: UIViewController {
         try! realm.write {
             realm.add(newRoute)
         }
+        
+        
+        makeScreenshot()
+        
+        locationManager.stopUpdatingLocation(); //stop locations
+        timer.invalidate() //stop timer
+
     }
+ 
     
+    //screenshot of route
+    func makeScreenshot(){
     
+        
+        print(mapView.frame.origin)
+        print(mapView.frame.size)
+        
+        //capture route image
+       // let window: UIWindow! = UIApplication.sharedApplication().keyWindow
+       // let windowImage = window.capture()
+        
+        //screenShotRoute.image = windowImage
+        //print(windowImage)
     
+        
+        
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.mapView.frame.size.width*0.99,self.mapView.frame.size.height*0.70), false, 0)
+        //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
+        self.mapView?.drawViewHierarchyInRect(CGRectMake(-01, -01, self.mapView.frame.size.width, self.mapView.frame.size.height), afterScreenUpdates: true)
+        let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        
+        screenShotRoute.image = screenShot
+        
+        if let data = UIImagePNGRepresentation(screenShot) {
+            let filename = utils.getDocumentsDirectory().stringByAppendingPathComponent("copy.png")
+            data.writeToFile(filename, atomically: true)
+        }
+        
+        print(screenShot)
+    
+    }
     //
     // @IBAction
     //
@@ -352,3 +393,4 @@ extension addRouteController: MGLMapViewDelegate {
        return colorStyles.polylineColors(speedIndex)
     }
 }
+

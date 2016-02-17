@@ -12,6 +12,8 @@ class motoRouteCellView: UITableViewCell {
 
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
+    @IBOutlet var routeImage: UIImageView!
+    
 
     
     override func awakeFromNib() {

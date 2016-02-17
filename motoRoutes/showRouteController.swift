@@ -34,101 +34,76 @@ class showRouteController: UIViewController {
     
     var routeSpeeds = [routeInfo]()
     
+    
     //
     // override func super init
     //
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //print("showRouteController")
-        //print(motoRoute)
-        //print(motoRoute.locationsList)
+
+        //init speedIndex
+        speedSet = utils.getSpeedIndex(motoRoute.locationsList[0].speed)
         
-        //init speed set
-        speedSet = Int(round(motoRoute.locationsList[0].speed/10))
-        
+        print("route counts: \(motoRoute.locationsList.count) ")
 
         //init coords
         var coords = [CLLocationCoordinate2D]()
+        var cnt = 0
         
         
         for location in motoRoute.locationsList {
             
-       
             //get speed index
-            speedIndex = Int(round(location.speed/10))
+            speedIndex = utils.getSpeedIndex(location.speed)
             
-           
-            
-          print("################### \(speedIndex) - \(speedSet)")
-//            print(location)
-//            print("################### \(speedIndex) - \(speedSet)")
-            
-            if(speedIndex == speedSet){ //put coord of same speed into choords
-                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-                //print(coords)
-            } else{
-            
-                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-                routeSpeeds.append(routeInfo(speed: speedSet, routes: coords))  //set dictonary for speed
-                
-                
-               //   print("########## change")
-                
-//                print("########## \(speedSet)")
-             //    print(routeSpeeds)
-//                
-                speedSet = speedIndex //set new speedindex
-                coords = [CLLocationCoordinate2D]() //empty coords to get new coord for this speedindex
-                
-              //   print(coords)
-                
+            //add locations to coord woth the same speedIndex
+            if(speedIndex == speedSet){
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
-                //print(coords)
+            } else{ // if the speedIndex is different, at the last location and print the route
             
-            }
-            
-            //append last elemnt, due it's not going into else statement
-            routeSpeeds.append(routeInfo(speed: speedSet, routes: coords))  //set dictonary for speed
-            
+                cnt++
+                
+                //add first location with diff speedIndex to mind gaps
+                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+       
+                //set new speedindex, also needed for coloring the routes
+                speedSet = speedIndex
+                
+                //print route polygon
+                let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+                mapViewShow.addAnnotation(line)
 
-            // print("speedSet: \(speedSet)  speedIndex: \(speedIndex)" )
-         
-            /*
-            // + better performance of coord drawing
-            if(coords.count==3){
-               coords.removeAtIndex(0)
-            }
+                //print the coords for the last run
+                print("counts: \(coords.count) - sppedindex \(speedSet) - cnt \(cnt) ")
+                
+                coords = [CLLocationCoordinate2D]()
+                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
             
-            coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-            */
+                
+
+            }
             
         }
         
-      // print(speedDictonary)
-      // print("############################ ")
-       
-        for speedRoutes in routeSpeeds {
-          //  print("\(speedSet) ")
-          //  print("\(speedRoutes.routes) ############################ ")
+        
+        if(coords.count>0){
             
-            var coords:[CLLocationCoordinate2D] = speedRoutes.routes
+            //set speedIndex
+            speedSet = speedIndex
             
-              speed = speedRoutes.speed
+            //print route polygon
+            let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+            mapViewShow.addAnnotation(line)
             
-              let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
-               mapViewShow.addAnnotation(line)
+            //print the coords for the last run
+            print("counts: \(coords.count) - sppedindex \(speedSet) ")
 
-          }
+        }
+        
       
         
-        
-        //create Polyline and add as annotation
-        //let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
-        //mapViewShow.addAnnotation(line)
-
-      
         //center mapview by new coord
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoute.locationsList[0].latitude, longitude: motoRoute.locationsList[0].longitude),  zoomLevel: 13,  animated: false)
         
@@ -153,6 +128,6 @@ extension showRouteController: MGLMapViewDelegate {
         
         //let speedIndex =  Int(round(speed/10))
         
-        return colorStyles.polylineColors(speed)
+        return colorStyles.polylineColors(speedSet)
     }
 }
