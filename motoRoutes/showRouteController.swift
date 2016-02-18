@@ -33,6 +33,7 @@ class showRouteController: UIViewController {
 
     
     var routeSpeeds = [routeInfo]()
+    var middleCoord = Location()
     
     
     //
@@ -105,10 +106,38 @@ class showRouteController: UIViewController {
       
         
         //center mapview by new coord
-        mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoute.locationsList[0].latitude, longitude: motoRoute.locationsList[0].longitude),  zoomLevel: 13,  animated: false)
+        //zoom camaera to whole map
+        middleCoord = motoRoute.locationsList[Int(round(Double(motoRoute.locationsList.count/2)))]
+        
+        print(" coord count  \(motoRoute.locationsList.count)")
+        print(" coord \(Int(round(Double(motoRoute.locationsList.count/2))))")
+        print("middel coord \(middleCoord)")
+        
+            mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: middleCoord.latitude, longitude: middleCoord.longitude),  zoomLevel: 10, direction: 40, animated: true)
+        
+       
+
+
+        
+       // mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoute.locationsList[0].latitude, longitude: motoRoute.locationsList[0].longitude),  zoomLevel: 13,  animated: false)
         
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        // Wait a bit before setting a new camera.
+    
+        //create camera the map view is showing.
+        let camera = MGLMapCamera(lookingAtCenterCoordinate: CLLocationCoordinate2D(latitude: middleCoord.latitude, longitude: middleCoord.longitude), fromDistance: 12000, pitch: 25, heading: 0)
+        
+        // Animate the camera movement over 5 seconds.
+        mapViewShow.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+    
+    }
+    
+
 }
+
+
 
 
 // MARK: - MKMapViewDelegate

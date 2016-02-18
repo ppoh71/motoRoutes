@@ -87,7 +87,7 @@ class addRouteController: UIViewController {
         super.viewDidLoad()
         
         //timer.invalidate()
-        mapView.
+        
     }
     
     //
@@ -159,6 +159,19 @@ class addRouteController: UIViewController {
     // save motoRoute to core data
     //
     func saveRoute() {
+        
+        //stop locatoin updates, don‘t move
+        locationManager.stopUpdatingLocation();
+        
+        //dont show user location, no blue dot on screenshot
+        mapView.showsUserLocation = false
+        
+        //zoom camaera to whole map
+        let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
+        print(" coord \(Int(round(Double(locationsRoute.count/2))))")
+        print("middel coord \(middleCoord)")
+        
+        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: middleCoord.coordinate.latitude, longitude: middleCoord.coordinate.longitude),  zoomLevel: 11, animated: true)
         
         
         // save to realm
@@ -233,6 +246,19 @@ class addRouteController: UIViewController {
         
         print(screenShot)
     
+    }
+    
+    func cameraFly(centerCoords:CLLocationCoordinate2D){
+    
+
+    
+    //create camera the map view is showing.
+    let camera = MGLMapCamera(lookingAtCenterCoordinate: centerCoords, fromDistance: 9000, pitch: 25, heading: 0)
+    
+    // Animate the camera movement over 5 seconds.
+    mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+
+
     }
     //
     // @IBAction
@@ -361,9 +387,14 @@ extension addRouteController: CLLocationManagerDelegate {
             //get current location on start and stop after updating location
             if(locationActive==false){
                 
-               mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  zoomLevel: 12, animated: true)
+               let centerCoords = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                
+               mapView.setCenterCoordinate(centerCoords,  zoomLevel: 12, animated: true)
                //locationManager.stopUpdatingLocation();
                print("Center map in startup")
+                
+                //let camera fly
+                cameraFly(centerCoords)
             }
             
 
