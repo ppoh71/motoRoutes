@@ -34,6 +34,7 @@ class Route: Object {
     dynamic var duration = 0
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
+    dynamic var image = ""
     
     let locationsList = List<Location>()
     

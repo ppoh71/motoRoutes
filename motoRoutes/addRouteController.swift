@@ -86,6 +86,11 @@ class addRouteController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(mapView)
+        mapView.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
+
+       print("hasstyle class \(mapView)")
+
         //timer.invalidate()
         
     }
@@ -166,12 +171,18 @@ class addRouteController: UIViewController {
         //dont show user location, no blue dot on screenshot
         mapView.showsUserLocation = false
         
-        //zoom camaera to whole map
-        let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
-        print(" coord \(Int(round(Double(locationsRoute.count/2))))")
-        print("middel coord \(middleCoord)")
+        //stop timer
+        timer.invalidate()
         
+        //get the middle coord of the whole route
+        let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
+        
+        //center route to middel coord
         mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: middleCoord.coordinate.latitude, longitude: middleCoord.coordinate.longitude),  zoomLevel: 11, animated: true)
+
+        
+        //make screenshot and get image name
+        let screenshotFilename = makeScreenshot()
         
         
         // save to realm
@@ -180,6 +191,7 @@ class addRouteController: UIViewController {
         newRoute.timestamp = NSDate()
         newRoute.distance = distance
         newRoute.duration = totalTime
+        newRoute.image = screenshotFilename
         
         for location in locationsRoute {
             
@@ -205,30 +217,24 @@ class addRouteController: UIViewController {
             realm.add(newRoute)
         }
         
-        
-        makeScreenshot()
-        
-        locationManager.stopUpdatingLocation(); //stop locations
-        timer.invalidate() //stop timer
+
 
     }
  
     
-    //screenshot of route
-    func makeScreenshot(){
+    /*
+    * make screenshot and return full filename, 
+    */
+    func makeScreenshot() -> String{
     
         
         print(mapView.frame.origin)
         print(mapView.frame.size)
         
-        //capture route image
-       // let window: UIWindow! = UIApplication.sharedApplication().keyWindow
-       // let windowImage = window.capture()
+        var filename:String = ""
         
-        //screenShotRoute.image = windowImage
-        //print(windowImage)
-    
-        
+        //take the timestamp for the imagename
+        let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + ".png"
         
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.mapView.frame.size.width*0.99,self.mapView.frame.size.height*0.70), false, 0)
         //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -240,24 +246,27 @@ class addRouteController: UIViewController {
         screenShotRoute.image = screenShot
         
         if let data = UIImagePNGRepresentation(screenShot) {
-            let filename = utils.getDocumentsDirectory().stringByAppendingPathComponent("copy.png")
+            filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
             data.writeToFile(filename, atomically: true)
         }
         
-        print(screenShot)
+        print("filename: \(filename as String)")
+         print(timestampFilename)
+        return filename
     
     }
     
-    func cameraFly(centerCoords:CLLocationCoordinate2D){
+    func cameraFly(centerRouteCoords:CLLocationCoordinate2D){
     
 
     
     //create camera the map view is showing.
-    let camera = MGLMapCamera(lookingAtCenterCoordinate: centerCoords, fromDistance: 9000, pitch: 25, heading: 0)
+    let camera = MGLMapCamera(lookingAtCenterCoordinate: centerRouteCoords, fromDistance: 9000, pitch: 25, heading: 0)
     
     // Animate the camera movement over 5 seconds.
-    mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+    mapView.setCamera(camera, withDuration: 2,  animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)  )
 
+        
 
     }
     //
@@ -358,8 +367,7 @@ extension addRouteController: CLLocationManagerDelegate {
                 if self.locationsRoute.count > 0 {
                     
                     distance += location.distanceFromLocation(self.locationsRoute.last!)
-                    
-                    
+                  
                     //set chords for routes
                     var coords = [CLLocationCoordinate2D]()
                     coords.append(self.locationsRoute.last!.coordinate)
@@ -369,13 +377,16 @@ extension addRouteController: CLLocationManagerDelegate {
                     let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                     mapView.addAnnotation(line)
                     
+                    
                     if UIApplication.sharedApplication().applicationState == .Active {
                     //center mapview by new coord
                     mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
                     } else{
                         print("app not active, no map centering")
                     }
-                        
+                    
+       
+                    
                 }
                 
                  //save location to locationRoute array object
@@ -394,7 +405,7 @@ extension addRouteController: CLLocationManagerDelegate {
                print("Center map in startup")
                 
                 //let camera fly
-                cameraFly(centerCoords)
+                //cameraFly(centerCoords)
             }
             
 
@@ -407,6 +418,14 @@ extension addRouteController: CLLocationManagerDelegate {
 // MARK: - MKMapViewDelegate
 extension addRouteController: MGLMapViewDelegate {
     
+
+    func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
+        print("failed loading mapr")
+    }
+   
+    func mapViewDidStopLocatingUser(mapView: MGLMapView) {
+         print("failed loading mapr")
+    }
     func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
         // Set the alpha for all shape annotations to 1 (full opacity)
         return 1

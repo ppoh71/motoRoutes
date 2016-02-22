@@ -34,6 +34,8 @@ class motoRouteController: UITableViewController {
         motoRoutes = realm.objects(Route)
         
        
+        print("is connected")
+        print(utils.isConnected())
         print(motoRoutes.count)
         
     }
@@ -71,9 +73,12 @@ class motoRouteController: UITableViewController {
         // Configure the cell...
         
         //load image
-        let img = "/copy.png"
-        let path = (utils.getDocumentsDirectory() as String) + img
-        let image = utils.loadImageFromPath(path)
+        let img = route.image
+        
+        //let path = (utils.getDocumentsDirectory() as String) + img
+        var image = utils.loadImageFromPath(img)
+        
+       // image = (image == nil) ? "default.jpg" : image
         
         cell.routeImage.image = image
         cell.nameLabel.text = "Time: \(numberFormats.clockFormat(route.duration))"
