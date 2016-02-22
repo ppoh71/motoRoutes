@@ -22,11 +22,12 @@
 		5559A81A1C747365008ACE74 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5559A8191C747365008ACE74 /* MapKit.framework */; };
 		5562BA551C73663900EF340D /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5562BA541C73663900EF340D /* utils.swift */; };
 		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
-		55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AB5D491C569220005E8A26 /* numberFormats.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC3E6448D743A03D95FFC8D /* Pods.framework */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
+		A9D4C40C1C78DA8300BD3D07 /* globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D4C40B1C78DA8300BD3D07 /* globals.swift */; };
+		A9D4C40E1C79EC5500BD3D07 /* mapFx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D4C40D1C79EC5500BD3D07 /* mapFx.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,11 +62,12 @@
 		5559A8191C747365008ACE74 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		5562BA541C73663900EF340D /* utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
-		55AB5D491C569220005E8A26 /* numberFormats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = numberFormats.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
+		A9D4C40B1C78DA8300BD3D07 /* globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = globals.swift; sourceTree = "<group>"; };
+		A9D4C40D1C79EC5500BD3D07 /* mapFx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapFx.swift; sourceTree = "<group>"; };
 		D70B2B48F615AC33AA90DB15 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,10 +153,11 @@
 		55AB5D4B1C5694FE005E8A26 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A9D4C40B1C78DA8300BD3D07 /* globals.swift */,
 				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
 				5506E0D81C650A230091364B /* colorStyles.swift */,
-				55AB5D491C569220005E8A26 /* numberFormats.swift */,
 				5562BA541C73663900EF340D /* utils.swift */,
+				A9D4C40D1C79EC5500BD3D07 /* mapFx.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -347,11 +350,12 @@
 			files = (
 				55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */,
 				553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */,
-				55AB5D4A1C569220005E8A26 /* numberFormats.swift in Sources */,
+				A9D4C40E1C79EC5500BD3D07 /* mapFx.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				5562BA551C73663900EF340D /* utils.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
+				A9D4C40C1C78DA8300BD3D07 /* globals.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 				5506E0D91C650A230091364B /* colorStyles.swift in Sources */,

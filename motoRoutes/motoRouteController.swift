@@ -71,12 +71,12 @@ class motoRouteController: UITableViewController {
         // Configure the cell...
         
         //load image
-        let img = "/copy.png"
-        let path = (utils.getDocumentsDirectory() as String) + img
-        let image = utils.loadImageFromPath(path)
+       // let img = "/copy.png"
+       // let path = (utils.getDocumentsDirectory() as String) + img
+       // let image = utils.loadImageFromPath(path)
         
-        cell.routeImage.image = image
-        cell.nameLabel.text = "Time: \(numberFormats.clockFormat(route.duration))"
+       // cell.routeImage.image = image
+        cell.nameLabel.text = "Time: \(utils.clockFormat(route.duration))"
         cell.distanceLabel.text = "Distance: \(route.distance)"
         
         return cell

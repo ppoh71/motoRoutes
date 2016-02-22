@@ -88,6 +88,7 @@ class addRouteController: UIViewController {
         
         //timer.invalidate()
         
+       // print(mapView)
     }
     
     //
@@ -142,7 +143,7 @@ class addRouteController: UIViewController {
         
         totalTime = currentTimestamp - startTimestamp
 
-        timeLabel.text = numberFormats.clockFormat(totalTime)
+        timeLabel.text = utils.clockFormat(totalTime)
         distanceLabel.text = "\(distance)"
         
         //location updates
@@ -394,7 +395,7 @@ extension addRouteController: CLLocationManagerDelegate {
                print("Center map in startup")
                 
                 //let camera fly
-                cameraFly(centerCoords)
+               //cameraFly(centerCoords)
             }
             
 
@@ -406,6 +407,42 @@ extension addRouteController: CLLocationManagerDelegate {
 
 // MARK: - MKMapViewDelegate
 extension addRouteController: MGLMapViewDelegate {
+    
+    
+    func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
+        //print("Erro r ")
+    }
+    
+    func mapViewDidFinishRenderingFrame(mapView: MGLMapView, fullyRendered: Bool) {
+       // print("DidFinishRenderingFrame")
+    }
+    
+    func mapViewWillStartLoadingMap(mapView: MGLMapView) {
+       // print("WillStartLoadingMap")
+       //  print(mapView.debugDescription)
+    }
+    
+    func mapViewWillStartRenderingFrame(mapView: MGLMapView) {
+       // print("WillStartRenderingFrame")
+
+        //print(mapView.description)
+        //print(mapView)
+    }
+    
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        print("region changed")
+        print(mapView.styleClasses)
+        print(mapView.styleURL)
+        
+  
+    }
+
+    
+    func mapViewWillStartRenderingMap(mapView: MGLMapView) {
+        print("will start render map")
+        
+    }
+    
     
     func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
         // Set the alpha for all shape annotations to 1 (full opacity)
