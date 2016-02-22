@@ -73,18 +73,18 @@ class motoRouteController: UITableViewController {
         // Configure the cell...
         
         //load image
-<<<<<<< HEAD
+
         let img = route.image
         
         //let path = (utils.getDocumentsDirectory() as String) + img
         var image = utils.loadImageFromPath(img)
         
        // image = (image == nil) ? "default.jpg" : image
-=======
+
        // let img = "/copy.png"
        // let path = (utils.getDocumentsDirectory() as String) + img
        // let image = utils.loadImageFromPath(path)
->>>>>>> 78f48bceaf6d237df04c126305027f812e499893
+
         
        // cell.routeImage.image = image
         cell.nameLabel.text = "Time: \(utils.clockFormat(route.duration))"

@@ -8,13 +8,11 @@
 
 import Foundation
 import UIKit
-<<<<<<< HEAD
 import SystemConfiguration
-=======
 import CoreLocation
 import RealmSwift
 import Mapbox
->>>>>>> 78f48bceaf6d237df04c126305027f812e499893
+
 
 
 public class utils {
@@ -60,7 +58,7 @@ public class utils {
         
     }
     
-<<<<<<< HEAD
+
     /*
     * check for connectivity, only wifi ?!
     */
@@ -87,7 +85,7 @@ public class utils {
     }
     
     
-=======
+
     
     //return full clock time hh:mm:ss
     static func clockFormat(totalSeconds:Int) -> String {
@@ -110,5 +108,5 @@ public class utils {
         
     }
         
->>>>>>> 78f48bceaf6d237df04c126305027f812e499893
+
 }

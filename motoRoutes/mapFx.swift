@@ -25,14 +25,15 @@ class mapFx {
         
         //get middel coord for camera animation
         let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
+        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude), zoomLevel: 10, direction:90,  animated: false )
+     
+
         
         
         //init coords
         var coords = [CLLocationCoordinate2D]()
         var cnt = 0
         
-        
-        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude),  zoomLevel: 8, direction: 40, animated: true)
         
         for location in motoRoutes {
             
@@ -95,14 +96,27 @@ class mapFx {
     
     class func cameraAni(motoRoutes:List<Location>!, mapView:MGLMapView!){
     
+        
         let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
         
-        let sanJose = CLLocationCoordinate2D(latitude: motoRoutes[motoRoutes.count-1].latitude, longitude: motoRoutes[motoRoutes.count-1].longitude)
-        let camera = MGLMapCamera(lookingAtCenterCoordinate: sanJose, fromEyeCoordinate: sanJose, eyeAltitude: 12000)
+        let destination = CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude)
+        let destination2 = CLLocationCoordinate2D(latitude: motoRoutes[motoRoutes.count-1].latitude, longitude: motoRoutes[motoRoutes.count-1].longitude)
+        
+        //let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromEyeCoordinate: destination2, eyeAltitude: 20000)
+        let camera2 = MGLMapCamera(lookingAtCenterCoordinate: destination2, fromDistance: 5000, pitch: 20, heading: 0)
+      
+ 
+      
+        let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: 6000, pitch: 80, heading: 110)
         mapView.flyToCamera(camera) {
             // Optionally catch a connecting flight
+            //  print("connection flight")
+            mapView.flyToCamera(camera2){
+                
+            } 
         }
-        
+  
+      
         /*
         //create camera the map view is showing.
         let camera = MGLMapCamera(lookingAtCenterCoordinate: CLLocationCoordinate2D(latitude: middleCoord.latitude, longitude: middleCoord.longitude), fromDistance: 12000, pitch: 25, heading: 0)

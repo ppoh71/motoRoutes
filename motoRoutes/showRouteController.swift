@@ -43,7 +43,7 @@ class showRouteController: UIViewController {
         super.viewDidLoad()
         
         
-        mapFx.printRoute(motoRoute.locationsList, mapView: mapViewShow)
+     mapFx.printRoute(motoRoute.locationsList, mapView: mapViewShow)
         
 
         
@@ -77,26 +77,26 @@ extension showRouteController: MGLMapViewDelegate {
     }
     
     func mapViewWillStartRenderingFrame(mapView: MGLMapView) {
-        print("WillStartRenderingFrame")
+       // print("WillStartRenderingFrame")
     }
     
     func mapViewDidFinishRenderingFrame(mapView: MGLMapView, fullyRendered: Bool) {
-        print("DidFinishRenderingFrame")
+       // print("DidFinishRenderingFrame")
     }
     
     func mapViewWillStartLoadingMap(mapView: MGLMapView) {
-        print("WillStartLoadingMap")
+        //print("WillStartLoadingMap")
         //  print(mapView.debugDescription)
     }
     
     
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-        print("region changed")
+        //print("region changed")
     }
     
     
     func mapViewWillStartRenderingMap(mapView: MGLMapView) {
-        print("will start render map")
+        //print("will start render map")
     }
 
     
