@@ -15,27 +15,7 @@ import Foundation
 public class numberFormats  {
 
 
-    
-    //return full clock time hh:mm:ss
-    static func clockFormat(totalSeconds:Int) -> String {
-        
-        let seconds: Int = totalSeconds % 60
-        let minutes: Int = (totalSeconds / 60) % 60
-        let hours: Int = totalSeconds / 3600
-        
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        
-    }
-    
-    //return full short clock time mm:ss
-    static func clockFormatShort(totalSeconds:Int) -> String {
-    
-        let seconds: Int = totalSeconds % 60
-        let minutes: Int = (totalSeconds / 60) % 60
-        
-        return String(format: "%02d:%02d", minutes, seconds)
-    
-    }
+
     
     
     

@@ -93,6 +93,7 @@ class addRouteController: UIViewController {
 
         //timer.invalidate()
         
+       // print(mapView)
     }
     
     //
@@ -147,7 +148,7 @@ class addRouteController: UIViewController {
         
         totalTime = currentTimestamp - startTimestamp
 
-        timeLabel.text = numberFormats.clockFormat(totalTime)
+        timeLabel.text = utils.clockFormat(totalTime)
         distanceLabel.text = "\(distance)"
         
         //location updates
@@ -405,7 +406,11 @@ extension addRouteController: CLLocationManagerDelegate {
                print("Center map in startup")
                 
                 //let camera fly
+<<<<<<< HEAD
                 //cameraFly(centerCoords)
+=======
+               //cameraFly(centerCoords)
+>>>>>>> 78f48bceaf6d237df04c126305027f812e499893
             }
             
 
@@ -418,6 +423,7 @@ extension addRouteController: CLLocationManagerDelegate {
 // MARK: - MKMapViewDelegate
 extension addRouteController: MGLMapViewDelegate {
     
+<<<<<<< HEAD
 
     func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
         print("failed loading mapr")
@@ -426,6 +432,44 @@ extension addRouteController: MGLMapViewDelegate {
     func mapViewDidStopLocatingUser(mapView: MGLMapView) {
          print("failed loading mapr")
     }
+=======
+    
+    func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
+        //print("Erro r ")
+    }
+    
+    func mapViewDidFinishRenderingFrame(mapView: MGLMapView, fullyRendered: Bool) {
+       // print("DidFinishRenderingFrame")
+    }
+    
+    func mapViewWillStartLoadingMap(mapView: MGLMapView) {
+       // print("WillStartLoadingMap")
+       //  print(mapView.debugDescription)
+    }
+    
+    func mapViewWillStartRenderingFrame(mapView: MGLMapView) {
+       // print("WillStartRenderingFrame")
+
+        //print(mapView.description)
+        //print(mapView)
+    }
+    
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        print("region changed")
+        print(mapView.styleClasses)
+        print(mapView.styleURL)
+        
+  
+    }
+
+    
+    func mapViewWillStartRenderingMap(mapView: MGLMapView) {
+        print("will start render map")
+        
+    }
+    
+    
+>>>>>>> 78f48bceaf6d237df04c126305027f812e499893
     func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
         // Set the alpha for all shape annotations to 1 (full opacity)
         return 1

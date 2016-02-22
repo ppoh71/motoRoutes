@@ -61,7 +61,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="copy.png" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh">
                                             <rect key="frame" x="450" y="-9" width="150" height="128"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="150" id="JUr-nL-3y1"/>
@@ -408,7 +408,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="copy.png" width="256" height="256"/>
         <image name="ic_add_circle_48pt" width="48" height="48"/>
         <image name="ic_check_circle_48pt" width="48" height="48"/>
         <image name="ic_info_48pt" width="40" height="40"/>
