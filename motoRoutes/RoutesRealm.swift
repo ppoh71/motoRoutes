@@ -30,11 +30,16 @@ class Location: Object {
 // Person model
 class Route: Object {
     
+    dynamic var id = ""
     dynamic var name = ""
     dynamic var duration = 0
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
     dynamic var image = ""
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
     
     let locationsList = List<Location>()
     

@@ -183,12 +183,13 @@ class addRouteController: UIViewController {
 
         
         //make screenshot and get image name
-        let screenshotFilename = makeScreenshot()
+        let screenshotFilename = utils.screenshotMap(mapView)
         
         
         // save to realm
         let newRoute = Route()
         
+        newRoute.id = UIDevice.currentDevice().identifierForVendor!.UUIDString + "#" + String(startTimestamp)
         newRoute.timestamp = NSDate()
         newRoute.distance = distance
         newRoute.duration = totalTime
@@ -218,8 +219,7 @@ class addRouteController: UIViewController {
             realm.add(newRoute)
         }
         
-
-
+    
     }
  
     
@@ -251,8 +251,7 @@ class addRouteController: UIViewController {
             data.writeToFile(filename, atomically: true)
         }
         
-        print("filename: \(filename as String)")
-         print(timestampFilename)
+        print(timestampFilename)
         return filename
     
     }
@@ -294,8 +293,14 @@ class addRouteController: UIViewController {
     @IBAction func saveRoute(sender: UIButton) {
         
         //save route
-        saveRoute()
-        timer.invalidate() //stop timer
+        if(locationsRoute.count>2){
+            saveRoute()
+            timer.invalidate() //stop timer
+            print("saved")
+        } else{
+          print("not saved")
+        }
+        
         
     }
     

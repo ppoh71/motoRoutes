@@ -17,23 +17,15 @@ class showRouteController: UIViewController {
     
     //Outlets
     @IBOutlet var cancelButton:UIButton!
+    @IBOutlet var screenshotButton:UIButton!
     @IBOutlet var mapViewShow: MGLMapView!
+    
+    // Get the default Realm
+    let realm = try! Realm()
     
     // realm object list
     var motoRoute =  Route()
-    var speed:Int = 0 // need to draw colors on route
-    var speedIndex:Int = 0
-    var speedSet:Int = 0
-    var speedDictonary = [[(Int, [CLLocationCoordinate2D])]]()
-    
-    struct routeInfo {
-        var speed : Int
-        var routes : [CLLocationCoordinate2D]
-    }
-
-    
-    var routeSpeeds = [routeInfo]()
-    var middleCoord = Location()
+   
     
     
     //
@@ -55,12 +47,24 @@ class showRouteController: UIViewController {
         
         mapFx.cameraAni(motoRoute.locationsList, mapView: mapViewShow)
         
-        //create camera the map view is showing.
-      //  let camera = MGLMapCamera(lookingAtCenterCoordinate: CLLocationCoordinate2D(latitude: middleCoord.latitude, longitude: middleCoord.longitude), fromDistance: 12000, pitch: 25, heading: 0)
-        
-        // Animate the camera movement over 5 seconds.
-       // mapViewShow.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+    }
     
+    
+    // save route
+    @IBAction func newScreenshot(sender: UIButton) {
+        
+        //make new screenshot from actual mapView
+        let screenshotFilename = utils.screenshotMap(mapViewShow)
+        
+        //save new screenshot to realm
+        print(motoRoute)
+        try! realm.write {
+            realm.create(Route.self, value: ["id": motoRoute.id, "image": screenshotFilename], update: true)
+            
+        }
+        
+
+        
     }
     
 

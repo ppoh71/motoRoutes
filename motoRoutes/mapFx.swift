@@ -23,18 +23,18 @@ class mapFx {
         // define speedIndex
         var speedIndex:Int = 0
         
+        var x = CFAbsoluteTimeGetCurrent()
+        
         //get middel coord for camera animation
         let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
         mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude), zoomLevel: 10, direction:90,  animated: false )
      
 
-        
-        
         //init coords
         var coords = [CLLocationCoordinate2D]()
         var cnt = 0
         
-        
+
         for location in motoRoutes {
             
             //get speed index
@@ -82,6 +82,8 @@ class mapFx {
             print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
             
         }
+        
+       
         //center mapview by new coord
         //zoom camaera to whole map
         
@@ -89,7 +91,8 @@ class mapFx {
         print(" coord count  \(motoRoutes.count)")
         print(" coord \(Int(round(Double(motoRoutes.count/2))))")
         print("middel coord \(middleCoord)")
-  
+        
+               print("Took \(utils.absolutePeromanceTime(x)) milliseconds")
         
     }
     

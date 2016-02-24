@@ -47,11 +47,14 @@ public class utils {
     */
     class func loadImageFromPath(path: NSString) -> UIImage? {
         
+        print(path)
+        
         let image = UIImage(contentsOfFile: path as String)
         
+        print(image)
         if image == nil {
             
-           // print("missing image at: \(path)")
+           print("missing image at: \(path)")
         }
         //print("Loading image from path: \(path)") // this is just for you to see the path in case you want to go to the directory, using Finder.
         return image
@@ -85,9 +88,10 @@ public class utils {
     }
     
     
-
     
-    //return full clock time hh:mm:ss
+    /*
+    * return full clock time hh:mm:ss
+    */
     static func clockFormat(totalSeconds:Int) -> String {
         
         let seconds: Int = totalSeconds % 60
@@ -98,7 +102,9 @@ public class utils {
         
     }
     
-    //return full short clock time mm:ss
+    /*
+    * return full short clock time mm:ss
+    */
     static func clockFormatShort(totalSeconds:Int) -> String {
         
         let seconds: Int = totalSeconds % 60
@@ -107,6 +113,50 @@ public class utils {
         return String(format: "%02d:%02d", minutes, seconds)
         
     }
+
+    /*
+    *   Performance time helper
+    */
+    class func absolutePeromanceTime(x:Double) -> String {
+    
+         let x = (CFAbsoluteTimeGetCurrent() - x) * 1000.0
+         return  "Took \(x) milliseconds"
+    
+    }
+   
+    
+    /**
+    * make screenshot and return full filename,
+    */
+    class func screenshotMap(mapView:MGLMapView) -> String{
+    
+         
+            var filename:String = ""
+            
+            //take the timestamp for the imagename
+            let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + ".png"
+            
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(mapView.frame.size.width*0.99,mapView.frame.size.height*0.70), false, 0)
+            //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
+            mapView.drawViewHierarchyInRect(CGRectMake(-01, -01, mapView.frame.size.width, mapView.frame.size.height), afterScreenUpdates: true)
         
+            let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            
+                //screenShotRoute.image = screenShot
+                if let data = UIImagePNGRepresentation(screenShot) {
+                    filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
+                    data.writeToFile(filename, atomically: true)
+                }
+            
+            print("filename: \(filename as String)")
+            print(timestampFilename)
+            return filename
+            
+        }
+
+
+    
 
 }

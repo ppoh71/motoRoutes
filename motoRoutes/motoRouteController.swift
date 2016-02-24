@@ -12,6 +12,10 @@ import Crashlytics
 
 class motoRouteController: UITableViewController {
     
+    // Get the default Realm
+    let realm = try! Realm()
+    
+    
     // realm object list
     var motoRoutes =  Results<Route>!()
 
@@ -29,10 +33,8 @@ class motoRouteController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Get the default Realm
-        let realm = try! Realm()
-        motoRoutes = realm.objects(Route)
         
+        motoRoutes = realm.objects(Route)
        
         print("is connected")
         print(utils.isConnected())
@@ -77,22 +79,37 @@ class motoRouteController: UITableViewController {
         let img = route.image
         
         //let path = (utils.getDocumentsDirectory() as String) + img
-        var image = utils.loadImageFromPath(img)
+        let image = utils.loadImageFromPath(img)
         
-       // image = (image == nil) ? "default.jpg" : image
-
-       // let img = "/copy.png"
-       // let path = (utils.getDocumentsDirectory() as String) + img
-       // let image = utils.loadImageFromPath(path)
+        //image = (image == nil) ? "default.jpg" : image
+        print(route.id)
 
         
-       // cell.routeImage.image = image
+        cell.routeImage.image = image
         cell.nameLabel.text = "Time: \(utils.clockFormat(route.duration))"
         cell.distanceLabel.text = "Distance: \(route.distance)"
         
         return cell
     }
     
+    
+    /*
+    * Swipe actions, delete share
+    */
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        //delete routes
+        if editingStyle == .Delete {
+            print("deleting row \(motoRoutes[indexPath.row])")
+            
+            try! realm.write {
+                realm.delete(motoRoutes[indexPath.row])
+            }
+            
+            tableView.reloadData()
+            
+        }
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showRouteController" {
