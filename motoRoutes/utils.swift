@@ -98,7 +98,7 @@ public class utils {
         let minutes: Int = (totalSeconds / 60) % 60
         let hours: Int = totalSeconds / 3600
         
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        return String(format: "%02d:%02d,%02d", hours, minutes, seconds)
         
     }
     
@@ -124,6 +124,16 @@ public class utils {
     
     }
    
+    /*
+    *   Performance time helper
+    */
+    class func distanceFormat(distance:Double) -> String {
+        
+        let dist = String(format: "%.3f", distance/1000)
+        
+        return  dist
+        
+    }
     
     /**
     * make screenshot and return full filename,

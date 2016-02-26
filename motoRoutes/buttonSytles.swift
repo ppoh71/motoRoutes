@@ -14,17 +14,17 @@ class buttonSytles: UIButton {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         self.layer.cornerRadius = 15.0;
-        self.layer.shadowColor = UIColor.blackColor().CGColor
-        self.layer.shadowOffset = CGSizeMake(5, 5)
-        self.layer.shadowRadius = 5
-        self.layer.shadowOpacity = 0.6
+        //self.layer.shadowColor = UIColor.blackColor().CGColor
+        //self.layer.shadowOffset = CGSizeMake(5, 5)
+        //self.layer.shadowRadius = 5
+        //self.layer.shadowOpacity = 0.6
         
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
         self.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
         self.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
-        let image = UIImage(named: "button_back_white.png")
-        setBackgroundImage(image, forState: .Normal)
+        //let image = UIImage(named: "button_back_white.png")
+        //setBackgroundImage(image, forState: .Normal)
         
     }
     

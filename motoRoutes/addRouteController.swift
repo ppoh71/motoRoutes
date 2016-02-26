@@ -87,7 +87,7 @@ class addRouteController: UIViewController {
         super.viewDidLoad()
         
         print(mapView)
-        mapView.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
+        //mapView.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
 
        print("hasstyle class \(mapView)")
 
@@ -149,13 +149,13 @@ class addRouteController: UIViewController {
         totalTime = currentTimestamp - startTimestamp
 
         timeLabel.text = utils.clockFormat(totalTime)
-        distanceLabel.text = "\(distance)"
+        distanceLabel.text = "\(utils.distanceFormat(distance)) km"
         
         //location updates
         latitudeLabel.text = "La: \(latitude)"
         longitudeLabel.text = "Lo: \(longitude)"
-        altitudeLabel.text = "Al: \(speed)"
-        accuracyLabel.text = "\(accuracy)"
+        altitudeLabel.text = "Speed: \(speed)"
+        accuracyLabel.text = "Acc: \(accuracy)"
 
     }
 
@@ -313,13 +313,16 @@ class addRouteController: UIViewController {
     //Debug animate Label Action
     @IBAction func showDebug2(sender: UIButton) {
         
+        
+        print("debug view")
+        
         var animateX:CGFloat = 0; //animnate x var
         
         //switch button function
         if(debugButton.currentTitle=="-"){
             
             debugButton.setTitle("+", forState: UIControlState.Normal)
-            animateX = -235
+            animateX = -280
             
         } else{
             
