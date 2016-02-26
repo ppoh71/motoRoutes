@@ -20,7 +20,7 @@ class addRouteController: UIViewController {
     //var managedObjectContext: NSManagedObjectContext?
 
     //Outlets
-    @IBOutlet var cancelButton:UIButton!
+    
     @IBOutlet var debugButton:UIButton!
     @IBOutlet var debugView:UIView!
     @IBOutlet var timeLabel:UILabel!
@@ -319,14 +319,14 @@ class addRouteController: UIViewController {
         var animateX:CGFloat = 0; //animnate x var
         
         //switch button function
-        if(debugButton.currentTitle=="-"){
+        if(debugButton.currentTitle=="+"){
             
-            debugButton.setTitle("+", forState: UIControlState.Normal)
+            debugButton.setTitle("-", forState: UIControlState.Normal)
             animateX = -280
             
         } else{
             
-            debugButton.setTitle("-", forState: UIControlState.Normal)
+            debugButton.setTitle("+", forState: UIControlState.Normal)
             animateX = -0
         }
         

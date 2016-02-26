@@ -151,7 +151,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61Y-BX-kEk" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="545" y="84" width="40" height="40"/>
+                                        <rect key="frame" x="545" y="184" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="35" id="tNl-8H-QDj"/>
                                         </constraints>
@@ -213,7 +213,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mdw-Mu-ECu" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="545" y="24" width="40" height="40"/>
+                                        <rect key="frame" x="535" y="78" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="35" id="yzu-La-XIl"/>
                                         </constraints>
@@ -226,7 +226,7 @@
                                             </mask>
                                         </variation>
                                         <connections>
-                                            <segue destination="Ete-9J-bbM" kind="unwind" unwindAction="close:" id="w6d-ig-DUD"/>
+                                            <segue destination="Ete-9J-bbM" kind="unwind" unwindAction="close:" id="f0e-5R-m5w"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -237,14 +237,14 @@
                                     <constraint firstItem="M0A-Pq-7zG" firstAttribute="leading" secondItem="YLN-R0-HQw" secondAttribute="trailing" constant="8" id="4gN-Jf-4NZ"/>
                                     <constraint firstAttribute="bottom" secondItem="M0A-Pq-7zG" secondAttribute="bottom" constant="38" id="CgL-yb-PeV"/>
                                     <constraint firstAttribute="trailing" secondItem="Mdw-Mu-ECu" secondAttribute="trailing" constant="15" id="DeH-Ko-n0e"/>
-                                    <constraint firstItem="Mdw-Mu-ECu" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="top" constant="24" id="EMI-zn-udb"/>
+                                    <constraint firstItem="Mdw-Mu-ECu" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="top" constant="78" id="EMI-zn-udb"/>
                                     <constraint firstAttribute="bottom" secondItem="YLN-R0-HQw" secondAttribute="bottom" constant="38" id="FeY-Mq-hE8"/>
                                     <constraint firstItem="aho-xv-tS2" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="leading" constant="10" id="GxX-aK-F0T"/>
                                     <constraint firstItem="1l7-Sv-mBz" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="leading" constant="11" id="LIY-3C-OYO"/>
                                     <constraint firstItem="43g-FJ-38a" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="top" constant="444" id="Mrd-8t-1f1"/>
                                     <constraint firstItem="uMs-kW-sUA" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="topMargin" constant="9" id="N8q-6l-oVI"/>
                                     <constraint firstAttribute="trailing" secondItem="61Y-BX-kEk" secondAttribute="trailing" constant="8" id="RZn-HI-LLq"/>
-                                    <constraint firstItem="61Y-BX-kEk" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="top" constant="84" id="S4K-9K-XLF"/>
+                                    <constraint firstItem="61Y-BX-kEk" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="top" constant="184" id="S4K-9K-XLF"/>
                                     <constraint firstItem="o86-4c-Lxs" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="leading" constant="11" id="TFH-iJ-YY7"/>
                                     <constraint firstAttribute="trailing" secondItem="61Y-BX-kEk" secondAttribute="trailing" constant="15" id="XkK-zS-2Vs"/>
                                     <constraint firstItem="43g-FJ-38a" firstAttribute="centerX" secondItem="vOs-uf-hXw" secondAttribute="centerX" constant="-165" id="gUB-Ga-h1c"/>
@@ -296,7 +296,7 @@
                     <connections>
                         <outlet property="accuracyLabel" destination="zem-z1-SpS" id="kLb-vh-lxE"/>
                         <outlet property="altitudeLabel" destination="aho-xv-tS2" id="v6p-8g-iuo"/>
-                        <outlet property="cancelButton" destination="Mdw-Mu-ECu" id="Pq5-hT-Ced"/>
+                        <outlet property="cancelButton" destination="Mdw-Mu-ECu" id="XvW-Ks-Wwg"/>
                         <outlet property="debugButton" destination="61Y-BX-kEk" id="96W-d1-i5l"/>
                         <outlet property="debugView" destination="43g-FJ-38a" id="d5b-Pr-dWz"/>
                         <outlet property="distanceLabel" destination="uMs-kW-sUA" id="Pq7-xR-WJV"/>
