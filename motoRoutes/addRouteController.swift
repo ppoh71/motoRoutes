@@ -32,11 +32,9 @@ class addRouteController: UIViewController {
     @IBOutlet var recRouteBtn:UIButton!
     @IBOutlet var saveRouteBtn:UIButton!
     @IBOutlet var screenShotRoute:UIImageView!
-   
     @IBOutlet var mapView:MGLMapView!
     
-    
- 
+
     //location manager
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -60,9 +58,7 @@ class addRouteController: UIViewController {
     var accuracy:Double = 0
     var speed:Double = 0
     var locationActive:Bool = false
-    
-    
-    
+   
     
     //start timestamp of route start
     var startTimestamp:Int = 0
@@ -73,9 +69,7 @@ class addRouteController: UIViewController {
         return Int(NSDate().timeIntervalSince1970)
     }
 
-    
-
-    
+   
     //total time in sec /starttimstamp - currenttimestamp
     var totalTime:Int = 0
     
@@ -85,15 +79,6 @@ class addRouteController: UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(mapView)
-        //mapView.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
-
-       print("hasstyle class \(mapView)")
-
-        //timer.invalidate()
-        
-       // print(mapView)
     }
     
     //
@@ -121,7 +106,7 @@ class addRouteController: UIViewController {
   
         locationManager.stopUpdatingLocation(); //stop locations
         timer.invalidate() //stop timer
-        
+        print("view will appear")
         super.viewWillDisappear(animated)
     }
     
@@ -156,7 +141,6 @@ class addRouteController: UIViewController {
         longitudeLabel.text = "Lo: \(longitude)"
         altitudeLabel.text = "Speed: \(speed)"
         accuracyLabel.text = "Acc: \(accuracy)"
-
     }
 
     
@@ -178,97 +162,42 @@ class addRouteController: UIViewController {
         //get the middle coord of the whole route
         let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
         
-        //center route to middel coord
-        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: middleCoord.coordinate.latitude, longitude: middleCoord.coordinate.longitude),  zoomLevel: 11, animated: true)
-
+        let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: locationsRoute[0].coordinate.latitude, longitude: locationsRoute[0].coordinate.longitude), CLLocationCoordinate2D(latitude: locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude: locationsRoute[locationsRoute.count-1].coordinate.longitude))
         
-        //make screenshot and get image name
-        let screenshotFilename = utils.screenshotMap(mapView)
+         self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true) 
         
+        //create cameras for animations
+        let camerax = mapFx.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:5000, pitch:40, heading:60)
         
-        // save to realm
-        let newRoute = Route()
+        let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:8000, pitch:40, heading:0)
         
-        newRoute.id = UIDevice.currentDevice().identifierForVendor!.UUIDString + "#" + String(startTimestamp)
-        newRoute.timestamp = NSDate()
-        newRoute.distance = distance
-        newRoute.duration = totalTime
-        newRoute.image = screenshotFilename
+        let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:5000, pitch:20, heading:30)
         
-        for location in locationsRoute {
+        print("Bound")
+        print(coordBounds)
+        
+        //camera animation -> screenshot -> save route to realm
+        mapView.flyToCamera(camerax) {
             
-            let newLocation = Location()
-           
-            newLocation.timestamp = location.timestamp
-            newLocation.latitude = location.coordinate.latitude
-            newLocation.longitude = location.coordinate.longitude
-            newLocation.altitude = location.altitude
-            newLocation.speed = location.speed
-            newLocation.accuracy = location.horizontalAccuracy
-            
-            newRoute.locationsList.append(newLocation)
-        
+            self.mapView.flyToCamera(cameray){
+                self.mapView.flyToCamera(cameraz){
+                    print("finish camera animation")
+                    
+                    
+                   
+                    
+                    //make screenshot and get image name
+                    let screenshotFilename = utils.screenshotMap(self.mapView)
+                    
+                    //save rout to realm
+                    utils.saveRouteRealm(self.locationsRoute, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+                }
+            }
         }
         
-        // Get the default Realm
-        let realm = try! Realm()
-        // You only need to do this once (per thread)
-        
-        // Add to the Realm inside a transaction
-        try! realm.write {
-            realm.add(newRoute)
-        }
-        
-    
     }
  
-    
-    /*
-    * make screenshot and return full filename, 
-    */
-    func makeScreenshot() -> String{
-    
-        
-        print(mapView.frame.origin)
-        print(mapView.frame.size)
-        
-        var filename:String = ""
-        
-        //take the timestamp for the imagename
-        let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + ".png"
-        
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.mapView.frame.size.width*0.99,self.mapView.frame.size.height*0.70), false, 0)
-        //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
-        self.mapView?.drawViewHierarchyInRect(CGRectMake(-01, -01, self.mapView.frame.size.width, self.mapView.frame.size.height), afterScreenUpdates: true)
-        let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        
-        screenShotRoute.image = screenShot
-        
-        if let data = UIImagePNGRepresentation(screenShot) {
-            filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
-            data.writeToFile(filename, atomically: true)
-        }
-        
-        print(timestampFilename)
-        return filename
-    
-    }
-    
-    func cameraFly(centerRouteCoords:CLLocationCoordinate2D){
-    
 
-    
-    //create camera the map view is showing.
-    let camera = MGLMapCamera(lookingAtCenterCoordinate: centerRouteCoords, fromDistance: 9000, pitch: 25, heading: 0)
-    
-    // Animate the camera movement over 5 seconds.
-    mapView.setCamera(camera, withDuration: 2,  animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)  )
-
-        
-
-    }
     //
     // @IBAction
     //
@@ -382,19 +311,21 @@ extension addRouteController: CLLocationManagerDelegate {
                     coords.append(self.locationsRoute.last!.coordinate)
                     coords.append(location.coordinate)
                     
-                    //create Polyline
-                    let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
-                    mapView.addAnnotation(line)
-                    
                     
                     if UIApplication.sharedApplication().applicationState == .Active {
-                    //center mapview by new coord
-                    mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                       
+                        //create Polyline
+                        let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+                        mapView.addAnnotation(line)
+                        
+                        
+                        //center mapview by new coord
+                        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
                     } else{
                         print("app not active, no map centering")
                     }
                     
-       
+                    
                     
                 }
                 

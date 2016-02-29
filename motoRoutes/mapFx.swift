@@ -91,30 +91,55 @@ class mapFx {
         print(" coord count  \(motoRoutes.count)")
         print(" coord \(Int(round(Double(motoRoutes.count/2))))")
         print("middel coord \(middleCoord)")
-        
-               print("Took \(utils.absolutePeromanceTime(x)) milliseconds")
+        print("Took \(utils.absolutePeromanceTime(x)) milliseconds")
         
     }
     
     
+    
+    /*
+    * create camera
+    */
+    class func cameraDestination(latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
+    
+        let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+
+        let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: fromDistance, pitch: pitch, heading: heading)
+    
+        return camera
+    }
+    
+    
+    
+    /*
+    * print route
+    */
     class func cameraAni(motoRoutes:List<Location>!, mapView:MGLMapView!){
     
         
-        let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
+        //let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
         
-        let destination = CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude)
-        let destination2 = CLLocationCoordinate2D(latitude: motoRoutes[motoRoutes.count-1].latitude, longitude: motoRoutes[motoRoutes.count-1].longitude)
+      //  let destination = CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude)
+        
+      //  let destination2 = CLLocationCoordinate2D(latitude: motoRoutes[motoRoutes.count-1].latitude, longitude: motoRoutes[motoRoutes.count-1].longitude)
         
         //let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromEyeCoordinate: destination2, eyeAltitude: 20000)
-        let camera2 = MGLMapCamera(lookingAtCenterCoordinate: destination2, fromDistance: 5000, pitch: 20, heading: 0)
+       // let camera2 = MGLMapCamera(lookingAtCenterCoordinate: destination2, fromDistance: 5000, pitch: 20, heading: 0)
       
- 
-      
-        let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: 6000, pitch: 80, heading: 110)
-        mapView.flyToCamera(camera) {
+     
+        //let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: 6000, pitch: 80, heading: 110)
+        
+        
+        let camerax = mapFx.cameraDestination(motoRoutes[0].latitude, longitude:motoRoutes[0].longitude, fromDistance:5000, pitch:20, heading:0)
+        
+        
+        let cameray = mapFx.cameraDestination(motoRoutes[motoRoutes.count-1].latitude, longitude:motoRoutes[motoRoutes.count-1].longitude, fromDistance:5000, pitch:20, heading:0)
+        
+        
+        mapView.flyToCamera(camerax) {
             // Optionally catch a connecting flight
             //  print("connection flight")
-            mapView.flyToCamera(camera2){
+            mapView.flyToCamera(cameray){
                 
             } 
         }

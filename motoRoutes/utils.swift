@@ -98,7 +98,7 @@ public class utils {
         let minutes: Int = (totalSeconds / 60) % 60
         let hours: Int = totalSeconds / 3600
         
-        return String(format: "%02d:%02d,%02d", hours, minutes, seconds)
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         
     }
     
@@ -146,10 +146,10 @@ public class utils {
             //take the timestamp for the imagename
             let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + ".png"
             
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(mapView.frame.size.width*0.99,mapView.frame.size.height*0.70), false, 0)
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(mapView.frame.size.width*0.99,mapView.frame.size.height*0.50), false, 0)
             //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
             mapView.drawViewHierarchyInRect(CGRectMake(-01, -01, mapView.frame.size.width, mapView.frame.size.height), afterScreenUpdates: true)
-        
+      
             let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
@@ -166,7 +166,48 @@ public class utils {
             
         }
 
-
+    
+    /**
+    * save new route to realm
+    */
+    class func saveRouteRealm(locationsRoute:[CLLocation], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ){
+    
+        // save to realm
+        let newRoute = Route()
+        
+        newRoute.id = UIDevice.currentDevice().identifierForVendor!.UUIDString + "#" + String(startTimestamp)
+        newRoute.timestamp = NSDate()
+        newRoute.distance = distance
+        newRoute.duration = totalTime
+        newRoute.image = screenshotFilename
+        
+        for location in locationsRoute {
+            
+            let newLocation = Location()
+            
+            newLocation.timestamp = location.timestamp
+            newLocation.latitude = location.coordinate.latitude
+            newLocation.longitude = location.coordinate.longitude
+            newLocation.altitude = location.altitude
+            newLocation.speed = location.speed
+            newLocation.accuracy = location.horizontalAccuracy
+            
+            newRoute.locationsList.append(newLocation)
+            
+        }
+        
+        // Get the default Realm
+        let realm = try! Realm()
+        // You only need to do this once (per thread)
+        
+        // Add to the Realm inside a transaction
+        try! realm.write {
+            realm.add(newRoute)
+        }
+    
+        
+    }
+    
     
 
 }
