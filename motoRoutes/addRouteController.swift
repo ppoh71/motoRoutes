@@ -159,42 +159,49 @@ class addRouteController: UIViewController {
         //stop timer
         timer.invalidate()
         
+        print("Location Route")
+        print(locationsRoute)
+                
         //get the middle coord of the whole route
         let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
         
-        let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: locationsRoute[0].coordinate.latitude, longitude: locationsRoute[0].coordinate.longitude), CLLocationCoordinate2D(latitude: locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude: locationsRoute[locationsRoute.count-1].coordinate.longitude))
+        //get coord bounds for route, nortwest & souteast
+        let bounds = utils.getBoundCoords(locationsRoute)
+        let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: bounds.south, longitude: bounds.east), CLLocationCoordinate2D(latitude: bounds.north, longitude: bounds.west))
         
-         self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true) 
+        //set visible bounds
+        self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+        
         
         //create cameras for animations
         let camerax = mapFx.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:5000, pitch:40, heading:60)
-        
         let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:8000, pitch:40, heading:0)
-        
         let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:5000, pitch:20, heading:30)
         
         print("Bound")
         print(coordBounds)
         
         //camera animation -> screenshot -> save route to realm
+        
         mapView.flyToCamera(camerax) {
             
             self.mapView.flyToCamera(cameray){
                 self.mapView.flyToCamera(cameraz){
                     print("finish camera animation")
                     
-                    
-                   
+                    //set to bounds
+                    self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
                     
                     //make screenshot and get image name
                     let screenshotFilename = utils.screenshotMap(self.mapView)
                     
                     //save rout to realm
                     utils.saveRouteRealm(self.locationsRoute, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+                    
                 }
             }
         }
-        
+       
     }
  
 

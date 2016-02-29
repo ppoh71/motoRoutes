@@ -17,7 +17,6 @@ import Mapbox
 
 public class utils {
 
-    
 
     /*
     * define the speedIndex. km/h / 10 = Index for speedcolors
@@ -204,8 +203,69 @@ public class utils {
         try! realm.write {
             realm.add(newRoute)
         }
+
+    }
     
+
+
+    
+    //Bound Structure
+    struct coordBound{
+        var north:Double = 0
+        var south:Double = 0
+        var west:Double = 0
+        var east:Double = 0
+    }
+    
+    /**
+     * Get most north, south, west & east coords
+     * to create bound rectangle
+     * by location array
+     */
+    class func getBoundCoords(locationsRoute:[CLLocation]) -> coordBound{
+    
+       //create new bound struct
+       var newCoordBound = coordBound()
         
+        //loop if we have locations
+        if(locationsRoute.count > 0) {
+            
+            //init with first vars
+            newCoordBound.north = locationsRoute[0].coordinate.latitude
+            newCoordBound.south = locationsRoute[0].coordinate.latitude
+            newCoordBound.west = locationsRoute[0].coordinate.longitude
+            newCoordBound.east = locationsRoute[0].coordinate.longitude
+           
+            //loop fot all coords in a array and set bounds
+            for location in locationsRoute {
+               
+                //set most west
+                if(location.coordinate.latitude > newCoordBound.north){
+                    newCoordBound.north = location.coordinate.latitude
+                }
+                
+                //set most south
+                if(location.coordinate.latitude < newCoordBound.south){
+                    newCoordBound.south = location.coordinate.latitude
+                }
+                
+                //Set most west
+                if(location.coordinate.longitude < newCoordBound.west){
+                    newCoordBound.west = location.coordinate.longitude
+                }
+        
+                //set most east
+                if(location.coordinate.longitude < newCoordBound.west){
+                    newCoordBound.west = location.coordinate.longitude
+                }
+            
+        }
+        }
+        print("struct")
+        print(newCoordBound)
+        
+        return newCoordBound
+
     }
     
     

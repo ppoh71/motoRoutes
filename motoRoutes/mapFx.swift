@@ -98,12 +98,12 @@ class mapFx {
     
     
     /*
-    * create camera
+    * create camera from location, distance, pitch and heading
+    * can use for cameraflyto animations
     */
     class func cameraDestination(latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
     
         let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-
         let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: fromDistance, pitch: pitch, heading: heading)
     
         return camera

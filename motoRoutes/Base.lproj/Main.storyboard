@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -44,7 +44,7 @@
                                 <rect key="frame" x="0.0" y="101" width="600" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="119"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4F-e1-F88">
@@ -115,32 +115,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vOs-uf-hXw" customClass="MGLMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YLN-R0-HQw" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="478" y="514" width="48" height="48"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="ic_play_circle_filled_48pt"/>
-                                        <connections>
-                                            <action selector="startRecRoute:" destination="vMy-ZL-3Vq" eventType="touchDown" id="mvk-17-gZc"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0A-Pq-7zG" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="534" y="514" width="48" height="48"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="ic_check_circle_48pt"/>
-                                        <connections>
-                                            <action selector="saveRoute:" destination="vMy-ZL-3Vq" eventType="touchUpInside" id="P2H-Y4-D6t"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="M0A-Pq-7zG" secondAttribute="trailing" constant="18" id="3Hm-ER-o71"/>
-                                    <constraint firstItem="M0A-Pq-7zG" firstAttribute="leading" secondItem="YLN-R0-HQw" secondAttribute="trailing" constant="8" id="4gN-Jf-4NZ"/>
-                                    <constraint firstAttribute="bottom" secondItem="M0A-Pq-7zG" secondAttribute="bottom" constant="38" id="CgL-yb-PeV"/>
-                                    <constraint firstAttribute="bottom" secondItem="YLN-R0-HQw" secondAttribute="bottom" constant="38" id="FeY-Mq-hE8"/>
-                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="latitude">
                                         <real key="value" value="29.649999999999999"/>
@@ -164,6 +139,23 @@
                                     <outlet property="delegate" destination="vMy-ZL-3Vq" id="KfB-58-zJq"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YLN-R0-HQw" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
+                                <rect key="frame" x="540" y="522" width="48" height="48"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="ic_play_circle_filled_48pt"/>
+                                <connections>
+                                    <action selector="startRecRoute:" destination="vMy-ZL-3Vq" eventType="touchDown" id="mvk-17-gZc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0A-Pq-7zG" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
+                                <rect key="frame" x="480" y="522" width="48" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="ic_check_circle_48pt"/>
+                                <connections>
+                                    <action selector="saveRoute:" destination="vMy-ZL-3Vq" eventType="touchUpInside" id="P2H-Y4-D6t"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mdw-Mu-ECu" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
                                 <rect key="frame" x="69" y="522" width="48" height="48"/>
                                 <constraints>
@@ -224,7 +216,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aho-xv-tS2">
-                                        <rect key="frame" x="0.0" y="56" width="120" height="14.5"/>
+                                        <rect key="frame" x="0.0" y="56" width="120" height="15"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -265,18 +257,22 @@
                             <constraint firstItem="Mdw-Mu-ECu" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-78" id="9op-CW-5Lj"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="43g-FJ-38a" secondAttribute="trailing" constant="-270" id="DhV-sA-AYg"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="HRR-Nu-FDj" secondAttribute="leading" id="ENV-U2-svl"/>
+                            <constraint firstItem="YLN-R0-HQw" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-78" id="HlJ-7D-obx"/>
                             <constraint firstItem="uMs-kW-sUA" firstAttribute="leading" secondItem="jZU-Gu-ejo" secondAttribute="leading" id="J2w-p3-gkH"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="jZU-Gu-ejo" secondAttribute="trailing" constant="-137" id="MaO-Zs-KwT"/>
+                            <constraint firstItem="YLN-R0-HQw" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="trailing" constant="-60" id="TS8-ao-1eF"/>
                             <constraint firstAttribute="trailing" secondItem="vOs-uf-hXw" secondAttribute="trailing" id="TXY-6G-KT4"/>
                             <constraint firstItem="43g-FJ-38a" firstAttribute="leading" secondItem="uMs-kW-sUA" secondAttribute="leading" id="UwQ-gF-9Nq"/>
                             <constraint firstItem="43g-FJ-38a" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-200" id="aSf-3u-AUh"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="aho-xv-tS2" secondAttribute="trailing" constant="-140" id="aWA-EB-XQB"/>
+                            <constraint firstItem="M0A-Pq-7zG" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-78" id="czR-LW-QX5"/>
                             <constraint firstItem="uMs-kW-sUA" firstAttribute="top" secondItem="Yk2-cZ-Z5F" secondAttribute="bottom" constant="18" id="dSb-lm-LWn"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="top" secondItem="HRR-Nu-FDj" secondAttribute="top" id="duj-Jy-EeJ"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="top" secondItem="jZU-Gu-ejo" secondAttribute="bottom" constant="-47" id="iyL-lK-Z4M"/>
                             <constraint firstItem="61Y-BX-kEk" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-75" id="lId-6s-ERR"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="uMs-kW-sUA" secondAttribute="trailing" constant="-285" id="pOR-ml-nnh"/>
                             <constraint firstAttribute="bottom" secondItem="vOs-uf-hXw" secondAttribute="bottom" id="uer-qX-PJE"/>
+                            <constraint firstItem="YLN-R0-HQw" firstAttribute="leading" secondItem="M0A-Pq-7zG" secondAttribute="trailing" constant="12" id="usF-PS-Bed"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="61Y-BX-kEk" secondAttribute="trailing" constant="-60" id="v00-DN-CR8"/>
                             <constraint firstItem="wuy-R8-b0h" firstAttribute="top" secondItem="43g-FJ-38a" secondAttribute="bottom" constant="70" id="y7B-VU-tnP"/>
                         </constraints>
