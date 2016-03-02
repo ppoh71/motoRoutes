@@ -10,7 +10,7 @@ import RealmSwift
 import Foundation
 
 
-// Roue Data Model
+// Location Realm Data Model
 class Location: Object {
     
     dynamic var latitude = 0.0
@@ -27,7 +27,7 @@ class Location: Object {
     }
 }
 
-// Person model
+// Route Realm Model
 class Route: Object {
     
     dynamic var id = ""
@@ -42,5 +42,21 @@ class Route: Object {
     }
     
     let locationsList = List<Location>()
+    
+}
+
+
+
+
+// Master Location Model for all Route functions
+class LocationMaster {
+    
+    dynamic var latitude = 0.0
+    dynamic var longitude = 0.0
+    dynamic var altitude = 0.0
+    dynamic var speed = 0.0
+    dynamic var timestamp = NSDate()
+    dynamic var accuracy = 0.0
+    
     
 }

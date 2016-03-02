@@ -40,7 +40,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="120" id="8Uo-03-N6d" customClass="motoRouteCellView" customModule="motoRoutes" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="120" id="8Uo-03-N6d" customClass="motoRouteCellView" customModule="motoRoutes" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="101" width="600" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
@@ -48,33 +48,38 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4F-e1-F88">
-                                            <rect key="frame" x="8" y="8" width="45" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <rect key="frame" x="455" y="8" width="56" height="31"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="31" id="Wvg-bG-3w6"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogt-CA-zOx">
-                                            <rect key="frame" x="8" y="37" width="67" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <rect key="frame" x="455" y="53" width="85" height="24"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh">
-                                            <rect key="frame" x="0.0" y="-9" width="600" height="128"/>
+                                            <rect key="frame" x="0.0" y="-1" width="200" height="120"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="200" id="Uh0-KE-fvd"/>
+                                            </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="BbV-6F-8wh" firstAttribute="top" secondItem="HoN-WM-EAg" secondAttribute="topMargin" constant="-17" id="5Zk-bT-OyO"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="x4F-e1-F88" secondAttribute="leading" id="Q0b-fJ-fnE"/>
-                                        <constraint firstAttribute="trailing" secondItem="BbV-6F-8wh" secondAttribute="trailing" id="TIl-2Y-J6s"/>
-                                        <constraint firstAttribute="topMargin" secondItem="x4F-e1-F88" secondAttribute="top" id="aK4-dg-4Sk"/>
-                                        <constraint firstItem="Ogt-CA-zOx" firstAttribute="top" secondItem="x4F-e1-F88" secondAttribute="bottom" constant="8" id="azJ-Wc-5U8"/>
-                                        <constraint firstItem="BbV-6F-8wh" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leading" id="bhG-aT-laE"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="BbV-6F-8wh" secondAttribute="bottom" constant="-7.5" id="c8W-Nr-UAB"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="Ogt-CA-zOx" secondAttribute="leading" id="sLh-jx-qgr"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="BbV-6F-8wh" secondAttribute="bottom" constant="-8" id="3Xz-FD-e1r"/>
+                                        <constraint firstItem="x4F-e1-F88" firstAttribute="leading" secondItem="Ogt-CA-zOx" secondAttribute="leading" id="GxN-M4-k3A"/>
+                                        <constraint firstItem="BbV-6F-8wh" firstAttribute="top" secondItem="HoN-WM-EAg" secondAttribute="topMargin" constant="-9" id="H1i-h1-G79"/>
+                                        <constraint firstItem="Ogt-CA-zOx" firstAttribute="top" secondItem="x4F-e1-F88" secondAttribute="bottom" constant="14" id="iyr-V4-lWY"/>
+                                        <constraint firstAttribute="topMargin" secondItem="x4F-e1-F88" secondAttribute="top" id="tC8-WJ-KKf"/>
+                                        <constraint firstItem="BbV-6F-8wh" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leadingMargin" constant="-8" id="thA-3Y-C4X"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="x4F-e1-F88" secondAttribute="trailing" constant="81" id="zRt-W2-HjQ"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.451237364657608" green="1" blue="0.43975402673036568" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="distanceLabel" destination="Ogt-CA-zOx" id="Iyl-xa-tQR"/>
                                     <outlet property="nameLabel" destination="x4F-e1-F88" id="Ijy-Dd-48T"/>
@@ -133,7 +138,7 @@
                                         <string key="value">mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1
 </string>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showsUserLocation" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showsUserLocation" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="vMy-ZL-3Vq" id="KfB-58-zJq"/>

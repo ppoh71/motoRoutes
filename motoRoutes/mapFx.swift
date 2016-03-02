@@ -16,51 +16,58 @@ import Mapbox
 class mapFx {
     
     /*
-    * print route
+        
+        Print route with colored polylines
+  
+        - parameter LocationMaster: LocationMaster Object
+        - parameter mapView: current Mapview
+
     */
-    class func printRoute(motoRoutes:List<Location>!, mapView:MGLMapView!){
+    
+    class func printRoute(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
+        
+        
+        //performacne test
+        let x = CFAbsoluteTimeGetCurrent()
         
         // define speedIndex
         var speedIndex:Int = 0
         
-        var x = CFAbsoluteTimeGetCurrent()
+        //guard for print routes
+        guard _LocationMaster.count > 2 else {
+            print("GUARD print routes: not enough routes")
+            return
+        }
         
-        //get middel coord for camera animation
-        let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
-        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude), zoomLevel: 10, direction:90,  animated: false )
-     
-
         //init coords
         var coords = [CLLocationCoordinate2D]()
-        var cnt = 0
         
-
-        for location in motoRoutes {
+        //reset global spped set to zero
+        globalSpeedSet.speedSet = 0
+        
+        //loop through LocationMaster
+        for location in _LocationMaster {
             
             //get speed index
             speedIndex = utils.getSpeedIndex(location.speed)
             
-            //add locations to coord woth the same speedIndex
+            //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
-            } else{ // if the speedIndex is different, at the last location and print the route
-                
-                cnt++
+            } else{ // if the speedIndex is different, ad the last location and print the route
                 
                 //add first location with diff speedIndex to mind gaps
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
-                //set new speedindex, also needed for coloring the routes
+                //set new speedindex, needed for coloring the route
                 globalSpeedSet.speedSet = speedIndex
                 
                 //print route polygon
                 let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                 mapView.addAnnotation(line)
                 
-                //print the coords for the last run
-                print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) - cnt \(cnt) ")
-                
+                //reset coord after printing the route, add last coord to connect poylines
                 coords = [CLLocationCoordinate2D]()
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
@@ -68,7 +75,7 @@ class mapFx {
             
         }
         
-        
+        //print last routes set, for last spped loop
         if(coords.count>0){
             
             //set speedIndex
@@ -83,17 +90,13 @@ class mapFx {
             
         }
         
-       
-        //center mapview by new coord
-        //zoom camaera to whole map
-        
-        
-        print(" coord count  \(motoRoutes.count)")
-        print(" coord \(Int(round(Double(motoRoutes.count/2))))")
-        print("middel coord \(middleCoord)")
-        print("Took \(utils.absolutePeromanceTime(x)) milliseconds")
-        
+        print(" coord count  \(_LocationMaster.count)")
+        print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
+
+    
+
+    
     
     
     
@@ -114,6 +117,11 @@ class mapFx {
     /*
     * print route
     */
+    
+    
+    
+    
+    
     class func cameraAni(motoRoutes:List<Location>!, mapView:MGLMapView!){
     
         

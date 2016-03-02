@@ -15,4 +15,5 @@ class global {
         self.speedSet = speedSet
     }
 }
+
 var globalSpeedSet = global(speedSet:0)

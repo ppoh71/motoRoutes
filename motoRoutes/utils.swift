@@ -113,6 +113,7 @@ public class utils {
         
     }
 
+    
     /*
     *   Performance time helper
     */
@@ -120,8 +121,8 @@ public class utils {
     
          let x = (CFAbsoluteTimeGetCurrent() - x) * 1000.0
          return  "Took \(x) milliseconds"
-    
     }
+    
    
     /*
     *   Performance time helper
@@ -131,8 +132,8 @@ public class utils {
         let dist = String(format: "%.3f", distance/1000)
         
         return  dist
-        
     }
+    
     
     /**
     * make screenshot and return full filename,
@@ -167,8 +168,17 @@ public class utils {
 
     
     /**
-    * save new route to realm
+        Save new route to realm
+     
+        - parameter locatiobRoute: [CLLocation] List with locations
+        - parameter screenshotFilename: filename of screenshot
+        - parameter startTimestamp: [starttime unix int
+        - parameter distance: distance in m
+        - parameter totalTime: total tine in seconds
+    
+    *
     */
+    
     class func saveRouteRealm(locationsRoute:[CLLocation], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ){
     
         // save to realm
@@ -221,6 +231,10 @@ public class utils {
      * Get most north, south, west & east coords
      * to create bound rectangle
      * by location array
+     *
+     * - parameter locatiobRoute: [CLLocation] List with locations
+     *
+     * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
     class func getBoundCoords(locationsRoute:[CLLocation]) -> coordBound{
     
@@ -228,8 +242,11 @@ public class utils {
        var newCoordBound = coordBound()
         
         //loop if we have locations
-        if(locationsRoute.count > 0) {
-            
+        guard locationsRoute.count > 10 else {
+            print("GUARD bounds: locationRoute count 0")
+            return newCoordBound
+        }
+        
             //init with first vars
             newCoordBound.north = locationsRoute[0].coordinate.latitude
             newCoordBound.south = locationsRoute[0].coordinate.latitude
@@ -260,12 +277,73 @@ public class utils {
                 }
             
         }
-        }
+
         print("struct")
         print(newCoordBound)
         
         return newCoordBound
 
+    }
+    
+    
+    /**
+     * Convert CLLocation[] to Location Master Object
+     *
+     * - parameter locatiobRoute: [CLLocation] List with locations
+     *
+     * - returns: LocationMaster 
+     */
+    class func masterLocation(locationsRoute:[CLLocation]) -> [LocationMaster]{
+        
+        var newlocationMaster = [LocationMaster]()
+        
+        //loop all CLLocation and create and append to LocationMaster
+        for location in locationsRoute {
+            
+            let locationTmp = LocationMaster()
+            
+            locationTmp.timestamp = location.timestamp
+            locationTmp.latitude = location.coordinate.latitude
+            locationTmp.longitude = location.coordinate.longitude
+            locationTmp.altitude = location.altitude
+            locationTmp.speed = location.speed
+            locationTmp.accuracy = location.horizontalAccuracy
+            
+            newlocationMaster.append(locationTmp)
+        
+        }
+        return newlocationMaster
+    }
+    
+    
+    
+    /**
+     * Convert CLLocation[] to Location Master Object
+     *
+     * - parameter locatiobRoute: [CLLocation] List with locations
+     *
+     * - returns: LocationMaster
+     */
+    class func masterRealmLocation(LocationsList:List<Location>!) -> [LocationMaster]{
+        
+        var newlocationMaster = [LocationMaster]()
+        
+        //loop all CLLocation and create and append to LocationMaster
+        for location in LocationsList {
+            
+            let locationTmp = LocationMaster()
+            
+            locationTmp.timestamp = location.timestamp
+            locationTmp.latitude = location.latitude
+            locationTmp.longitude = location.longitude
+            locationTmp.altitude = location.altitude
+            locationTmp.speed = location.speed
+            locationTmp.accuracy = location.accuracy
+           
+            newlocationMaster.append(locationTmp)
+            
+        }
+        return newlocationMaster
     }
     
     

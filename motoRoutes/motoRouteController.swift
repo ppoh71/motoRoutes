@@ -86,8 +86,8 @@ class motoRouteController: UITableViewController {
 
         
         cell.routeImage.image = image
-        cell.nameLabel.text = "Time: \(utils.clockFormat(route.duration))"
-        cell.distanceLabel.text = "Distance: \(route.distance)"
+        cell.nameLabel.text = "\(utils.clockFormat(route.duration))"
+        cell.distanceLabel.text = "\(utils.distanceFormat(route.distance))"
         
         return cell
     }

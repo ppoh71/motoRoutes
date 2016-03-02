@@ -35,7 +35,14 @@ class showRouteController: UIViewController {
         super.viewDidLoad()
         
         
-     mapFx.printRoute(motoRoute.locationsList, mapView: mapViewShow)
+     
+        let x = CFAbsoluteTimeGetCurrent()
+        //covert Realm LocationList to Location Master Object
+        let _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
+        print(utils.absolutePeromanceTime(x))
+        print(_LocationMaster.count)
+        
+        mapFx.printRoute(_LocationMaster, mapView: mapViewShow)
         
 
         

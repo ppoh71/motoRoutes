@@ -49,6 +49,7 @@ class addRouteController: UIViewController {
     
     //route, location and timer vars
     lazy var locationsRoute = [CLLocation]()
+    lazy var locationsRouteInactive = [CLLocation]()
     lazy var timer = NSTimer()
     var second = 0
     var distance = 0.0
@@ -165,6 +166,7 @@ class addRouteController: UIViewController {
         //get the middle coord of the whole route
         let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
         
+        
         //get coord bounds for route, nortwest & souteast
         let bounds = utils.getBoundCoords(locationsRoute)
         let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: bounds.south, longitude: bounds.east), CLLocationCoordinate2D(latitude: bounds.north, longitude: bounds.west))
@@ -190,7 +192,7 @@ class addRouteController: UIViewController {
                     print("finish camera animation")
                     
                     //set to bounds
-                    self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+                   // self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
                     
                     //make screenshot and get image name
                     let screenshotFilename = utils.screenshotMap(self.mapView)
@@ -286,6 +288,10 @@ extension addRouteController: CLLocationManagerDelegate {
         
         print("Location Update:")
         
+        
+        
+        
+        
         for location in locations {
             
             print("**********************")
@@ -321,15 +327,42 @@ extension addRouteController: CLLocationManagerDelegate {
                     
                     if UIApplication.sharedApplication().applicationState == .Active {
                        
+                         //print routes if app was incative
+                        print("Map Print \(mapView)")
+                        
+                        // reset routes inative after print
+                        //locationsRouteInactive = [CLLocation]()
+                        
                         //create Polyline
                         let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                         mapView.addAnnotation(line)
                         
                         
+                        //print missing coords when app was in background
+                        if(locationsRouteInactive.count > 2){
+                            
+                            //covert Realm LocationList to Location Master Object
+                            let _LocationMaster = utils.masterLocation(locationsRouteInactive)
+                            
+                            //print to map
+                            mapFx.printRoute(_LocationMaster, mapView: mapView)
+                            
+                            //reset locationsRouteInactive
+                            locationsRouteInactive = [CLLocation]()
+                            
+                        }
+                        
+                        
                         //center mapview by new coord
                         mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                        
+                     
                     } else{
                         print("app not active, no map centering")
+                        
+                        //save locations while inactive
+                        locationsRouteInactive.append(location)
+                        
                     }
                     
                     
@@ -420,7 +453,7 @@ extension addRouteController: MGLMapViewDelegate {
     }
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-       let speedIndex =  Int(round(speed/10))
+       let speedIndex =  utils.getSpeedIndex(speed)
        return colorStyles.polylineColors(speedIndex)
     }
     
