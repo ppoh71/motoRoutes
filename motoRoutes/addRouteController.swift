@@ -69,10 +69,14 @@ class addRouteController: UIViewController {
     var currentTimestamp: Int {
         return Int(NSDate().timeIntervalSince1970)
     }
-
    
     //total time in sec /starttimstamp - currenttimestamp
     var totalTime:Int = 0
+
+    
+    
+    var AppActive = true //is app active or in background
+    var ActiveTime = 0.0 //seconds the app is active after coming form background
     
     
     //
@@ -80,7 +84,40 @@ class addRouteController: UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Add UIApplicationWillResignActiveNotification observer
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "resigningActive",
+            name: UIApplicationWillResignActiveNotification,
+            object: nil
+        )
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "becomeActive",
+            name: UIApplicationDidBecomeActiveNotification,
+            object: nil
+        )
+        
     }
+    
+    
+    func resigningActive(){
+    
+        print("###################resigningActive")
+        AppActive = false;
+        ActiveTime = 0
+        
+    }
+    
+    func becomeActive(){
+        
+        print("###################become Active")
+        AppActive = false;
+        ActiveTime = CFAbsoluteTimeGetCurrent()
+    }
+    
     
     //
     // view will appesar
@@ -140,7 +177,7 @@ class addRouteController: UIViewController {
         //location updates
         latitudeLabel.text = "La: \(latitude)"
         longitudeLabel.text = "Lo: \(longitude)"
-        altitudeLabel.text = "Speed: \(speed)"
+        altitudeLabel.text = "Speed: \(round(speed))"
         accuracyLabel.text = "Acc: \(accuracy)"
     }
 
@@ -287,20 +324,19 @@ extension addRouteController: CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         print("Location Update:")
-        
-        
-        
+        print(ActiveTime)
+       
         
         
         for location in locations {
             
             print("**********************")
             print("Long \(location.coordinate.longitude)")
-            print("Lati \(location.coordinate.latitude)")
+          /*  print("Lati \(location.coordinate.latitude)")
             print("Alt \(location.altitude)")
             print("Sped \(location.speed)")
             print("Accu \(location.horizontalAccuracy)")
-            print("Active \(locationActive)")
+            print("Active \(locationActive)") */
             print("**********************")
 
    
@@ -328,17 +364,12 @@ extension addRouteController: CLLocationManagerDelegate {
                     if UIApplication.sharedApplication().applicationState == .Active {
                        
                          //print routes if app was incative
-                        print("Map Print \(mapView)")
-                        
-                        // reset routes inative after print
-                        //locationsRouteInactive = [CLLocation]()
-                        
-                        //create Polyline
-                        let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
-                        mapView.addAnnotation(line)
                         
                         
+                        
+                   
                         //print missing coords when app was in background
+                   
                         if(locationsRouteInactive.count > 2){
                             
                             //covert Realm LocationList to Location Master Object
@@ -352,9 +383,13 @@ extension addRouteController: CLLocationManagerDelegate {
                             
                         }
                         
+                        //create Polyline
+                        let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+                        mapView.addAnnotation(line)
                         
-                        //center mapview by new coord
-                        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                        
+                       //center mapview by new coord
+                       mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
                         
                      
                     } else{
@@ -362,6 +397,7 @@ extension addRouteController: CLLocationManagerDelegate {
                         
                         //save locations while inactive
                         locationsRouteInactive.append(location)
+                        
                         
                     }
                     
@@ -431,9 +467,8 @@ extension addRouteController: MGLMapViewDelegate {
     }
     
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-        print("region changed")
-        print(mapView.styleClasses)
-        print(mapView.styleURL)
+       // print("region changed")
+
     }
 
     
