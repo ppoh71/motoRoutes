@@ -58,7 +58,8 @@ class addRouteController: UIViewController {
     var altitude:Double = 0
     var accuracy:Double = 0
     var speed:Double = 0
-    var locationActive:Bool = false
+    var recordingActive:Bool = false
+    var cnt = 0
    
     
     //start timestamp of route start
@@ -128,7 +129,7 @@ class addRouteController: UIViewController {
         //allow location use
         locationManager.requestAlwaysAuthorization()
         
-        print(locationActive)
+        print(recordingActive)
         
         //get current user location for startup
         if CLLocationManager.locationServicesEnabled() {
@@ -157,7 +158,7 @@ class addRouteController: UIViewController {
         //get current user location
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation() // start location manager
-            locationActive = true // set start of location manager true
+            recordingActive = true // set start of location manager true
             startTimestamp = Int(NSDate().timeIntervalSince1970) // get timestamp for timer
         }
     }
@@ -205,8 +206,8 @@ class addRouteController: UIViewController {
         
         
         //get coord bounds for route, nortwest & souteast
-        let bounds = utils.getBoundCoords(locationsRoute)
-        let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: bounds.south, longitude: bounds.east), CLLocationCoordinate2D(latitude: bounds.north, longitude: bounds.west))
+        
+        let coordBounds = utils.getBoundCoords(utils.masterLocation(locationsRoute))
         
         //set visible bounds
         self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
@@ -325,13 +326,13 @@ extension addRouteController: CLLocationManagerDelegate {
         
         print("Location Update:")
         print(ActiveTime)
-       
         
         
         for location in locations {
             
             print("**********************")
             print("Long \(location.coordinate.longitude)")
+            print(locationsRoute)
           /*  print("Lati \(location.coordinate.latitude)")
             print("Alt \(location.altitude)")
             print("Sped \(location.speed)")
@@ -347,11 +348,40 @@ extension addRouteController: CLLocationManagerDelegate {
             accuracy = location.horizontalAccuracy
             speed = location.speed
             
-
-            if location.horizontalAccuracy < 50 && locationActive==true {
+            
+            /*
+                get current location on start 
+                and center map to it
+                write first location into locationsRoute[]
+            */
+            if(recordingActive==false){
+                
+                // geet center coords from location
+                let centerCoords = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                
+                //center map
+                mapView.setCenterCoordinate(centerCoords,  zoomLevel: 12, animated: true)
+                
+                print("Center map in startup")
+            }
+            
+            
+            /*
+                if we have certain accuracy
+                start recording locations
+            */
+            if location.horizontalAccuracy < 50 && recordingActive==true {
+                
+                cnt++ //update location counter
+                
+                //save startup location to locationRoute array object
+                if locationsRoute.count<1 {
+                    self.locationsRoute.append(location)
+                }
+                
                 
                 //update distance and coords if locationActive
-                if self.locationsRoute.count > 0 {
+                //if self.locationsRoute.count > 0 {
                     
                     distance += location.distanceFromLocation(self.locationsRoute.last!)
                   
@@ -361,15 +391,10 @@ extension addRouteController: CLLocationManagerDelegate {
                     coords.append(location.coordinate)
                     
                     
+                    /* check if app is active and not in background */
                     if UIApplication.sharedApplication().applicationState == .Active {
-                       
-                         //print routes if app was incative
                         
-                        
-                        
-                   
                         //print missing coords when app was in background
-                   
                         if(locationsRouteInactive.count > 2){
                             
                             //covert Realm LocationList to Location Master Object
@@ -383,52 +408,35 @@ extension addRouteController: CLLocationManagerDelegate {
                             
                         }
                         
-                        //create Polyline
+                        //create Polyline and add route
                         let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                         mapView.addAnnotation(line)
                         
                         
-                       //center mapview by new coord
-                       mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
-                        
+                       //center mapview after every n loction update
+                        if(cnt==20){
+                            mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                            
+                            cnt=0 //reset counter
+                        }
                      
-                    } else{
+                    } else{ //save loactions when app is in background
                         print("app not active, no map centering")
                         
                         //save locations while inactive
                         locationsRouteInactive.append(location)
                         
+                        cnt=0 //keep counter to zero in backgroud
                         
-                    }
+                    } 
                     
-                    
-                    
-                }
+                    //save location to locationRoute array object
+                    self.locationsRoute.append(location)
                 
-                 //save location to locationRoute array object
-                self.locationsRoute.append(location)
-                
+                //} // loaction.Route.count
+    
             }
-            
-            
-            //get current location on start and stop after updating location
-            if(locationActive==false){
-                
-               let centerCoords = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                
-               mapView.setCenterCoordinate(centerCoords,  zoomLevel: 12, animated: true)
-               //locationManager.stopUpdatingLocation();
-               print("Center map in startup")
-                
-                //let camera fly
-
-                //cameraFly(centerCoords)
-
-               //cameraFly(centerCoords)
-
-            }
-            
-
+        
         }
         
     }

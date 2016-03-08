@@ -95,11 +95,6 @@ class mapFx {
     }
 
     
-
-    
-    
-    
-    
     /*
     * create camera from location, distance, pitch and heading
     * can use for cameraflyto animations
@@ -117,37 +112,28 @@ class mapFx {
     /*
     * print route
     */
-    
-    
-    
-    
-    
-    class func cameraAni(motoRoutes:List<Location>!, mapView:MGLMapView!){
+ 
+    class func cameraAni(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
     
         
-        //let middleCoord:Location = motoRoutes[Int(round(Double(motoRoutes.count/2)))]
+        //get coord bounds for route, nortwest & souteast
+        let coordBounds = utils.getBoundCoords(_LocationMaster)
         
-      //  let destination = CLLocationCoordinate2D(latitude: motoRoutes[0].latitude, longitude: motoRoutes[0].longitude)
-        
-      //  let destination2 = CLLocationCoordinate2D(latitude: motoRoutes[motoRoutes.count-1].latitude, longitude: motoRoutes[motoRoutes.count-1].longitude)
-        
-        //let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromEyeCoordinate: destination2, eyeAltitude: 20000)
-       // let camera2 = MGLMapCamera(lookingAtCenterCoordinate: destination2, fromDistance: 5000, pitch: 20, heading: 0)
-      
-     
-        //let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: 6000, pitch: 80, heading: 110)
+        //set visible bounds
+        mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
         
-        let camerax = mapFx.cameraDestination(motoRoutes[0].latitude, longitude:motoRoutes[0].longitude, fromDistance:5000, pitch:20, heading:0)
+        let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:180)
         
         
-        let cameray = mapFx.cameraDestination(motoRoutes[motoRoutes.count-1].latitude, longitude:motoRoutes[motoRoutes.count-1].longitude, fromDistance:5000, pitch:20, heading:0)
+        let cameray = mapFx.cameraDestination(_LocationMaster[_LocationMaster.count-1].latitude, longitude:_LocationMaster[_LocationMaster.count-1].longitude, fromDistance:8000, pitch:30, heading:0)
         
         
         mapView.flyToCamera(camerax) {
             // Optionally catch a connecting flight
             //  print("connection flight")
             mapView.flyToCamera(cameray){
+                
                 
             } 
         }

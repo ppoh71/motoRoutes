@@ -42,6 +42,12 @@ class showRouteController: UIViewController {
         print(utils.absolutePeromanceTime(x))
         print(_LocationMaster.count)
         
+        //center mapview to route coords
+        mapViewShow.zoomLevel = 10
+        mapViewShow.camera.heading = 180
+        
+        mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
+        
         mapFx.printRoute(_LocationMaster, mapView: mapViewShow)
         
 
@@ -50,10 +56,10 @@ class showRouteController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         // Wait a bit before setting a new camera.
-    
+        mapFx.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
         
-        mapFx.cameraAni(motoRoute.locationsList, mapView: mapViewShow)
         
+
     }
     
     

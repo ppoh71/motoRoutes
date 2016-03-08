@@ -227,6 +227,8 @@ public class utils {
         var east:Double = 0
     }
     
+    
+    
     /**
      * Get most north, south, west & east coords
      * to create bound rectangle
@@ -236,44 +238,46 @@ public class utils {
      *
      * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
-    class func getBoundCoords(locationsRoute:[CLLocation]) -> coordBound{
+    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> MGLCoordinateBounds{
     
        //create new bound struct
        var newCoordBound = coordBound()
         
         //loop if we have locations
-        guard locationsRoute.count > 10 else {
+        guard _locationsMaster.count > 10 else {
             print("GUARD bounds: locationRoute count 0")
-            return newCoordBound
+            let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
+
+            return coordBounds
         }
         
             //init with first vars
-            newCoordBound.north = locationsRoute[0].coordinate.latitude
-            newCoordBound.south = locationsRoute[0].coordinate.latitude
-            newCoordBound.west = locationsRoute[0].coordinate.longitude
-            newCoordBound.east = locationsRoute[0].coordinate.longitude
+            newCoordBound.north = _locationsMaster[0].latitude
+            newCoordBound.south = _locationsMaster[0].latitude
+            newCoordBound.west = _locationsMaster[0].longitude
+            newCoordBound.east = _locationsMaster[0].longitude
            
             //loop fot all coords in a array and set bounds
-            for location in locationsRoute {
+            for location in _locationsMaster {
                
                 //set most west
-                if(location.coordinate.latitude > newCoordBound.north){
-                    newCoordBound.north = location.coordinate.latitude
+                if(location.latitude > newCoordBound.north){
+                    newCoordBound.north = location.latitude
                 }
                 
                 //set most south
-                if(location.coordinate.latitude < newCoordBound.south){
-                    newCoordBound.south = location.coordinate.latitude
+                if(location.latitude < newCoordBound.south){
+                    newCoordBound.south = location.latitude
                 }
                 
                 //Set most west
-                if(location.coordinate.longitude < newCoordBound.west){
-                    newCoordBound.west = location.coordinate.longitude
+                if(location.longitude < newCoordBound.west){
+                    newCoordBound.west = location.longitude
                 }
         
                 //set most east
-                if(location.coordinate.longitude < newCoordBound.west){
-                    newCoordBound.west = location.coordinate.longitude
+                if(location.longitude < newCoordBound.west){
+                    newCoordBound.west = location.longitude
                 }
             
         }
@@ -281,7 +285,9 @@ public class utils {
         print("struct")
         print(newCoordBound)
         
-        return newCoordBound
+        let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))
+        
+        return coordBounds
 
     }
     
