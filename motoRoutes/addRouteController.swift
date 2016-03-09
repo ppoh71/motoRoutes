@@ -214,9 +214,9 @@ class addRouteController: UIViewController {
         
         
         //create cameras for animations
-        let camerax = mapFx.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:5000, pitch:40, heading:60)
-        let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:8000, pitch:40, heading:0)
-        let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:5000, pitch:20, heading:30)
+        let camerax = mapFx.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:4000, pitch:40, heading:60)
+        let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:6000, pitch:40, heading:0)
+        let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:11000, pitch:20, heading:30)
         
         print("Bound")
         print(coordBounds)
@@ -332,7 +332,6 @@ extension addRouteController: CLLocationManagerDelegate {
             
             print("**********************")
             print("Long \(location.coordinate.longitude)")
-            print(locationsRoute)
           /*  print("Lati \(location.coordinate.latitude)")
             print("Alt \(location.altitude)")
             print("Sped \(location.speed)")

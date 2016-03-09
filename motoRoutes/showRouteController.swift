@@ -43,8 +43,8 @@ class showRouteController: UIViewController {
         print(_LocationMaster.count)
         
         //center mapview to route coords
-        mapViewShow.zoomLevel = 10
-        mapViewShow.camera.heading = 180
+        mapViewShow.zoomLevel = 9
+        mapViewShow.camera.heading = 60
         
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
         

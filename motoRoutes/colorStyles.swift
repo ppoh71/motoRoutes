@@ -51,7 +51,7 @@ class colorStyles {
     static func polylineColors(speed:Int) -> UIColor{
 
        //color spped palette in hex
-       var colorSpeed: [String] = ["#ffffff", "#b2dfdb", "#80cbc4", "#4db6ac", "#26a69a", "#81c784", "#66bb6a", "#4caf50", "#43a047", "#ffb74d", "#ffa726", "#ff9800", "#fb8c00", "#ff7043", "#ff5722", "#ff5722", "#f4511e", "#ec407a", "#e91e63", "#d81b60", "#c2185b", "#ba68c8", "#ab47bc", "#9c27b0", "#8e24aa", "#7b1fa2"]
+       var colorSpeed: [String] = ["#ffffff", "#E8F5E9", "#C8E6C9", "#A5D6A7", "#81C784", "#66BB6A", "#4CAF50", "#43A047", "#388E3C", "#2E7D32", "#1B5E20", "#F48FB1", "#F06292", "#EC407A", "#E91E63", "#D81B60", "#C2185B", "#AD1457", "#880E4F", "#E53935", "#D32F2F", "#C62828", "#B71C1C", "#B71C1C", "#B71C1C", "#B71C1C"]
         
         //color var
         print("color operation")

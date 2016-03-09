@@ -120,20 +120,20 @@ class mapFx {
         let coordBounds = utils.getBoundCoords(_LocationMaster)
         
         //set visible bounds
-        mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+       // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
         
-        let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:180)
+        let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:300)
         
         
-        let cameray = mapFx.cameraDestination(_LocationMaster[_LocationMaster.count-1].latitude, longitude:_LocationMaster[_LocationMaster.count-1].longitude, fromDistance:8000, pitch:30, heading:0)
+        let cameray = mapFx.cameraDestination(_LocationMaster[_LocationMaster.count-1].latitude, longitude:_LocationMaster[_LocationMaster.count-1].longitude, fromDistance:10000, pitch:30, heading:0)
         
         
         mapView.flyToCamera(camerax) {
             // Optionally catch a connecting flight
             //  print("connection flight")
             mapView.flyToCamera(cameray){
-                
+                mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
                 
             } 
         }
