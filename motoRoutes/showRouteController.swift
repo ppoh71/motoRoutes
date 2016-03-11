@@ -18,6 +18,7 @@ class showRouteController: UIViewController {
     //Outlets
     @IBOutlet var cancelButton:UIButton!
     @IBOutlet var screenshotButton:UIButton!
+    @IBOutlet var flyButton:UIButton!
     @IBOutlet var mapViewShow: MGLMapView!
     
     // Get the default Realm
@@ -25,6 +26,7 @@ class showRouteController: UIViewController {
     
     // realm object list
     var motoRoute =  Route()
+    var _LocationMaster = [LocationMaster]()
    
     
     
@@ -34,11 +36,10 @@ class showRouteController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
      
         let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
-        let _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
+        _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
         print(utils.absolutePeromanceTime(x))
         print(_LocationMaster.count)
         
@@ -63,7 +64,7 @@ class showRouteController: UIViewController {
     }
     
     
-    // save route
+    // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
         
         //make new screenshot from actual mapView
@@ -75,10 +76,20 @@ class showRouteController: UIViewController {
             realm.create(Route.self, value: ["id": motoRoute.id, "image": screenshotFilename], update: true)
             
         }
-        
-
-        
     }
+    
+    
+    // new screenshot
+    @IBAction func flyRoute(sender: UIButton) {
+        
+        //make route fly
+        print("let it fly")
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow)
+        
+    
+    }
+    
+    
     
 
 }

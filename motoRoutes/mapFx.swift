@@ -117,37 +117,65 @@ class mapFx {
     
         
         //get coord bounds for route, nortwest & souteast
-        let coordBounds = utils.getBoundCoords(_LocationMaster)
+        //let coordBounds = utils.getBoundCoords(_LocationMaster)
         
         //set visible bounds
        // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
         
-        let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:300)
+        //let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:300)
         
         
-        let cameray = mapFx.cameraDestination(_LocationMaster[_LocationMaster.count-1].latitude, longitude:_LocationMaster[_LocationMaster.count-1].longitude, fromDistance:10000, pitch:30, heading:0)
+        let cameray = mapFx.cameraDestination(_LocationMaster[_LocationMaster.count/2].latitude, longitude:_LocationMaster[_LocationMaster.count/2].longitude, fromDistance:10000, pitch:30, heading:0)
         
         
-        mapView.flyToCamera(camerax) {
+        mapView.flyToCamera(cameray) {
             // Optionally catch a connecting flight
             //  print("connection flight")
-            mapView.flyToCamera(cameray){
-                mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+           // mapView.flyToCamera(cameray){
+               // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
                 
-            } 
+           // }
         }
-  
-      
-        /*
-        //create camera the map view is showing.
-        let camera = MGLMapCamera(lookingAtCenterCoordinate: CLLocationCoordinate2D(latitude: middleCoord.latitude, longitude: middleCoord.longitude), fromDistance: 12000, pitch: 25, heading: 0)
-        
-        
-        // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 6, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-        */
-    
     }
+
+    
+    /**
+    *   Fly Camera over route
+    *
+    *
+    *
+    **/
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!) {
+    
+    
+        let count = _LocationMaster.count
+        var n = 0
+        var pitchCamera:CGFloat = 60.0
+        var pitch:CGFloat = 10
+ 
+        
+        func fly(var n:Int, pitch: CGFloat){
+        
+            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:3000, pitch: pitchCamera, heading:0)
+            
+            mapView.flyToCamera(camera) {
+                
+                if(n<count){
+                    print(arc4random() % 100)
+                   // pitch = CGFloat(arc4random() % 100)
+                    n++
+                    fly(n, pitch: pitchCamera)
+                }
+            }
+        }
+        
+    
+       fly(n, pitch: pitchCamera)
+        
+
+    }
+    
+    
     
 }
