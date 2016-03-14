@@ -17,6 +17,7 @@ class Location: Object {
     dynamic var longitude = 0.0
     dynamic var altitude = 0.0
     dynamic var speed = 0.0
+    dynamic var course = 0.0
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
     
@@ -55,6 +56,7 @@ class LocationMaster {
     dynamic var longitude = 0.0
     dynamic var altitude = 0.0
     dynamic var speed = 0.0
+    dynamic var course = 0.0
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
     

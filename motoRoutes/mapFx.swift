@@ -16,12 +16,12 @@ import Mapbox
 class mapFx {
     
     /*
-        
-        Print route with colored polylines
-  
-        - parameter LocationMaster: LocationMaster Object
-        - parameter mapView: current Mapview
-
+    
+    Print route with colored polylines
+    
+    - parameter LocationMaster: LocationMaster Object
+    - parameter mapView: current Mapview
+    
     */
     
     class func printRoute(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
@@ -93,17 +93,17 @@ class mapFx {
         print(" coord count  \(_LocationMaster.count)")
         print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
-
+    
     
     /*
     * create camera from location, distance, pitch and heading
     * can use for cameraflyto animations
     */
     class func cameraDestination(latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
-    
+        
         let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: fromDistance, pitch: pitch, heading: heading)
-    
+        
         return camera
     }
     
@@ -112,15 +112,15 @@ class mapFx {
     /*
     * print route
     */
- 
-    class func cameraAni(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
     
+    class func cameraAni(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
+        
         
         //get coord bounds for route, nortwest & souteast
         //let coordBounds = utils.getBoundCoords(_LocationMaster)
         
         //set visible bounds
-       // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+        // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
         
         //let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:300)
@@ -132,48 +132,58 @@ class mapFx {
         mapView.flyToCamera(cameray) {
             // Optionally catch a connecting flight
             //  print("connection flight")
-           // mapView.flyToCamera(cameray){
-               // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
-                
-           // }
+            // mapView.flyToCamera(cameray){
+            // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+            
+            // }
         }
     }
-
+    
     
     /**
-    *   Fly Camera over route
-    *
-    *
-    *
-    **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!) {
-    
-    
+     *   Fly Camera over route
+     *
+     *
+     *
+     **/
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, speedLabel:UILabel) {
+        
+        
         let count = _LocationMaster.count
         var n = 0
         var pitchCamera:CGFloat = 60.0
-        var pitch:CGFloat = 10
- 
+        var headingCourse:Double = 0.0
         
-        func fly(var n:Int, pitch: CGFloat){
         
-            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:3000, pitch: pitchCamera, heading:0)
+        func fly(var n:Int, pitch: CGFloat, heading:Double){
+            
+            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:3000, pitch: pitchCamera, heading: heading)
+            let speed = _LocationMaster[n].speed
+            let speedIndex = utils.getSpeedIndex(speed)
+            
+            
+            speedLabel.text = "\(utils.getSpeed(_LocationMaster[n].speed)) km/h"
+            speedLabel.textColor =  colorStyles.polylineColors(speedIndex)
+            headingCourse = _LocationMaster[n].course
             
             mapView.flyToCamera(camera) {
-                
-                if(n<count){
-                    print(arc4random() % 100)
-                   // pitch = CGFloat(arc4random() % 100)
-                    n++
-                    fly(n, pitch: pitchCamera)
+             
+               
+                if(n<count-1){
+                    print(_LocationMaster[n].course)
+                    
+                    //pitchCamera = CGFloat((speedIndex*2)+30)
+                    
+                    n = n+1
+                    fly(n, pitch: pitchCamera, heading: headingCourse)
                 }
             }
         }
         
-    
-       fly(n, pitch: pitchCamera)
         
-
+       fly(n, pitch: pitchCamera, heading: headingCourse)
+        
+        
     }
     
     

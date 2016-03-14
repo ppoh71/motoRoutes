@@ -19,6 +19,7 @@ class showRouteController: UIViewController {
     @IBOutlet var cancelButton:UIButton!
     @IBOutlet var screenshotButton:UIButton!
     @IBOutlet var flyButton:UIButton!
+    @IBOutlet var speedLabel:UILabel!
     @IBOutlet var mapViewShow: MGLMapView!
     
     // Get the default Realm
@@ -36,6 +37,7 @@ class showRouteController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        screenshotButton.tintColor = globalColor.gColor
      
         let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
@@ -84,7 +86,7 @@ class showRouteController: UIViewController {
         
         //make route fly
         print("let it fly")
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow)
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, speedLabel: speedLabel)
         
     
     }

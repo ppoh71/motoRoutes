@@ -29,6 +29,17 @@ public class utils {
     
     }
     
+    /*
+    * get speed km/h mph
+    */
+    class func getSpeed(speed:Double) -> Int{
+        
+        let speed = Int(round((speed*3.6))) //kmh
+        
+        return speed
+        
+    }
+    
 
     /*
     * helper get Document Directory
@@ -199,6 +210,7 @@ public class utils {
             newLocation.longitude = location.coordinate.longitude
             newLocation.altitude = location.altitude
             newLocation.speed = location.speed
+            newLocation.course = location.course
             newLocation.accuracy = location.horizontalAccuracy
             
             newRoute.locationsList.append(newLocation)
@@ -313,6 +325,7 @@ public class utils {
             locationTmp.longitude = location.coordinate.longitude
             locationTmp.altitude = location.altitude
             locationTmp.speed = location.speed
+            locationTmp.course = location.course
             locationTmp.accuracy = location.horizontalAccuracy
             
             newlocationMaster.append(locationTmp)
@@ -344,6 +357,7 @@ public class utils {
             locationTmp.longitude = location.longitude
             locationTmp.altitude = location.altitude
             locationTmp.speed = location.speed
+            locationTmp.course = location.course
             locationTmp.accuracy = location.accuracy
            
             newlocationMaster.append(locationTmp)
