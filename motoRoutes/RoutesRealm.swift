@@ -28,6 +28,15 @@ class Location: Object {
     }
 }
 
+//Media Object for location
+class Media: Object {
+
+    
+
+
+}
+
+
 // Route Realm Model
 class Route: Object {
     

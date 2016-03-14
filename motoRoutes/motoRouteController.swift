@@ -12,9 +12,7 @@ import Crashlytics
 
 class motoRouteController: UITableViewController {
     
-    // Get the default Realm
-    let realm = try! Realm()
-    
+
     
     // realm object list
     var motoRoutes =  Results<Route>!()
@@ -22,8 +20,7 @@ class motoRouteController: UITableViewController {
     //Action methods
     @IBAction func close(segue:UIStoryboardSegue) {
         
-        
-        
+      
     }
     
     
@@ -33,7 +30,7 @@ class motoRouteController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        let realm = try! Realm()
         motoRoutes = realm.objects(Route)
        
         print("is connected")
@@ -98,9 +95,13 @@ class motoRouteController: UITableViewController {
     */
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
+        
         //delete routes
         if editingStyle == .Delete {
             print("deleting row \(motoRoutes[indexPath.row])")
+            
+            // Get the default Realm
+            let realm = try! Realm()
             
             try! realm.write {
                 realm.delete(motoRoutes[indexPath.row])

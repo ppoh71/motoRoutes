@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import RealmSwift
 import Fabric
 import Crashlytics
 
@@ -22,7 +22,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         Fabric.with([Crashlytics.self])
-
+        
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(
+            schemaVersion: 1,
+            migrationBlock: { migration, oldSchemaVersion in
+                
+                print(oldSchemaVersion)
+                if (oldSchemaVersion < 1) {
+                    // The enumerate(_:_:) method iterates
+                    migration.enumerate(Location.className()) { oldObject, newObject in
+                        newObject!["course"] = 0.0
+                    }
+                }
+        })
+        
+      
         return true
     }
 
