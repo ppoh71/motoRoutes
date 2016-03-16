@@ -143,8 +143,8 @@ class addRouteController: UIViewController {
     //
     override func viewWillDisappear(animated:Bool) {
   
-        locationManager.stopUpdatingLocation(); //stop locations
-        timer.invalidate() //stop timer
+        //locationManager.stopUpdatingLocation(); //stop locations
+        // timer.invalidate() //stop timer
         print("view will appear")
         super.viewWillDisappear(animated)
     }
@@ -314,7 +314,9 @@ class addRouteController: UIViewController {
             }, completion: nil)
     }
     
-    
+    @IBAction func unwindToAddRoute(segue:UIStoryboardSegue) {
+        
+    }
 
 }
 

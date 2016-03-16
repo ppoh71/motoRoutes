@@ -166,7 +166,9 @@ class mapFx {
             speedLabel.textColor =  colorStyles.polylineColors(speedIndex)
             headingCourse = _LocationMaster[n].course
             
-            mapView.flyToCamera(camera) {
+        
+            mapView.flyToCamera(camera, withDuration: 0.1
+                ) {
              
                
                 if(n<count-1){

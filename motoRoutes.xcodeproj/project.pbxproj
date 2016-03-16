@@ -23,6 +23,7 @@
 		5562BA551C73663900EF340D /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5562BA541C73663900EF340D /* utils.swift */; };
 		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
+		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC3E6448D743A03D95FFC8D /* Pods.framework */; };
 		A90D6F991C947101002E7980 /* mapFx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* mapFx.swift */; };
@@ -63,6 +64,7 @@
 		5562BA541C73663900EF340D /* utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A90D6F981C947101002E7980 /* mapFx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapFx.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				55EF09E81C5FD6A200F2857E /* showRouteController */,
 				559A5C511C57E54800B5261F /* addRouteController */,
 				559A5C501C57E51600B5261F /* motoRouteController */,
+				55DEC6241C99C18A000BA85F /* motoRouteCamera */,
 				A983FD731C5525F600C99F83 /* Models */,
 				553AB5011C50056400AC12A5 /* AppDelegate.swift */,
 				553AB5051C50056400AC12A5 /* Main.storyboard */,
@@ -160,6 +163,14 @@
 				5562BA541C73663900EF340D /* utils.swift */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		55DEC6241C99C18A000BA85F /* motoRouteCamera */ = {
+			isa = PBXGroup;
+			children = (
+				55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */,
+			);
+			name = motoRouteCamera;
 			sourceTree = "<group>";
 		};
 		55EF09E81C5FD6A200F2857E /* showRouteController */ = {
@@ -359,6 +370,7 @@
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 				5506E0D91C650A230091364B /* colorStyles.swift in Sources */,
+				55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

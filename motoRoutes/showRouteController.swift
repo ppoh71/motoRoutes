@@ -42,6 +42,7 @@ class showRouteController: UIViewController {
         let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
         _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
+        
         print(utils.absolutePeromanceTime(x))
         print(_LocationMaster.count)
         
@@ -51,13 +52,16 @@ class showRouteController: UIViewController {
         
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
         
-        mapFx.printRoute(_LocationMaster, mapView: mapViewShow)
         
 
         
     }
     
     override func viewDidAppear(animated: Bool) {
+        
+        mapFx.printRoute(_LocationMaster, mapView: mapViewShow)
+
+        
         // Wait a bit before setting a new camera.
         mapFx.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
         
