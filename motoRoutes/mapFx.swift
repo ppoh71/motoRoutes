@@ -126,7 +126,7 @@ class mapFx {
         //let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:300)
         
         
-        let cameray = mapFx.cameraDestination(_LocationMaster[_LocationMaster.count/2].latitude, longitude:_LocationMaster[_LocationMaster.count/2].longitude, fromDistance:10000, pitch:30, heading:0)
+        let cameray = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:2300, pitch:60, heading:0)
         
         
         mapView.flyToCamera(cameray) {
@@ -151,39 +151,59 @@ class mapFx {
         
         let count = _LocationMaster.count
         var n = 0
-        var pitchCamera:CGFloat = 60.0
+        var pitchCamera:CGFloat = 80.0
         var headingCourse:Double = 0.0
+        var arrayStep:Int = 5 // play ever n location from arr
+        var plabckCameraDuration:Double = 0.2
+        var cameraDistance:Double = 1150.00
+        var distance = 0.0
+        var timeeSpent = 0
         
         
         func fly(var n:Int, pitch: CGFloat, heading:Double){
             
-            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:3000, pitch: pitchCamera, heading: heading)
+            //Distrance Calc from A B
+            let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
+            let _locationB = CLLocation(latitude: _LocationMaster[n+arrayStep].latitude, longitude: _LocationMaster[n+arrayStep].longitude)
+            
+            //time spend on road
+            let elapsedTime = _LocationMaster[n+arrayStep].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
+            
+            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:cameraDistance, pitch: pitchCamera, heading: heading)
             let speed = _LocationMaster[n].speed
             let speedIndex = utils.getSpeedIndex(speed)
+             distance += _locationA.distanceFromLocation(_locationB)
             
+            print("sistance")
+            print(elapsedTime)
             
-            speedLabel.text = "\(utils.getSpeed(_LocationMaster[n].speed)) km/h"
+            let timespendSting = utils.clockFormatShort(Int(elapsedTime))
+            
+            globalSpeedString.speedString = timespendSting
+            
+            //speedLabel.text = "\(utils.getSpeed(_LocationMaster[n].speed))km/h \(utils.distanceFormat(distance))km \(timespendSting) time"
             speedLabel.textColor =  colorStyles.polylineColors(speedIndex)
             headingCourse = _LocationMaster[n].course
             
+           
         
-            mapView.flyToCamera(camera, withDuration: 0.1
-                ) {
-             
+           // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
+            mapView.setCamera(camera, withDuration: plabckCameraDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
                
-                if(n<count-1){
-                    print(_LocationMaster[n].course)
+                if(n<count-arrayStep-1){
+                   // print(_LocationMaster[n].course)
                     
                     //pitchCamera = CGFloat((speedIndex*2)+30)
                     
-                    n = n+1
+                    n = n+arrayStep
                     fly(n, pitch: pitchCamera, heading: headingCourse)
                 }
             }
         }
         
         
-       fly(n, pitch: pitchCamera, heading: headingCourse)
+        fly(n, pitch: pitchCamera, heading: headingCourse)
+
         
         
     }

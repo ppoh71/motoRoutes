@@ -20,6 +20,7 @@ class showRouteController: UIViewController {
     @IBOutlet var screenshotButton:UIButton!
     @IBOutlet var flyButton:UIButton!
     @IBOutlet var speedLabel:UILabel!
+    @IBOutlet var distanceLabel:UILabel!
     @IBOutlet var mapViewShow: MGLMapView!
     
     // Get the default Realm
@@ -49,6 +50,8 @@ class showRouteController: UIViewController {
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
         mapViewShow.camera.heading = 60
+        
+        speedLabel.text = globalSpeedString.speedString
         
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
         
