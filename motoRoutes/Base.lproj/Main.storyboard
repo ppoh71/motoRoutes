@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -44,7 +44,7 @@
                                 <rect key="frame" x="0.0" y="101" width="600" height="230"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="229.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="229"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh">
@@ -184,7 +184,7 @@
                                 <rect key="frame" x="300" y="530" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <segue destination="1H0-V0-egP" kind="presentation" id="fby-U4-Jo4"/>
+                                    <segue destination="1H0-V0-egP" kind="presentation" identifier="showCamera" id="fby-U4-Jo4"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43g-FJ-38a" userLabel="Debug View">
@@ -331,12 +331,30 @@
                                     <outlet property="delegate" destination="iyu-JC-65F" id="Zea-4n-1ef"/>
                                 </connections>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00 km/h " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jn9-UP-3oa">
-                                <rect key="frame" x="10" y="40" width="288" height="29"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00 km/h " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jn9-UP-3oa">
+                                <rect key="frame" x="10" y="16" width="288" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="288" id="lO5-vj-wBS"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="22"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="50"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.000 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LL4-55-Ew9">
+                                <rect key="frame" x="10" y="74" width="288" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="1HL-tQ-vfD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="00:00 h" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQy-hN-GTd">
+                                <rect key="frame" x="10" y="110" width="288" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="yxQ-QY-KTI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -369,9 +387,13 @@
                         <constraints>
                             <constraint firstItem="hO5-hV-98Y" firstAttribute="top" secondItem="KOa-KO-rv5" secondAttribute="bottom" constant="16" id="6F7-Wd-cwL"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="top" id="AKq-CU-75N"/>
+                            <constraint firstItem="DQy-hN-GTd" firstAttribute="top" secondItem="LL4-55-Ew9" secondAttribute="bottom" id="CbX-Va-R3M"/>
+                            <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="LL4-55-Ew9" secondAttribute="trailing" constant="-298" id="KwL-fe-tIO"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="bottom" constant="-100" id="P6f-B0-05X"/>
+                            <constraint firstItem="LL4-55-Ew9" firstAttribute="top" secondItem="Jn9-UP-3oa" secondAttribute="bottom" constant="10" id="ULx-z7-tch"/>
                             <constraint firstItem="Jn9-UP-3oa" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-10" id="Wpm-w6-4YL"/>
-                            <constraint firstItem="Jn9-UP-3oa" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="topMargin" constant="40" id="c3E-6U-3U7"/>
+                            <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="DQy-hN-GTd" secondAttribute="trailing" constant="-298" id="bcs-vw-dGx"/>
+                            <constraint firstItem="Jn9-UP-3oa" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="topMargin" constant="16" id="c3E-6U-3U7"/>
                             <constraint firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="ctW-ro-1Sg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7LW-L1-BfS" secondAttribute="trailing" constant="-1" id="iz9-0x-a2c"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="centerY" secondItem="1hV-rc-YM3" secondAttribute="centerY" id="phu-x7-ycR"/>
@@ -388,11 +410,13 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="DistanceLabel" destination="LL4-55-Ew9" id="pc1-U8-TSt"/>
+                        <outlet property="SpeedLabel" destination="Jn9-UP-3oa" id="7h6-dr-O1d"/>
+                        <outlet property="TimeLabel" destination="DQy-hN-GTd" id="KIX-3o-4lW"/>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="flyButton" destination="KOa-KO-rv5" id="QBm-2s-Uy4"/>
                         <outlet property="mapViewShow" destination="1hV-rc-YM3" id="4JL-ss-03s"/>
                         <outlet property="screenshotButton" destination="OYv-Yc-Cvc" id="w5u-ab-Hqw"/>
-                        <outlet property="speedLabel" destination="Jn9-UP-3oa" id="059-mO-5H3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ieq-0x-0We" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -435,7 +459,7 @@
                                 <rect key="frame" x="20" y="543" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <segue destination="Rt6-Ae-abs" kind="unwind" unwindAction="unwindToAddRoute:" id="qHy-e2-nL7"/>
+                                    <segue destination="Rt6-Ae-abs" kind="unwind" unwindAction="close:" id="6G8-lt-XeB"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bTK-Tk-le8">

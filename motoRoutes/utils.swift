@@ -73,6 +73,41 @@ public class utils {
     
 
     /*
+    * load images by image name and from documantsDirectory
+    */
+    class func loadImageFromName(imgName: String) -> UIImage? {
+        
+        guard  imgName.characters.count > 0 else {
+        
+            print("ERROR: No image name")
+            return UIImage()
+            
+        }
+        
+        let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
+        let image = utils.loadImageFromPath(imgPath)
+
+        return image
+        
+    }
+    
+    
+    /*
+    * resize image 
+    */
+    class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    /*
     * check for connectivity, only wifi ?!
     */
     class func isConnected() -> Bool {
@@ -173,7 +208,9 @@ public class utils {
             
             print("filename: \(filename as String)")
             print(timestampFilename)
-            return filename
+            print(utils.getDocumentsDirectory())
+
+            return timestampFilename
             
         }
 
@@ -190,7 +227,7 @@ public class utils {
     *
     */
     
-    class func saveRouteRealm(locationsRoute:[CLLocation], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ){
+    class func saveRouteRealm(LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ){
     
         // save to realm
         let newRoute = Route()
@@ -201,7 +238,9 @@ public class utils {
         newRoute.duration = totalTime
         newRoute.image = screenshotFilename
         
-        for location in locationsRoute {
+        
+        //add Locations to Realm Objctes
+        for location in LocationsRoute {
             
             let newLocation = Location()
             
@@ -216,6 +255,23 @@ public class utils {
             newRoute.locationsList.append(newLocation)
             
         }
+        
+        //add Media to Realm Objctes
+        for media in MediaObjects {
+            
+            let newMedia = Media()
+            
+            newMedia.latitude = media.latitude
+            newMedia.longitude  = media.longitude
+            newMedia.timestamp  = media.timestamp
+            newMedia.image = media.image
+            
+            newRoute.mediaList.append(newMedia)
+            
+        }
+        
+        
+        
         
         // Get the default Realm
         let realm = try! Realm()
@@ -252,6 +308,10 @@ public class utils {
      */
     class func getBoundCoords(_locationsMaster:[LocationMaster]) -> MGLCoordinateBounds{
     
+        
+        print("#################Coords")
+        print(_locationsMaster)
+        
        //create new bound struct
        var newCoordBound = coordBound()
         
@@ -312,6 +372,9 @@ public class utils {
      * - returns: LocationMaster 
      */
     class func masterLocation(locationsRoute:[CLLocation]) -> [LocationMaster]{
+        
+        print("#################MasterLocation")
+        print(locationsRoute)
         
         var newlocationMaster = [LocationMaster]()
         

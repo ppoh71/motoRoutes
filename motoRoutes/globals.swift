@@ -23,15 +23,11 @@ class global {
         self.gColor = gColor
     }
     
-    
-    //init global color
-    var speedString:String = ""
-    init(speedString:String) {
-        self.speedString = speedString
-    }
-    
+  
 }
+
+
 
 var globalSpeedSet = global(speedSet:0)
 var globalColor = global(gColor: UIColor.whiteColor())
-var globalSpeedString = global(speedString: "global ss")
+

@@ -73,10 +73,11 @@ class motoRouteController: UITableViewController {
         
         //load image
 
-        let img = route.image
+        let imgName = route.image
         
         //let path = (utils.getDocumentsDirectory() as String) + img
-        let image = utils.loadImageFromPath(img)
+        let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
+        let image = utils.loadImageFromPath(imgPath)
         
         //image = (image == nil) ? "default.jpg" : image
         print(route.id)

@@ -74,10 +74,13 @@ class addRouteController: UIViewController {
     //total time in sec /starttimstamp - currenttimestamp
     var totalTime:Int = 0
 
-    
-    
+    // needs review & cleanup
     var AppActive = true //is app active or in background
     var ActiveTime = 0.0 //seconds the app is active after coming form background
+    
+    
+    //media
+    var MediaObjects = [MediaMaster]()
     
     
     //
@@ -202,44 +205,36 @@ class addRouteController: UIViewController {
         print(locationsRoute)
                 
         //get the middle coord of the whole route
-        let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
+        //let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
         
         
         //get coord bounds for route, nortwest & souteast
         
-        let coordBounds = utils.getBoundCoords(utils.masterLocation(locationsRoute))
+       // let MasterLocation = utils.masterLocation(locationsRoute)
+       // let coordBounds = utils.getBoundCoords(MasterLocation)
         
         //set visible bounds
-        self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+        //self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
         
         //create cameras for animations
         let camerax = mapFx.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:4000, pitch:40, heading:60)
-        let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:6000, pitch:40, heading:0)
-        let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:11000, pitch:20, heading:30)
+        //let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:6000, pitch:40, heading:0)
+        //let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:11000, pitch:20, heading:30)
         
         print("Bound")
-        print(coordBounds)
+        //print(coordBounds)
         
         //camera animation -> screenshot -> save route to realm
         
         mapView.flyToCamera(camerax) {
             
-            self.mapView.flyToCamera(cameray){
-                self.mapView.flyToCamera(cameraz){
-                    print("finish camera animation")
-                    
-                    //set to bounds
-                   // self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
-                    
                     //make screenshot and get image name
                     let screenshotFilename = utils.screenshotMap(self.mapView)
                     
                     //save rout to realm
-                    utils.saveRouteRealm(self.locationsRoute, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
-                    
-                }
-            }
+                    utils.saveRouteRealm(self.locationsRoute,MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+            
         }
        
     }
@@ -314,10 +309,38 @@ class addRouteController: UIViewController {
             }, completion: nil)
     }
     
-    @IBAction func unwindToAddRoute(segue:UIStoryboardSegue) {
+
+    /*
+    * Prepare Segue / camera stuff
+    */
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         
+        //prepare for camera/photo store to MediaObhect
+        if segue.identifier == "showCamera" {
+            let destinationController = segue.destinationViewController as! motoRouteCamera
+            destinationController.latitude = latitude
+            destinationController.longitude = longitude
+        }
+    }
+    
+    
+    /*
+    * Close segue
+    */
+    @IBAction func close(segue:UIStoryboardSegue) {
+       
+        if let cameraController = segue.sourceViewController as? motoRouteCamera {
+            if let MediaObjectsCamera:[MediaMaster]! = cameraController.MediaObjects {
+              
+                MediaObjects += MediaObjectsCamera
+                
+             print( "##################\(MediaObjects)")
+            }
+        }
     }
 
+    
+    
 }
 
 

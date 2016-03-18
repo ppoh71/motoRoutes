@@ -13,6 +13,12 @@ import Photos
 class motoRouteCamera: UIViewController {
     
     
+    @IBOutlet weak var cameraButton:UIButton!
+    @IBOutlet weak var cancelButton:UIButton!
+    @IBOutlet weak var savedImage:UIImageView!
+    
+    
+    //Capture Session
     let captureSession = AVCaptureSession()
     
     //camera devices
@@ -23,8 +29,7 @@ class motoRouteCamera: UIViewController {
     //output
     var stillImageOutput:AVCaptureStillImageOutput?
     var stillImage:UIImage?
-    
-    
+
     //preview layer / input
     var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
     
@@ -35,13 +40,14 @@ class motoRouteCamera: UIViewController {
     var zoomInGestureRecognizer = UISwipeGestureRecognizer()
     var zoomOutGestureRecognizer = UISwipeGestureRecognizer()
     
+    // model store 
+    var imageURL:String?
+    var latitude:Double = 0
+    var longitude:Double = 0
+    var MediaObjects = [MediaMaster]()
     
     
-    @IBOutlet weak var cameraButton:UIButton!
-    @IBOutlet weak var cancelButton:UIButton!
-    @IBOutlet weak var savedImage:UIImageView!
-    
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +116,8 @@ class motoRouteCamera: UIViewController {
         zoomOutGestureRecognizer.direction = .Left
         zoomOutGestureRecognizer.addTarget(self, action: "zoomOut")
         view.addGestureRecognizer(zoomOutGestureRecognizer)
+        
+        print("latitude: \(latitude) / longitude: \(longitude) ")
         
     }
     
@@ -205,39 +213,42 @@ class motoRouteCamera: UIViewController {
             filenamePath = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
             imageData.writeToFile(filenamePath, atomically: true)
 
+            self.imageURL = filenamePath //assign for unwind seague
             
-             print("capture done")
+            print("capture done")
+            
+            
+            //save to Media Object
+            let tmpMediaObject = MediaMaster()
+            
+            tmpMediaObject.latitude = self.latitude
+            tmpMediaObject.longitude = self.longitude
+            tmpMediaObject.image = timestampFilename
+            tmpMediaObject.timestamp = NSDate()
+
+            
+            self.MediaObjects.append(tmpMediaObject)
+            
+            
         })
 
+       
+        /** deubg testing on simulator **/
+        //save to Media Object
+        let tmpMediaObject = MediaMaster()
         
-            //screenShotRoute.image = screenShot
-            
-           //if let data = UIImageJPEGRepresentation(self.stillImage!, 80) {
-           
-             print("capture save")
-                
+        tmpMediaObject.latitude = self.latitude
+        tmpMediaObject.longitude = self.longitude
+        tmpMediaObject.image = "1458236404.png"
+        tmpMediaObject.timestamp = NSDate()
         
-                 print("capture save done")
-            
-                /*
-                PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-                    PHAssetChangeRequest.creationRequestForAssetFromImageAtFileURL(NSURL(fileURLWithPath: filenamePath))
-                    }) { completed, error in
-                        if completed {
-                            print("Image is saved!")
-                            print(timestampFilename)
-                        }
-                }
-                */
-                
-                //  UIImageWriteToSavedPhotosAlbum(imageToSave, self, "image:didFinishSavingWithError:contextInfo:", nil)
-                //ismissViewControllerAnimated(true, completion: nil)
-          //  }
-            
+        self.MediaObjects.append(tmpMediaObject)
+
+        print("########capture for simulator")
 
     }
     
-        
+    
 }
 
     

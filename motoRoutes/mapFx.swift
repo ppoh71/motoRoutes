@@ -91,7 +91,7 @@ class mapFx {
         }
         
         print(" coord count  \(_LocationMaster.count)")
-        print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+       // print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
     
     
@@ -140,13 +140,18 @@ class mapFx {
     }
     
     
+    
     /**
      *   Fly Camera over route
      *
-     *
+     *  - parameter LocationMaster: Array of [LocationMaster] with tghe MasterLocation Object
+     *  - parameter mapView: MGLMapView! Object
+     *  - parameter SpeedLabel: Optional UILabel to display speed text
+     *  - parameter DistanceLabel: Optional UILabel to display distance text
+     *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, speedLabel:UILabel) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?) {
         
         
         let count = _LocationMaster.count
@@ -160,54 +165,78 @@ class mapFx {
         var timeeSpent = 0
         
         
+        /**
+        *  Camera fly to fx
+        **/
         func fly(var n:Int, pitch: CGFloat, heading:Double){
             
+            
+            //assign course of locationfor camera animation
+            headingCourse = _LocationMaster[n].course
+            
+            /**
+            *  Get some Data for Lables and Stuff
+            **/
+            
             //Distrance Calc from A B
+            let nextIndex = n+arrayStep < _LocationMaster.count ? n+5 : _LocationMaster.count-1
             let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
-            let _locationB = CLLocation(latitude: _LocationMaster[n+arrayStep].latitude, longitude: _LocationMaster[n+arrayStep].longitude)
+            let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
+            distance += _locationA.distanceFromLocation(_locationB)
+            
             
             //time spend on road
-            let elapsedTime = _LocationMaster[n+arrayStep].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
+            let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
+            let timespendString = utils.clockFormatShort(Int(elapsedTime))
             
+            //define camera for flyTo ani
             let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:cameraDistance, pitch: pitchCamera, heading: heading)
             let speed = _LocationMaster[n].speed
             let speedIndex = utils.getSpeedIndex(speed)
-             distance += _locationA.distanceFromLocation(_locationB)
             
-            print("sistance")
-            print(elapsedTime)
             
-            let timespendSting = utils.clockFormatShort(Int(elapsedTime))
+            /**
+            *  Update Lables
+            **/
             
-            globalSpeedString.speedString = timespendSting
+            //Update UILabel Speed
+            if let tmpSpeedLabel = SpeedLabel {
+                tmpSpeedLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed)) km/h"
+            }
             
-            //speedLabel.text = "\(utils.getSpeed(_LocationMaster[n].speed))km/h \(utils.distanceFormat(distance))km \(timespendSting) time"
-            speedLabel.textColor =  colorStyles.polylineColors(speedIndex)
-            headingCourse = _LocationMaster[n].course
+            //Update UILabel Distance
+            if let tmpDistanceLabel = DistanceLabel {
+               // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance)) km"
+            }
             
+            //Update UILabel Distance
+            if let tmpTimeLabel = TimeLabel {
+               // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                tmpTimeLabel.text =  " \(timespendString) h"
+            }
            
-        
-           // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
+            
+            /**
+            * Let it fly
+            **/
+         
             mapView.setCamera(camera, withDuration: plabckCameraDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
-               
-                if(n<count-arrayStep-1){
-                   // print(_LocationMaster[n].course)
-                    
-                    //pitchCamera = CGFloat((speedIndex*2)+30)
-                    
+            // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
+                
+                // loop until end of array
+                if(n+arrayStep < _LocationMaster.count){
                     n = n+arrayStep
                     fly(n, pitch: pitchCamera, heading: headingCourse)
                 }
             }
         }
         
-        
+        // start the whole thing
         fly(n, pitch: pitchCamera, heading: headingCourse)
 
-        
-        
     }
-    
     
     
 }
