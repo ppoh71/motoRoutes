@@ -22,6 +22,8 @@ class showRouteController: UIViewController {
     @IBOutlet var SpeedLabel:UILabel!
     @IBOutlet var DistanceLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
+    @IBOutlet var cameraSlider:UISlider!
+    
     @IBOutlet var mapViewShow: MGLMapView!
     
     // Get the default Realm
@@ -34,6 +36,24 @@ class showRouteController: UIViewController {
     //media stuff
     var markerImageName:String = ""
    
+    
+    //
+    @IBAction func sliderValueChanged(sender: UISlider) {
+        let currentValue = Int(sender.value)
+        
+       
+        globalCamDistance.gCamDistance = Double(50*currentValue)
+        globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
+        globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
+        globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(currentValue*2 ) : 20.0
+        
+        print("Slider \(currentValue)")
+        print("cam distance \(globalCamDistance.gCamDistance )")
+        print("cam duration \(globalCamDuration.gCamDuration)")
+        print("arraystep \(globalArrayStep.gArrayStep)")
+        print("camPitch \(globalCamPitch.gCamPitch)")
+        
+    }
 
     
     //

@@ -368,6 +368,15 @@
                                     <action selector="flyRoute:" destination="iyu-JC-65F" eventType="touchUpInside" id="C9X-QD-Qou"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="xks-xM-dmC">
+                                <rect key="frame" x="300" y="450" width="250" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="246" id="c5s-op-0mt"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="iyu-JC-65F" eventType="valueChanged" id="Ki6-J3-cRa"/>
+                                </connections>
+                            </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LW-L1-BfS">
                                 <rect key="frame" x="533" y="518" width="48" height="30"/>
                                 <state key="normal" title="Cancel"/>
@@ -386,12 +395,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hO5-hV-98Y" firstAttribute="top" secondItem="KOa-KO-rv5" secondAttribute="bottom" constant="16" id="6F7-Wd-cwL"/>
+                            <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="xks-xM-dmC" secondAttribute="bottom" constant="20" id="7XM-rR-USU"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="top" id="AKq-CU-75N"/>
                             <constraint firstItem="DQy-hN-GTd" firstAttribute="top" secondItem="LL4-55-Ew9" secondAttribute="bottom" id="CbX-Va-R3M"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="LL4-55-Ew9" secondAttribute="trailing" constant="-298" id="KwL-fe-tIO"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="bottom" constant="-100" id="P6f-B0-05X"/>
                             <constraint firstItem="LL4-55-Ew9" firstAttribute="top" secondItem="Jn9-UP-3oa" secondAttribute="bottom" constant="10" id="ULx-z7-tch"/>
                             <constraint firstItem="Jn9-UP-3oa" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-10" id="Wpm-w6-4YL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="xks-xM-dmC" secondAttribute="trailing" constant="32" id="b8P-Kd-PZ6"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="DQy-hN-GTd" secondAttribute="trailing" constant="-298" id="bcs-vw-dGx"/>
                             <constraint firstItem="Jn9-UP-3oa" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="topMargin" constant="16" id="c3E-6U-3U7"/>
                             <constraint firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="ctW-ro-1Sg"/>
@@ -413,6 +424,7 @@
                         <outlet property="DistanceLabel" destination="LL4-55-Ew9" id="pc1-U8-TSt"/>
                         <outlet property="SpeedLabel" destination="Jn9-UP-3oa" id="7h6-dr-O1d"/>
                         <outlet property="TimeLabel" destination="DQy-hN-GTd" id="KIX-3o-4lW"/>
+                        <outlet property="cameraSlider" destination="xks-xM-dmC" id="wMz-DK-ljr"/>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="flyButton" destination="KOa-KO-rv5" id="QBm-2s-Uy4"/>
                         <outlet property="mapViewShow" destination="1hV-rc-YM3" id="4JL-ss-03s"/>
