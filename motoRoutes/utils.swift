@@ -24,8 +24,27 @@ public class utils {
     class func getSpeedIndex(speed:Double) -> Int{
     
         let speedIndex = Int(round((speed*3.6)/10))
+        
+        switch speedIndex {
+        
+        case 0..<5:
+            return 5
+            
+        case 5..<8:
+            return 8
+            
+        case 8..<11:
+            return 11
+        
+        case 11..<18:
+            return 14
+            
+        default:
+            return 1
+            
+        }
     
-        return speedIndex
+       // return speedIndex
     
     }
     

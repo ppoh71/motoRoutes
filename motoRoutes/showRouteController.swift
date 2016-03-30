@@ -22,6 +22,7 @@ class showRouteController: UIViewController {
     @IBOutlet var SpeedLabel:UILabel!
     @IBOutlet var DistanceLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
+    @IBOutlet var AltitudeLabel:UILabel!
     @IBOutlet var cameraSlider:UISlider!
     
     @IBOutlet var mapViewShow: MGLMapView!
@@ -35,13 +36,13 @@ class showRouteController: UIViewController {
     
     //media stuff
     var markerImageName:String = ""
-   
+    
     
     //
     @IBAction func sliderValueChanged(sender: UISlider) {
         let currentValue = Int(sender.value)
         
-       
+        
         globalCamDistance.gCamDistance = Double(50*currentValue)
         globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
         globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
@@ -54,7 +55,7 @@ class showRouteController: UIViewController {
         print("camPitch \(globalCamPitch.gCamPitch)")
         
     }
-
+    
     
     //
     // override func super init
@@ -64,7 +65,7 @@ class showRouteController: UIViewController {
         
         
         screenshotButton.tintColor = globalColor.gColor
-     
+        
         let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
         _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
@@ -96,17 +97,17 @@ class showRouteController: UIViewController {
         
         
         for media in motoRoute.mediaList {
-        
+            
             let newMarker = MGLPointAnnotation()
             newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
             newMarker.title = media.image
             
             markerImageName =  media.image
-        
-        mapViewShow.addAnnotation(newMarker)
-        
+            
+            mapViewShow.addAnnotation(newMarker)
+            
         }
-
+        
     }
     
     
@@ -130,11 +131,11 @@ class showRouteController: UIViewController {
         
         //make route fly
         print("let it fly")
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel)
-    
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel)
+        
     }
     
-
+    
 }
 
 
@@ -156,22 +157,22 @@ extension showRouteController: MGLMapViewDelegate {
         let  annotationImage = MGLAnnotationImage(image: thumb, reuseIdentifier: "pisa")
         
         
-       // if annotationImage == nil {
-            // Leaning Tower of Pisa by Stefan Spieler from the Noun Project
-       //     var image = annotationImage
-            
-            // The anchor point of an annotation is currently always the center. To
-            // shift the anchor point to the bottom of the annotation, the image
-            // asset includes transparent bottom padding equal to the original image
-            // height.
-            //
-            // To make this padding non-interactive, we create another image object
-            // with a custom alignment rect that excludes the padding.
-      //      image = image!.imageWithAlignmentRectInsets(UIEdgeInsetsMake(0, 0, image!.size.height/2, 0))
-            
-            // Initialize the ‘pisa’ annotation image with the UIImage we just loaded
+        // if annotationImage == nil {
+        // Leaning Tower of Pisa by Stefan Spieler from the Noun Project
+        //     var image = annotationImage
+        
+        // The anchor point of an annotation is currently always the center. To
+        // shift the anchor point to the bottom of the annotation, the image
+        // asset includes transparent bottom padding equal to the original image
+        // height.
+        //
+        // To make this padding non-interactive, we create another image object
+        // with a custom alignment rect that excludes the padding.
+        //      image = image!.imageWithAlignmentRectInsets(UIEdgeInsetsMake(0, 0, image!.size.height/2, 0))
+        
+        // Initialize the ‘pisa’ annotation image with the UIImage we just loaded
         //    annotationImage = MGLAnnotationImage(image: image!)
-      //  }
+        //  }
         
         return annotationImage
     }
@@ -180,7 +181,7 @@ extension showRouteController: MGLMapViewDelegate {
         // Always allow callouts to popup when annotations are tapped
         return true
     }
-
+    
     
     func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
         // Set the alpha for all shape annotations to 1 (full opacity)

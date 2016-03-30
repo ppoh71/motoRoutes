@@ -16,7 +16,7 @@ import Mapbox
 class mapFx {
     
     
-
+    
     
     /*
     
@@ -94,7 +94,7 @@ class mapFx {
         }
         
         print(" coord count  \(_LocationMaster.count)")
-       // print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+        // print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
     
     
@@ -154,7 +154,7 @@ class mapFx {
      *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel?) {
         
         
         let count = _LocationMaster.count
@@ -163,14 +163,14 @@ class mapFx {
         var headingCourse:Double = 0.0
         //var arrayStep:Int = 5 // play ever n location from arr
         //var plabckCameraDuration:Double = 0.2
-       // var cameraDistance = globalCamDistance.gCamDistance
+        // var cameraDistance = globalCamDistance.gCamDistance
         var distance = 0.0
         var timeeSpent = 0
         
         
         /**
-        *  Camera fly to fx
-        **/
+         *  Camera fly to fx
+         **/
         func fly(var n:Int, pitch: CGFloat, heading:Double){
             
             
@@ -178,10 +178,10 @@ class mapFx {
             headingCourse = _LocationMaster[n].course
             
             /**
-            *  Get some Data for Lables and Stuff
-            **/
-            
-            //Distrance Calc from A B
+             *  Get some Data for Lables and Stuff
+             **/
+             
+             //Distrance Calc from A B
             let nextIndex = n+globalArrayStep.gArrayStep < _LocationMaster.count ? n+globalArrayStep.gArrayStep : _LocationMaster.count-1
             let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
             let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
@@ -212,23 +212,23 @@ class mapFx {
             
             //Update UILabel Distance
             if let tmpDistanceLabel = DistanceLabel {
-               // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
                 tmpDistanceLabel.text =  " \(utils.distanceFormat(distance)) km"
             }
             
             //Update UILabel Distance
             if let tmpTimeLabel = TimeLabel {
-               // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
                 tmpTimeLabel.text =  " \(timespendString) h"
             }
-           
+            
             
             /**
             * Let it fly
             **/
-         
+            
             mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
-            // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
+                // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
                 
                 // loop until end of array
                 if(n+globalArrayStep.gArrayStep < _LocationMaster.count){
@@ -240,7 +240,7 @@ class mapFx {
         
         // start the whole thing
         fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
-
+        
     }
     
     

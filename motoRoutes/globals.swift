@@ -46,7 +46,7 @@ class global {
     init(gArrayStep:Int){
         self.gArrayStep = gArrayStep
     }
-  
+    
 }
 
 
@@ -58,4 +58,3 @@ var globalCamDistance = global(gCamDistance: 1000)
 var globalCamDuration = global(gCamDuration: 0.2)
 var globalCamPitch = global(gCamPitch: 20)
 var globalArrayStep = global(gArrayStep: 1)
-

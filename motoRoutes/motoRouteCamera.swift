@@ -235,6 +235,7 @@ class motoRouteCamera: UIViewController {
        
         /** deubg testing on simulator **/
         //save to Media Object
+        /*
         let tmpMediaObject = MediaMaster()
         
         tmpMediaObject.latitude = self.latitude
@@ -245,6 +246,7 @@ class motoRouteCamera: UIViewController {
         self.MediaObjects.append(tmpMediaObject)
 
         print("########capture for simulator")
+        */
 
     }
     
