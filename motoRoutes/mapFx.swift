@@ -28,7 +28,7 @@ class mapFx {
         
         
         //performacne test
-        let x = CFAbsoluteTimeGetCurrent()
+        //let x = CFAbsoluteTimeGetCurrent()
         
         // define speedIndex
         var speedIndex:Int = 0
@@ -50,6 +50,7 @@ class mapFx {
             
             //get speed index
             speedIndex = utils.getSpeedIndex(location.speed)
+            //speedIndex = 11
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
@@ -151,16 +152,16 @@ class mapFx {
      *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel:UILabel?) {
         
         
         let count = _LocationMaster.count
         var n = 0
         var pitchCamera:CGFloat = 80.0
         var headingCourse:Double = 0.0
-        var arrayStep:Int = 5 // play ever n location from arr
+        var arrayStep:Int = 12 // play ever n location from arr
         var plabckCameraDuration:Double = 0.2
-        var cameraDistance:Double = 1150.00
+        var cameraDistance:Double = 6150.00
         var distance = 0.0
         var timeeSpent = 0
         
@@ -172,18 +173,18 @@ class mapFx {
             
             
             //assign course of locationfor camera animation
-            headingCourse = _LocationMaster[n].course
+            //headingCourse = _LocationMaster[n].course
             
             /**
             *  Get some Data for Lables and Stuff
             **/
             
             //Distrance Calc from A B
-            let nextIndex = n+arrayStep < _LocationMaster.count ? n+5 : _LocationMaster.count-1
+            let nextIndex = n+arrayStep < _LocationMaster.count ? n+arrayStep : _LocationMaster.count-1
             let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
             let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
             distance += _locationA.distanceFromLocation(_locationB)
-            
+            print("distance \(_locationB.distanceFromLocation(_locationA))")
             
             //time spend on road
             let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
@@ -202,22 +203,34 @@ class mapFx {
             //Update UILabel Speed
             if let tmpSpeedLabel = SpeedLabel {
                 tmpSpeedLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed)) km/h"
+                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
             }
             
             //Update UILabel Distance
             if let tmpDistanceLabel = DistanceLabel {
                // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance)) km"
+                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
             }
             
             //Update UILabel Distance
             if let tmpTimeLabel = TimeLabel {
                // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpTimeLabel.text =  " \(timespendString) h"
+                tmpTimeLabel.text =  " \(timespendString)"
             }
            
+            //Update UILabel Distance
+            if let tmpAltitudeLabel = AltitudeLabel {
+                // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                tmpAltitudeLabel.text =  " \(round(_LocationMaster[n].altitude))"
+            }
             
+            //print("alti \(_LocationMaster[n].altitude)")
+            
+            print(_LocationMaster[n].speed)
+            print(_LocationMaster[n].longitude)
+            print(_LocationMaster[n].latitude)
+            print(_LocationMaster[n].altitude)
+            print(_LocationMaster[n].timestamp)
             /**
             * Let it fly
             **/

@@ -21,6 +21,7 @@ class showRouteController: UIViewController {
     @IBOutlet var flyButton:UIButton!
     @IBOutlet var SpeedLabel:UILabel!
     @IBOutlet var DistanceLabel:UILabel!
+    @IBOutlet var AltitudeLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
     @IBOutlet var mapViewShow: MGLMapView!
     
@@ -72,7 +73,7 @@ class showRouteController: UIViewController {
         
         
         //Media Objects
-        print("########MediaObjects \(motoRoute.mediaList)")
+       // print("########MediaObjects \(motoRoute.mediaList)")
         
         
         for media in motoRoute.mediaList {
@@ -86,7 +87,7 @@ class showRouteController: UIViewController {
         mapViewShow.addAnnotation(newMarker)
         
         }
-
+    
     }
     
     
@@ -110,7 +111,7 @@ class showRouteController: UIViewController {
         
         //make route fly
         print("let it fly")
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel)
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel)
     
     }
     
@@ -127,13 +128,13 @@ extension showRouteController: MGLMapViewDelegate {
     func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         // Try to reuse the existing ‘pisa’ annotation image, if it exists
-        let image = utils.loadImageFromName(markerImageName)
-        let thumb = utils.resizeImage(image!, newWidth: 50)
+        let image = UIImage(named: "ic_photo_camera_white_48dp")
+        let thumb = utils.resizeImage(image!, newWidth: 40)
         
         
         //let image = UIImage(named: "ic_info_48pt")!
         
-        let  annotationImage = MGLAnnotationImage(image: thumb, reuseIdentifier: "pisa")
+        let  annotationImage = MGLAnnotationImage(image: thumb, reuseIdentifier: "photo")
         
         
        // if annotationImage == nil {

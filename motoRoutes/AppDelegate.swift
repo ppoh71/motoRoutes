@@ -20,7 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        
         // Override point for customization after application launch.
+        Fabric.sharedSDK().debug = true
         Fabric.with([Crashlytics.self])
         
         Realm.Configuration.defaultConfiguration = Realm.Configuration(
