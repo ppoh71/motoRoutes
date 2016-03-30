@@ -15,6 +15,9 @@ import Mapbox
 
 class mapFx {
     
+    
+    
+    
     /*
     
     Print route with colored polylines
@@ -28,7 +31,7 @@ class mapFx {
         
         
         //performacne test
-        //let x = CFAbsoluteTimeGetCurrent()
+        let x = CFAbsoluteTimeGetCurrent()
         
         // define speedIndex
         var speedIndex:Int = 0
@@ -50,7 +53,6 @@ class mapFx {
             
             //get speed index
             speedIndex = utils.getSpeedIndex(location.speed)
-            //speedIndex = 11
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
@@ -92,7 +94,7 @@ class mapFx {
         }
         
         print(" coord count  \(_LocationMaster.count)")
-       // print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+        // print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
     
     
@@ -152,46 +154,48 @@ class mapFx {
      *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel:UILabel?) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel?) {
         
         
         let count = _LocationMaster.count
         var n = 0
-        var pitchCamera:CGFloat = 80.0
+        //var pitchCamera:CGFloat = 20.0
         var headingCourse:Double = 0.0
-        var arrayStep:Int = 12 // play ever n location from arr
-        var plabckCameraDuration:Double = 0.2
-        var cameraDistance:Double = 6150.00
+        //var arrayStep:Int = 5 // play ever n location from arr
+        //var plabckCameraDuration:Double = 0.2
+        // var cameraDistance = globalCamDistance.gCamDistance
         var distance = 0.0
         var timeeSpent = 0
         
         
         /**
-        *  Camera fly to fx
-        **/
+         *  Camera fly to fx
+         **/
         func fly(var n:Int, pitch: CGFloat, heading:Double){
             
             
             //assign course of locationfor camera animation
-            //headingCourse = _LocationMaster[n].course
+            headingCourse = _LocationMaster[n].course
             
             /**
-            *  Get some Data for Lables and Stuff
-            **/
-            
-            //Distrance Calc from A B
-            let nextIndex = n+arrayStep < _LocationMaster.count ? n+arrayStep : _LocationMaster.count-1
+             *  Get some Data for Lables and Stuff
+             **/
+             
+             //Distrance Calc from A B
+            let nextIndex = n+globalArrayStep.gArrayStep < _LocationMaster.count ? n+globalArrayStep.gArrayStep : _LocationMaster.count-1
             let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
             let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
+            
+            //set distance
             distance += _locationA.distanceFromLocation(_locationB)
-            print("distance \(_locationB.distanceFromLocation(_locationA))")
+            
             
             //time spend on road
             let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
             let timespendString = utils.clockFormatShort(Int(elapsedTime))
             
             //define camera for flyTo ani
-            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:cameraDistance, pitch: pitchCamera, heading: heading)
+            let camera = mapFx.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: heading)
             let speed = _LocationMaster[n].speed
             let speedIndex = utils.getSpeedIndex(speed)
             
@@ -203,52 +207,40 @@ class mapFx {
             //Update UILabel Speed
             if let tmpSpeedLabel = SpeedLabel {
                 tmpSpeedLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
+                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed)) km/h"
             }
             
             //Update UILabel Distance
             if let tmpDistanceLabel = DistanceLabel {
-               // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
+                // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance)) km"
             }
             
             //Update UILabel Distance
             if let tmpTimeLabel = TimeLabel {
-               // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpTimeLabel.text =  " \(timespendString)"
-            }
-           
-            //Update UILabel Distance
-            if let tmpAltitudeLabel = AltitudeLabel {
                 // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpAltitudeLabel.text =  " \(round(_LocationMaster[n].altitude))"
+                tmpTimeLabel.text =  " \(timespendString) h"
             }
             
-            //print("alti \(_LocationMaster[n].altitude)")
             
-            print(_LocationMaster[n].speed)
-            print(_LocationMaster[n].longitude)
-            print(_LocationMaster[n].latitude)
-            print(_LocationMaster[n].altitude)
-            print(_LocationMaster[n].timestamp)
             /**
             * Let it fly
             **/
-         
-            mapView.setCamera(camera, withDuration: plabckCameraDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
-            // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
+            
+            mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
+                // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
                 
                 // loop until end of array
-                if(n+arrayStep < _LocationMaster.count){
-                    n = n+arrayStep
-                    fly(n, pitch: pitchCamera, heading: headingCourse)
+                if(n+globalArrayStep.gArrayStep < _LocationMaster.count){
+                    n = n+globalArrayStep.gArrayStep
+                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
                 }
             }
         }
         
         // start the whole thing
-        fly(n, pitch: pitchCamera, heading: headingCourse)
-
+        fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
+        
     }
     
     

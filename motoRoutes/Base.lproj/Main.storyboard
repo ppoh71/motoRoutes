@@ -317,10 +317,21 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="OFE-qg-gVK">
+                                        <rect key="frame" x="287" y="495" width="254" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="250" id="QQV-wu-6d7"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="sliderValueChanged:" destination="iyu-JC-65F" eventType="valueChanged" id="BjM-uw-a0h"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="OFE-qg-gVK" secondAttribute="bottom" constant="75" id="nFu-ht-jEF"/>
                                     <constraint firstItem="Jn9-UP-3oa" firstAttribute="leading" secondItem="1hV-rc-YM3" secondAttribute="leading" constant="25" id="q4T-Ch-kPa"/>
+                                    <constraint firstAttribute="trailing" secondItem="OFE-qg-gVK" secondAttribute="trailing" constant="61" id="ywK-Ln-qnZ"/>
                                     <constraint firstItem="Jn9-UP-3oa" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="top" constant="282" id="zXf-i8-qvt"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -480,10 +491,10 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="AltitudeLabel" destination="gjQ-bx-PQY" id="VeW-U7-s5d"/>
                         <outlet property="DistanceLabel" destination="LL4-55-Ew9" id="pc1-U8-TSt"/>
                         <outlet property="SpeedLabel" destination="Jn9-UP-3oa" id="7h6-dr-O1d"/>
                         <outlet property="TimeLabel" destination="DQy-hN-GTd" id="KIX-3o-4lW"/>
+                        <outlet property="cameraSlider" destination="OFE-qg-gVK" id="5KB-a1-Oj9"/>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="flyButton" destination="KOa-KO-rv5" id="QBm-2s-Uy4"/>
                         <outlet property="mapViewShow" destination="1hV-rc-YM3" id="4JL-ss-03s"/>
