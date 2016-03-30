@@ -54,7 +54,7 @@ class colorStyles {
        var colorSpeed: [String] = ["#ffffff", "#E8F5E9", "#C8E6C9", "#A5D6A7", "#81C784", "#66BB6A", "#4CAF50", "#43A047", "#388E3C", "#2E7D32", "#1B5E20", "#F48FB1", "#F06292", "#EC407A", "#E91E63", "#D81B60", "#C2185B", "#AD1457", "#880E4F", "#E53935", "#D32F2F", "#C62828", "#B71C1C", "#B71C1C", "#B71C1C", "#B71C1C"]
         
         //color var
-        print("color operation")
+        //print("color operation")
         
         //get a speed int to look up the colorspeed array
         var speedInt:Int = speed
@@ -66,7 +66,7 @@ class colorStyles {
             speedInt = 25
         }
         
-        print(speedInt)
+        //print(speedInt)
         
         //retrun converted color speed color in ui.color
         return colorStyles.hexTorgbColor(colorSpeed[speedInt])

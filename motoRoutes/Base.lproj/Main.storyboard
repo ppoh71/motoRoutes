@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -44,7 +44,7 @@
                                 <rect key="frame" x="0.0" y="101" width="600" height="230"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="229.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="229"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh">
@@ -318,7 +318,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="OFE-qg-gVK">
-                                        <rect key="frame" x="287" y="495" width="254" height="31"/>
+                                        <rect key="frame" x="339" y="434" width="254" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="250" id="QQV-wu-6d7"/>
                                         </constraints>
@@ -326,12 +326,21 @@
                                             <action selector="sliderValueChanged:" destination="iyu-JC-65F" eventType="valueChanged" id="BjM-uw-a0h"/>
                                         </connections>
                                     </slider>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3l9-36-9cr">
+                                        <rect key="frame" x="334" y="512" width="254" height="31"/>
+                                        <connections>
+                                            <action selector="sliderRouteChanged:" destination="iyu-JC-65F" eventType="valueChanged" id="4zg-iM-EJ0"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="OFE-qg-gVK" secondAttribute="bottom" constant="75" id="nFu-ht-jEF"/>
+                                    <constraint firstAttribute="trailing" secondItem="3l9-36-9cr" secondAttribute="trailing" constant="14" id="DdY-XE-mAW"/>
+                                    <constraint firstItem="3l9-36-9cr" firstAttribute="leading" secondItem="OFE-qg-gVK" secondAttribute="leading" constant="-5" id="QaF-2E-jXI"/>
+                                    <constraint firstAttribute="bottom" secondItem="3l9-36-9cr" secondAttribute="bottom" constant="58" id="eWs-T7-uUe"/>
+                                    <constraint firstAttribute="bottom" secondItem="OFE-qg-gVK" secondAttribute="bottom" constant="136" id="nFu-ht-jEF"/>
                                     <constraint firstItem="Jn9-UP-3oa" firstAttribute="leading" secondItem="1hV-rc-YM3" secondAttribute="leading" constant="25" id="q4T-Ch-kPa"/>
-                                    <constraint firstAttribute="trailing" secondItem="OFE-qg-gVK" secondAttribute="trailing" constant="61" id="ywK-Ln-qnZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="OFE-qg-gVK" secondAttribute="trailing" constant="9" id="ywK-Ln-qnZ"/>
                                     <constraint firstItem="Jn9-UP-3oa" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="top" constant="282" id="zXf-i8-qvt"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -367,10 +376,10 @@
                                     <action selector="flyRoute:" destination="iyu-JC-65F" eventType="touchUpInside" id="C9X-QD-Qou"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LW-L1-BfS">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LW-L1-BfS">
                                 <rect key="frame" x="540" y="20" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" image="ic_panorama_fish_eye_48pt">
+                                <state key="normal" image="ic_info_48pt">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -498,6 +507,7 @@
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="flyButton" destination="KOa-KO-rv5" id="QBm-2s-Uy4"/>
                         <outlet property="mapViewShow" destination="1hV-rc-YM3" id="4JL-ss-03s"/>
+                        <outlet property="routeSlider" destination="3l9-36-9cr" id="tpN-v9-vhk"/>
                         <outlet property="screenshotButton" destination="OYv-Yc-Cvc" id="w5u-ab-Hqw"/>
                     </connections>
                 </viewController>

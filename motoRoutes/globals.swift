@@ -47,6 +47,13 @@ class global {
         self.gArrayStep = gArrayStep
     }
     
+    
+    //steps throu Location Array
+    var gAutoplay:Bool = false
+    init(gAutoplay:Bool){
+        self.gAutoplay = gAutoplay
+    }
+    
 }
 
 
@@ -58,3 +65,4 @@ var globalCamDistance = global(gCamDistance: 1000)
 var globalCamDuration = global(gCamDuration: 0.2)
 var globalCamPitch = global(gCamPitch: 20)
 var globalArrayStep = global(gArrayStep: 1)
+var globalAutoplay = global(gAutoplay: false)

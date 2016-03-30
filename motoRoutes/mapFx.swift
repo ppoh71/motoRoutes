@@ -154,11 +154,11 @@ class mapFx {
      *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel?) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, autoplay: Bool, n: Int, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel? ) {
         
         
         let count = _LocationMaster.count
-        var n = 0
+        //var n = 0
         //var pitchCamera:CGFloat = 20.0
         var headingCourse:Double = 0.0
         //var arrayStep:Int = 5 // play ever n location from arr
@@ -207,19 +207,19 @@ class mapFx {
             //Update UILabel Speed
             if let tmpSpeedLabel = SpeedLabel {
                 tmpSpeedLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed)) km/h"
+                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
             }
             
             //Update UILabel Distance
             if let tmpDistanceLabel = DistanceLabel {
                 // tmpDistanceLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance)) km"
+                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
             }
             
             //Update UILabel Distance
             if let tmpTimeLabel = TimeLabel {
                 // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
-                tmpTimeLabel.text =  " \(timespendString) h"
+                tmpTimeLabel.text =  " \(timespendString)"
             }
             
             
@@ -231,7 +231,7 @@ class mapFx {
                 // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
                 
                 // loop until end of array
-                if(n+globalArrayStep.gArrayStep < _LocationMaster.count){
+                if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true){
                     n = n+globalArrayStep.gArrayStep
                     fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
                 }

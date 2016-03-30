@@ -24,6 +24,7 @@ class showRouteController: UIViewController {
     @IBOutlet var TimeLabel:UILabel!
     @IBOutlet var AltitudeLabel:UILabel!
     @IBOutlet var cameraSlider:UISlider!
+    @IBOutlet var routeSlider:UISlider!
     
     @IBOutlet var mapViewShow: MGLMapView!
     
@@ -37,22 +38,38 @@ class showRouteController: UIViewController {
     //media stuff
     var markerImageName:String = ""
     
+    //slider route value
+    var sliderRouteValue = 0
+    
     
     //
     @IBAction func sliderValueChanged(sender: UISlider) {
         let currentValue = Int(sender.value)
         
         
-        globalCamDistance.gCamDistance = Double(50*currentValue)
+        globalCamDistance.gCamDistance = Double(200*currentValue)
         globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
         globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
         globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(currentValue*2 ) : 20.0
         
-        print("Slider \(currentValue)")
+        print("Slider Camera Position \(currentValue)")
         print("cam distance \(globalCamDistance.gCamDistance )")
         print("cam duration \(globalCamDuration.gCamDuration)")
         print("arraystep \(globalArrayStep.gArrayStep)")
         print("camPitch \(globalCamPitch.gCamPitch)")
+        
+    }
+    
+    
+    //
+    @IBAction func sliderRouteChanged(sender: UISlider) {
+        sliderRouteValue = Int(sender.value)
+        
+        
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, autoplay: false, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel )
+        
+        print("Slider Route \(sliderRouteValue)")
+
         
     }
     
@@ -64,7 +81,12 @@ class showRouteController: UIViewController {
         super.viewDidLoad()
         
         
+        //color speed label
         screenshotButton.tintColor = globalColor.gColor
+        
+        //set max on route slider
+        routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
+        
         
         let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
@@ -129,9 +151,13 @@ class showRouteController: UIViewController {
     // new screenshot
     @IBAction func flyRoute(sender: UIButton) {
         
+        
+        //switch
+        globalAutoplay.gAutoplay = globalAutoplay.gAutoplay==false ? true : false
+        
         //make route fly
         print("let it fly")
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel)
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow,  autoplay: true, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel)
         
     }
     
@@ -154,7 +180,7 @@ extension showRouteController: MGLMapViewDelegate {
         
         //let image = UIImage(named: "ic_info_48pt")!
         
-        let  annotationImage = MGLAnnotationImage(image: thumb, reuseIdentifier: "pisa")
+        let  annotationImage = MGLAnnotationImage(image: thumb, reuseIdentifier: markerImageName)
         
         
         // if annotationImage == nil {
