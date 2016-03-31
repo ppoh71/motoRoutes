@@ -25,6 +25,7 @@ class showRouteController: UIViewController {
     @IBOutlet var AltitudeLabel:UILabel!
     @IBOutlet var cameraSlider:UISlider!
     @IBOutlet var routeSlider:UISlider!
+    @IBOutlet var routeImageView:UIImageView!
     
     @IBOutlet var mapViewShow: MGLMapView!
     
@@ -50,7 +51,7 @@ class showRouteController: UIViewController {
         globalCamDistance.gCamDistance = Double(200*currentValue)
         globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
         globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
-        globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(currentValue*2 ) : 20.0
+        globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(60 ) : 60.0
         
         print("Slider Camera Position \(currentValue)")
         print("cam distance \(globalCamDistance.gCamDistance )")
@@ -65,8 +66,9 @@ class showRouteController: UIViewController {
     @IBAction func sliderRouteChanged(sender: UISlider) {
         sliderRouteValue = Int(sender.value)
         
+        globalAutoplay.gAutoplay = false
         
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, autoplay: false, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel )
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider )
         
         print("Slider Route \(sliderRouteValue)")
 
@@ -122,7 +124,8 @@ class showRouteController: UIViewController {
             
             let newMarker = MGLPointAnnotation()
             newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
-            newMarker.title = media.image
+            newMarker.subtitle = media.image
+           // newMarker.description = media.image
             
             markerImageName =  media.image
             
@@ -157,7 +160,7 @@ class showRouteController: UIViewController {
         
         //make route fly
         print("let it fly")
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow,  autoplay: true, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel)
+        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
         
     }
     
@@ -201,6 +204,18 @@ extension showRouteController: MGLMapViewDelegate {
         //  }
         
         return annotationImage
+    }
+    
+    func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
+        
+        print("annotation")
+        print(" a \(annotation.subtitle!!)")
+        let imgNameAnnotation = annotation.subtitle!!
+        let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
+        let image = utils.loadImageFromPath(imgPath)
+        
+        routeImageView.image = image
+        
     }
     
     func mapView(mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {

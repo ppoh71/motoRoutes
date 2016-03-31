@@ -154,7 +154,7 @@ class mapFx {
      *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, autoplay: Bool, n: Int, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel? ) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel?, RouteSlider: UISlider? ) {
         
         
         let count = _LocationMaster.count
@@ -201,7 +201,7 @@ class mapFx {
             
             
             /**
-            *  Update Lables
+            *  Update Lables / Slider
             **/
             
             //Update UILabel Speed
@@ -222,6 +222,11 @@ class mapFx {
                 tmpTimeLabel.text =  " \(timespendString)"
             }
             
+            //Update UILabel Distance
+            if let tmpRouteSlider = RouteSlider {
+                // tmpTimeLabel.textColor =  colorStyles.polylineColors(speedIndex)
+                tmpRouteSlider.setValue(Float(n), animated: true)
+            }
             
             /**
             * Let it fly
