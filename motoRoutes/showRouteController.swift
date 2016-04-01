@@ -29,6 +29,10 @@ class showRouteController: UIViewController {
     
     @IBOutlet var mapViewShow: MGLMapView!
     
+    //add gesture
+    var toggleImageViewGesture = UISwipeGestureRecognizer()
+
+    
     // Get the default Realm
     let realm = try! Realm()
     
@@ -90,11 +94,11 @@ class showRouteController: UIViewController {
         routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
         
         
-        let x = CFAbsoluteTimeGetCurrent()
+        //let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
         _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
         
-        print(utils.absolutePeromanceTime(x))
+        //print(utils.absolutePeromanceTime(x))
         print(_LocationMaster.count)
         
         //center mapview to route coords
@@ -102,6 +106,13 @@ class showRouteController: UIViewController {
         mapViewShow.camera.heading = 60
         
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
+        
+        // Toggle Camera recognizer
+        toggleImageViewGesture.direction = .Right
+        toggleImageViewGesture.addTarget(self, action: "togglePhotoView")
+        routeImageView.addGestureRecognizer(toggleImageViewGesture)
+        routeImageView.userInteractionEnabled = true
+        
         
         
         
@@ -112,12 +123,11 @@ class showRouteController: UIViewController {
         
         mapFx.printRoute(_LocationMaster, mapView: mapViewShow)
         
-        // Wait a bit before setting a new camera.
-        mapFx.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
+        //mapFx.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
         
         
         //Media Objects
-        print("########MediaObjects \(motoRoute.mediaList)")
+        //print("########MediaObjects \(motoRoute.mediaList)")
         
         
         for media in motoRoute.mediaList {
@@ -162,6 +172,26 @@ class showRouteController: UIViewController {
         print("let it fly")
         mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
         
+        
+        
+    }
+    
+    
+    func togglePhotoView(){
+    
+    
+        let animateX:CGFloat = self.routeImageView.frame.origin.x<100 ? 320 : -320; //animnate x var
+        print("x: \(self.routeImageView.frame.origin.x)")
+    
+        //aimate view
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+            
+            self.routeImageView.transform = CGAffineTransformMakeTranslation(animateX, 0)
+            
+            }, completion: nil)
+    
+        print("x: \(self.routeImageView.frame.origin.x)")
+        
     }
     
     
@@ -174,16 +204,16 @@ class showRouteController: UIViewController {
 extension showRouteController: MGLMapViewDelegate {
     
     
-    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
+  //  func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         // Try to reuse the existing ‘pisa’ annotation image, if it exists
-        let image = utils.loadImageFromName(markerImageName)
-        let thumb = utils.resizeImage(image!, newWidth: 50)
+        //let image = utils.loadImageFromName(markerImageName)
+        //let thumb = utils.resizeImage(image!, newWidth: 50)
         
         
-        //let image = UIImage(named: "ic_info_48pt")!
+       // let image = UIImage(named: "ic_photo_camera_white_48pt")!
         
-        let  annotationImage = MGLAnnotationImage(image: thumb, reuseIdentifier: markerImageName)
+       // let  annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routePhoto")
         
         
         // if annotationImage == nil {
@@ -203,8 +233,8 @@ extension showRouteController: MGLMapViewDelegate {
         //    annotationImage = MGLAnnotationImage(image: image!)
         //  }
         
-        return annotationImage
-    }
+        // return annotationImage
+  //  }
     
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
         
@@ -214,7 +244,13 @@ extension showRouteController: MGLMapViewDelegate {
         let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
         let image = utils.loadImageFromPath(imgPath)
         
+        //show image
         routeImageView.image = image
+        togglePhotoView()
+        
+        //deselect annotation
+        mapView.deselectAnnotation(annotation, animated: false)
+        
         
     }
     

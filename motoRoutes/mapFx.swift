@@ -35,6 +35,7 @@ class mapFx {
         
         // define speedIndex
         var speedIndex:Int = 0
+        var cnt = 0
         
         //guard for print routes
         guard _LocationMaster.count > 2 else {
@@ -48,15 +49,20 @@ class mapFx {
         //reset global spped set to zero
         globalSpeedSet.speedSet = 0
         
+        //array offset, to print not all routes due to performancee
+        
         //loop through LocationMaster
         for location in _LocationMaster {
             
             //get speed index
             speedIndex = utils.getSpeedIndex(location.speed)
+
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+                
+                
                 
             } else{ // if the speedIndex is different, ad the last location and print the route
                 
@@ -70,13 +76,17 @@ class mapFx {
                 let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                 mapView.addAnnotation(line)
                 
+                cnt++
+                
                 //reset coord after printing the route, add last coord to connect poylines
                 coords = [CLLocationCoordinate2D]()
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
             }
             
-        }
+         }
+        
+        
         
         //print last routes set, for last spped loop
         if(coords.count>0){
@@ -87,6 +97,7 @@ class mapFx {
             //print route polygon
             let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
             mapView.addAnnotation(line)
+            cnt++
             
             //print the coords for the last run
             print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
@@ -94,7 +105,8 @@ class mapFx {
         }
         
         print(" coord count  \(_LocationMaster.count)")
-        // print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+         print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+         print("Printing routes \(cnt) ")
     }
     
     

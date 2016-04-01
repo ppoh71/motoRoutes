@@ -61,8 +61,8 @@ class global {
 var globalSpeedSet = global(speedSet:0)
 var globalColor = global(gColor: UIColor.whiteColor())
 
-var globalCamDistance = global(gCamDistance: 1000)
+var globalCamDistance = global(gCamDistance: 11500)
 var globalCamDuration = global(gCamDuration: 0.2)
-var globalCamPitch = global(gCamPitch: 20)
+var globalCamPitch = global(gCamPitch: 60)
 var globalArrayStep = global(gArrayStep: 1)
 var globalAutoplay = global(gAutoplay: false)
