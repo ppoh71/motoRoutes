@@ -35,10 +35,10 @@ public class utils {
         //case 5..<8:
          //  return 8
             
-        case 0..<6:
+        case 0..<8:
            return 5
         
-        case 6..<12:
+        case 8..<16:
             return 12
             
         case 12..<50:
