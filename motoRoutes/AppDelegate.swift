@@ -26,15 +26,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.sharedSDK().debug = true
         Fabric.with([Crashlytics.self])
         
+         print("oldschema \(Realm.Configuration.defaultConfiguration)")
+        
         Realm.Configuration.defaultConfiguration = Realm.Configuration(
-            schemaVersion: 1,
+            schemaVersion: 2,
             migrationBlock: { migration, oldSchemaVersion in
                 
-                print(oldSchemaVersion)
-                if (oldSchemaVersion < 1) {
+               
+                if (oldSchemaVersion < 2) {
                     // The enumerate(_:_:) method iterates
                     migration.enumerate(Location.className()) { oldObject, newObject in
-                        newObject!["course"] = 0.0
+                       // newObject!["course"] = 0.0
+                        newObject!["distance"] = 0.0
                     }
                 }
         })

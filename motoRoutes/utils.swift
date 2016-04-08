@@ -64,6 +64,18 @@ public class utils {
         
     }
     
+    
+    /**
+    * Sets globalSppedSet by given speed (m/s)
+    */
+    class func setGlobalSpeedSet(speed:Double){
+       
+        // define speedIndex and set first Index
+        let speedIndex:Int = utils.getSpeedIndex(speed)
+        globalSpeedSet.speedSet = speedIndex
+
+    }
+    
 
     /*
     * helper get Document Directory
@@ -117,7 +129,7 @@ public class utils {
     
     
     /*
-    * resize image 
+    * resize image by width, no transparncy on png
     */
     class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
         
@@ -130,6 +142,87 @@ public class utils {
         
         return newImage
     }
+    
+    
+
+    class  func scaleImage(image: UIImage, toSize newSize: CGSize) -> (UIImage) {
+        let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetInterpolationQuality(context, .High)
+        let flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
+        CGContextConcatCTM(context, flipVertical)
+        CGContextDrawImage(context, newRect, image.CGImage)
+        let newImage = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    
+    class func drawLineOnImage() -> UIImage{
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 10, height: 200), false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        
+        // awesome drawing code
+        let height = globalLineAltitude.gLineAltitude
+        //let rectangle = CGRect(x: 0, y: 0, width: 1, height: height)
+        
+        
+        CGContextMoveToPoint(context, 5, 100)
+        CGContextAddLineToPoint(context, 0, 100+CGFloat(height))
+       // print(height)
+        
+        CGContextSetFillColorWithColor(context, UIColor.blackColor().CGColor)
+        CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor)
+        CGContextSetLineWidth(context, 5)
+        CGContextSetAlpha(context,0.6);
+        CGContextDrawPath(context, .FillStroke)
+        
+        
+        //CGContextAddRect(context, rectangle)
+        
+        
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+    
+        return img
+    
+    }
+    
+    
+    
+    class func drawSpeedMarkerImage() -> UIImage{
+        
+       
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 20, height: 20), false, 0)
+        
+        let context = UIGraphicsGetCurrentContext()
+        let rectangle = CGRect(x: 25, y: 25, width: 25, height: 10)
+        
+         CGContextAddArc(context, 10, 10, 5, 0.0, CGFloat(M_PI * 2.0), 1)
+        
+        CGContextSetFillColorWithColor(context, colorStyles.polylineColors(globalSpeedSet.speedSet).CGColor)
+        CGContextSetStrokeColorWithColor(context, colorStyles.polylineColors(globalSpeedSet.speedSet).CGColor)
+        
+        CGContextSetLineWidth(context, 1)
+        
+        //CGContextAddRect(context, rectangle)
+       
+        CGContextDrawPath(context, .FillStroke)
+        
+        
+        
+
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return img
+        
+    }
+    
+    
     
     /*
     * check for connectivity, only wifi ?!
@@ -262,9 +355,19 @@ public class utils {
         newRoute.duration = totalTime
         newRoute.image = screenshotFilename
         
+        // distance calc
+        var locationDistance = 0.0
+        var lastLocation = LocationsRoute[0]
         
         //add Locations to Realm Objctes
         for location in LocationsRoute {
+            
+            
+            //calc distance
+            locationDistance += location.distanceFromLocation(lastLocation)
+            lastLocation = location
+            
+            print("locationdistance: \(locationDistance)" )
             
             let newLocation = Location()
             

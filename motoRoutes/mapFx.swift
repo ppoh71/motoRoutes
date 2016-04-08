@@ -33,10 +33,6 @@ class mapFx {
         //performacne test
         let x = CFAbsoluteTimeGetCurrent()
         
-        // define speedIndex
-        var speedIndex:Int = 0
-        var cnt = 0
-        
         //guard for print routes
         guard _LocationMaster.count > 2 else {
             print("GUARD print routes: not enough routes")
@@ -46,17 +42,24 @@ class mapFx {
         //init coords
         var coords = [CLLocationCoordinate2D]()
         
-        //reset global spped set to zero
-        globalSpeedSet.speedSet = 0
+        // define speedIndex and set first Index
+        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
+        globalSpeedSet.speedSet = speedIndex
         
-        //array offset, to print not all routes due to performancee
+        //temp speed
+        var tempSpeedIndex = speedIndex
+        
+        //reset global spped set to zero
+        
+        
         
         //loop through LocationMaster
         for location in _LocationMaster {
             
             //get speed index
             speedIndex = utils.getSpeedIndex(location.speed)
-
+            
+            
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
@@ -69,14 +72,12 @@ class mapFx {
                 //add first location with diff speedIndex to mind gaps
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
-                //set new speedindex, needed for coloring the route
-                globalSpeedSet.speedSet = speedIndex
-                
                 //print route polygon
                 let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
                 mapView.addAnnotation(line)
                 
-                cnt++
+                //set new speedindex, needed for coloring the route
+                globalSpeedSet.speedSet = speedIndex
                 
                 //reset coord after printing the route, add last coord to connect poylines
                 coords = [CLLocationCoordinate2D]()
@@ -97,7 +98,7 @@ class mapFx {
             //print route polygon
             let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
             mapView.addAnnotation(line)
-            cnt++
+       
             
             //print the coords for the last run
             print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
@@ -105,8 +106,8 @@ class mapFx {
         }
         
         print(" coord count  \(_LocationMaster.count)")
-         print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
-         print("Printing routes \(cnt) ")
+        print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+
     }
     
     

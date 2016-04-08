@@ -374,9 +374,9 @@ extension addRouteController: CLLocationManagerDelegate {
             
             
             /*
-                get current location on start 
-                and center map to it
-                write first location into locationsRoute[]
+            *   get current location on start
+            *   and center map to it
+            *   write first location into locationsRoute[]
             */
             if(recordingActive==false){
                 
@@ -391,74 +391,87 @@ extension addRouteController: CLLocationManagerDelegate {
             
             
             /*
-                if we have certain accuracy
-                start recording locations
+            *    if we have certain accuracy
+            *    start recording locations
             */
             if location.horizontalAccuracy < 50 && recordingActive==true {
                 
-                cnt++ //update location counter
+                cnt += 1 //update location counter
                 
                 //save startup location to locationRoute array object
-                if locationsRoute.count<1 {
+                if locationsRoute.count==0{
                     self.locationsRoute.append(location)
                 }
                 
                 
-                //update distance and coords if locationActive
-                //if self.locationsRoute.count > 0 {
-                    
-                    distance += location.distanceFromLocation(self.locationsRoute.last!)
-                  
-                    //set chords for routes
-                    var coords = [CLLocationCoordinate2D]()
-                    coords.append(self.locationsRoute.last!.coordinate)
-                    coords.append(location.coordinate)
-                    
-                    
-                    /* check if app is active and not in background */
-                    if UIApplication.sharedApplication().applicationState == .Active {
-                        
-                        //print missing coords when app was in background
-                        if(locationsRouteInactive.count > 2){
-                            
-                            //covert Realm LocationList to Location Master Object
-                            let _LocationMaster = utils.masterLocation(locationsRouteInactive)
-                            
-                            //print to map
-                            mapFx.printRoute(_LocationMaster, mapView: mapView)
-                            
-                            //reset locationsRouteInactive
-                            locationsRouteInactive = [CLLocation]()
-                            
-                        }
-                        
-                        //create Polyline and add route
-                        let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
-                        mapView.addAnnotation(line)
-                        
-                        
-                       //center mapview after every n loction update
-                        if(cnt==20){
-                            mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
-                            
-                            cnt=0 //reset counter
-                        }
-                     
-                    } else{ //save loactions when app is in background
-                        print("app not active, no map centering")
-                        
-                        //save locations while inactive
-                        locationsRouteInactive.append(location)
-                        
-                        cnt=0 //keep counter to zero in backgroud
-                        
-                    } 
-                    
-                    //save location to locationRoute array object
-                    self.locationsRoute.append(location)
+                //calc distance for display only
+                distance += location.distanceFromLocation(self.locationsRoute.last!)
+              
+                //set chords for routes
+                //var coords = [CLLocationCoordinate2D]()
+                //coords.append(self.locationsRoute.last!.coordinate)
+                //coords.append(location.coordinate)
                 
-                //} // loaction.Route.count
-    
+                //set GlobalSpeepSet
+                utils.setGlobalSpeedSet(location.speed)
+                
+                //set rather marker than print route
+                let newMarker = MGLPointAnnotation()
+                newMarker.coordinate = location.coordinate
+                mapView.addAnnotation(newMarker)
+                
+                
+                //center map
+                if(cnt==20){
+                    mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                    cnt=0 //reset counter
+                }
+                
+                /* check if app is active and not in background */
+                if UIApplication.sharedApplication().applicationState == .Active {
+                    
+                    //print missing coords when app was in background
+                    /*if(locationsRouteInactive.count > 2){
+                        
+                        //covert Realm LocationList to Location Master Object
+                        let _LocationMaster = utils.masterLocation(locationsRouteInactive)
+                        
+                        //print to map
+                        mapFx.printRoute(_LocationMaster, mapView: mapView)
+                        
+                        //reset locationsRouteInactive
+                        locationsRouteInactive = [CLLocation]()
+                        
+                    }*/
+                    
+                    //create Polyline and add route
+                    //let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+                    //mapView.addAnnotation(line)
+                    
+                    
+
+                    
+                   //center mapview after every n loction update
+                    
+                    /*if(cnt==20){
+                        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                        cnt=0 //reset counter
+                    }*/
+ 
+                 
+                } else{ //save loactions when app is in background
+                    print("app not active, no map centering")
+                    
+                    //save locations while inactive
+                    //locationsRouteInactive.append(location)
+                    
+                    //cnt=0 //keep counter to zero in backgroud
+                    
+                } 
+                
+                //save location to locationRoute array object
+                self.locationsRoute.append(location)
+                
             }
         
         }
@@ -471,6 +484,14 @@ extension addRouteController: CLLocationManagerDelegate {
 extension addRouteController: MGLMapViewDelegate {
     
 
+    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        // generate on thy fly images
+        let image = utils.drawSpeedMarkerImage()
+        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "line-x")
+        
+        return annotationImage
+    }
 
     func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
         print("failed loading mapr")
@@ -480,7 +501,6 @@ extension addRouteController: MGLMapViewDelegate {
          print("failed loading mapr")
     }
 
-    
 
     
     func mapViewWillStartRenderingMap(mapView: MGLMapView) {

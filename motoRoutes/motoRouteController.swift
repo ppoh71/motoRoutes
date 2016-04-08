@@ -32,6 +32,8 @@ class motoRouteController: UITableViewController {
         
         let realm = try! Realm()
         motoRoutes = realm.objects(Route)
+        
+        print(realm)
        
         print("is connected")
         print(utils.isConnected())

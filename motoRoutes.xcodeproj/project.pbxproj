@@ -10,10 +10,6 @@
 		5506E0D91C650A230091364B /* colorStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506E0D81C650A230091364B /* colorStyles.swift */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
-		5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654B1C5A7E53002628AD /* Realm.framework */; };
-		5535654E1C5A7E53002628AD /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654B1C5A7E53002628AD /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5535654F1C5A7E53002628AD /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654C1C5A7E53002628AD /* RealmSwift.framework */; };
-		553565501C5A7E53002628AD /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5535654C1C5A7E53002628AD /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RoutesRealm.swift */; };
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
@@ -30,21 +26,6 @@
 		A90D6F9B1C9471E2002E7980 /* globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* globals.swift */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		553565511C5A7E53002628AD /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				553565501C5A7E53002628AD /* RealmSwift.framework in Embed Frameworks */,
-				5535654E1C5A7E53002628AD /* Realm.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,8 +59,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5535654D1C5A7E53002628AD /* Realm.framework in Frameworks */,
-				5535654F1C5A7E53002628AD /* RealmSwift.framework in Frameworks */,
 				5559A81A1C747365008ACE74 /* MapKit.framework in Frameworks */,
 				A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */,
 			);
@@ -209,7 +188,6 @@
 				553AB4FA1C50056400AC12A5 /* Sources */,
 				553AB4FB1C50056400AC12A5 /* Frameworks */,
 				553AB4FC1C50056400AC12A5 /* Resources */,
-				553565511C5A7E53002628AD /* Embed Frameworks */,
 				553565531C5A8297002628AD /* ShellScript */,
 				730785E7596523B86C39B655 /* Embed Pods Frameworks */,
 				B89D7E4E1FCF75D199D2A36E /* Copy Pods Resources */,
@@ -292,7 +270,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework/strip-frameworks.sh\"\n";
+			shellScript = "
+";
 		};
 		557605FD1C6B316400EBDAE3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

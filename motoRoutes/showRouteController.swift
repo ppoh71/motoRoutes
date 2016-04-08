@@ -104,12 +104,14 @@ class showRouteController: UIViewController {
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
         mapViewShow.camera.heading = 60
+
+
         
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
         
         // Toggle Camera recognizer
         toggleImageViewGesture.direction = .Right
-        toggleImageViewGesture.addTarget(self, action: "togglePhotoView")
+        toggleImageViewGesture.addTarget(self, action: #selector(showRouteController.togglePhotoView))
         routeImageView.addGestureRecognizer(toggleImageViewGesture)
         routeImageView.userInteractionEnabled = true
         
@@ -130,15 +132,18 @@ class showRouteController: UIViewController {
         //print("########MediaObjects \(motoRoute.mediaList)")
         
         
-        for media in motoRoute.mediaList {
+        for media in _LocationMaster {
             
             let newMarker = MGLPointAnnotation()
+
             newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
-            newMarker.subtitle = media.image
+            newMarker.subtitle = "route marker"
+            // newMarker.subtitle = media.image
            // newMarker.description = media.image
+           globalLineAltitude.gLineAltitude = media.altitude
             
-            markerImageName =  media.image
-            
+            //markerImageName =  media.image
+      
             mapViewShow.addAnnotation(newMarker)
             
         }
@@ -194,7 +199,6 @@ class showRouteController: UIViewController {
         
     }
     
-    
 }
 
 
@@ -204,42 +208,52 @@ class showRouteController: UIViewController {
 extension showRouteController: MGLMapViewDelegate {
     
     
-  //  func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
+  
+    
+    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         // Try to reuse the existing ‘pisa’ annotation image, if it exists
         //let image = utils.loadImageFromName(markerImageName)
-        //let thumb = utils.resizeImage(image!, newWidth: 50)
+       //  var image = UIImage(named: "line.png")!
+       //let divheight = CGFloat((rand()%20)+1)
+       let image = utils.drawLineOnImage()
+       let  annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "line-x")
+       
+        // print("divheight: \(globalLineAltitude.gLineAltitude)")
+        /*
+         if annotationImage == nil {
+            
+            // Leaning Tower of Pisa by Stefan Spieler from the Noun Project
+          //  var image = UIImage(named: "line2")!
+            var image = utils.drawLineOnImage()
+            // The anchor point of an annotation is currently always the center. To
+            // shift the anchor point to the bottom of the annotation, the image
+            // asset includes transparent bottom padding equal to the original image
+            // height.
+            //
+            // To make this padding non-interactive, we create another image object
+            // with a custom alignment rect that excludes the padding.
+                
+         
+            
+           // image = utils.scaleImage(image, toSize: CGSizeMake(1,divheight))
+            //image = image.imageWithAlignmentRectInsets(UIEdgeInsetsMake(13, 37, 13, 37))
+            //image = image.resizableImageWithCapInsets(UIEdgeInsets(top: 8, left: 8, bottom: image.size.height*2, right: 8), resizingMode: .Stretch)
+            
+            //let thumb = utils.resizeImage(image, newWidth: rand(0, 50))
+            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "line-\(divheight)")
         
-        
-       // let image = UIImage(named: "ic_photo_camera_white_48pt")!
-        
-       // let  annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routePhoto")
-        
-        
-        // if annotationImage == nil {
-        // Leaning Tower of Pisa by Stefan Spieler from the Noun Project
-        //     var image = annotationImage
-        
-        // The anchor point of an annotation is currently always the center. To
-        // shift the anchor point to the bottom of the annotation, the image
-        // asset includes transparent bottom padding equal to the original image
-        // height.
-        //
-        // To make this padding non-interactive, we create another image object
-        // with a custom alignment rect that excludes the padding.
-        //      image = image!.imageWithAlignmentRectInsets(UIEdgeInsetsMake(0, 0, image!.size.height/2, 0))
-        
-        // Initialize the ‘pisa’ annotation image with the UIImage we just loaded
-        //    annotationImage = MGLAnnotationImage(image: image!)
-        //  }
-        
-        // return annotationImage
-  //  }
+            print(image.size.height)
+
+        }
+       */
+         return annotationImage
+    }
     
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
         
         print("annotation")
-        print(" a \(annotation.subtitle!!)")
+      //  print(" a \(annotation.subtitle!!)")
         let imgNameAnnotation = annotation.subtitle!!
         let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
         let image = utils.loadImageFromPath(imgPath)
@@ -273,7 +287,7 @@ extension showRouteController: MGLMapViewDelegate {
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
         //let speedIndex =  Int(round(speed/10))
-        return colorStyles.polylineColors(globalSpeedSet.speedSet)
+        return colorStyles.polylineColors(0)
     }
     
 }

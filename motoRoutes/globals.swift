@@ -54,15 +54,21 @@ class global {
         self.gAutoplay = gAutoplay
     }
     
+    //steps throu Location Array
+    var gLineAltitude:Double = 0.0
+    init(gLineAltitude:Double){
+        self.gLineAltitude = gLineAltitude
+    }
+    
 }
 
 
 
 var globalSpeedSet = global(speedSet:0)
 var globalColor = global(gColor: UIColor.whiteColor())
-
 var globalCamDistance = global(gCamDistance: 11500)
 var globalCamDuration = global(gCamDuration: 0.2)
 var globalCamPitch = global(gCamPitch: 60)
 var globalArrayStep = global(gArrayStep: 1)
 var globalAutoplay = global(gAutoplay: false)
+var globalLineAltitude = global(gLineAltitude: 0.0)
