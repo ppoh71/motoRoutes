@@ -28,12 +28,6 @@ public class utils {
       
         
         switch speedIndex {
-        
-        //case 0..<5:
-          //  return 5
-            
-        //case 5..<8:
-         //  return 8
             
         case 0..<8:
            return 5
@@ -51,6 +45,18 @@ public class utils {
     
        // return speedIndex
     
+    }
+    
+    /*
+     * define the speedIndex. km/h / 10 = Index for speedcolors
+     */
+    class func getSpeedIndexFull(speed:Double) -> Int{
+        
+        let speedIndex = Int(round((speed*3.6)/10))
+        //let speedIndex = 5
+        
+        return speedIndex
+        
     }
     
     /*
@@ -161,26 +167,40 @@ public class utils {
     
     class func drawLineOnImage() -> UIImage{
         
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: 10, height: 200), false, 0)
+        let drawHeight = 200
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 10, height: drawHeight), false, 0)
         let context = UIGraphicsGetCurrentContext()
         
+        //flipp-coords
+        CGContextTranslateCTM(context, 0, CGFloat(drawHeight));
+        CGContextScaleCTM(context, 1.0, -1.0);
+        
+        
         // awesome drawing code
-        let height = globalLineAltitude.gLineAltitude
-        //let rectangle = CGRect(x: 0, y: 0, width: 1, height: height)
+        //let height = globalLineAltitude.gLineAltitude
+        
+        //let LineHeight = rand()%40
+        let LineHeight = utils.getSpeed(globalSpeed.gSpeed) 
+        let LineColor = colorStyles.polylineColors(utils.getSpeedIndex(globalSpeed.gSpeed))
+        
+        let height2 = LineHeight*65/100
         
         
-        CGContextMoveToPoint(context, 5, 100)
-        CGContextAddLineToPoint(context, 0, 100+CGFloat(height))
-       // print(height)
+        let rectangle = CGRect(x: 0, y: drawHeight/2, width: 1, height: Int(height2))
         
-        CGContextSetFillColorWithColor(context, UIColor.blackColor().CGColor)
-        CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor)
-        CGContextSetLineWidth(context, 5)
+        CGContextMoveToPoint(context,0, 0)
+        CGContextAddRect(context, rectangle)
+        
+        //
+        //CGContextAddLineToPoint(context, 5, CGFloat(height))
+        print("height \(LineHeight)")
+        print("color \(LineColor)")
+        
+        CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
+        CGContextSetStrokeColorWithColor(context, LineColor.CGColor)
+        CGContextSetLineWidth(context, 1)
         CGContextSetAlpha(context,0.6);
         CGContextDrawPath(context, .FillStroke)
-        
-        
-        //CGContextAddRect(context, rectangle)
         
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
@@ -199,7 +219,7 @@ public class utils {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 20, height: 20), false, 0)
         
         let context = UIGraphicsGetCurrentContext()
-        let rectangle = CGRect(x: 25, y: 25, width: 25, height: 10)
+        //let rectangle = CGRect(x: 25, y: 25, width: 25, height: 10)
         
          CGContextAddArc(context, 10, 10, 5, 0.0, CGFloat(M_PI * 2.0), 1)
         

@@ -93,13 +93,13 @@ class addRouteController: UIViewController {
         // Add UIApplicationWillResignActiveNotification observer
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "resigningActive",
+            selector: #selector(addRouteController.resigningActive),
             name: UIApplicationWillResignActiveNotification,
             object: nil
         )
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "becomeActive",
+            selector: #selector(addRouteController.becomeActive),
             name: UIApplicationDidBecomeActiveNotification,
             object: nil
         )
@@ -171,7 +171,7 @@ class addRouteController: UIViewController {
     //
     func perSecond(timer: NSTimer) {
         
-        second++
+        second += 1
         
         totalTime = currentTimestamp - startTimestamp
 
@@ -252,7 +252,7 @@ class addRouteController: UIViewController {
         locationsRoute.removeAll(keepCapacity: false)
         timer = NSTimer.scheduledTimerWithTimeInterval(1,
             target: self,
-            selector: "perSecond:",
+            selector: #selector(addRouteController.perSecond(_:)),
             userInfo: nil,
             repeats: true)
         

@@ -60,6 +60,13 @@ class global {
         self.gLineAltitude = gLineAltitude
     }
     
+    
+    //Peed
+    var gSpeed:Double = 0.0
+    init(gSpeed:Double){
+        self.gSpeed = gSpeed
+    }
+    
 }
 
 
@@ -72,3 +79,4 @@ var globalCamPitch = global(gCamPitch: 60)
 var globalArrayStep = global(gArrayStep: 1)
 var globalAutoplay = global(gAutoplay: false)
 var globalLineAltitude = global(gLineAltitude: 0.0)
+var globalSpeed = global(gSpeed: 0.0)

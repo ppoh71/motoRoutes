@@ -139,8 +139,10 @@ class showRouteController: UIViewController {
             newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
             newMarker.subtitle = "route marker"
             // newMarker.subtitle = media.image
-           // newMarker.description = media.image
-           globalLineAltitude.gLineAltitude = media.altitude
+            // newMarker.description = media.image
+            
+            globalLineAltitude.gLineAltitude = media.altitude
+            globalSpeed.gSpeed = media.speed
             
             //markerImageName =  media.image
       
@@ -217,7 +219,8 @@ extension showRouteController: MGLMapViewDelegate {
        //  var image = UIImage(named: "line.png")!
        //let divheight = CGFloat((rand()%20)+1)
        let image = utils.drawLineOnImage()
-       let  annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "line-x")
+
+       let  annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
        
         // print("divheight: \(globalLineAltitude.gLineAltitude)")
         /*

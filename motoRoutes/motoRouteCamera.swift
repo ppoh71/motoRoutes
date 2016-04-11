@@ -103,18 +103,18 @@ class motoRouteCamera: UIViewController {
         
         // Toggle Camera recognizer
         toggleCameraGestureRecognizer.direction = .Up
-        toggleCameraGestureRecognizer.addTarget(self, action: "toggleCamera")
+        toggleCameraGestureRecognizer.addTarget(self, action: #selector(motoRouteCamera.toggleCamera))
         view.addGestureRecognizer(toggleCameraGestureRecognizer)
         
         
         // Zoom In recognizer
         zoomInGestureRecognizer.direction = .Right
-        zoomInGestureRecognizer.addTarget(self, action: "zoomIn")
+        zoomInGestureRecognizer.addTarget(self, action: #selector(motoRouteCamera.zoomIn))
         view.addGestureRecognizer(zoomInGestureRecognizer)
         
         // Zoom Out recognizer
         zoomOutGestureRecognizer.direction = .Left
-        zoomOutGestureRecognizer.addTarget(self, action: "zoomOut")
+        zoomOutGestureRecognizer.addTarget(self, action: #selector(motoRouteCamera.zoomOut))
         view.addGestureRecognizer(zoomOutGestureRecognizer)
         
         print("latitude: \(latitude) / longitude: \(longitude) ")

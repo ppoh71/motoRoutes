@@ -15,7 +15,7 @@ class motoRouteController: UITableViewController {
 
     
     // realm object list
-    var motoRoutes =  Results<Route>!()
+    var motoRoutes =  Results<Route>!(nil)
 
     //Action methods
     @IBAction func close(segue:UIStoryboardSegue) {

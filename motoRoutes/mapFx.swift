@@ -47,7 +47,7 @@ class mapFx {
         globalSpeedSet.speedSet = speedIndex
         
         //temp speed
-        var tempSpeedIndex = speedIndex
+        //var tempSpeedIndex = speedIndex
         
         //reset global spped set to zero
         
@@ -184,11 +184,12 @@ class mapFx {
         /**
          *  Camera fly to fx
          **/
-        func fly(var n:Int, pitch: CGFloat, heading:Double){
+        func fly( nx:Int, pitch: CGFloat, heading:Double){
             
-            
+            var n = nx
             //assign course of locationfor camera animation
             headingCourse = _LocationMaster[n].course
+            
             
             /**
              *  Get some Data for Lables and Stuff
@@ -251,7 +252,7 @@ class mapFx {
                 // loop until end of array
                 if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true){
                     n = n+globalArrayStep.gArrayStep
-                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
+                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse-60)
                 }
             }
         }
