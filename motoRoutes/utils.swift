@@ -183,7 +183,7 @@ public class utils {
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed) 
         let LineColor = colorStyles.polylineColors(utils.getSpeedIndex(globalSpeed.gSpeed))
         
-        let height2 = LineHeight*65/100
+        let height2 = LineHeight*25/100
         
         
         let rectangle = CGRect(x: 0, y: drawHeight/2, width: 1, height: Int(height2))
@@ -191,10 +191,10 @@ public class utils {
         CGContextMoveToPoint(context,0, 0)
         CGContextAddRect(context, rectangle)
         
-        //
-        //CGContextAddLineToPoint(context, 5, CGFloat(height))
-        print("height \(LineHeight)")
-        print("color \(LineColor)")
+//        
+//        CGContextAddLineToPoint(context, 5, CGFloat(height))
+//        print("height \(LineHeight)")
+//        print("color \(LineColor)")
         
         CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
         CGContextSetStrokeColorWithColor(context, LineColor.CGColor)

@@ -111,6 +111,53 @@ class mapFx {
     }
     
     
+    
+    /**
+    *   Print Route MArker on Route
+     
+        - parameter LocationMaster: LocationMaster Object
+        - parameter mapView: current Mapview
+    *
+    **/
+    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int){
+    
+        let markerAmount = 1
+        let sliceEnd = key+markerAmount
+        
+        let _LocationSlice = _LocationMaster[key...sliceEnd]
+        
+        
+        for master in _LocationSlice {
+            
+            let newMarker = MGLPointAnnotation()
+            
+            newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
+            newMarker.subtitle = "route marker"
+            newMarker.subtitle = "SpeedMarker\(key)"
+            // newMarker.description = media.image
+            
+            
+            
+            
+            globalLineAltitude.gLineAltitude = master.altitude
+            globalSpeed.gSpeed = master.speed
+            
+            //markerImageName =  media.image
+            
+            mapView.addAnnotation(newMarker)
+            print("marker add \(newMarker)")
+            print(mapView.annotations)
+            
+        }
+
+    
+    
+    }
+    
+    
+    
+    
+    
     /*
     * create camera from location, distance, pitch and heading
     * can use for cameraflyto animations
@@ -252,6 +299,7 @@ class mapFx {
                 // loop until end of array
                 if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true){
                     n = n+globalArrayStep.gArrayStep
+                    mapFx.printSpeedMarker(_LocationMaster, mapView: mapView, key: n)
                     fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse-60)
                 }
             }

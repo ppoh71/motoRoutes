@@ -27,6 +27,11 @@ class showRouteController: UIViewController {
     @IBOutlet var routeSlider:UISlider!
     @IBOutlet var routeImageView:UIImageView!
     
+    @IBOutlet var AddMarker:UIButton!
+    @IBOutlet var MinusMarker:UIButton!
+    
+    
+    
     @IBOutlet var mapViewShow: MGLMapView!
     
     //add gesture
@@ -76,6 +81,40 @@ class showRouteController: UIViewController {
         
         print("Slider Route \(sliderRouteValue)")
 
+        
+    }
+    
+    @IBAction func addMarker(sender: UIButton) {
+        
+        for media in _LocationMaster {
+            
+            let newMarker = MGLPointAnnotation()
+            
+            newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
+            newMarker.subtitle = "route marker"
+            // newMarker.subtitle = media.image
+            // newMarker.description = media.image
+            
+            globalLineAltitude.gLineAltitude = media.altitude
+            globalSpeed.gSpeed = media.speed
+            
+            //markerImageName =  media.image
+            
+            mapViewShow.addAnnotation(newMarker)
+            
+        }
+        
+    }
+    
+    
+    @IBAction func removewMarker(sender: UIButton) {
+        
+        for annotation in mapViewShow.annotations!{
+            
+            print("\(annotation.title)")
+            mapViewShow.removeAnnotation(annotation)
+            
+        }
         
     }
     
@@ -131,24 +170,14 @@ class showRouteController: UIViewController {
         //Media Objects
         //print("########MediaObjects \(motoRoute.mediaList)")
         
+        mapFx.printSpeedMarker(_LocationMaster, mapView: mapViewShow, key: 0)
         
-        for media in _LocationMaster {
-            
-            let newMarker = MGLPointAnnotation()
+        
 
-            newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
-            newMarker.subtitle = "route marker"
-            // newMarker.subtitle = media.image
-            // newMarker.description = media.image
-            
-            globalLineAltitude.gLineAltitude = media.altitude
-            globalSpeed.gSpeed = media.speed
-            
-            //markerImageName =  media.image
-      
-            mapViewShow.addAnnotation(newMarker)
-            
-        }
+        
+        
+
+        
         
     }
     
