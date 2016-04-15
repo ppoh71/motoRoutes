@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5506E0D91C650A230091364B /* colorStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506E0D81C650A230091364B /* colorStyles.swift */; };
+		5506E0D91C650A230091364B /* colorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506E0D81C650A230091364B /* colorUtils.swift */; };
+		551EFF921CC11D0A0065204D /* realmUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EFF911CC11D0A0065204D /* realmUtils.swift */; };
+		551EFF941CC11F640065204D /* imageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EFF931CC11F640065204D /* imageUtils.swift */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
 		553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RoutesRealm.swift */; };
@@ -22,14 +24,16 @@
 		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC3E6448D743A03D95FFC8D /* Pods.framework */; };
-		A90D6F991C947101002E7980 /* mapFx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* mapFx.swift */; };
+		A90D6F991C947101002E7980 /* mapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* mapUtils.swift */; };
 		A90D6F9B1C9471E2002E7980 /* globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* globals.swift */; };
 		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5506E0D81C650A230091364B /* colorStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = colorStyles.swift; sourceTree = "<group>"; };
+		5506E0D81C650A230091364B /* colorUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = colorUtils.swift; sourceTree = "<group>"; };
+		551EFF911CC11D0A0065204D /* realmUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = realmUtils.swift; sourceTree = "<group>"; };
+		551EFF931CC11F640065204D /* imageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = imageUtils.swift; sourceTree = "<group>"; };
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
 		553565541C5A83A2002628AD /* RoutesRealm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutesRealm.swift; sourceTree = "<group>"; };
@@ -46,7 +50,7 @@
 		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		A90D6F981C947101002E7980 /* mapFx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapFx.swift; sourceTree = "<group>"; };
+		A90D6F981C947101002E7980 /* mapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapUtils.swift; sourceTree = "<group>"; };
 		A90D6F9A1C9471E2002E7980 /* globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = globals.swift; sourceTree = "<group>"; };
 		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
 		D70B2B48F615AC33AA90DB15 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -132,10 +136,12 @@
 			isa = PBXGroup;
 			children = (
 				A90D6F9A1C9471E2002E7980 /* globals.swift */,
-				A90D6F981C947101002E7980 /* mapFx.swift */,
+				A90D6F981C947101002E7980 /* mapUtils.swift */,
 				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
-				5506E0D81C650A230091364B /* colorStyles.swift */,
+				5506E0D81C650A230091364B /* colorUtils.swift */,
 				5562BA541C73663900EF340D /* utils.swift */,
+				551EFF931CC11F640065204D /* imageUtils.swift */,
+				551EFF911CC11D0A0065204D /* realmUtils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -336,15 +342,17 @@
 			files = (
 				55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */,
 				553565551C5A83A2002628AD /* RoutesRealm.swift in Sources */,
-				A90D6F991C947101002E7980 /* mapFx.swift in Sources */,
+				A90D6F991C947101002E7980 /* mapUtils.swift in Sources */,
+				551EFF941CC11F640065204D /* imageUtils.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */,
+				551EFF921CC11D0A0065204D /* realmUtils.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				5562BA551C73663900EF340D /* utils.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
 				A90D6F9B1C9471E2002E7980 /* globals.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
-				5506E0D91C650A230091364B /* colorStyles.swift in Sources */,
+				5506E0D91C650A230091364B /* colorUtils.swift in Sources */,
 				55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

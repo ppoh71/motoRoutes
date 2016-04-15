@@ -59,7 +59,7 @@ class addRouteController: UIViewController {
     var accuracy:Double = 0
     var speed:Double = 0
     var recordingActive:Bool = false
-    var cnt = 0
+    var cnt = 20
    
     
     //start timestamp of route start
@@ -89,6 +89,9 @@ class addRouteController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //map camera init settings
+        mapView.zoomLevel = 9
+        mapView.camera.heading = 60
         
         // Add UIApplicationWillResignActiveNotification observer
         NSNotificationCenter.defaultCenter().addObserver(
@@ -211,16 +214,16 @@ class addRouteController: UIViewController {
         //get coord bounds for route, nortwest & souteast
         
        // let MasterLocation = utils.masterLocation(locationsRoute)
-       // let coordBounds = utils.getBoundCoords(MasterLocation)
+       // let coordBounds = mapUtils.getBoundCoords(MasterLocation)
         
         //set visible bounds
         //self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
         
         //create cameras for animations
-        //let camerax = mapFx.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:4000, pitch:40, heading:60)
-        //let cameraz = mapFx.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:6000, pitch:40, heading:0)
-        //let cameray = mapFx.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:11000, pitch:20, heading:30)
+        //let camerax = mapUtils.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:4000, pitch:40, heading:60)
+        //let cameraz = mapUtils.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:6000, pitch:40, heading:0)
+        //let cameray = mapUtils.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:11000, pitch:20, heading:30)
         
        // print("Bound")
         //print(coordBounds)
@@ -230,10 +233,10 @@ class addRouteController: UIViewController {
        // mapView.flyToCamera(camerax) {
             
                     //make screenshot and get image name
-                    let screenshotFilename = utils.screenshotMap(self.mapView)
+                    let screenshotFilename = imageUtils.screenshotMap(self.mapView)
                     
                     //save rout to realm
-                    utils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+                    realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
             
        // }
        
@@ -413,18 +416,23 @@ extension addRouteController: CLLocationManagerDelegate {
                 //coords.append(location.coordinate)
                 
                 //set GlobalSpeepSet
-                utils.setGlobalSpeedSet(location.speed)
+                //utils.setGlobalSpeedSet(location.speed)
                 
                 //set rather marker than print route
-                let newMarker = MGLPointAnnotation()
-                newMarker.coordinate = location.coordinate
-                mapView.addAnnotation(newMarker)
+//              let newMarker = MGLPointAnnotation()
+//              newMarker.coordinate = location.coordinate
+//              mapView.addAnnotation(newMarker)
                 
+                mapUtils.printSingleSpeedMarker(mapView, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, speed: location.speed)
                 
                 //center map
-                if(cnt==20){
-                    mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
-                    cnt=0 //reset counter
+                if(cnt==21){
+                   // mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
+                  
+                    
+                   let camera = mapUtils.cameraDestination(location.coordinate.latitude, longitude: location.coordinate.longitude, fromDistance:6500, pitch:60, heading:0)
+                   mapView.setCamera(camera, animated: true)
+                   cnt=0 //reset counter
                 }
                 
                 /* check if app is active and not in background */
@@ -437,7 +445,7 @@ extension addRouteController: CLLocationManagerDelegate {
                         let _LocationMaster = utils.masterLocation(locationsRouteInactive)
                         
                         //print to map
-                        mapFx.printRoute(_LocationMaster, mapView: mapView)
+                        mapUtils.printRoute(_LocationMaster, mapView: mapView)
                         
                         //reset locationsRouteInactive
                         locationsRouteInactive = [CLLocation]()
@@ -483,12 +491,21 @@ extension addRouteController: CLLocationManagerDelegate {
 // MARK: - MKMapViewDelegate
 extension addRouteController: MGLMapViewDelegate {
     
-
+    
     func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
-        // generate on thy fly images
-        let image = utils.drawSpeedMarkerImage()
-        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "line-x")
+        //Try to reuse the existing ‘pisa’ annotation image, if it exists
+        //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")
+        
+        //if annotationImage == nil {
+        
+        let image = imageUtils.drawLineOnImage()
+        //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
+        
+        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
+
+        
+        //}
         
         return annotationImage
     }
@@ -520,7 +537,7 @@ extension addRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
        let speedIndex =  utils.getSpeedIndex(speed)
-       return colorStyles.polylineColors(speedIndex)
+       return colorUtils.polylineColors(speedIndex)
     }
     
 }

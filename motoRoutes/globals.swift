@@ -47,7 +47,6 @@ class global {
         self.gArrayStep = gArrayStep
     }
     
-    
     //steps throu Location Array
     var gAutoplay:Bool = false
     init(gAutoplay:Bool){
@@ -60,11 +59,16 @@ class global {
         self.gLineAltitude = gLineAltitude
     }
     
-    
-    //Peed
+    //Speed
     var gSpeed:Double = 0.0
     init(gSpeed:Double){
         self.gSpeed = gSpeed
+    }
+    
+    //n of LocationArry
+    var gMarkerID:String = ""
+    init(gMarkerID:String){
+        self.gMarkerID = gMarkerID
     }
     
 }
@@ -80,3 +84,4 @@ var globalArrayStep = global(gArrayStep: 1)
 var globalAutoplay = global(gAutoplay: false)
 var globalLineAltitude = global(gLineAltitude: 0.0)
 var globalSpeed = global(gSpeed: 0.0)
+var globalMarkerID = global(gMarkerID: "")

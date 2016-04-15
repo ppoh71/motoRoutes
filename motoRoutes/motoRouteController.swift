@@ -33,10 +33,7 @@ class motoRouteController: UITableViewController {
         let realm = try! Realm()
         motoRoutes = realm.objects(Route)
         
-        print(realm)
-       
-        print("is connected")
-        print(utils.isConnected())
+        print(realm)      
         print(motoRoutes.count)
         
     }
@@ -79,7 +76,7 @@ class motoRouteController: UITableViewController {
         
         //let path = (utils.getDocumentsDirectory() as String) + img
         let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
-        let image = utils.loadImageFromPath(imgPath)
+        let image = imageUtils.loadImageFromPath(imgPath)
         
         //image = (image == nil) ? "default.jpg" : image
         print(route.id)

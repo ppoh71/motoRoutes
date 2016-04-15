@@ -26,18 +26,13 @@ class showRouteController: UIViewController {
     @IBOutlet var cameraSlider:UISlider!
     @IBOutlet var routeSlider:UISlider!
     @IBOutlet var routeImageView:UIImageView!
-    
     @IBOutlet var AddMarker:UIButton!
     @IBOutlet var MinusMarker:UIButton!
-    
-    
-    
     @IBOutlet var mapViewShow: MGLMapView!
     
     //add gesture
     var toggleImageViewGesture = UISwipeGestureRecognizer()
 
-    
     // Get the default Realm
     let realm = try! Realm()
     
@@ -51,8 +46,11 @@ class showRouteController: UIViewController {
     //slider route value
     var sliderRouteValue = 0
     
+    var sliceStart = 0
+    var sliceAmount = 100
     
-    //
+    var cnt = 0
+    
     @IBAction func sliderValueChanged(sender: UISlider) {
         let currentValue = Int(sender.value)
         
@@ -77,7 +75,7 @@ class showRouteController: UIViewController {
         
         globalAutoplay.gAutoplay = false
         
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider )
+        mapUtils.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider )
         
         print("Slider Route \(sliderRouteValue)")
 
@@ -86,23 +84,24 @@ class showRouteController: UIViewController {
     
     @IBAction func addMarker(sender: UIButton) {
         
-        for media in _LocationMaster {
+        print("Slice Amount \(sliceAmount)")
+        
+        var key = sliceStart
+        while key < sliceAmount+sliceStart {
+        
+       // var key = sliceStart
+       // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
+       // sliceStart = sliceStart+sliceAmount
+
+            mapUtils.printSingleSpeedMarker(mapViewShow, latitude: _LocationMaster[key].latitude, longitude: _LocationMaster[key].longitude, speed: _LocationMaster[key].speed)
             
-            let newMarker = MGLPointAnnotation()
             
-            newMarker.coordinate = CLLocationCoordinate2DMake(media.latitude, media.longitude)
-            newMarker.subtitle = "route marker"
-            // newMarker.subtitle = media.image
-            // newMarker.description = media.image
-            
-            globalLineAltitude.gLineAltitude = media.altitude
-            globalSpeed.gSpeed = media.speed
-            
-            //markerImageName =  media.image
-            
-            mapViewShow.addAnnotation(newMarker)
-            
+        key += 1
+        print("key: \(key) - sliceAmount: \(sliceAmount)")
+       
         }
+     
+        sliceStart += sliceAmount
         
     }
     
@@ -116,6 +115,7 @@ class showRouteController: UIViewController {
             
         }
         
+        sliceStart = 0
     }
     
     
@@ -136,6 +136,7 @@ class showRouteController: UIViewController {
         //let x = CFAbsoluteTimeGetCurrent()
         //covert Realm LocationList to Location Master Object
         _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
+        //sliceAmount = _LocationMaster.count-1
         
         //print(utils.absolutePeromanceTime(x))
         print(_LocationMaster.count)
@@ -162,31 +163,21 @@ class showRouteController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         
         
-        mapFx.printRoute(_LocationMaster, mapView: mapViewShow)
+        mapUtils.printRoute(_LocationMaster, mapView: mapViewShow)
         
-        //mapFx.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
-        
+        //mapUtils.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
         
         //Media Objects
         //print("########MediaObjects \(motoRoute.mediaList)")
         
-        mapFx.printSpeedMarker(_LocationMaster, mapView: mapViewShow, key: 0)
-        
-        
-
-        
-        
-
-        
-        
     }
-    
+
     
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
         
         //make new screenshot from actual mapView
-        let screenshotFilename = utils.screenshotMap(mapViewShow)
+        let screenshotFilename = imageUtils.screenshotMap(mapViewShow)
         
         //save new screenshot to realm
         print(motoRoute)
@@ -206,7 +197,7 @@ class showRouteController: UIViewController {
         
         //make route fly
         print("let it fly")
-        mapFx.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
+        mapUtils.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
         
         
         
@@ -239,64 +230,44 @@ class showRouteController: UIViewController {
 extension showRouteController: MGLMapViewDelegate {
     
     
-  
     
     func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
-        // Try to reuse the existing ‘pisa’ annotation image, if it exists
-        //let image = utils.loadImageFromName(markerImageName)
-       //  var image = UIImage(named: "line.png")!
-       //let divheight = CGFloat((rand()%20)+1)
-       let image = utils.drawLineOnImage()
-
-       let  annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
-       
-        // print("divheight: \(globalLineAltitude.gLineAltitude)")
-        /*
-         if annotationImage == nil {
-            
-            // Leaning Tower of Pisa by Stefan Spieler from the Noun Project
-          //  var image = UIImage(named: "line2")!
-            var image = utils.drawLineOnImage()
-            // The anchor point of an annotation is currently always the center. To
-            // shift the anchor point to the bottom of the annotation, the image
-            // asset includes transparent bottom padding equal to the original image
-            // height.
-            //
-            // To make this padding non-interactive, we create another image object
-            // with a custom alignment rect that excludes the padding.
-                
-         
-            
-           // image = utils.scaleImage(image, toSize: CGSizeMake(1,divheight))
-            //image = image.imageWithAlignmentRectInsets(UIEdgeInsetsMake(13, 37, 13, 37))
-            //image = image.resizableImageWithCapInsets(UIEdgeInsets(top: 8, left: 8, bottom: image.size.height*2, right: 8), resizingMode: .Stretch)
-            
-            //let thumb = utils.resizeImage(image, newWidth: rand(0, 50))
-            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "line-\(divheight)")
+        //Try to reuse the existing ‘pisa’ annotation image, if it exists
+        //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")
         
-            print(image.size.height)
-
-        }
-       */
+        //if annotationImage == nil {
+         
+        let image = imageUtils.drawLineOnImage()
+        //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
+        
+        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
+        cnt+=1
+        
+        print(cnt)
+        
+        //}
+       
          return annotationImage
     }
+    
+    
     
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
         
         print("annotation")
       //  print(" a \(annotation.subtitle!!)")
-        let imgNameAnnotation = annotation.subtitle!!
-        let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
-        let image = utils.loadImageFromPath(imgPath)
+        if let imgNameAnnotation:String = annotation.subtitle!! {
+            let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
+            let image = imageUtils.loadImageFromPath(imgPath)
         
-        //show image
-        routeImageView.image = image
-        togglePhotoView()
+            //show image
+            routeImageView.image = image
+            togglePhotoView()
         
-        //deselect annotation
+            //deselect annotation
         mapView.deselectAnnotation(annotation, animated: false)
-        
+        }
         
     }
     
@@ -319,7 +290,7 @@ extension showRouteController: MGLMapViewDelegate {
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
         //let speedIndex =  Int(round(speed/10))
-        return colorStyles.polylineColors(0)
+        return colorUtils.polylineColors(0)
     }
     
 }
