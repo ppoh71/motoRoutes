@@ -47,9 +47,14 @@ class showRouteController: UIViewController {
     var sliderRouteValue = 0
     
     var sliceStart = 0
-    var sliceAmount = 100
+    var sliceAmount = 5
+    var key = 0
+    var cnt:Double = 0
     
-    var cnt = 0
+    var GlobalMainQueue: dispatch_queue_t {
+        return dispatch_get_main_queue()
+    }
+    
     
     @IBAction func sliderValueChanged(sender: UISlider) {
         let currentValue = Int(sender.value)
@@ -85,24 +90,83 @@ class showRouteController: UIViewController {
     @IBAction func addMarker(sender: UIButton) {
         
         print("Slice Amount \(sliceAmount)")
-        
-        var key = sliceStart
-        while key < sliceAmount+sliceStart {
-        
-       // var key = sliceStart
-       // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
-       // sliceStart = sliceStart+sliceAmount
+        //var key = self.sliceStart
 
-            mapUtils.printSingleSpeedMarker(mapViewShow, latitude: _LocationMaster[key].latitude, longitude: _LocationMaster[key].longitude, speed: _LocationMaster[key].speed)
-            
-            
-        key += 1
-        print("key: \(key) - sliceAmount: \(sliceAmount)")
-       
-        }
-     
-        sliceStart += sliceAmount
         
+            
+            // var key = sliceStart
+            // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
+            // sliceStart = sliceStart+sliceAmount
+        
+            globalCounter.gCounter = 0
+        
+            while _LocationMaster.count > self.sliceStart+self.sliceAmount {
+        
+                
+                mapUtils.printSpeedMarker(self._LocationMaster, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
+                
+                 self.sliceStart += self.sliceAmount
+                
+                print("key: ")
+        }
+        
+    }
+    
+    
+    
+    func printIt(){
+    
+    
+        utils.delay(0.2) {
+            
+            
+            mapUtils.printSpeedMarker(self._LocationMaster, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
+            
+            self.sliceStart += self.sliceAmount
+            
+            print("key: ")
+            
+            
+            
+        }
+
+    
+    
+    }
+    
+    
+    
+    
+    func doIt() {
+        
+        
+        let delayInSeconds = 1.0
+        let popTime = dispatch_time(DISPATCH_TIME_NOW,
+                                    Int64(delayInSeconds * Double(NSEC_PER_SEC))) // 1
+        
+        
+        dispatch_after(popTime, GlobalMainQueue) { // 2
+            var key = self.sliceStart
+                      while key < self.sliceAmount+self.sliceStart {
+                
+                // var key = sliceStart
+                // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
+                // sliceStart = sliceStart+sliceAmount
+                
+                mapUtils.printSingleSpeedMarker(self.mapViewShow, latitude: self._LocationMaster[key].latitude, longitude: self._LocationMaster[key].longitude, speed: self._LocationMaster[key].speed)
+                
+                
+                key += 1
+                print("key: \(key) - sliceAmount: \(self.sliceAmount)")
+                
+            }
+            
+            self.sliceStart += self.sliceAmount
+            
+            
+            
+        }
+
     }
     
     
@@ -242,10 +306,7 @@ extension showRouteController: MGLMapViewDelegate {
         //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
         
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
-        cnt+=1
-        
-        print(cnt)
-        
+
         //}
        
          return annotationImage

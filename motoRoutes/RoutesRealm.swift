@@ -96,6 +96,7 @@ class LocationMaster {
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
 
+    
 }
 
 

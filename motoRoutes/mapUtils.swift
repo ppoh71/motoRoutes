@@ -50,7 +50,7 @@ class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
+        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[5].speed)
         globalSpeedSet.speedSet = speedIndex
         
         //temp speed
@@ -135,7 +135,8 @@ class mapUtils {
         
         //define sliced Array
         let sliceEnd = key+amount
-        let _LocationSlice = _LocationMaster[key...sliceEnd]
+        let _LocationSlice = _LocationMaster[key+1...sliceEnd]
+        var delayCnt:Double = Double(key)
         
         
         
@@ -148,23 +149,36 @@ class mapUtils {
         
         
         for master in _LocationSlice {
+           
+           
+            utils.delay(0.01*Double(globalCounter.gCounter)){
+                    globalSpeed.gSpeed = master.speed
+                    
+                    let newMarker = MGLPointAnnotation()
             
-            let newMarker = MGLPointAnnotation()
+                    newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
+                    //newMarker.subtitle = "route marker"
+                    //newMarker.subtitle = "SpeedMarker\(key)"
+                    //newMarker.description = media.image
+
+                         mapView.addAnnotation(newMarker)
+                        print("DISPATCH")
+                }
             
-            newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
-        //    newMarker.subtitle = "route marker"
-        //    newMarker.subtitle = "SpeedMarker\(key)"
-            // newMarker.description = media.image
             
-            //globalLineAltitude.gLineAltitude = master.altitude
-            globalSpeed.gSpeed = master.speed
-         //   globalMarkerID.gMarkerID = "\(master.timestamp.timeIntervalSince1970)-\(master.latitude)"
+            if(globalCounter.gCounter < _LocationMaster.count){
+                 globalCounter.gCounter += 1
+                
+            } else{
+                globalCounter.gCounter = 0
+            }
             
-            //addSpeedMarker(newMarker)
-            mapView.addAnnotation(newMarker)
+            print("GlobalCounter: \(globalCounter.gCounter)")
+            //globalCounter.gCounter = (globalCounter.gCounter < 20) ? globalCounter.gCounter += 1 : globalCounter.gCounter = 0
+            
            // print("marker timestamp \(globalMarkerID.gMarkerID)")
            // print(mapView.annotations)
-            
+           
         }
 
     

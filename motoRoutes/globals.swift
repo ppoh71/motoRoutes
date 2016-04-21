@@ -71,6 +71,12 @@ class global {
         self.gMarkerID = gMarkerID
     }
     
+    //n of LocationArry
+    var gCounter:Int = 0
+    init(gCounter:Int){
+        self.gCounter = gCounter
+    }
+    
 }
 
 
@@ -85,3 +91,6 @@ var globalAutoplay = global(gAutoplay: false)
 var globalLineAltitude = global(gLineAltitude: 0.0)
 var globalSpeed = global(gSpeed: 0.0)
 var globalMarkerID = global(gMarkerID: "")
+var globalCounter = global(gCounter: 0)
+
+
