@@ -310,7 +310,22 @@
                         <subviews>
                             <view contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1hV-rc-YM3" customClass="MGLMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUq-1K-wBl">
+                                        <rect key="frame" x="445" y="89" width="155" height="100"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="155" id="GUu-ZE-Xiz"/>
+                                            <constraint firstAttribute="height" constant="100" id="vMn-GP-OKu"/>
+                                        </constraints>
+                                    </pickerView>
+                                </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="fUq-1K-wBl" secondAttribute="trailing" id="Fj5-4q-Jom"/>
+                                    <constraint firstItem="fUq-1K-wBl" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="top" constant="89" id="ZSo-7H-3bc"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="allowsZooming" value="YES"/>
@@ -528,6 +543,7 @@
                         <outlet property="MinusMarker" destination="0kp-0y-YVi" id="LTA-Py-llr"/>
                         <outlet property="SpeedLabel" destination="Jn9-UP-3oa" id="7h6-dr-O1d"/>
                         <outlet property="TimeLabel" destination="DQy-hN-GTd" id="KIX-3o-4lW"/>
+                        <outlet property="amountPicker" destination="fUq-1K-wBl" id="K5J-kP-oKl"/>
                         <outlet property="cameraSlider" destination="OFE-qg-gVK" id="5KB-a1-Oj9"/>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="flyButton" destination="KOa-KO-rv5" id="QBm-2s-Uy4"/>

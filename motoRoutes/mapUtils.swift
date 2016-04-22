@@ -50,7 +50,7 @@ class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[5].speed)
+        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[20].speed)
         globalSpeedSet.speedSet = speedIndex
         
         //temp speed
@@ -116,6 +116,43 @@ class mapUtils {
     }
     
     
+    class func printRouteOneColor(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
+        
+        
+        //performacne test
+        let x = CFAbsoluteTimeGetCurrent()
+        
+        //guard for print routes
+        guard _LocationMaster.count > 2 else {
+            print("GUARD print routes: not enough routes")
+            return
+        }
+        
+        //init coords
+        var coords = [CLLocationCoordinate2D]()
+        
+        // define speedIndex and set first Index
+        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[20].speed)
+        globalSpeedSet.speedSet = speedIndex
+        
+        
+        //loop through LocationMaster
+        for location in _LocationMaster {
+     
+                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+
+        }
+        
+        //print route polygon
+        let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
+        mapView.addAnnotation(line)
+        
+        
+        print(" coord count  \(_LocationMaster.count)")
+        print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+        
+    }
+
     
     /**
     *   Print Route MArker on Route
@@ -136,23 +173,13 @@ class mapUtils {
         //define sliced Array
         let sliceEnd = key+amount
         let _LocationSlice = _LocationMaster[key+1...sliceEnd]
-        var delayCnt:Double = Double(key)
-        
         
         
         print("MARKER PRINT \(key) .. \(key+amount) ")
         
-        //print generated marker on map
-        func addSpeedMarker(newMarker:MGLPointAnnotation){
-             //   mapView.addAnnotation(newMarker)
-        }
-        
-        
         for master in _LocationSlice {
            
-           
-            utils.delay(0.01*Double(globalCounter.gCounter)){
-                    globalSpeed.gSpeed = master.speed
+                     globalSpeed.gSpeed = master.speed
                     
                     let newMarker = MGLPointAnnotation()
             
@@ -164,24 +191,6 @@ class mapUtils {
                          mapView.addAnnotation(newMarker)
                         print("DISPATCH")
                 }
-            
-            
-            if(globalCounter.gCounter < _LocationMaster.count){
-                 globalCounter.gCounter += 1
-                
-            } else{
-                globalCounter.gCounter = 0
-            }
-            
-            print("GlobalCounter: \(globalCounter.gCounter)")
-            //globalCounter.gCounter = (globalCounter.gCounter < 20) ? globalCounter.gCounter += 1 : globalCounter.gCounter = 0
-            
-           // print("marker timestamp \(globalMarkerID.gMarkerID)")
-           // print(mapView.annotations)
-           
-        }
-
-    
     
     }
     

@@ -13,7 +13,7 @@ import RealmSwift
 import Mapbox
 import Crashlytics
 
-class showRouteController: UIViewController {
+class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     //Outlets
     @IBOutlet var cancelButton:UIButton!
@@ -29,6 +29,8 @@ class showRouteController: UIViewController {
     @IBOutlet var AddMarker:UIButton!
     @IBOutlet var MinusMarker:UIButton!
     @IBOutlet var mapViewShow: MGLMapView!
+    
+    @IBOutlet var amountPicker: UIPickerView!
     
     //add gesture
     var toggleImageViewGesture = UISwipeGestureRecognizer()
@@ -47,13 +49,20 @@ class showRouteController: UIViewController {
     var sliderRouteValue = 0
     
     var sliceStart = 0
-    var sliceAmount = 5
+    var sliceAmount = 1
     var key = 0
     var cnt:Double = 0
+    lazy var timer = NSTimer()
+    var timeIntervalMarker = 0.1
+    lazy var performanceTime:Double = 0
     
-    var GlobalMainQueue: dispatch_queue_t {
-        return dispatch_get_main_queue()
-    }
+    
+    let pickerData = [
+        ["1","2","3","4","5","8","10","25","50","80","100","150","250","500","750","1000","1250","1500","1800","2000","2500","3000","3500","4000","4500"],
+        ["0.01", "0.02", "0.03", "0.04", "0.05", "0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.5","2","3","4","5"]
+    ]
+    
+    
     
     
     @IBAction func sliderValueChanged(sender: UISlider) {
@@ -91,24 +100,27 @@ class showRouteController: UIViewController {
         
         print("Slice Amount \(sliceAmount)")
         //var key = self.sliceStart
+        performanceTime = CFAbsoluteTimeGetCurrent()
 
+         timer = NSTimer.scheduledTimerWithTimeInterval(timeIntervalMarker, target: self, selector: #selector(showRouteController.printIt), userInfo: nil, repeats: true)
         
-            
+        /*
             // var key = sliceStart
             // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
             // sliceStart = sliceStart+sliceAmount
-        
             globalCounter.gCounter = 0
         
-            while _LocationMaster.count > self.sliceStart+self.sliceAmount {
+            while _LocationMaster.count > self.sliceStart+self.sliceAmount && globalCounter.gCounter < 20{
         
                 
                 mapUtils.printSpeedMarker(self._LocationMaster, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
                 
-                 self.sliceStart += self.sliceAmount
+                self.sliceStart += self.sliceAmount
+                globalCounter.gCounter += 1
                 
                 print("key: ")
         }
+    */
         
     }
     
@@ -116,9 +128,9 @@ class showRouteController: UIViewController {
     
     func printIt(){
     
-    
-        utils.delay(0.2) {
-            
+        
+        
+        if( _LocationMaster.count > self.sliceStart+self.sliceAmount){
             
             mapUtils.printSpeedMarker(self._LocationMaster, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
             
@@ -126,48 +138,17 @@ class showRouteController: UIViewController {
             
             print("key: ")
             
-            
+        } else{
+        
+         print("All Marker took: \(utils.absolutePeromanceTime(performanceTime)) ")
+         timer.invalidate()
             
         }
-
     
     
     }
     
     
-    
-    
-    func doIt() {
-        
-        
-        let delayInSeconds = 1.0
-        let popTime = dispatch_time(DISPATCH_TIME_NOW,
-                                    Int64(delayInSeconds * Double(NSEC_PER_SEC))) // 1
-        
-        
-        dispatch_after(popTime, GlobalMainQueue) { // 2
-            var key = self.sliceStart
-                      while key < self.sliceAmount+self.sliceStart {
-                
-                // var key = sliceStart
-                // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
-                // sliceStart = sliceStart+sliceAmount
-                
-                mapUtils.printSingleSpeedMarker(self.mapViewShow, latitude: self._LocationMaster[key].latitude, longitude: self._LocationMaster[key].longitude, speed: self._LocationMaster[key].speed)
-                
-                
-                key += 1
-                print("key: \(key) - sliceAmount: \(self.sliceAmount)")
-                
-            }
-            
-            self.sliceStart += self.sliceAmount
-            
-            
-            
-        }
-
-    }
     
     
     @IBAction func removewMarker(sender: UIButton) {
@@ -180,6 +161,7 @@ class showRouteController: UIViewController {
         }
         
         sliceStart = 0
+         timer.invalidate()
     }
     
     
@@ -221,13 +203,19 @@ class showRouteController: UIViewController {
         
         
         
+        self.amountPicker.dataSource = self;
+        self.amountPicker.delegate = self;
+        
         
     }
     
     override func viewDidAppear(animated: Bool) {
         
         
-        mapUtils.printRoute(_LocationMaster, mapView: mapViewShow)
+        mapUtils.printRouteOneColor(_LocationMaster, mapView: mapViewShow)
+        
+        
+       
         
         //mapUtils.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
         
@@ -284,6 +272,51 @@ class showRouteController: UIViewController {
         print("x: \(self.routeImageView.frame.origin.x)")
         
     }
+    
+    
+
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return pickerData.count
+    }
+    
+    func pickerView(
+        pickerView: UIPickerView,
+        numberOfRowsInComponent component: Int
+        ) -> Int {
+        return pickerData[component].count
+    }
+    
+    func pickerView(
+        pickerView: UIPickerView,
+        titleForRow row: Int,
+                    forComponent component: Int
+        ) -> String? {
+         return pickerData[component][row]
+    }
+    
+    func pickerView(
+        pickerView: UIPickerView,
+        didSelectRow row: Int,
+                     inComponent component: Int)
+    {
+        
+       if let sliceAmountPicker = Int(pickerData[0][amountPicker.selectedRowInComponent(0)]) {
+        
+            sliceAmount = Int(sliceAmountPicker)
+            
+        }
+        
+        if let timeIntervalPicker = Double(pickerData[1][amountPicker.selectedRowInComponent(1)]) {
+            
+            timeIntervalMarker = timeIntervalPicker
+            
+        }
+        
+        print("amount: \(pickerData[0][amountPicker.selectedRowInComponent(0)])")
+        print("time: \(pickerData[1][amountPicker.selectedRowInComponent(1)])")
+    }
+
     
 }
 
@@ -345,7 +378,7 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 8.0
+        return 3.0
     }
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {

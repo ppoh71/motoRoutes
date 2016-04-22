@@ -121,7 +121,7 @@ public class utils {
     }
 
     
-    /*
+    /* 
     *   Performance time helper
     */
     class func absolutePeromanceTime(x:Double) -> String {
