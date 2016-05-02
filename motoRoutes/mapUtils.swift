@@ -277,7 +277,7 @@ class mapUtils {
         let count = _LocationMaster.count
         //var n = 0
         //var pitchCamera:CGFloat = 20.0
-        var headingCourse:Double = 0.0
+        var headingCourse:Double = 40.0
         //var arrayStep:Int = 5 // play ever n location from arr
         //var plabckCameraDuration:Double = 0.2
         // var cameraDistance = globalCamDistance.gCamDistance
@@ -292,7 +292,7 @@ class mapUtils {
             
             var n = nx
             //assign course of locationfor camera animation
-            headingCourse = _LocationMaster[n].course
+            //headingCourse = _LocationMaster[n].course
             
             
             /**
@@ -357,7 +357,7 @@ class mapUtils {
                 if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true){
                     n = n+globalArrayStep.gArrayStep
                    
-                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse-60)
+                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
                 }
             }
         }

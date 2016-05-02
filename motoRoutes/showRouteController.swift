@@ -29,6 +29,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     @IBOutlet var AddMarker:UIButton!
     @IBOutlet var MinusMarker:UIButton!
     @IBOutlet var mapViewShow: MGLMapView!
+    @IBOutlet var debugLabel: UILabel!
     
     @IBOutlet var amountPicker: UIPickerView!
     
@@ -56,10 +57,16 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     var timeIntervalMarker = 0.1
     lazy var performanceTime:Double = 0
     
+    //Debug Label
+    var debugTimer = NSTimer()
+    var debugSeconds = 0
     
+    
+    //Picker Stuff
     let pickerData = [
         ["1","2","3","4","5","8","10","25","50","80","100","150","250","500","750","1000","1250","1500","1800","2000","2500","3000","3500","4000","4500"],
-        ["0.01", "0.02", "0.03", "0.04", "0.05", "0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.5","2","3","4","5"]
+        ["0.01", "0.02", "0.03", "0.04", "0.05", "0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.5","2","3","4","5"],
+        ["1","2","3","4","5","8","10","25","50","80"]
     ]
     
     
@@ -71,7 +78,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         
         globalCamDistance.gCamDistance = Double(200*currentValue)
         globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
-        globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
+//        globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
         globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(60 ) : 60.0
         
         print("Slider Camera Position \(currentValue)")
@@ -99,31 +106,24 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     @IBAction func addMarker(sender: UIButton) {
         
         print("Slice Amount \(sliceAmount)")
+        
         //var key = self.sliceStart
         performanceTime = CFAbsoluteTimeGetCurrent()
 
          timer = NSTimer.scheduledTimerWithTimeInterval(timeIntervalMarker, target: self, selector: #selector(showRouteController.printIt), userInfo: nil, repeats: true)
         
-        /*
-            // var key = sliceStart
-            // mapUtils.printSpeedMarker(_LocationMaster, mapView:mapViewShow, key: key, amount: sliceAmount)
-            // sliceStart = sliceStart+sliceAmount
-            globalCounter.gCounter = 0
-        
-            while _LocationMaster.count > self.sliceStart+self.sliceAmount && globalCounter.gCounter < 20{
-        
-                
-                mapUtils.printSpeedMarker(self._LocationMaster, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
-                
-                self.sliceStart += self.sliceAmount
-                globalCounter.gCounter += 1
-                
-                print("key: ")
-        }
-    */
+        debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
         
     }
     
+    
+    func updateDebugLabel(){
+    
+        debugSeconds += 1
+        debugLabel.text = "\(debugSeconds) / \(sliceStart)"
+    
+    
+    }
     
     
     func printIt(){
@@ -142,6 +142,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         
          print("All Marker took: \(utils.absolutePeromanceTime(performanceTime)) ")
          timer.invalidate()
+         debugTimer.invalidate()
             
         }
     
@@ -149,6 +150,13 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     }
     
     
+    @IBAction func stopMarker(sender: UIButton){
+    
+        timer.invalidate()
+        debugTimer.invalidate()
+  
+    
+    }
     
     
     @IBAction func removewMarker(sender: UIButton) {
@@ -161,7 +169,9 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         }
         
         sliceStart = 0
-         timer.invalidate()
+        debugSeconds = 0
+        timer.invalidate()
+        debugTimer.invalidate()
     }
     
     
@@ -311,6 +321,11 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
             
             timeIntervalMarker = timeIntervalPicker
             
+        }
+        
+        if let arrayStepPicker = Double(pickerData[2][amountPicker.selectedRowInComponent(2)]){
+            
+             globalArrayStep.gArrayStep = Int(arrayStepPicker)
         }
         
         print("amount: \(pickerData[0][amountPicker.selectedRowInComponent(0)])")
