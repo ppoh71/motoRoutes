@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Foundation
 import UIKit
 import Mapbox
 
@@ -99,6 +98,8 @@ class imageUtils{
      */
     class func drawLineOnImage() -> UIImage{
         
+        let performanceTime = CFAbsoluteTimeGetCurrent()
+        
         let drawHeight = 200
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 10, height: drawHeight), false, 0)
         let context = UIGraphicsGetCurrentContext()
@@ -106,34 +107,50 @@ class imageUtils{
         //flipp-coords
         CGContextTranslateCTM(context, 0, CGFloat(drawHeight));
         CGContextScaleCTM(context, 1.0, -1.0);
+       
         
         //get height and color for line
-        //let LineHeight = globalSpeed.gSpeed
-        //let LineColor = colorUtils.polylineColors(utils.getSpeedIndex(globalSpeed.gSpeed/3.6))
+
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
+        let LineAltitude  = Int(globalAltitude.gAltitude/10)
         
         //percentage height of line image
-        let height2 = LineHeight*35/100
+        let percent = 35
+        let heightPercent = LineHeight*percent/100
+        let altitudePercent = LineAltitude*60/100
         
         //make rect with height, position midddle due to mapbox marker image settings
-        let rectangle = CGRect(x: 0, y: drawHeight/2, width: 1, height: Int(height2))
+        let rectangle = CGRect(x: 0, y: drawHeight/2, width: 1, height: Int(heightPercent))
+        
+       
+        let altrectangle = CGRect(x: 0, y: (drawHeight/2), width: 1, height: altitudePercent)
         
         //context stuff
+       
+        CGContextSetLineWidth(context, 5)
         CGContextMoveToPoint(context,0, 0)
+        
+        
         CGContextAddRect(context, rectangle)
-        CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
         CGContextSetStrokeColorWithColor(context, LineColor.CGColor)
-        CGContextSetLineWidth(context, 1)
-        CGContextSetAlpha(context,0.6);
         CGContextDrawPath(context, .FillStroke)
         
+        
+        CGContextSetLineWidth(context, 2)
+        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+        CGContextAddRect(context, altrectangle)
+        CGContextDrawPath(context, .FillStroke)
+        
+    
+        
+         CGContextSetAlpha(context,0.4);
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        
+         print("Image took: \(utils.absolutePeromanceTime(performanceTime)) ")
         //saveImageToFile(img, imageName: "Marker-Speed-\(Int(globalSpeed.gSpeed)).png")
-        print("draw image\(utils.getSpeed(globalSpeed.gSpeed)).png")
+        //print("draw image\(utils.getSpeed(globalSpeed.gSpeed)).png")
         
         return img
         

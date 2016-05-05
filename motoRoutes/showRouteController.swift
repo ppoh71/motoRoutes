@@ -41,7 +41,8 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     
     // realm object list
     var motoRoute =  Route()
-    var _LocationMaster = [LocationMaster]()
+    var RouteList = RouteMaster()._RouteList
+
     
     //media stuff
     var markerImageName:String = ""
@@ -70,6 +71,64 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     ]
     
     
+    //
+    // override func super init
+    //
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        //color speed label
+        screenshotButton.tintColor = globalColor.gColor
+        
+        //set max on route slider
+        routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
+        
+        //covert Realm LocationList to Location Master Object
+        RouteList =  RouteMaster.createMasterLocationRealm(motoRoute.locationsList)
+       
+        //print(utils.absolutePeromanceTime(x))
+        print(RouteList.count)
+        
+        //center mapview to route coords
+        mapViewShow.zoomLevel = 9
+        mapViewShow.camera.heading = 60
+        
+        
+        mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: RouteList[0].latitude, longitude: RouteList[0].longitude),  animated: false)
+        
+        // Toggle Camera recognizer
+        toggleImageViewGesture.direction = .Right
+        toggleImageViewGesture.addTarget(self, action: #selector(showRouteController.togglePhotoView))
+        routeImageView.addGestureRecognizer(toggleImageViewGesture)
+        routeImageView.userInteractionEnabled = true
+        
+        
+        self.amountPicker.dataSource = self;
+        self.amountPicker.delegate = self;
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        
+        mapUtils.printRoute(RouteList, mapView: mapViewShow)
+        
+        //define camera for flyTo ani
+        let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: 40)
+        
+        mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
+        
+        
+        //mapUtils.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
+        
+        //Media Objects
+        //print("########MediaObjects \(motoRoute.mediaList)")
+        
+    }
+
+    
+    
     
     
     @IBAction func sliderValueChanged(sender: UISlider) {
@@ -92,11 +151,17 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     
     //
     @IBAction func sliderRouteChanged(sender: UISlider) {
+        
+        //get slider value as int
         sliderRouteValue = Int(sender.value)
         
+        //stop camera flightm when selecting new route point
         globalAutoplay.gAutoplay = false
         
-        mapUtils.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider )
+        //set the route array start
+        sliceStart = sliderRouteValue
+        
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider )
         
         print("Slider Route \(sliderRouteValue)")
 
@@ -106,38 +171,38 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     @IBAction func addMarker(sender: UIButton) {
         
         print("Slice Amount \(sliceAmount)")
-        
-        //var key = self.sliceStart
-        performanceTime = CFAbsoluteTimeGetCurrent()
-
-         timer = NSTimer.scheduledTimerWithTimeInterval(timeIntervalMarker, target: self, selector: #selector(showRouteController.printIt), userInfo: nil, repeats: true)
-        
-        debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
-        
+ 
+        startMarkerTimer()
     }
     
     
     func updateDebugLabel(){
-    
+        
         debugSeconds += 1
         debugLabel.text = "\(debugSeconds) / \(sliceStart)"
-    
-    
     }
     
     
-    func printIt(){
     
+    
+    func startMarkerTimer(){
+        //var key = self.sliceStart
+        performanceTime = CFAbsoluteTimeGetCurrent()
         
-        
-        if( _LocationMaster.count > self.sliceStart+self.sliceAmount){
+        timer = NSTimer.scheduledTimerWithTimeInterval(timeIntervalMarker, target: self, selector: #selector(showRouteController.printIt), userInfo: nil, repeats: true)
+        debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
+
+    }
+    
+    
+    
+    func printIt(){
+      
+        if( RouteList.count > self.sliceStart+self.sliceAmount){
             
-            mapUtils.printSpeedMarker(self._LocationMaster, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
-            
+            mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount, RouteSlider: routeSlider)
             self.sliceStart += self.sliceAmount
-            
-            print("key: ")
-            
+
         } else{
         
          print("All Marker took: \(utils.absolutePeromanceTime(performanceTime)) ")
@@ -145,8 +210,6 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
          debugTimer.invalidate()
             
         }
-    
-    
     }
     
     
@@ -154,8 +217,9 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     
         timer.invalidate()
         debugTimer.invalidate()
-  
-    
+        /* for loc in RouteList {
+          print("Marker: \(loc.marker)")
+        } */
     }
     
     
@@ -175,65 +239,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     }
     
     
-    //
-    // override func super init
-    //
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        //color speed label
-        screenshotButton.tintColor = globalColor.gColor
-        
-        //set max on route slider
-        routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
-        
-        
-        //let x = CFAbsoluteTimeGetCurrent()
-        //covert Realm LocationList to Location Master Object
-        _LocationMaster = utils.masterRealmLocation(motoRoute.locationsList)
-        //sliceAmount = _LocationMaster.count-1
-        
-        //print(utils.absolutePeromanceTime(x))
-        print(_LocationMaster.count)
-        
-        //center mapview to route coords
-        mapViewShow.zoomLevel = 9
-        mapViewShow.camera.heading = 60
-
-
-        
-        mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: _LocationMaster[0].latitude, longitude: _LocationMaster[0].longitude),  animated: false)
-        
-        // Toggle Camera recognizer
-        toggleImageViewGesture.direction = .Right
-        toggleImageViewGesture.addTarget(self, action: #selector(showRouteController.togglePhotoView))
-        routeImageView.addGestureRecognizer(toggleImageViewGesture)
-        routeImageView.userInteractionEnabled = true
-        
-        
-        
-        self.amountPicker.dataSource = self;
-        self.amountPicker.delegate = self;
-        
-        
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
-        
-        mapUtils.printRouteOneColor(_LocationMaster, mapView: mapViewShow)
-        
-        
-       
-        
-        //mapUtils.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
-        
-        //Media Objects
-        //print("########MediaObjects \(motoRoute.mediaList)")
-        
-    }
-
+   
     
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
@@ -259,7 +265,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         
         //make route fly
         print("let it fly")
-        mapUtils.flyOverRoutes(_LocationMaster, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
         
         
         

@@ -116,7 +116,7 @@ class mapUtils {
     }
     
     
-    class func printRouteOneColor(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
+    class func printRouteOneColor(_LocationMaster:[LocationMaster]!, mapView:MGLMapView! ){
         
         
         //performacne test
@@ -161,7 +161,7 @@ class mapUtils {
         - parameter mapView: current Mapview
     *
     **/
-    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int){
+    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, RouteSlider: UISlider?){
     
         
         //guard 
@@ -170,27 +170,45 @@ class mapUtils {
             return
         }
         
+        var indexKex = key
+        
         //define sliced Array
         let sliceEnd = key+amount
         let _LocationSlice = _LocationMaster[key+1...sliceEnd]
         
         
-        print("MARKER PRINT \(key) .. \(key+amount) ")
+        print("MARKER PRINT \(key+1) .. \(key+amount) / Count: \(_LocationSlice.count)")
         
-        for master in _LocationSlice {
+        for (index, master) in _LocationSlice.enumerate() {
            
-                     globalSpeed.gSpeed = master.speed
-                    
-                    let newMarker = MGLPointAnnotation()
+            print("enum \(_LocationSlice.enumerate())")
+            //set speed and altiude globals
+            globalSpeed.gSpeed = master.speed
+            globalAltitude.gAltitude = master.altitude
             
-                    newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
-                    //newMarker.subtitle = "route marker"
+            
+            if master.marker == false {
+            
+                //Update UILabel Distance
+                if let tmpRouteSlider = RouteSlider {
+                    // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
+                    tmpRouteSlider.setValue(Float(indexKex), animated: true)
+                    indexKex += 1
+                }
+                
+                let newMarker = MGLPointAnnotation()
+                newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
+                   //newMarker.subtitle = "route marker"
                     //newMarker.subtitle = "SpeedMarker\(key)"
                     //newMarker.description = media.image
+            
+                master.marker = true
 
-                         mapView.addAnnotation(newMarker)
-                        print("DISPATCH")
-                }
+                mapView.addAnnotation(newMarker)
+                print("DISPATCH \(index)")
+                
+            }
+         }
     
     }
     
@@ -330,8 +348,8 @@ class mapUtils {
             
             //Update UILabel Distance
             if let tmpDistanceLabel = DistanceLabel {
-                // tmpDistanceLabel.textColor =  colorUtils.polylineColors(speedIndex)
-                tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
+                //tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
+                tmpDistanceLabel.text =  " alt \(_LocationMaster[n].altitude)"
             }
             
             //Update UILabel Distance

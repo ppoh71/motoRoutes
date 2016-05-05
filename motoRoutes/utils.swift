@@ -156,71 +156,7 @@ public class utils {
     }
     
     
-    /**
-     * Convert CLLocation[] to Location Master Object
-     *
-     * - parameter locatiobRoute: [CLLocation] List with locations
-     *
-     * - returns: LocationMaster 
-     */
-    class func masterLocation(locationsRoute:[CLLocation]) -> [LocationMaster]{
         
-        print("#################MasterLocation")
-        print(locationsRoute)
-        
-        var newlocationMaster = [LocationMaster]()
-        
-        //loop all CLLocation and create and append to LocationMaster
-        for location in locationsRoute {
-            
-            let locationTmp = LocationMaster()
-            
-            locationTmp.timestamp = location.timestamp
-            locationTmp.latitude = location.coordinate.latitude
-            locationTmp.longitude = location.coordinate.longitude
-            locationTmp.altitude = location.altitude
-            locationTmp.speed = location.speed
-            locationTmp.course = location.course
-            locationTmp.accuracy = location.horizontalAccuracy
-            
-            newlocationMaster.append(locationTmp)
-        
-        }
-        return newlocationMaster
-    }
-    
-    
-    
-    /**
-     * Convert CLLocation[] to Location Master Object
-     *
-     * - parameter locatiobRoute: [CLLocation] List with locations
-     *
-     * - returns: LocationMaster
-     */
-    class func masterRealmLocation(LocationsList:List<Location>!) -> [LocationMaster]{
-        
-        var newlocationMaster = [LocationMaster]()
-        
-        //loop all CLLocation and create and append to LocationMaster
-        for location in LocationsList {
-            
-            let locationTmp = LocationMaster()
-            
-            locationTmp.timestamp = location.timestamp
-            locationTmp.latitude = location.latitude
-            locationTmp.longitude = location.longitude
-            locationTmp.altitude = location.altitude
-            locationTmp.speed = location.speed
-            locationTmp.course = location.course
-            locationTmp.accuracy = location.accuracy
-           
-            newlocationMaster.append(locationTmp)
-            
-        }
-        return newlocationMaster
-    }
-    
-    
+
 
 }
