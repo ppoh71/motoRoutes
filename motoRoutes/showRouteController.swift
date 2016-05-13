@@ -13,7 +13,8 @@ import RealmSwift
 import Mapbox
 import Crashlytics
 
-class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+
+class showRouteController: UIViewController {
     
     //Outlets
     @IBOutlet var cancelButton:UIButton!
@@ -23,15 +24,25 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     @IBOutlet var DistanceLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
     @IBOutlet var AltitudeLabel:UILabel!
-    @IBOutlet var cameraSlider:UISlider!
-    @IBOutlet var routeSlider:UISlider!
+    @IBOutlet var cameraSlider:UISlider!{
+        didSet{
+            cameraSlider.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
+        }
+    }
+    @IBOutlet var routeSlider:RouteSlider!{
+        didSet{
+           routeSlider.setLabel("0.000", timeText: "00:00")
+        }
+    }
     @IBOutlet var routeImageView:UIImageView!
     @IBOutlet var AddMarker:UIButton!
     @IBOutlet var MinusMarker:UIButton!
     @IBOutlet var mapViewShow: MGLMapView!
     @IBOutlet var debugLabel: UILabel!
     
-    @IBOutlet var amountPicker: UIPickerView!
+    @IBOutlet var optionsButton: UIButton!
+    
+
     
     //add gesture
     var toggleImageViewGesture = UISwipeGestureRecognizer()
@@ -53,9 +64,9 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     var sliceStart = 0
     var sliceAmount = 1
     var key = 0
-    var cnt:Double = 0
+    var count:Int = 0
     lazy var timer = NSTimer()
-    var timeIntervalMarker = 0.1
+    var timeIntervalMarker = 0.00051
     lazy var performanceTime:Double = 0
     
     //Debug Label
@@ -63,12 +74,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     var debugSeconds = 0
     
     
-    //Picker Stuff
-    let pickerData = [
-        ["1","2","3","4","5","8","10","25","50","80","100","150","250","500","750","1000","1250","1500","1800","2000","2500","3000","3500","4000","4500"],
-        ["0.01", "0.02", "0.03", "0.04", "0.05", "0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.5","2","3","4","5"],
-        ["1","2","3","4","5","8","10","25","50","80"]
-    ]
+
     
     
     //
@@ -78,21 +84,24 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         super.viewDidLoad()
         
         
+        
         //color speed label
         screenshotButton.tintColor = globalColor.gColor
         
         //set max on route slider
         routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
+       
         
         //covert Realm LocationList to Location Master Object
         RouteList =  RouteMaster.createMasterLocationRealm(motoRoute.locationsList)
        
         //print(utils.absolutePeromanceTime(x))
-        print(RouteList.count)
+        //print(RouteList.count)
         
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
         mapViewShow.camera.heading = 60
+ 
         
         
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: RouteList[0].latitude, longitude: RouteList[0].longitude),  animated: false)
@@ -103,14 +112,12 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         routeImageView.addGestureRecognizer(toggleImageViewGesture)
         routeImageView.userInteractionEnabled = true
         
-        
-        self.amountPicker.dataSource = self;
-        self.amountPicker.delegate = self;
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         
+        //init route slider label
+
         
         mapUtils.printRoute(RouteList, mapView: mapViewShow)
         
@@ -141,10 +148,25 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(60 ) : 60.0
         
         print("Slider Camera Position \(currentValue)")
-        print("cam distance \(globalCamDistance.gCamDistance )")
-        print("cam duration \(globalCamDuration.gCamDuration)")
-        print("arraystep \(globalArrayStep.gArrayStep)")
-        print("camPitch \(globalCamPitch.gCamPitch)")
+        //print("cam distance \(globalCamDistance.gCamDistance )")
+        //print("cam duration \(globalCamDuration.gCamDuration)")
+        //print("arraystep \(globalArrayStep.gArrayStep)")
+        //print("camPitch \(globalCamPitch.gCamPitch)")
+        
+        //zoom camera also when not flying,
+        if(globalAutoplay.gAutoplay==false) {
+        
+            //get current center coords
+            let centerCoords = mapViewShow.centerCoordinate
+            
+            //define camera and flyTo with zoom level
+            let camera = mapUtils.cameraDestination(centerCoords.latitude, longitude:centerCoords.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: 40)
+            mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
+
+            print("\(mapViewShow.centerCoordinate)")
+        }
+        
+      //  mapViewShow.setZoomLevel(Double(currentValue/10), animated: true)
         
     }
     
@@ -155,22 +177,23 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         //get slider value as int
         sliderRouteValue = Int(sender.value)
         
+        //routeSlider.setValues()
         //stop camera flightm when selecting new route point
         globalAutoplay.gAutoplay = false
         
         //set the route array start
         sliceStart = sliderRouteValue
         
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider )
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue,  SpeedLabel: SpeedLabel, routeSlider: routeSlider )
         
-        print("Slider Route \(sliderRouteValue)")
+        //print("Slider Route \(sliderRouteValue)")
 
         
     }
     
     @IBAction func addMarker(sender: UIButton) {
         
-        print("Slice Amount \(sliceAmount)")
+        //print("Slice Amount \(sliceAmount)")
  
         startMarkerTimer()
     }
@@ -179,7 +202,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     func updateDebugLabel(){
         
         debugSeconds += 1
-        debugLabel.text = "\(debugSeconds) / \(sliceStart)"
+        debugLabel.text = "\(debugSeconds) / \(sliceStart) / "
     }
     
     
@@ -197,15 +220,29 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     
     
     func printIt(){
+        
+        print("\(sliceStart)")
+        let counterStep = sliceAmount
       
-        if( RouteList.count > self.sliceStart+self.sliceAmount){
+        if( RouteList.count > sliceStart+sliceAmount){
             
-            mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount, RouteSlider: routeSlider)
-            self.sliceStart += self.sliceAmount
+            mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  sliceStart, amount: sliceAmount, RouteSlider: routeSlider)
+            sliceStart += sliceAmount
+            count+=1
+            
+            if(count==counterStep){
+                timer.invalidate()
+                debugTimer.invalidate()
+                let flying = mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider)
+                count=0
+                print("\(flying)")
+                startMarkerTimer()
+            }
+            
 
         } else{
         
-         print("All Marker took: \(utils.absolutePeromanceTime(performanceTime)) ")
+         //print("All Marker took: \(utils.absolutePeromanceTime(performanceTime)) ")
          timer.invalidate()
          debugTimer.invalidate()
             
@@ -227,15 +264,18 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         
         for annotation in mapViewShow.annotations!{
             
-            print("\(annotation.title)")
+            //print("\(annotation.title)")
             mapViewShow.removeAnnotation(annotation)
             
         }
         
-        sliceStart = 0
-        debugSeconds = 0
+
         timer.invalidate()
         debugTimer.invalidate()
+        sliceStart = 0
+        debugSeconds = 0
+        
+       // print("\(sliceStart)")
     }
     
     
@@ -248,7 +288,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         let screenshotFilename = imageUtils.screenshotMap(mapViewShow)
         
         //save new screenshot to realm
-        print(motoRoute)
+        //print(motoRoute)
         try! realm.write {
             realm.create(Route.self, value: ["id": motoRoute.id, "image": screenshotFilename], update: true)
             
@@ -264,8 +304,8 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
         globalAutoplay.gAutoplay = globalAutoplay.gAutoplay==false ? true : false
         
         //make route fly
-        print("let it fly")
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, DistanceLabel: DistanceLabel, TimeLabel: TimeLabel, AltitudeLabel: AltitudeLabel, RouteSlider: routeSlider)
+        //print("let it fly")
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, routeSlider: routeSlider)
         
         
         
@@ -276,7 +316,7 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
     
     
         let animateX:CGFloat = self.routeImageView.frame.origin.x<100 ? 320 : -320; //animnate x var
-        print("x: \(self.routeImageView.frame.origin.x)")
+        //print("x: \(self.routeImageView.frame.origin.x)")
     
         //aimate view
         UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
@@ -285,59 +325,49 @@ class showRouteController: UIViewController, UIPickerViewDataSource, UIPickerVie
             
             }, completion: nil)
     
-        print("x: \(self.routeImageView.frame.origin.x)")
+        //print("x: \(self.routeImageView.frame.origin.x)")
         
     }
     
     
 
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return pickerData.count
-    }
-    
-    func pickerView(
-        pickerView: UIPickerView,
-        numberOfRowsInComponent component: Int
-        ) -> Int {
-        return pickerData[component].count
-    }
-    
-    func pickerView(
-        pickerView: UIPickerView,
-        titleForRow row: Int,
-                    forComponent component: Int
-        ) -> String? {
-         return pickerData[component][row]
-    }
-    
-    func pickerView(
-        pickerView: UIPickerView,
-        didSelectRow row: Int,
-                     inComponent component: Int)
-    {
+    /*
+     * Prepare Segue / camera stuff
+     */
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         
-       if let sliceAmountPicker = Int(pickerData[0][amountPicker.selectedRowInComponent(0)]) {
-        
-            sliceAmount = Int(sliceAmountPicker)
+        //prepare for camera/photo store to MediaObhect
+        if segue.identifier == "showRouteOptions" {
+          //  let destinationController = segue.destinationViewController as! motoRouteOptions
+      
+            
             
         }
+    }
+    
+    
+    /*
+     * Close segue
+     */
+    @IBAction func close(segue:UIStoryboardSegue) {
         
-        if let timeIntervalPicker = Double(pickerData[1][amountPicker.selectedRowInComponent(1)]) {
+        print("close \(segue.sourceViewController)")
+        
+        if let optionController = segue.sourceViewController as? motoRouteOptions {
             
-            timeIntervalMarker = timeIntervalPicker
+            print("close sliceAmount \(optionController.sliceAmount)")
+            
+            sliceAmount = optionController.sliceAmount
+            timeIntervalMarker = optionController.timeIntervalMarker
+            
             
         }
-        
-        if let arrayStepPicker = Double(pickerData[2][amountPicker.selectedRowInComponent(2)]){
-            
-             globalArrayStep.gArrayStep = Int(arrayStepPicker)
-        }
-        
-        print("amount: \(pickerData[0][amountPicker.selectedRowInComponent(0)])")
-        print("time: \(pickerData[1][amountPicker.selectedRowInComponent(1)])")
     }
 
+    
+    
+    
     
 }
 
@@ -352,26 +382,23 @@ extension showRouteController: MGLMapViewDelegate {
     func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
-        //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")
+        //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
         
-        //if annotationImage == nil {
-         
         let image = imageUtils.drawLineOnImage()
-        //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
-        
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
 
-        //}
+
        
          return annotationImage
-    }
+ }
     
     
     
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
         
-        print("annotation")
+        //print("annotation")
       //  print(" a \(annotation.subtitle!!)")
+        
         if let imgNameAnnotation:String = annotation.subtitle!! {
             let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
             let image = imageUtils.loadImageFromPath(imgPath)
@@ -399,13 +426,13 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 3.0
+        return 7.0
     }
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
         //let speedIndex =  Int(round(speed/10))
-        return colorUtils.polylineColors(0)
+        return colorUtils.polylineColors(globalSpeedSet.speedSet)
     }
     
 }

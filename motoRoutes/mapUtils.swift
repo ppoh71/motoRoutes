@@ -38,7 +38,7 @@ class mapUtils {
         
         
         //performacne test
-        let x = CFAbsoluteTimeGetCurrent()
+   //     let x = CFAbsoluteTimeGetCurrent()
         
         //guard for print routes
         guard _LocationMaster.count > 2 else {
@@ -50,11 +50,11 @@ class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[20].speed)
+        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
         globalSpeedSet.speedSet = speedIndex
         
         //temp speed
-        //var tempSpeedIndex = speedIndex
+        var tempSpeedIndex = speedIndex
         
         //reset global spped set to zero
         
@@ -67,6 +67,8 @@ class mapUtils {
             speedIndex = utils.getSpeedIndex(location.speed)
             
        
+            print("\(globalSpeedSet.speedSet)")
+            
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
@@ -106,12 +108,12 @@ class mapUtils {
        
             
             //print the coords for the last run
-            print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
+            //print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
             
         }
         
-        print(" coord count  \(_LocationMaster.count)")
-        print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+        //print(" coord count  \(_LocationMaster.count)")
+        //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
 
     }
     
@@ -120,7 +122,7 @@ class mapUtils {
         
         
         //performacne test
-        let x = CFAbsoluteTimeGetCurrent()
+       // let x = CFAbsoluteTimeGetCurrent()
         
         //guard for print routes
         guard _LocationMaster.count > 2 else {
@@ -148,8 +150,8 @@ class mapUtils {
         mapView.addAnnotation(line)
         
         
-        print(" coord count  \(_LocationMaster.count)")
-        print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+        //print(" coord count  \(_LocationMaster.count)")
+        //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
         
     }
 
@@ -177,11 +179,11 @@ class mapUtils {
         let _LocationSlice = _LocationMaster[key+1...sliceEnd]
         
         
-        print("MARKER PRINT \(key+1) .. \(key+amount) / Count: \(_LocationSlice.count)")
+        //print("MARKER PRINT \(key+1) .. \(key+amount) / Count: \(_LocationSlice.count)")
         
         for (index, master) in _LocationSlice.enumerate() {
            
-            print("enum \(_LocationSlice.enumerate())")
+            //print("enum \(_LocationSlice.enumerate())")
             //set speed and altiude globals
             globalSpeed.gSpeed = master.speed
             globalAltitude.gAltitude = master.altitude
@@ -189,23 +191,25 @@ class mapUtils {
             
             if master.marker == false {
             
+               /*
                 //Update UILabel Distance
                 if let tmpRouteSlider = RouteSlider {
                     // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
                     tmpRouteSlider.setValue(Float(indexKex), animated: true)
                     indexKex += 1
                 }
-                
+                */
                 let newMarker = MGLPointAnnotation()
                 newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
                    //newMarker.subtitle = "route marker"
                     //newMarker.subtitle = "SpeedMarker\(key)"
                     //newMarker.description = media.image
             
-                master.marker = true
-
                 mapView.addAnnotation(newMarker)
-                print("DISPATCH \(index)")
+
+                
+                //mark marker as printed "true" back in MasterRoute Array
+                master.marker = true
                 
             }
          }
@@ -289,13 +293,13 @@ class mapUtils {
      *  - parameter TimeLable: Optional UILabel to display elapsed text
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, DistanceLabel:UILabel?, TimeLabel:UILabel?, AltitudeLabel: UILabel?, RouteSlider: UISlider? ) {
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, routeSlider: RouteSlider? ) -> Bool{
         
         
         let count = _LocationMaster.count
         //var n = 0
         //var pitchCamera:CGFloat = 20.0
-        var headingCourse:Double = 40.0
+        var headingCourse:Double = _LocationMaster[n].course-60
         //var arrayStep:Int = 5 // play ever n location from arr
         //var plabckCameraDuration:Double = 0.2
         // var cameraDistance = globalCamDistance.gCamDistance
@@ -310,7 +314,7 @@ class mapUtils {
             
             var n = nx
             //assign course of locationfor camera animation
-            //headingCourse = _LocationMaster[n].course
+            headingCourse = _LocationMaster[n].course+60
             
             
             /**
@@ -318,17 +322,16 @@ class mapUtils {
              **/
              
              //Distrance Calc from A B
+            
             let nextIndex = n+globalArrayStep.gArrayStep < _LocationMaster.count ? n+globalArrayStep.gArrayStep : _LocationMaster.count-1
-            let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
-            let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
-            
-            //set distance
-            distance += _locationA.distanceFromLocation(_locationB)
-            
+            //let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
+            //let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
+            // distance += _locationA.distanceFromLocation(_locationB)
+            distance = _LocationMaster[n].distance
             
             //time spend on road
             let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
-            let timespendString = utils.clockFormatShort(Int(elapsedTime))
+            let timespendString = utils.clockFormat(Int(elapsedTime))
             
             //define camera for flyTo ani
             let camera = mapUtils.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: heading)
@@ -346,22 +349,23 @@ class mapUtils {
                 tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
             }
             
-            //Update UILabel Distance
-            if let tmpDistanceLabel = DistanceLabel {
-                //tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
-                tmpDistanceLabel.text =  " alt \(_LocationMaster[n].altitude)"
-            }
+//            //Update UILabel Distance
+//            if let tmpDistanceLabel = DistanceLabel {
+//                //tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
+//              //  tmpDistanceLabel.text =  " alt \(_LocationMaster[n].altitude)"
+//            }
+//            
+//            //Update UILabel Distance
+//            if let tmpTimeLabel = TimeLabel {
+//                // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
+//                tmpTimeLabel.text =  " \(timespendString)"
+//            }
             
             //Update UILabel Distance
-            if let tmpTimeLabel = TimeLabel {
-                // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
-                tmpTimeLabel.text =  " \(timespendString)"
-            }
-            
-            //Update UILabel Distance
-            if let tmpRouteSlider = RouteSlider {
+            if let tmpRouteSlider = routeSlider {
                 // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
                 tmpRouteSlider.setValue(Float(n), animated: true)
+                tmpRouteSlider.setLabel((utils.distanceFormat(distance)), timeText: timespendString)
             }
             
             /**
@@ -383,6 +387,8 @@ class mapUtils {
         // start the whole thing
         fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
         
+        return true
+        
     }
     
     
@@ -398,8 +404,8 @@ class mapUtils {
     class func getBoundCoords(_locationsMaster:[LocationMaster]) -> MGLCoordinateBounds{
         
         
-        print("#################Coords")
-        print(_locationsMaster)
+        //print("#################Coords")
+        //print(_locationsMaster)
         
         //create new bound struct
         var newCoordBound = coordBound()
@@ -443,7 +449,7 @@ class mapUtils {
             
         }
         
-        print("struct")
+        //print("struct")
         print(newCoordBound)
         
         let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))

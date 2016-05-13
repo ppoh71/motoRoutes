@@ -20,11 +20,11 @@ class imageUtils{
      */
     class func loadImageFromPath(path: NSString) -> UIImage? {
         
-        print(path)
+        //print(path)
         
         let image = UIImage(contentsOfFile: path as String)
         
-        print(image)
+        //print(image)
         if image == nil {
             
             print("missing image at: \(path)")
@@ -101,7 +101,7 @@ class imageUtils{
         let performanceTime = CFAbsoluteTimeGetCurrent()
         
         let drawHeight = 200
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: 10, height: drawHeight), false, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 5, height: drawHeight), false, 0)
         let context = UIGraphicsGetCurrentContext()
         
         //flipp-coords
@@ -113,47 +113,82 @@ class imageUtils{
 
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        let LineAltitude  = Int(globalAltitude.gAltitude/10)
+        var LineAltitude  = Int(globalAltitude.gAltitude/10)
+        //LineAltitude = random() % 200
         
         //percentage height of line image
-        let percent = 35
+        let percent = 55
         let heightPercent = LineHeight*percent/100
-        let altitudePercent = LineAltitude*60/100
+        let altitudePercent = LineAltitude*40/100
         
         //make rect with height, position midddle due to mapbox marker image settings
-        let rectangle = CGRect(x: 0, y: drawHeight/2, width: 1, height: Int(heightPercent))
         
-       
-        let altrectangle = CGRect(x: 0, y: (drawHeight/2), width: 1, height: altitudePercent)
         
         //context stuff
        
-        CGContextSetLineWidth(context, 5)
+        CGContextSetLineWidth(context, 1)
         CGContextMoveToPoint(context,0, 0)
+        CGContextSetAlpha(context,0.6);
         
-        
-        CGContextAddRect(context, rectangle)
-        CGContextSetStrokeColorWithColor(context, LineColor.CGColor)
-        CGContextDrawPath(context, .FillStroke)
-        
-        
-        CGContextSetLineWidth(context, 2)
         CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+        
+        let rectangle = CGRect(x: 0, y: drawHeight/2, width: 4, height: Int(heightPercent))
+        CGContextAddRect(context, rectangle)
+        CGContextStrokePath(context)
+        CGContextSetFillColorWithColor(context,LineColor.CGColor)
+        CGContextFillRect(context, rectangle)
+        
+        /*
+        //CGContextDrawPath(context, .FillStroke)
+        CGContextSetAlpha(context,0.9);
+        let altrectangle = CGRect(x: 2, y: drawHeight/2 + altitudePercent, width: 1, height: 1)
+        CGContextMoveToPoint(context,1, 0)
+        CGContextSetStrokeColorWithColor(context, UIColor.cyanColor().CGColor)
+        CGContextSetFillColorWithColor(context,UIColor.cyanColor().CGColor)
         CGContextAddRect(context, altrectangle)
         CGContextDrawPath(context, .FillStroke)
+        */
         
-    
-        
-         CGContextSetAlpha(context,0.4);
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-         print("Image took: \(utils.absolutePeromanceTime(performanceTime)) ")
+         //print("Image took: \(utils.absolutePeromanceTime(performanceTime)) ")
         //saveImageToFile(img, imageName: "Marker-Speed-\(Int(globalSpeed.gSpeed)).png")
         //print("draw image\(utils.getSpeed(globalSpeed.gSpeed)).png")
         
         return img
         
+    }
+    
+    
+    class func drawSliderThumb(width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
+    
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        
+        //flipp-coords
+        CGContextTranslateCTM(context, 0, CGFloat(height));
+        CGContextScaleCTM(context, 1.0, -1.0);
+        
+       
+        CGContextSetLineWidth(context, CGFloat(lineWidth))
+        CGContextMoveToPoint(context,0, 0)
+        CGContextSetAlpha(context, CGFloat(alpha));
+        
+        CGContextSetStrokeColorWithColor(context, color.CGColor)
+        
+        let rectangle = CGRect(x: 0, y: 0, width: lineWidth, height: height)
+        CGContextAddRect(context, rectangle)
+        CGContextStrokePath(context)
+        CGContextSetFillColorWithColor(context,color.CGColor)
+        CGContextFillRect(context, rectangle)
+        
+        
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return img
     }
     
     
@@ -169,7 +204,7 @@ class imageUtils{
             globalSpeed.gSpeed = x
             var img = imageUtils.drawLineOnImage()
             x += 1
-            print("key: \(x) ")
+            //print("key: \(x) ")
         }
     }
     
@@ -184,7 +219,7 @@ class imageUtils{
             data.writeToFile(filename, atomically: true)
         }
         
-        print("IMAGE SAVED")
+        //print("IMAGE SAVED")
     }
     
     
@@ -213,9 +248,9 @@ class imageUtils{
             data.writeToFile(filename, atomically: true)
         }
         
-        print("filename: \(filename as String)")
-        print(timestampFilename)
-        print(utils.getDocumentsDirectory())
+        //print("filename: \(filename as String)")
+        //print(timestampFilename)
+        //print(utils.getDocumentsDirectory())
         
         return timestampFilename
         

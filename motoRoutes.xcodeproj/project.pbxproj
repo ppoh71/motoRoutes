@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5506E0D91C650A230091364B /* colorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506E0D81C650A230091364B /* colorUtils.swift */; };
-		551EFF921CC11D0A0065204D /* realmUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EFF911CC11D0A0065204D /* realmUtils.swift */; };
 		551EFF941CC11F640065204D /* imageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EFF931CC11F640065204D /* imageUtils.swift */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
@@ -17,11 +16,17 @@
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
 		553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50B1C50056400AC12A5 /* Assets.xcassets */; };
 		553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */; };
+		553D05E51CE4AB7400D8555D /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 553D05E21CE4AB7400D8555D /* Roboto-Bold.ttf */; };
+		553D05E61CE4AB7400D8555D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 553D05E31CE4AB7400D8555D /* Roboto-Regular.ttf */; };
+		553D05E71CE4AB7400D8555D /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 553D05E41CE4AB7400D8555D /* Roboto-Thin.ttf */; };
 		5559A81A1C747365008ACE74 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5559A8191C747365008ACE74 /* MapKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		5562BA551C73663900EF340D /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5562BA541C73663900EF340D /* utils.swift */; };
+		556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556B8A671CE4B9A4000EE047 /* CameraSlider.swift */; };
 		559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
 		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
+		55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */; };
+		55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E149701CE22DE000B576BB /* RouteSlider.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		A512A7A6A482604DDCA615B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC3E6448D743A03D95FFC8D /* Pods.framework */; };
 		A90D6F991C947101002E7980 /* mapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* mapUtils.swift */; };
@@ -32,7 +37,6 @@
 /* Begin PBXFileReference section */
 		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5506E0D81C650A230091364B /* colorUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = colorUtils.swift; sourceTree = "<group>"; };
-		551EFF911CC11D0A0065204D /* realmUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = realmUtils.swift; sourceTree = "<group>"; };
 		551EFF931CC11F640065204D /* imageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = imageUtils.swift; sourceTree = "<group>"; };
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
@@ -43,11 +47,17 @@
 		553AB50B1C50056400AC12A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		553AB50E1C50056400AC12A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		553AB5101C50056400AC12A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		553D05E21CE4AB7400D8555D /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		553D05E31CE4AB7400D8555D /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		553D05E41CE4AB7400D8555D /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		5559A8191C747365008ACE74 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		5562BA541C73663900EF340D /* utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
+		556B8A671CE4B9A4000EE047 /* CameraSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSlider.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* motoRouteCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCellView.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
+		55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteOptions.swift; sourceTree = "<group>"; };
+		55E149701CE22DE000B576BB /* RouteSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteSlider.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		6BEB2CFD7B238BEFD717855D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A90D6F981C947101002E7980 /* mapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapUtils.swift; sourceTree = "<group>"; };
@@ -99,6 +109,9 @@
 		553AB5001C50056400AC12A5 /* motoRoutes */ = {
 			isa = PBXGroup;
 			children = (
+				555C0D7F1CE47EF100DABBD4 /* Recources */,
+				55E1496F1CE22D7E00B576BB /* customUI */,
+				55E1496C1CE1C87A00B576BB /* motoRouteOptions */,
 				55C567C21C6284E2008E045B /* Settings.bundle */,
 				55EF09E81C5FD6A200F2857E /* showRouteController */,
 				559A5C511C57E54800B5261F /* addRouteController */,
@@ -113,6 +126,16 @@
 				55AB5D4B1C5694FE005E8A26 /* Utils */,
 			);
 			path = motoRoutes;
+			sourceTree = "<group>";
+		};
+		555C0D7F1CE47EF100DABBD4 /* Recources */ = {
+			isa = PBXGroup;
+			children = (
+				553D05E21CE4AB7400D8555D /* Roboto-Bold.ttf */,
+				553D05E31CE4AB7400D8555D /* Roboto-Regular.ttf */,
+				553D05E41CE4AB7400D8555D /* Roboto-Thin.ttf */,
+			);
+			name = Recources;
 			sourceTree = "<group>";
 		};
 		559A5C501C57E51600B5261F /* motoRouteController */ = {
@@ -137,11 +160,9 @@
 			children = (
 				A90D6F9A1C9471E2002E7980 /* globals.swift */,
 				A90D6F981C947101002E7980 /* mapUtils.swift */,
-				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
 				5506E0D81C650A230091364B /* colorUtils.swift */,
 				5562BA541C73663900EF340D /* utils.swift */,
 				551EFF931CC11F640065204D /* imageUtils.swift */,
-				551EFF911CC11D0A0065204D /* realmUtils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -152,6 +173,24 @@
 				55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */,
 			);
 			name = motoRouteCamera;
+			sourceTree = "<group>";
+		};
+		55E1496C1CE1C87A00B576BB /* motoRouteOptions */ = {
+			isa = PBXGroup;
+			children = (
+				55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */,
+			);
+			name = motoRouteOptions;
+			sourceTree = "<group>";
+		};
+		55E1496F1CE22D7E00B576BB /* customUI */ = {
+			isa = PBXGroup;
+			children = (
+				55E149701CE22DE000B576BB /* RouteSlider.swift */,
+				556B8A671CE4B9A4000EE047 /* CameraSlider.swift */,
+				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
+			);
+			name = customUI;
 			sourceTree = "<group>";
 		};
 		55EF09E81C5FD6A200F2857E /* showRouteController */ = {
@@ -251,8 +290,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				553D05E71CE4AB7400D8555D /* Roboto-Thin.ttf in Resources */,
+				553D05E61CE4AB7400D8555D /* Roboto-Regular.ttf in Resources */,
 				55C567C31C6284E2008E045B /* Settings.bundle in Resources */,
 				553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */,
+				553D05E51CE4AB7400D8555D /* Roboto-Bold.ttf in Resources */,
 				553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */,
 				553AB5071C50056400AC12A5 /* Main.storyboard in Resources */,
 			);
@@ -344,12 +386,14 @@
 				553565551C5A83A2002628AD /* RouteModels.swift in Sources */,
 				A90D6F991C947101002E7980 /* mapUtils.swift in Sources */,
 				551EFF941CC11F640065204D /* imageUtils.swift in Sources */,
+				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* motoRouteCellView.swift in Sources */,
-				551EFF921CC11D0A0065204D /* realmUtils.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				5562BA551C73663900EF340D /* utils.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
+				556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */,
 				A90D6F9B1C9471E2002E7980 /* globals.swift in Sources */,
+				55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
 				5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */,
 				5506E0D91C650A230091364B /* colorUtils.swift in Sources */,

@@ -29,14 +29,14 @@ public class utils {
       
         switch speedIndex {
             
-        case 0..<8:
-           return 5
+        case 0..<7:
+           return 2
         
         case 8..<16:
-            return 12
+            return 8
             
         case 12..<50:
-            return 14
+            return 12
             
         default:
             return 1
@@ -103,9 +103,15 @@ public class utils {
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60) % 60
         let hours: Int = totalSeconds / 3600
+        var time: String
         
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        if(hours<1){
+           time = String(format: "%02d:%02d", minutes, seconds)
+        } else {
+             time = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        }
         
+        return time
     }
     
     /*
@@ -152,7 +158,7 @@ public class utils {
             ),
             dispatch_get_main_queue(), closure)
         
-        print("DISPATCH_TIME_NOW \(DISPATCH_TIME_NOW)")
+        //print("DISPATCH_TIME_NOW \(DISPATCH_TIME_NOW)")
     }
     
     

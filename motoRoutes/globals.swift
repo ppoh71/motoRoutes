@@ -30,7 +30,7 @@ class global {
     }
     
     //init global camera animation duration
-    var gCamDuration  = 0.2
+    var gCamDuration  = 0.5
     init(gCamDuration:Double) {
         self.gCamDuration = gCamDuration
     }
@@ -81,6 +81,9 @@ class global {
     init(gAltitude:Double){
         self.gAltitude = gAltitude
     }
+    
+    
+    
     
 }
 
