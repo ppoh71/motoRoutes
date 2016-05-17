@@ -73,9 +73,7 @@ class showRouteController: UIViewController {
     var debugTimer = NSTimer()
     var debugSeconds = 0
     
-    
 
-    
     
     //
     // override func super init
@@ -83,7 +81,7 @@ class showRouteController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        let x = CFAbsoluteTimeGetCurrent()
         
         //color speed label
         screenshotButton.tintColor = globalColor.gColor
@@ -95,8 +93,8 @@ class showRouteController: UIViewController {
         //covert Realm LocationList to Location Master Object
         RouteList =  RouteMaster.createMasterLocationRealm(motoRoute.locationsList)
        
-        //print(utils.absolutePeromanceTime(x))
-        //print(RouteList.count)
+        print(utils.absolutePeromanceTime(x))
+        print("List count \(RouteList.count)")
         
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
@@ -119,7 +117,7 @@ class showRouteController: UIViewController {
         //init route slider label
 
         
-        mapUtils.printRoute(RouteList, mapView: mapViewShow)
+        mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
         
         //define camera for flyTo ani
         let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: 40)
