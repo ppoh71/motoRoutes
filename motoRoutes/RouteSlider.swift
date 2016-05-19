@@ -69,7 +69,7 @@ public class RouteSlider: UISlider {
         }
         
         
-        print("\(self.frame.width)")
+        //print("\(self.frame.width)")
         
         labelDistance.frame = CGRectMake(self.frame.origin.x+posX+offset+25 ,self.frame.origin.y - 22, 100, 25)
         distanceIconView.frame = CGRectMake(self.frame.origin.x+posX+offset ,self.frame.origin.y - 10, 25, 25)
@@ -90,7 +90,7 @@ public class RouteSlider: UISlider {
     
     public override func layoutSubviews() {
 
-        print("subviews")
+       // print("subviews")
         super.layoutSubviews()
         //super.layoutSubviews()
     }

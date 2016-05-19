@@ -54,11 +54,8 @@ class mapUtils {
         globalSpeedSet.speedSet = speedIndex
         
         //temp speed
-        var tempSpeedIndex = speedIndex
-        
+        //var tempSpeedIndex = speedIndex
         //reset global spped set to zero
-        
-        
         
         //loop through LocationMaster
         for location in _LocationMaster {
@@ -134,36 +131,32 @@ class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[20].speed)
+        let speedIndex:Int = utils.getSpeedIndex(_LocationMaster[20].speed)
         globalSpeedSet.speedSet = speedIndex
         
         
         //loop through LocationMaster
         for location in _LocationMaster {
-     
-                coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-
+            coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
         }
         
         //print route polygon
         let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
         mapView.addAnnotation(line)
         
-        
         //print(" coord count  \(_LocationMaster.count)")
         //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
-        
     }
 
     
     /**
-    *   Print Route MArker on Route
+    *   Print Route aArker on Route
      
         - parameter LocationMaster: LocationMaster Object
         - parameter mapView: current Mapview
     *
     **/
-    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, RouteSlider: UISlider?){
+    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int){
     
         
         //guard 
@@ -172,33 +165,21 @@ class mapUtils {
             return
         }
         
-        var indexKex = key
-        
         //define sliced Array
         let sliceEnd = key+amount
-        let _LocationSlice = _LocationMaster[key+1...sliceEnd]
-        
+        let _LocationSlice = _LocationMaster[key...sliceEnd-1]
         
         //print("MARKER PRINT \(key+1) .. \(key+amount) / Count: \(_LocationSlice.count)")
         
-        for (index, master) in _LocationSlice.enumerate() {
+        for master in _LocationSlice {
            
             //print("enum \(_LocationSlice.enumerate())")
             //set speed and altiude globals
             globalSpeed.gSpeed = master.speed
             globalAltitude.gAltitude = master.altitude
             
-            
             if master.marker == false {
             
-               /*
-                //Update UILabel Distance
-                if let tmpRouteSlider = RouteSlider {
-                    // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
-                    tmpRouteSlider.setValue(Float(indexKex), animated: true)
-                    indexKex += 1
-                }
-                */
                 let newMarker = MGLPointAnnotation()
                 newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
                    //newMarker.subtitle = "route marker"
@@ -206,7 +187,6 @@ class mapUtils {
                     //newMarker.description = media.image
             
                 mapView.addAnnotation(newMarker)
-
                 
                 //mark marker as printed "true" back in MasterRoute Array
                 master.marker = true
@@ -233,6 +213,7 @@ class mapUtils {
         
         //addSpeedMarker(newMarker)
         mapView.addAnnotation(newMarker)
+        // master.marker = true
     
     }
     
@@ -289,44 +270,57 @@ class mapUtils {
      *  - parameter LocationMaster: Array of [LocationMaster] with tghe MasterLocation Object
      *  - parameter mapView: MGLMapView! Object
      *  - parameter SpeedLabel: Optional UILabel to display speed text
-     *  - parameter DistanceLabel: Optional UILabel to display distance text
-     *  - parameter TimeLable: Optional UILabel to display elapsed text
+     *
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, routeSlider: RouteSlider? ) -> Bool{
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, routeSlider: RouteSlider?, initInstance: String!, identifier: String ) -> Bool{
         
         
         let count = _LocationMaster.count
-        //var n = 0
         //var pitchCamera:CGFloat = 20.0
-        var headingCourse:Double = _LocationMaster[n].course-60
+        var headingCourse:Double = _LocationMaster[n].course+globalHeading.gHeading
         //var arrayStep:Int = 5 // play ever n location from arr
         //var plabckCameraDuration:Double = 0.2
         // var cameraDistance = globalCamDistance.gCamDistance
         var distance = 0.0
-        var timeeSpent = 0
+        print("INIT Instance: \(initInstance) / \(identifier)")
         
+        //Struct to hold static var, to identify running instances fo function and stop if needed
+        struct Holder {
+            static var staticInstance = ""
+        }
+        
+        //assign instance to global static
+        Holder.staticInstance = initInstance
+
         
         /**
          *  Camera fly to fx
          **/
-        func fly( nx:Int, pitch: CGFloat, heading:Double){
+        func fly( nx:Int, pitch: CGFloat, heading:Double, instance: String){
             
             var n = nx
+            let currentInstance:String = instance
+            
+            print("FLY Instance: \(instance)")
+            
+            /* check if there are marker on the route point, when in autofly mode */
+            if(_LocationMaster[n].marker == false && globalAutoplay.gAutoplay == true) {
+                
+                print("Notify send")
+                let arrayN = [n]
+                NSNotificationCenter.defaultCenter().postNotificationName(markerNotSetNotificationKey, object: arrayN)
+                
+            }
+ 
+            
             //assign course of locationfor camera animation
-            headingCourse = _LocationMaster[n].course+60
-            
-            
-            /**
-             *  Get some Data for Lables and Stuff
-             **/
-             
-             //Distrance Calc from A B
-            
+            headingCourse = _LocationMaster[n].course+globalHeading.gHeading
+
+            //get next array key by amoutn of arraySteps; default 1
             let nextIndex = n+globalArrayStep.gArrayStep < _LocationMaster.count ? n+globalArrayStep.gArrayStep : _LocationMaster.count-1
-            //let _locationA = CLLocation(latitude: _LocationMaster[n].latitude, longitude: _LocationMaster[n].longitude)
-            //let _locationB = CLLocation(latitude: _LocationMaster[nextIndex].latitude, longitude: _LocationMaster[nextIndex].longitude)
-            // distance += _locationA.distanceFromLocation(_locationB)
+            
+            //get distance from LocationMaster
             distance = _LocationMaster[n].distance
             
             //time spend on road
@@ -349,24 +343,15 @@ class mapUtils {
                 tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
             }
             
-//            //Update UILabel Distance
-//            if let tmpDistanceLabel = DistanceLabel {
-//                //tmpDistanceLabel.text =  " \(utils.distanceFormat(distance))"
-//              //  tmpDistanceLabel.text =  " alt \(_LocationMaster[n].altitude)"
-//            }
-//            
-//            //Update UILabel Distance
-//            if let tmpTimeLabel = TimeLabel {
-//                // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
-//                tmpTimeLabel.text =  " \(timespendString)"
-//            }
             
-            //Update UILabel Distance
+            //Update UILabel in Slider
             if let tmpRouteSlider = routeSlider {
                 // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
                 tmpRouteSlider.setValue(Float(n), animated: true)
+                print("Slider Move \(n)")
                 tmpRouteSlider.setLabel((utils.distanceFormat(distance)), timeText: timespendString)
             }
+            
             
             /**
             * Let it fly
@@ -375,19 +360,30 @@ class mapUtils {
             mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
                 // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
                 
-                // loop until end of array
-                if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true){
+                //create instance to track loop func call
+                
+                print("LOOP INSTANCE \( Holder.staticInstance) - \(currentInstance)")
+                
+                if( Holder.staticInstance != currentInstance){
+                     print("NOT EQUAL \( Holder.staticInstance) - \(currentInstance)")
+                }
+                
+                
+                // loop until end of array or if a new instance is set, kill teh old one by comapre staticInstance with curren one
+                if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true && currentInstance == Holder.staticInstance ){
+                    
                     n = n+globalArrayStep.gArrayStep
                    
-                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
+                    fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse, instance: currentInstance)
                 }
+        
             }
         }
         
         // start the whole thing
-        fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse)
+        fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse, instance: initInstance)
         
-        return true
+        return true // when all done
         
     }
     

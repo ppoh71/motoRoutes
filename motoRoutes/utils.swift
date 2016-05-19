@@ -17,8 +17,20 @@ import Mapbox
 
 public class utils {
     
-      
+    /*
+     * get Time stamp
+     */
+    class func getTimestamp()->Int{
+        
+           return Int(NSDate().timeIntervalSince1970)
+    }
 
+    
+    class func getUniqueUUID()->String{
+    
+        return  NSUUID().UUIDString
+    }
+    
     /*
     * define the speedIndex. km/h / 10 = Index for speedcolors
     */

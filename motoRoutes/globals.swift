@@ -82,6 +82,11 @@ class global {
         self.gAltitude = gAltitude
     }
     
+    var gHeading:Double = 0
+    init(gHeading:Double){
+        self.gHeading = gHeading
+    }
+    
     
     
     
@@ -101,5 +106,6 @@ var globalSpeed = global(gSpeed: 0.0)
 var globalMarkerID = global(gMarkerID: "")
 var globalCounter = global(gCounter: 0)
 var globalAltitude = global(gAltitude: 0)
+var globalHeading = global(gHeading: -60)
 
 

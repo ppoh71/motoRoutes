@@ -5,12 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Moto Route Controller-->
         <scene sceneID="h0c-8X-voG">
@@ -353,45 +347,6 @@
                                     <segue destination="MRL-i5-VW3" kind="show" identifier="showRoutesOptions" id="dm2-gl-IZQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cwt-Oz-F7v">
-                                <rect key="frame" x="520" y="130" width="80" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="Cur-GX-lqI"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                <state key="normal" title="+ Marker">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="addMarker:" destination="iyu-JC-65F" eventType="touchUpInside" id="niN-Cv-OzD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ICo-5b-VSa">
-                                <rect key="frame" x="520" y="160" width="80" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="kmu-VD-wVO"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="17"/>
-                                <state key="normal" title="GSTOP">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="stopMarker:" destination="iyu-JC-65F" eventType="touchUpInside" id="hsv-uB-59a"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0kp-0y-YVi">
-                                <rect key="frame" x="520" y="190" width="80" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Sks-sI-dcA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <state key="normal" title="Reset">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="removewMarker:" destination="iyu-JC-65F" eventType="touchUpInside" id="3jb-ex-eLH"/>
-                                </connections>
-                            </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="70" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="OFE-qg-gVK" customClass="CameraSlider" customModule="motoRoutes" customModuleProvider="target">
                                 <rect key="frame" x="478" y="336" width="204" height="31"/>
                                 <constraints>
@@ -403,10 +358,10 @@
                                 </connections>
                             </slider>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53q-Qw-L5Y">
-                                <rect key="frame" x="20" y="486" width="540" height="30"/>
+                                <rect key="frame" x="20" y="486" width="560" height="30"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3l9-36-9cr" customClass="RouteSlider" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="-2" y="0.0" width="544" height="31"/>
+                                        <rect key="frame" x="-2" y="0.0" width="564" height="31"/>
                                         <color key="tintColor" red="0.11056333092965431" green="1" blue="0.018438104280903311" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="thumbTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
@@ -421,12 +376,16 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOa-KO-rv5">
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOa-KO-rv5">
                                 <rect key="frame" x="16" y="396" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" image="ic_play_circle_filled_48pt">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="ic_play_circle_outline_white_48pt">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <state key="selected" image="ic_pause_circle_outline_white_48pt">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted" image="ic_pause_circle_outline_white_48pt"/>
                                 <connections>
                                     <action selector="flyRoute:" destination="iyu-JC-65F" eventType="touchUpInside" id="C9X-QD-Qou"/>
                                 </connections>
@@ -453,7 +412,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nzl-Ms-cWm">
-                                <rect key="frame" x="600" y="0.0" width="320" height="600"/>
+                                <rect key="frame" x="620" y="0.0" width="320" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="tg6-gh-Z1h"/>
@@ -462,11 +421,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="nzl-Ms-cWm" firstAttribute="leading" secondItem="0kp-0y-YVi" secondAttribute="trailing" id="2Nh-SF-DdJ"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="S1h-wW-ObZ" secondAttribute="bottom" constant="-70" id="4TN-UO-6rM"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="leading" secondItem="53q-Qw-L5Y" secondAttribute="trailing" constant="40" id="5AM-BG-NcT"/>
-                            <constraint firstItem="0kp-0y-YVi" firstAttribute="top" secondItem="Cwt-Oz-F7v" secondAttribute="bottom" constant="30" id="5a2-3E-vpX"/>
-                            <constraint firstItem="0kp-0y-YVi" firstAttribute="trailing" secondItem="Cwt-Oz-F7v" secondAttribute="trailing" id="86Q-XF-xjZ"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="top" id="AKq-CU-75N"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="top" id="Ay1-JX-vmC"/>
                             <constraint firstItem="7LW-L1-BfS" firstAttribute="top" secondItem="OYv-Yc-Cvc" secondAttribute="top" id="E5L-Dw-NwD"/>
@@ -474,27 +430,22 @@
                             <constraint firstItem="hO5-hV-98Y" firstAttribute="top" secondItem="53q-Qw-L5Y" secondAttribute="bottom" constant="40" id="Fcb-BI-qMK"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="top" secondItem="OFE-qg-gVK" secondAttribute="bottom" constant="120" id="G0M-l3-wBt"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" id="G2r-4l-ssS"/>
+                            <constraint firstItem="KOa-KO-rv5" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-4" id="Ggu-Ax-6Y7"/>
                             <constraint firstItem="OYv-Yc-Cvc" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-13" id="Ldr-SU-1Oo"/>
-                            <constraint firstItem="0kp-0y-YVi" firstAttribute="top" secondItem="ICo-5b-VSa" secondAttribute="bottom" id="NEZ-WV-Bh3"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="bottom" constant="-100" id="P6f-B0-05X"/>
-                            <constraint firstItem="ICo-5b-VSa" firstAttribute="top" secondItem="Cwt-Oz-F7v" secondAttribute="bottom" id="SCY-Nr-WAW"/>
+                            <constraint firstItem="53q-Qw-L5Y" firstAttribute="centerX" secondItem="1hV-rc-YM3" secondAttribute="centerX" id="Ruc-9x-CfZ"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="bottom" secondItem="1hV-rc-YM3" secondAttribute="bottom" id="ScV-Qt-aQ3"/>
                             <constraint firstItem="S1h-wW-ObZ" firstAttribute="leading" secondItem="1hV-rc-YM3" secondAttribute="trailing" constant="-80" id="VL2-Hv-rpp"/>
                             <constraint firstItem="7LW-L1-BfS" firstAttribute="leading" secondItem="OYv-Yc-Cvc" secondAttribute="trailing" constant="23" id="XSg-Io-zoE"/>
-                            <constraint firstItem="Cwt-Oz-F7v" firstAttribute="top" secondItem="bbU-2r-zv2" secondAttribute="bottom" constant="110" id="aCC-L4-NRs"/>
                             <constraint firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="ctW-ro-1Sg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OFE-qg-gVK" secondAttribute="trailing" constant="-100" id="hka-fX-My5"/>
-                            <constraint firstItem="0kp-0y-YVi" firstAttribute="leading" secondItem="Cwt-Oz-F7v" secondAttribute="leading" id="i8l-6O-W07"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="Jn9-UP-3oa" secondAttribute="bottom" constant="4" id="kWl-5t-zqu"/>
-                            <constraint firstItem="ICo-5b-VSa" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="top" constant="160" id="lUY-HZ-qWv"/>
                             <constraint firstItem="Jn9-UP-3oa" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-10" id="oD2-mN-I9r"/>
                             <constraint firstItem="OYv-Yc-Cvc" firstAttribute="top" secondItem="bbU-2r-zv2" secondAttribute="bottom" constant="-10" id="pNf-Rd-aif"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="centerY" secondItem="1hV-rc-YM3" secondAttribute="centerY" id="phu-x7-ycR"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leading" id="sjx-Jg-xOc"/>
                             <constraint firstAttribute="bottom" secondItem="1hV-rc-YM3" secondAttribute="bottom" id="trZ-1e-mlb"/>
                             <constraint firstItem="Jn9-UP-3oa" firstAttribute="centerY" secondItem="1hV-rc-YM3" secondAttribute="centerY" constant="71" id="wDw-iK-1iY"/>
-                            <constraint firstItem="ICo-5b-VSa" firstAttribute="leading" secondItem="Cwt-Oz-F7v" secondAttribute="leading" id="xIa-Et-CPv"/>
-                            <constraint firstItem="Cwt-Oz-F7v" firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="xjd-xX-KjC"/>
                             <constraint firstItem="iUE-n7-JG6" firstAttribute="top" secondItem="OYv-Yc-Cvc" secondAttribute="bottom" constant="10" id="yde-X0-zpq"/>
                         </constraints>
                         <variation key="default">
@@ -505,10 +456,7 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="AddMarker" destination="Cwt-Oz-F7v" id="odL-UF-I1U"/>
-                        <outlet property="MinusMarker" destination="0kp-0y-YVi" id="LTA-Py-llr"/>
                         <outlet property="SpeedLabel" destination="Jn9-UP-3oa" id="7h6-dr-O1d"/>
-                        <outlet property="amountPicker" destination="fUq-1K-wBl" id="K5J-kP-oKl"/>
                         <outlet property="cameraSlider" destination="OFE-qg-gVK" id="5KB-a1-Oj9"/>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="debugLabel" destination="iUE-n7-JG6" id="1tU-mO-9hc"/>
@@ -664,8 +612,10 @@
         <image name="ic_check_circle_48pt" width="48" height="48"/>
         <image name="ic_info_48pt" width="40" height="40"/>
         <image name="ic_panorama_fish_eye_48pt" width="48" height="48"/>
+        <image name="ic_pause_circle_outline_white_48pt" width="48" height="48"/>
         <image name="ic_photo_camera_white_48dp" width="72" height="72"/>
         <image name="ic_photo_camera_white_48pt" width="48" height="48"/>
         <image name="ic_play_circle_filled_48pt" width="48" height="48"/>
+        <image name="ic_play_circle_outline_white_48pt" width="48" height="48"/>
     </resources>
 </document>
