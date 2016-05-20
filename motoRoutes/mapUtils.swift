@@ -273,7 +273,7 @@ class mapUtils {
      *
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, routeSlider: RouteSlider?, initInstance: String!, identifier: String ) -> Bool{
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, routeSlider: RouteSlider?, initInstance: String!, identifier: String, speedoMeter: Speedometer? ) -> Bool{
         
         
         let count = _LocationMaster.count
@@ -332,6 +332,9 @@ class mapUtils {
             let speed = _LocationMaster[n].speed
             let speedIndex = utils.getSpeedIndex(speed)
             
+            
+            //update speedometer
+            speedoMeter?.moveSpeedo(speed)
             
             /**
             *  Update Lables / Slider

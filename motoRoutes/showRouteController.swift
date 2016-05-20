@@ -71,6 +71,8 @@ class showRouteController: UIViewController {
     var debugTimer = NSTimer()
     var debugSeconds = 0
     
+    var speedoMeter = Speedometer()
+    
 
     //
     // override func super init
@@ -82,6 +84,24 @@ class showRouteController: UIViewController {
         
         //color speed label
         screenshotButton.tintColor = globalColor.gColor
+        
+        
+        //get screensize
+        /*
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        let speedoWidth = 10
+        let SpeedometerImage = imageUtils.makeSpeedometerImage(speedoWidth, height: Int(screenHeight))
+        speedoMeter = UIImageView(image: SpeedometerImage)
+        speedoMeter.frame = CGRect(x: 0, y: 0, width: speedoWidth, height: Int(screenHeight))
+        speedoMeter.tag = 1
+        view.addSubview(speedoMeter)
+        */
+       
+        speedoMeter.frame = CGRect(x: 0, y: 300, width: 40, height: 200)
+        view.addSubview(speedoMeter)
+        
         
         //set max on route slider
         routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
@@ -171,8 +191,11 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay = false
         
         //fly to route n destination
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart,  SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1")
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart,  SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
         //print("Slider Route value \(sliderRouteValue)")
+        
+       
+
         
     }
     
@@ -247,6 +270,7 @@ class showRouteController: UIViewController {
             
                 print("timer running and printeing routes \(sliceStart)")
                 
+                
                 //print marker
                 mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  sliceStart, amount: sliceAmount)
                 sliceStart += sliceAmount //move array to next route
@@ -257,7 +281,7 @@ class showRouteController: UIViewController {
                     
                     //stop timer, flyto route and re-init timer, set counter to zero
                     timer.invalidate()
-                    mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2")
+                    mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: speedoMeter)
                     count=0
                     startMarkerTimer()
                 }
@@ -286,7 +310,7 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay =  true
         
         //make route fly
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3")
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
     
     }
     
@@ -294,6 +318,8 @@ class showRouteController: UIViewController {
     
     //start/stop button function
     func StartStop(active: Bool){
+        
+
         
         if (active){
             startMarkerTimer()
@@ -309,6 +335,8 @@ class showRouteController: UIViewController {
     
     // new screenshot
     @IBAction func flyRoute(sender: UIButton) {
+        
+      
         
         sender.selected = !sender.selected;
         sender.highlighted = !sender.highlighted

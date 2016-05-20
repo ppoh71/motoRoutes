@@ -96,9 +96,9 @@ class imageUtils{
     /*
      * draw a line on an image
      */
-    class func drawLineOnImage() -> UIImage{
+    static func drawLineOnImage() -> UIImage{
         
-        let performanceTime = CFAbsoluteTimeGetCurrent()
+        //let performanceTime = CFAbsoluteTimeGetCurrent()
         
         let drawHeight = 200
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 5, height: drawHeight), false, 0)
@@ -113,13 +113,13 @@ class imageUtils{
 
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        var LineAltitude  = Int(globalAltitude.gAltitude/10)
+        //let LineAltitude  = Int(globalAltitude.gAltitude/10)
         //LineAltitude = random() % 200
         
         //percentage height of line image
         let percent = 55
         let heightPercent = LineHeight*percent/100
-        let altitudePercent = LineAltitude*40/100
+    //    let altitudePercent = LineAltitude*40/100
         
         //make rect with height, position midddle due to mapbox marker image settings
         
@@ -193,20 +193,57 @@ class imageUtils{
     
     
     
+    static func makeSpeedometerImage(width: Int, height: Int)-> UIImage{
+    
+        let colors = ColorPalette.colors
+        
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        
+        //flipp-coords
+        CGContextTranslateCTM(context, 0, CGFloat(height));
+        CGContextScaleCTM(context, 1.0, -1.0);
+        
+        for (index, color) in colors.enumerate() {
+        
+            
+            let currentColor = colorUtils.hexTorgbColor(color)
+            CGContextSetStrokeColorWithColor(context, currentColor.CGColor)
+            
+            
+            
+            let rectangle = CGRect(x: 0, y: (height/colors.count)*index, width: width, height: height/colors.count)
+            CGContextAddRect(context, rectangle)
+            CGContextStrokePath(context)
+            CGContextSetFillColorWithColor(context, currentColor.CGColor)
+            CGContextFillRect(context, rectangle)
+
+            print(color)
+        
+        }
+        
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return img
+    }
+    
     /*
      * generate spped marker images
      */
+    /*
     class func generateSpeedMarker(){
         
         var x:Double = 0;
         
         while x<350 {
             globalSpeed.gSpeed = x
-            var img = imageUtils.drawLineOnImage()
-            x += 1
+                      x += 1
             //print("key: \(x) ")
         }
     }
+    */
     
     /*
      * save imge to file

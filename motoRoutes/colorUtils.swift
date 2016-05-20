@@ -8,11 +8,20 @@
 
 import UIKit
 
-
+//Struct
+struct ColorPalette {
+    static let  colors:[String] = ["#ffffff", "#C8E6C9", "#A5D6A7", "#81C784", "#66BB6A", "#4CAF50", "#43A047", "#CE93D8", "#BA68C8", "#AB47BC", "#9C27B0", "#8E24AA", "#7B1FA2", "#D500F9", "#AA00FF", "#FF4081", "#F50057", "#C51162", "#880E4F", "#E53935", "#D32F2F", "#C62828", "#AA00FF", "#B71C1C", "#B71C1C", "#B71C1C"]
+}
 
 class colorUtils {
     
 
+
+    
+    //assign instance to global static
+   // Holder.staticInstance = initInstance
+ 
+ 
     //random color
     static func randomColor() -> UIColor {
         let r = CGFloat(arc4random()) / CGFloat(UInt32.max)
@@ -51,7 +60,7 @@ class colorUtils {
     static func polylineColors(speed:Int) -> UIColor{
 
        //color spped palette in hex
-       var colorSpeed: [String] = ["#ffffff", "#C8E6C9", "#A5D6A7", "#81C784", "#66BB6A", "#4CAF50", "#43A047", "#CE93D8", "#BA68C8", "#AB47BC", "#9C27B0", "#8E24AA", "#7B1FA2", "#D500F9", "#AA00FF", "#FF4081", "#F50057", "#C51162", "#880E4F", "#E53935", "#D32F2F", "#C62828", "#AA00FF", "#B71C1C", "#B71C1C", "#B71C1C"]
+       var colorSpeed = ColorPalette.colors
         
         //color var
         //print("color operation")
