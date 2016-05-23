@@ -11,47 +11,78 @@ import UIKit
 
 class Speedometer: UIView {
 
+    let speedoBackground = CAReplicatorLayer()
     let speedBar = CALayer()
+    let speedLabel = UILabel()
+    var frameHeight = 0.0
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        
-        let r = CAReplicatorLayer()
-        r.bounds = CGRect(x: 0, y: 0, width: 40.0, height: 200.0)
-        r.position = CGPoint(x: 0.0, y: 0)
-        
-        r.backgroundColor = UIColor.lightGrayColor().CGColor
-        self.layer.addSublayer(r)
-        
-       
-        speedBar.bounds = CGRect(x: 0, y: 0, width: 40.0, height: 200.0)
-        speedBar.position = CGPoint(x: 20.0, y: 200.0)
-        speedBar.cornerRadius = 0
-        speedBar.backgroundColor = UIColor.redColor().CGColor
-        
-        r.addSublayer(speedBar)
-        
-        
+       // init view in setup
         
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    
+    
+    func setup(width: Int, height: Int){
+    
+        
+        frameHeight = Double(height)
+        
+        speedoBackground.bounds = CGRect(x: 0, y: 0, width: width, height: height)
+        
+        //define posiion in bounds, default will center it (x,y) in bounds rect
+        speedoBackground.position = CGPoint(x: Double(width/2), y: Double(height/2))
+        
+        speedoBackground.backgroundColor = UIColor.lightGrayColor().CGColor
+        self.layer.addSublayer(speedoBackground)
+        
+        speedBar.bounds = CGRect(x: 0, y: 0, width: width, height: height)
+        speedBar.position = CGPoint(x: Double(width/2), y: Double(height/2))
+        speedBar.cornerRadius = 0
+        speedBar.backgroundColor = UIColor.redColor().CGColor
+        
+        speedoBackground.addSublayer(speedBar)
+        
+        speedoBackground.masksToBounds = true
+        
+        
+        speedLabel.text = "SXXLAB"
+        speedLabel.frame = CGRectMake(0, 0, 100, 50)
+        self.addSubview(speedLabel)
+        
+
     }
     
 
     func moveSpeedo(speed:Double){
     
-        speedBar.backgroundColor = colorUtils.polylineColors(utils.getSpeedIndex(speed)).CGColor
+        //get speed percent to frameheight
+        let maxSpeed = frameHeight
+        let speedr = Double(random() % 200)
+        let percentSpeed = speed*100/maxSpeed
+        
+        //get bar range and calc y position to move
+        let speedoRange = (frameHeight/2*3) - (frameHeight/2)
+        let yToMove = speedoRange - (percentSpeed*speedoRange/100)
+        
+        
+        speedBar.backgroundColor = colorUtils.polylineColors(globalSpeedSet.speedSet).CGColor
         
         let move = CABasicAnimation(keyPath: "position.y")
         //move.byValue = speedBar.position.y -  CGFloat(globalSpeed.gSpeed)
-        move.toValue = CGFloat(speed) * -2 
-        
       
+        move.toValue =  (frameHeight/2) + yToMove
         
-        print("move.toValue \(move.toValue)")
+        
+        print("random move \(speed) - \(percentSpeed) - \(yToMove)")
+
         move.duration = 0.1
         move.autoreverses = false
         move.fillMode = kCAFillModeForwards;
@@ -60,7 +91,21 @@ class Speedometer: UIView {
         
         speedBar.addAnimation(move, forKey: nil)
         
-    
+        speedLabel.text = " \(Int(speed))"
+        speedLabel.textColor = colorUtils.polylineColors(globalSpeedSet.speedSet)
+        speedLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 30.0)
+        
+        
+        UIView.animateWithDuration(0.1, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.0, options: .CurveLinear, animations: {
+            
+            self.speedLabel.center = CGPoint(x: 55, y: yToMove )  // Ending position of the Label
+            
+            }, completion: nil)
+
+
+        
+        
+        
     }
 
 

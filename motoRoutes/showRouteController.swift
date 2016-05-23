@@ -23,7 +23,7 @@ class showRouteController: UIViewController {
     @IBOutlet var cancelButton:UIButton!
     @IBOutlet var screenshotButton:UIButton!
     @IBOutlet var flyButton:UIButton!
-    @IBOutlet var SpeedLabel:UILabel!
+    //@IBOutlet var SpeedLabel:UILabel!
     @IBOutlet var DistanceLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
     @IBOutlet var AltitudeLabel:UILabel!
@@ -88,9 +88,7 @@ class showRouteController: UIViewController {
         
         //get screensize
         /*
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
+        l
         let speedoWidth = 10
         let SpeedometerImage = imageUtils.makeSpeedometerImage(speedoWidth, height: Int(screenHeight))
         speedoMeter = UIImageView(image: SpeedometerImage)
@@ -98,8 +96,17 @@ class showRouteController: UIViewController {
         speedoMeter.tag = 1
         view.addSubview(speedoMeter)
         */
-       
-        speedoMeter.frame = CGRect(x: 0, y: 300, width: 40, height: 200)
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        //let screenWidth = screenSize.width
+        var  screenHeight = screenSize.height/2
+        //screenHeight = 200
+        let speedoWidth:Int = 10
+        print("Screenheigth \(screenHeight)")
+        speedoMeter.backgroundColor = UIColor.blueColor()
+        
+        speedoMeter.frame = CGRect(x: 0, y: 100, width: speedoWidth, height: Int(screenHeight))
+        speedoMeter.setup(speedoWidth, height: Int(screenHeight))
+        
         view.addSubview(speedoMeter)
         
         
@@ -191,7 +198,7 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay = false
         
         //fly to route n destination
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart,  SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
         //print("Slider Route value \(sliderRouteValue)")
         
        
@@ -281,7 +288,7 @@ class showRouteController: UIViewController {
                     
                     //stop timer, flyto route and re-init timer, set counter to zero
                     timer.invalidate()
-                    mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: speedoMeter)
+                    mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: speedoMeter)
                     count=0
                     startMarkerTimer()
                 }
@@ -310,7 +317,7 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay =  true
         
         //make route fly
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, SpeedLabel: SpeedLabel, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
     
     }
     
@@ -484,7 +491,7 @@ extension showRouteController: MGLMapViewDelegate {
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
         //let speedIndex =  Int(round(speed/10))
-        return colorUtils.polylineColors(globalSpeedSet.speedSet)
+        return colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
     }
     
 }

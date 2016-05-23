@@ -273,7 +273,7 @@ class mapUtils {
      *
      *
      **/
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, SpeedLabel:UILabel?, routeSlider: RouteSlider?, initInstance: String!, identifier: String, speedoMeter: Speedometer? ) -> Bool{
+    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, routeSlider: RouteSlider?, initInstance: String!, identifier: String, speedoMeter: Speedometer? ) -> Bool{
         
         
         let count = _LocationMaster.count
@@ -330,21 +330,22 @@ class mapUtils {
             //define camera for flyTo ani
             let camera = mapUtils.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: heading)
             let speed = _LocationMaster[n].speed
-            let speedIndex = utils.getSpeedIndex(speed)
+            let speedIndex = utils.getSpeedIndexFull(speed)
             
+            globalSpeedSet.speedSet = speedIndex
             
             //update speedometer
-            speedoMeter?.moveSpeedo(speed)
+            speedoMeter?.moveSpeedo(Double(utils.getSpeed(_LocationMaster[n].speed)))
             
             /**
             *  Update Lables / Slider
             **/
             
             //Update UILabel Speed
-            if let tmpSpeedLabel = SpeedLabel {
-                tmpSpeedLabel.textColor =  colorUtils.polylineColors(speedIndex)
-                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
-            }
+//            if let tmpSpeedLabel = SpeedLabel {
+//                tmpSpeedLabel.textColor =  colorUtils.polylineColors(speedIndex)
+//                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
+//            }
             
             
             //Update UILabel in Slider
