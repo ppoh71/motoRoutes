@@ -11,6 +11,7 @@ import CoreLocation
 import Foundation
 import RealmSwift
 import Mapbox
+import MapboxGeocoder
 import Crashlytics
 
 
