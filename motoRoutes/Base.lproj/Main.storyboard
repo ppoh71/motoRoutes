@@ -347,16 +347,6 @@
                                     <segue destination="MRL-i5-VW3" kind="show" identifier="showRoutesOptions" id="dm2-gl-IZQ"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="70" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="OFE-qg-gVK" customClass="CameraSlider" customModule="motoRoutes" customModuleProvider="target">
-                                <rect key="frame" x="478" y="336" width="204" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="ACQ-An-But"/>
-                                </constraints>
-                                <color key="thumbTintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <action selector="sliderValueChanged:" destination="iyu-JC-65F" eventType="valueChanged" id="BjM-uw-a0h"/>
-                                </connections>
-                            </slider>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53q-Qw-L5Y">
                                 <rect key="frame" x="20" y="486" width="560" height="30"/>
                                 <subviews>
@@ -422,7 +412,6 @@
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="top" id="Ay1-JX-vmC"/>
                             <constraint firstItem="7LW-L1-BfS" firstAttribute="top" secondItem="OYv-Yc-Cvc" secondAttribute="top" id="E5L-Dw-NwD"/>
                             <constraint firstItem="hO5-hV-98Y" firstAttribute="top" secondItem="53q-Qw-L5Y" secondAttribute="bottom" constant="40" id="Fcb-BI-qMK"/>
-                            <constraint firstItem="53q-Qw-L5Y" firstAttribute="top" secondItem="OFE-qg-gVK" secondAttribute="bottom" constant="120" id="G0M-l3-wBt"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" id="G2r-4l-ssS"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-4" id="Ggu-Ax-6Y7"/>
                             <constraint firstItem="OYv-Yc-Cvc" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-13" id="Ldr-SU-1Oo"/>
@@ -432,7 +421,6 @@
                             <constraint firstItem="S1h-wW-ObZ" firstAttribute="leading" secondItem="1hV-rc-YM3" secondAttribute="trailing" constant="-80" id="VL2-Hv-rpp"/>
                             <constraint firstItem="7LW-L1-BfS" firstAttribute="leading" secondItem="OYv-Yc-Cvc" secondAttribute="trailing" constant="23" id="XSg-Io-zoE"/>
                             <constraint firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="ctW-ro-1Sg"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="OFE-qg-gVK" secondAttribute="trailing" constant="-100" id="hka-fX-My5"/>
                             <constraint firstItem="OYv-Yc-Cvc" firstAttribute="top" secondItem="bbU-2r-zv2" secondAttribute="bottom" constant="-10" id="pNf-Rd-aif"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="centerY" secondItem="1hV-rc-YM3" secondAttribute="centerY" id="phu-x7-ycR"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leading" id="sjx-Jg-xOc"/>
@@ -448,7 +436,6 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="cameraSlider" destination="OFE-qg-gVK" id="5KB-a1-Oj9"/>
                         <outlet property="cancelButton" destination="7LW-L1-BfS" id="biC-Gy-hfr"/>
                         <outlet property="debugLabel" destination="iUE-n7-JG6" id="1tU-mO-9hc"/>
                         <outlet property="flyButton" destination="KOa-KO-rv5" id="QBm-2s-Uy4"/>

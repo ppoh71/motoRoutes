@@ -5,6 +5,8 @@
 //  Created by Peter Pohlmann on 21.01.16.
 //  Copyright © 2016 Peter Pohlmann. All rights reserved.
 //
+//
+//
 
 import UIKit
 import RealmSwift
@@ -68,9 +70,8 @@ class motoRouteController: UITableViewController {
         
         let route = motoRoutes[indexPath.row]
         
-        // Configure the cell...
         
-        //load image
+        //get the stuff for the cell
 
         let imgName = route.image
         
@@ -81,10 +82,11 @@ class motoRouteController: UITableViewController {
         //image = (image == nil) ? "default.jpg" : image
         print(route.id)
 
+        let nameLabel = "\(utils.clockFormat(route.duration))"
+        let distanceLabel = "\(utils.distanceFormat(route.distance))"
         
-        cell.routeImage.image = image
-        cell.nameLabel.text = "\(utils.clockFormat(route.duration))"
-        cell.distanceLabel.text = "\(utils.distanceFormat(route.distance))"
+        //configure cell
+        cell.configureCell(nameLabel, distance: distanceLabel, image: image! )
         
         return cell
     }

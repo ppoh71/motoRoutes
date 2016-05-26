@@ -27,11 +27,7 @@ class showRouteController: UIViewController {
     @IBOutlet var DistanceLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
     @IBOutlet var AltitudeLabel:UILabel!
-    @IBOutlet var cameraSlider:UISlider!{
-        didSet{
-            cameraSlider.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
-        }
-    }
+
     @IBOutlet var routeSlider:RouteSlider!{
         didSet{
            routeSlider.setLabel("0.000", timeText: "00:00")
@@ -64,15 +60,16 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.00051
+    var timeIntervalMarker = 0.001
     var performanceTime:Double = 0
     
     //Debug Label
     var debugTimer = NSTimer()
     var debugSeconds = 0
     
+    //init custom speedometer
     var speedoMeter = Speedometer()
-    
+    var cameraCustomSlider = CameraSliderCustom()
 
     //
     // override func super init
@@ -86,34 +83,10 @@ class showRouteController: UIViewController {
         screenshotButton.tintColor = globalColor.gColor
         
         
-        //get screensize
-        /*
-        l
-        let speedoWidth = 10
-        let SpeedometerImage = imageUtils.makeSpeedometerImage(speedoWidth, height: Int(screenHeight))
-        speedoMeter = UIImageView(image: SpeedometerImage)
-        speedoMeter.frame = CGRect(x: 0, y: 0, width: speedoWidth, height: Int(screenHeight))
-        speedoMeter.tag = 1
-        view.addSubview(speedoMeter)
-        */
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
-        //let screenWidth = screenSize.width
-        var  screenHeight = screenSize.height/2
-        //screenHeight = 200
-        let speedoWidth:Int = 10
-        print("Screenheigth \(screenHeight)")
-        speedoMeter.backgroundColor = UIColor.blueColor()
-        
-        speedoMeter.frame = CGRect(x: 0, y: 100, width: speedoWidth, height: Int(screenHeight))
-        speedoMeter.setup(speedoWidth, height: Int(screenHeight))
-        
-        view.addSubview(speedoMeter)
-        
-        
-        //set max on route slider
+        // MODEL: set max on route slider
         routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
        
-        //covert Realm LocationList to Location Master Object
+        //MODEL: covert Realm LocationList to Location Master Object
         RouteList =  RouteMaster.createMasterLocationRealm(motoRoute.locationsList)
        
         print(utils.absolutePeromanceTime(x))
@@ -136,55 +109,97 @@ class showRouteController: UIViewController {
         routeSlider.addTarget(self, action: #selector(showRouteController.touchUpRouteSlide), forControlEvents: UIControlEvents.TouchUpOutside)
         routeSlider.addTarget(self, action: #selector(showRouteController.touchDowntRouteSlide), forControlEvents: UIControlEvents.TouchDown)
         
-        //Listen from FlyoverRoutes if Markers are set
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
+        //Setup Custom UI
+        cameraCustomSlider.addTarget(self, action: #selector(showRouteController.cameraSliderValueChanged), forControlEvents: .ValueChanged)
+        setupCustomUI()
         
     }
     
+
 
     
     override func viewDidAppear(animated: Bool) {
         
+        //Listen from FlyoverRoutes if Markers are set
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
+        
         //print the route in 1 color
         mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
         
-        //define camera and set for flyTo ani
+        //define camera and set it to startpoint
         let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
         
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
         
-        //mapUtils.cameraAni(utils.masterRealmLocation(motoRoute.locationsList), mapView: mapViewShow)
-        //Media Objects
-        //print("########MediaObjects \(motoRoute.mediaList)")
     }
-
     
     
-    //Camera Slider value changes
-    @IBAction func sliderValueChanged(sender: UISlider) {
-        let currentValue = Int(sender.value)
+    //
+    // view will disappear, stop everythink
+    //
+    override func viewWillDisappear(animated:Bool) {
+        
+        stopAll()
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        super.viewWillDisappear(animated)
+    }
+    
+    
+    //int and setup custom controlls
+    func setupCustomUI(){
+        
+        //get screensize
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        
+        //init Speedometer
+        let speedoHeight = screenHeight/2
+        let speedoWidth:Int = 6
+        speedoMeter.frame = CGRect(x: (Int(screenWidth) - speedoWidth), y: 0, width: speedoWidth, height: Int(speedoHeight))
+        speedoMeter.setup(speedoWidth, height: Int(speedoHeight))
+        
+        
+        //init and setup custom camera slider
+        let frameSizeCameraSlider = 40 //extra space for slidethumb image
+        let cameraCustomHeightMinus = CGFloat(60)
+        cameraCustomSlider.frame = CGRect(x: (Int(screenWidth) - frameSizeCameraSlider), y: Int(screenHeight/2), width: frameSizeCameraSlider, height: Int(speedoHeight - cameraCustomHeightMinus))
+        cameraCustomSlider.setup(speedoWidth, height: Int(speedoHeight - cameraCustomHeightMinus), frameWidth: frameSizeCameraSlider)
+        
+        //add Subviews
+        view.addSubview(speedoMeter)
+        view.addSubview(cameraCustomSlider)
+        
+    }
+    
+    
+    //custom camera value changed
+    func cameraSliderValueChanged(){
+        
+        print("current value target print")
+        print(cameraCustomSlider.currentValue)
+        
+        let currentValue = cameraCustomSlider.currentValue
         
         globalCamDistance.gCamDistance = Double(200*currentValue)
         globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
-//      globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
+        //globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
         globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(60 ) : 60.0
         
         //zoom camera also when not flying,
         if( globalAutoplay.gAutoplay==false && flyButton.selected==false ) {
-        
+            
             //get current center coords
             let centerCoords = mapViewShow.centerCoordinate
             
             //define camera and flyTo with zoom level
-            let camera = mapUtils.cameraDestination(centerCoords.latitude, longitude:centerCoords.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: 40)
+            let camera = mapUtils.cameraDestination(centerCoords.latitude, longitude:centerCoords.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: globalHeading.gHeading)
             mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
-
-           // print("\(mapViewShow.centerCoordinate)")
+            
+            // print("\(mapViewShow.centerCoordinate)")
         }
-        
-      //  mapViewShow.setZoomLevel(Double(currentValue/10), animated: true)
-        
     }
+    
     
     
     //Route Slider value changed
@@ -200,10 +215,6 @@ class showRouteController: UIViewController {
         //fly to route n destination
         mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
         //print("Slider Route value \(sliderRouteValue)")
-        
-       
-
-        
     }
     
 
@@ -264,7 +275,7 @@ class showRouteController: UIViewController {
             //print("Notify received Func \(nRoute)")
     }
     
-    //function print marker
+    //printing speedmarker on the map
     func printMarker(){
         
         let counterStep = sliceAmount // when to fly next marker
@@ -276,7 +287,6 @@ class showRouteController: UIViewController {
             if(RouteList[sliceStart].marker==false){
             
                 print("timer running and printeing routes \(sliceStart)")
-                
                 
                 //print marker
                 mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  sliceStart, amount: sliceAmount)
@@ -325,8 +335,6 @@ class showRouteController: UIViewController {
     
     //start/stop button function
     func StartStop(active: Bool){
-        
-
         
         if (active){
             startMarkerTimer()

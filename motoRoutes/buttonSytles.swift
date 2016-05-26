@@ -10,7 +10,7 @@ import UIKit
 
 class buttonSytles: UIButton {
 
-    
+    //init
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         self.layer.cornerRadius = 15.0;

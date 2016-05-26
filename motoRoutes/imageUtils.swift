@@ -56,7 +56,7 @@ class imageUtils{
     
     
     /*
-     * resize image by width, no transparncy on png
+     * resize image by width, no transparency on png
      */
     class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
         
@@ -113,13 +113,13 @@ class imageUtils{
 
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        //let LineAltitude  = Int(globalAltitude.gAltitude/10)
+        let LineAltitude  = Int(globalAltitude.gAltitude/10)
         //LineAltitude = random() % 200
         
         //percentage height of line image
         let percent = 55
         let heightPercent = LineHeight*percent/100
-    //    let altitudePercent = LineAltitude*40/100
+        let altitudePercent = LineAltitude*40/100
         
         //make rect with height, position midddle due to mapbox marker image settings
         
@@ -138,7 +138,7 @@ class imageUtils{
         CGContextSetFillColorWithColor(context,LineColor.CGColor)
         CGContextFillRect(context, rectangle)
         
-        /*
+        
         //CGContextDrawPath(context, .FillStroke)
         CGContextSetAlpha(context,0.9);
         let altrectangle = CGRect(x: 2, y: drawHeight/2 + altitudePercent, width: 1, height: 1)
@@ -147,7 +147,7 @@ class imageUtils{
         CGContextSetFillColorWithColor(context,UIColor.cyanColor().CGColor)
         CGContextAddRect(context, altrectangle)
         CGContextDrawPath(context, .FillStroke)
-        */
+        
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

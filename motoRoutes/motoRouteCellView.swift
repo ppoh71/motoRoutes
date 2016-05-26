@@ -20,6 +20,16 @@ class motoRouteCellView: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    //config func of cell
+    func configureCell(name:String, distance:String, image: UIImage){
+    
+        nameLabel.text = name
+        distanceLabel.text = distance
+        routeImage.image   = image
+        
+    }
+    
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

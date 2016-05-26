@@ -16,7 +16,7 @@ class Speedometer: UIView {
     let speedLabel = UILabel()
     var frameHeight = 0.0
 
-    
+    //init frame
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -24,23 +24,25 @@ class Speedometer: UIView {
         
     }
     
+    //init coder
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
     
-    
+    //the actual setup for the speedometer
     func setup(width: Int, height: Int){
     
-        
+        //the init frameheight, will be used be the animation
         frameHeight = Double(height)
         
+        //set layers for background and speedo bar
         speedoBackground.bounds = CGRect(x: 0, y: 0, width: width, height: height)
         
         //define posiion in bounds, default will center it (x,y) in bounds rect
         speedoBackground.position = CGPoint(x: Double(width/2), y: Double(height/2))
         
-        speedoBackground.backgroundColor = UIColor.lightGrayColor().CGColor
+        speedoBackground.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5).CGColor
         self.layer.addSublayer(speedoBackground)
         
         speedBar.bounds = CGRect(x: 0, y: 0, width: width, height: height)
@@ -48,65 +50,59 @@ class Speedometer: UIView {
         speedBar.cornerRadius = 0
         speedBar.backgroundColor = UIColor.redColor().CGColor
         
+        //add speedbat to layer
         speedoBackground.addSublayer(speedBar)
         
+        //mask speedbar with background
         speedoBackground.masksToBounds = true
         
-        
-        speedLabel.text = "SXXLAB"
+        //add TextLabel
+        speedLabel.text = " - "
         speedLabel.frame = CGRectMake(0, 0, 100, 50)
         self.addSubview(speedLabel)
         
-
     }
     
-
+    //animate the speedbar by given speed
     func moveSpeedo(speed:Double){
     
         //get speed percent to frameheight
-        let maxSpeed = frameHeight
-        let speedr = Double(random() % 200)
+        let maxSpeed = frameHeight //speed is relevant to height of initialized UIView: maxspeed = frameheight
         let percentSpeed = speed*100/maxSpeed
         
         //get bar range and calc y position to move
         let speedoRange = (frameHeight/2*3) - (frameHeight/2)
         let yToMove = speedoRange - (percentSpeed*speedoRange/100)
         
-        
+        //set sppedcolr to speedbar
         speedBar.backgroundColor = colorUtils.polylineColors(globalSpeedSet.speedSet).CGColor
         
+        //create bar animation
         let move = CABasicAnimation(keyPath: "position.y")
         //move.byValue = speedBar.position.y -  CGFloat(globalSpeed.gSpeed)
       
+        //calc move value
         move.toValue =  (frameHeight/2) + yToMove
-        
-        
-        print("random move \(speed) - \(percentSpeed) - \(yToMove)")
-
         move.duration = 0.1
         move.autoreverses = false
         move.fillMode = kCAFillModeForwards;
         move.removedOnCompletion = false
         //move.repeatCount = Float.infinity
-        
+        //print("random move \(speed) - \(percentSpeed) - \(yToMove)")
+        //add animation
         speedBar.addAnimation(move, forKey: nil)
         
+        //set speed text, colr and animate it
         speedLabel.text = " \(Int(speed))"
         speedLabel.textColor = colorUtils.polylineColors(globalSpeedSet.speedSet)
         speedLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 30.0)
         
-        
+        //aninate uilabel
         UIView.animateWithDuration(0.1, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.0, options: .CurveLinear, animations: {
             
-            self.speedLabel.center = CGPoint(x: 55, y: yToMove )  // Ending position of the Label
+            self.speedLabel.center = CGPoint(x: -20, y: yToMove )  // Ending position of the Label
             
             }, completion: nil)
-
-
-        
-        
-        
     }
-
 
 }

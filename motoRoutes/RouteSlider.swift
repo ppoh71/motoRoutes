@@ -1,7 +1,15 @@
+//
+//  RouteSlider
+//  motoRoutes
+//
+//  Created by Peter Pohlmann on 12.05.16.
+//  Copyright © 2016 Peter Pohlmann. All rights reserved.
+//
+
 import UIKit
 
+
 public class RouteSlider: UISlider {
-    
     
     var labelDistance:UILabel!
     var labelTime:UILabel!
@@ -13,11 +21,13 @@ public class RouteSlider: UISlider {
     var distanceIconView: UIImageView!
     var labelText: ()->String = { "" }
 
+    
+    //init
     required public init(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)!
         
-        //define labels and
+        //define labels and stuff
         labelDistance = UILabel()
         labelDistance.textColor = UIColor.whiteColor()
         labelDistance.font = UIFont(name: "Roboto", size: 13)
@@ -36,13 +46,14 @@ public class RouteSlider: UISlider {
         //change Thumb Image
         let sliderTumb = imageUtils.drawSliderThumb(10, height: 25, lineWidth: 5, color: UIColor.whiteColor(), alpha: 1)
         
+        //change thumb image states
         self.setThumbImage( sliderTumb, forState: UIControlState.Normal )
         self.setThumbImage( sliderTumb, forState: UIControlState.Highlighted )
 
         
     }
     
-    
+    //set the labels
     func setLabel(distanceText:String, timeText:String){
         
         labelXMin = frame.origin.x + 0
@@ -68,9 +79,6 @@ public class RouteSlider: UISlider {
             posX = posX-80
         }
         
-        
-        //print("\(self.frame.width)")
-        
         labelDistance.frame = CGRectMake(self.frame.origin.x+posX+offset+25 ,self.frame.origin.y - 22, 100, 25)
         distanceIconView.frame = CGRectMake(self.frame.origin.x+posX+offset ,self.frame.origin.y - 10, 25, 25)
         labelDistance.text = distanceText
@@ -79,6 +87,7 @@ public class RouteSlider: UISlider {
         timeIconView.frame = CGRectMake(self.frame.origin.x+posX+offset ,self.frame.origin.y - 30, 25, 25)
         labelTime.text = timeText
      
+        //add stuff to subview
         self.superview!.addSubview(labelTime)
         self.superview!.addSubview(labelDistance)
         self.superview!.addSubview(timeIconView)
@@ -87,7 +96,7 @@ public class RouteSlider: UISlider {
     }
     
     
-    
+    //not sure why we need this
     public override func layoutSubviews() {
 
        // print("subviews")
