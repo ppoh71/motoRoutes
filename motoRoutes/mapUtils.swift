@@ -401,7 +401,7 @@ class mapUtils {
      *
      * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
-    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> MGLCoordinateBounds{
+    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D]) {
         
         
         //print("#################Coords")
@@ -409,13 +409,15 @@ class mapUtils {
         
         //create new bound struct
         var newCoordBound = coordBound()
+        var coordBounds = MGLCoordinateBounds()
+        var coordBoundArray = [CLLocationCoordinate2D]()
         
         //loop if we have locations
         guard _locationsMaster.count > 10 else {
             print("GUARD bounds: locationRoute count 0")
             let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
             
-            return coordBounds
+              return (coordBounds, coordBoundArray)
         }
         
         //init with first vars
@@ -443,18 +445,19 @@ class mapUtils {
             }
             
             //set most east
-            if(location.longitude < newCoordBound.west){
-                newCoordBound.west = location.longitude
+            if(location.longitude > newCoordBound.east){
+                newCoordBound.east = location.longitude
             }
             
         }
         
         //print("struct")
         print(newCoordBound)
+     
+         coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))
+         coordBoundArray = [CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west)]
         
-        let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))
-        
-        return coordBounds
+        return (coordBounds, coordBoundArray)
         
     }
 

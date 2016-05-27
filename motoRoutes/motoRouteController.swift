@@ -11,6 +11,7 @@
 import UIKit
 import RealmSwift
 import Crashlytics
+import CoreLocation
 
 class motoRouteController: UITableViewController {
     
@@ -85,8 +86,12 @@ class motoRouteController: UITableViewController {
         let nameLabel = "\(utils.clockFormat(route.duration))"
         let distanceLabel = "\(utils.distanceFormat(route.distance))"
         
+        
+        let from = CLLocationCoordinate2D(latitude: route.locationsList[0].latitude, longitude:route.locationsList[0].longitude)
+        let to = CLLocationCoordinate2D(latitude: route.locationsList[route.locationsList.count-1].latitude, longitude: route.locationsList[route.locationsList.count-1].longitude)
+        
         //configure cell
-        cell.configureCell(nameLabel, distance: distanceLabel, image: image! )
+        cell.configureCell(nameLabel, distance: distanceLabel, image: image!, fromCoordinate: from, toCoordinate: to)
         
         return cell
     }

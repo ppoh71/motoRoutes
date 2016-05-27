@@ -11,11 +11,11 @@ import CoreLocation
 import Foundation
 import RealmSwift
 import Mapbox
-import MapboxGeocoder
 import Crashlytics
 
 
 let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
+
 
 
 class showRouteController: UIViewController {
@@ -71,6 +71,7 @@ class showRouteController: UIViewController {
     //init custom speedometer
     var speedoMeter = Speedometer()
     var cameraCustomSlider = CameraSliderCustom()
+    
 
     //
     // override func super init
@@ -375,15 +376,46 @@ class showRouteController: UIViewController {
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
         
+        
+        // let MasterLocation = utils.masterLocation(locationsRoute)
+       //  let coordBounds = mapUtils.getBoundCoords(RouteList)
+        
+
+        
+        let coordArray = mapUtils.getBoundCoords(RouteList).coordboundArray
+        let coord = mapUtils.getBoundCoords(RouteList).coordbound
+        
+        
+      self.mapViewShow.setVisibleCoordinateBounds(coord, animated: true)
+        
+        let edges = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        
+        /*
+        mapViewShow.setVisibleCoordinates(UnsafeMutablePointer(coordArray), count: 4, edgePadding: edges, direction: globalHeading.gHeading, duration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear) )
+                {
+            
+            print("end")
+            
+            }
+                */
+ 
+        //define camera and set it to startpoint
+     //   let camera = mapUtils.cameraDestination(mapViewShow.centerCoordinate.latitude, longitude: mapViewShow.centerCoordinate.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
+        
+        //mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
+        
+        
+        /*
         //make new screenshot from actual mapView
         let screenshotFilename = imageUtils.screenshotMap(mapViewShow)
-        
+            
         //save new screenshot to realm
         //print(motoRoute)
         try! realm.write {
             realm.create(Route.self, value: ["id": motoRoute.id, "image": screenshotFilename], update: true)
             
         }
+ */
     }
     
         

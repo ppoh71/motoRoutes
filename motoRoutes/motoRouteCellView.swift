@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import CoreLocation
 
 class motoRouteCellView: UITableViewCell {
 
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var routeImage: UIImageView!
-    
+    @IBOutlet var fromLabel: UILabel!
+    @IBOutlet var toLabel: UILabel!
 
     
     override func awakeFromNib() {
@@ -22,11 +24,15 @@ class motoRouteCellView: UITableViewCell {
     }
     
     //config func of cell
-    func configureCell(name:String, distance:String, image: UIImage){
+    func configureCell(name:String, distance:String, image: UIImage, fromCoordinate: CLLocationCoordinate2D, toCoordinate: CLLocationCoordinate2D){
     
         nameLabel.text = name
         distanceLabel.text = distance
         routeImage.image   = image
+        
+        //assign async text to label
+        geocodeUtils.setAdress2Label(fromCoordinate, format: nil, label: fromLabel)
+        geocodeUtils.setAdress2Label(toCoordinate, format: nil, label: toLabel)
         
     }
     
