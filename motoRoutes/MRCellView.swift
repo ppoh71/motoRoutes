@@ -9,11 +9,11 @@
 import UIKit
 import CoreLocation
 
-class motoRouteCellView: UITableViewCell {
+class MRCellView: UITableViewCell {
 
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
-    @IBOutlet var routeImage: UIImageView!
+    @IBOutlet var routeImage: MRCellViewImage!
     @IBOutlet var fromLabel: UILabel!
     @IBOutlet var toLabel: UILabel!
 
@@ -21,6 +21,21 @@ class motoRouteCellView: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        /*
+        routeImage.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        routeImage.layer.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        
+        routeImage.layer.masksToBounds = false
+        routeImage.layer.borderWidth = 1.0
+        routeImage.layer.borderColor = UIColor.whiteColor().CGColor
+        routeImage.layer.cornerRadius = (routeImage.layer.frame.height/2)
+        routeImage.clipsToBounds = true
+        
+        routeImage.layer.masksToBounds = true
+        print("rounded \(routeImage.frame.size.height/2)")
+        */
+  
     }
     
     //config func of cell
@@ -29,6 +44,7 @@ class motoRouteCellView: UITableViewCell {
         nameLabel.text = name
         distanceLabel.text = distance
         routeImage.image   = image
+        
         
         //assign async text to label
         geocodeUtils.setAdress2Label(fromCoordinate, format: nil, label: fromLabel)

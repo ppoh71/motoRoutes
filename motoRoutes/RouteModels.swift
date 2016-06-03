@@ -164,6 +164,24 @@ class RouteMaster {
         
         return newRouteList
     }
+    
+    
+    //create a LocationMaster Object with Location List
+    class func createMasterFromCLLocation(LocationsList: [CLLocation]) -> [LocationMaster]{
+        
+        var newRouteList = RouteMaster()._RouteList
+        
+        //loop all CLLocation and create and append to LocationMaster
+        for location in LocationsList {
+            
+            let locationTmp = LocationMaster(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.horizontalAccuracy, marker: false, distance: 0.0)
+            
+            newRouteList.append(locationTmp)
+            
+        }
+        
+        return newRouteList
+    }
 
     
 

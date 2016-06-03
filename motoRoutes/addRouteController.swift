@@ -82,6 +82,9 @@ class addRouteController: UIViewController {
     //media
     var MediaObjects = [MediaMaster]()
     
+    //svaeing and making screenshot
+    var centerBoundsAnimation = false
+    
     
     //
     // override func super init
@@ -175,7 +178,6 @@ class addRouteController: UIViewController {
     func perSecond(timer: NSTimer) {
         
         second += 1
-        
         totalTime = currentTimestamp - startTimestamp
 
         timeLabel.text = utils.clockFormat(totalTime)
@@ -191,7 +193,7 @@ class addRouteController: UIViewController {
     
     
     //
-    // save motoRoute to core data
+    // preppare to save motoRoute to core data
     //
     func saveRoute() {
         
@@ -210,38 +212,34 @@ class addRouteController: UIViewController {
         //get the middle coord of the whole route
         //let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
         
-        
         //get coord bounds for route, nortwest & souteast
         
-       // let MasterLocation = utils.masterLocation(locationsRoute)
-       // let coordBounds = mapUtils.getBoundCoords(MasterLocation)
+       let RouteList = RouteMaster.createMasterFromCLLocation(locationsRoute)
+       let coordBounds = mapUtils.getBoundCoords(RouteList).coordbound
+       //var coordArray = mapUtils.getBoundCoords(RouteList).coordboundArray
         
-        //set visible bounds
-        //self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
+        // set visible bounds
+        // to get a proper screenshot
+        // listen to delegate when animation of map viewport animation is finished
+        centerBoundsAnimation = true
+        self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
         
-        
-        //create cameras for animations
-        //let camerax = mapUtils.cameraDestination(locationsRoute[0].coordinate.latitude, longitude:locationsRoute[0].coordinate.longitude, fromDistance:4000, pitch:40, heading:60)
-        //let cameraz = mapUtils.cameraDestination(middleCoord.coordinate.latitude, longitude:middleCoord.coordinate.longitude, fromDistance:6000, pitch:40, heading:0)
-        //let cameray = mapUtils.cameraDestination(locationsRoute[locationsRoute.count-1].coordinate.latitude, longitude:locationsRoute[locationsRoute.count-1].coordinate.longitude, fromDistance:11000, pitch:20, heading:30)
-        
-       // print("Bound")
-        //print(coordBounds)
-        
-        //camera animation -> screenshot -> save route to realm
-        
-       // mapView.flyToCamera(camerax) {
-            
-                    //make screenshot and get image name
-                    let screenshotFilename = imageUtils.screenshotMap(self.mapView)
-                    
-                    //save rout to realm
-                    realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
-            
-       // }
+    
        
     }
  
+    
+    //make ScreenShot and save to realm
+    func saveRouteToRealm(){
+    
+        //make screenshot from active
+        let screenshotFilename = imageUtils.screenshotMap(self.mapView)
+        
+        //save rout to realm
+        realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+        
+    }
+    
 
     //
     // @IBAction
@@ -499,7 +497,7 @@ extension addRouteController: MGLMapViewDelegate {
         
         //if annotationImage == nil {
         
-        let image = imageUtils.drawLineOnImage()
+        let image = imageUtils.drawLineOnImage("Recording")
         //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
         
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
@@ -510,6 +508,28 @@ extension addRouteController: MGLMapViewDelegate {
         return annotationImage
     }
 
+    
+    func mapViewRegionIsChanging(mapView: MGLMapView) {
+        print("region is chanhing")
+    }
+
+    
+    func mapView(mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
+        print("region will change")
+    }
+    
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        
+        //save the route and make screenshot, when route is centered
+        if centerBoundsAnimation == true {
+        
+            saveRouteToRealm()
+            centerBoundsAnimation = false
+        
+        }
+        print("regio did  change animated")
+    }
+    
     func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
         print("failed loading mapr")
     }
@@ -539,6 +559,15 @@ extension addRouteController: MGLMapViewDelegate {
        let speedIndex =  utils.getSpeedIndex(speed)
        return colorUtils.polylineColors(speedIndex)
     }
+    
+    
+    
+    
+    func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
+        return UIColor.whiteColor()
+    }
+    
+    
     
 }
 

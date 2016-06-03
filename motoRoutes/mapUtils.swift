@@ -11,6 +11,7 @@ import UIKit
 import CoreLocation
 import RealmSwift
 import Mapbox
+import GLKit
 
 
 class mapUtils {
@@ -131,7 +132,7 @@ class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        let speedIndex:Int = utils.getSpeedIndex(_LocationMaster[20].speed)
+        let speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
         globalSpeedSet.speedSet = speedIndex
         
         
@@ -401,7 +402,7 @@ class mapUtils {
      *
      * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
-    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D]) {
+    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D], distance: Double) {
         
         
         //print("#################Coords")
@@ -411,13 +412,14 @@ class mapUtils {
         var newCoordBound = coordBound()
         var coordBounds = MGLCoordinateBounds()
         var coordBoundArray = [CLLocationCoordinate2D]()
+        var distance = 0.0
         
         //loop if we have locations
         guard _locationsMaster.count > 10 else {
             print("GUARD bounds: locationRoute count 0")
             let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
             
-              return (coordBounds, coordBoundArray)
+              return (coordBounds, coordBoundArray, distance)
         }
         
         //init with first vars
@@ -451,16 +453,65 @@ class mapUtils {
             
         }
         
-        //print("struct")
-        print(newCoordBound)
-     
-         coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))
-         coordBoundArray = [CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west)]
+        //calc distances
+        let locationA = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.east)
+        let locationB = CLLocation(latitude: newCoordBound.north, longitude: newCoordBound.west)
+        var tmpDistance1 = locationA.distanceFromLocation(locationB)
         
-        return (coordBounds, coordBoundArray)
+        
+        let locationC = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.east)
+        let locationD = CLLocation(latitude: newCoordBound.north, longitude: newCoordBound.west)
+        distance = locationA.distanceFromLocation(locationB)
+        
+        coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))
+        
+        coordBoundArray = [CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.west)]
+        
+        return (coordBounds, coordBoundArray, distance)
         
     }
 
+    
+    /*
+     * calculate the center point of multiple latitude longitude coordinate-pairs
+     */
+    class func getCenterFromBoundig(LocationPoints: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D{
+        
+        var centerPoint = CLLocationCoordinate2D()
+        
+        //loop if we have locations
+        guard LocationPoints.count > 3 else{
+            print("GUARD getCenterFromBounding")
+            centerPoint = CLLocationCoordinate2D(latitude: 0, longitude: 0);
+            return centerPoint
+        }
+        
+        var x:Float = 0.0;
+        var y:Float = 0.0;
+        var z:Float = 0.0;
+        
+        for points in LocationPoints {
+            
+            let lat = GLKMathDegreesToRadians(Float(points.latitude));
+            let long = GLKMathDegreesToRadians(Float(points.longitude));
+            
+            x += cos(lat) * cos(long);
+            y += cos(lat) * sin(long);
+            z += sin(lat);
+        }
+        
+        x = x / Float(LocationPoints.count);
+        y = y / Float(LocationPoints.count);
+        z = z / Float(LocationPoints.count);
+        
+        let resultLong = atan2(y, x);
+        let resultHyp = sqrt(x * x + y * y);
+        let resultLat = atan2(z, resultHyp);
+    
+        centerPoint = CLLocationCoordinate2D(latitude: CLLocationDegrees(GLKMathRadiansToDegrees(Float(resultLat))), longitude: CLLocationDegrees(GLKMathRadiansToDegrees(Float(resultLong))));
+        
+        return centerPoint;
+    }
     
     
 }

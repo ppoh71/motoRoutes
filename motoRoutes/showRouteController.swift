@@ -23,6 +23,7 @@ class showRouteController: UIViewController {
     //Outlets
     @IBOutlet var cancelButton:UIButton!
     @IBOutlet var screenshotButton:UIButton!
+    @IBOutlet var scenterMapButton:UIButton!
     @IBOutlet var flyButton:UIButton!
     //@IBOutlet var SpeedLabel:UILabel!
     @IBOutlet var DistanceLabel:UILabel!
@@ -34,13 +35,13 @@ class showRouteController: UIViewController {
            routeSlider.setLabel("0.000", timeText: "00:00")
         }
     }
+    
     @IBOutlet var routeImageView:UIImageView!
     @IBOutlet var mapViewShow: MGLMapView!
     @IBOutlet var debugLabel: UILabel!
     @IBOutlet var optionsButton: UIButton!
     
 
-    
     //add gesture
     var toggleImageViewGesture = UISwipeGestureRecognizer()
 
@@ -71,6 +72,9 @@ class showRouteController: UIViewController {
     //init custom speedometer
     var speedoMeter = Speedometer()
     var cameraCustomSlider = CameraSliderCustom()
+    
+    //make screenshot
+    var typeMarker = ""
     
 
     //
@@ -184,6 +188,7 @@ class showRouteController: UIViewController {
         let currentValue = cameraCustomSlider.currentValue
         
         globalCamDistance.gCamDistance = Double(200*currentValue)
+        print( globalCamDistance.gCamDistance)
         globalCamDuration.gCamDuration = Double(currentValue/1000) + 0.2
         //globalArrayStep.gArrayStep = currentValue/10 > 1 ? currentValue/10 : 1
         globalCamPitch.gCamPitch = currentValue*2 < 80 ? CGFloat(60 ) : 60.0
@@ -373,49 +378,67 @@ class showRouteController: UIViewController {
     }
    
     
+    
+    
+    // new screenshot
+    @IBAction func centerForScreenshot(sender: UIButton) {
+    
+        
+        //print all markers
+        print( RouteList.count)
+        typeMarker = "Recording"
+        //mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-1)
+        typeMarker = ""
+        
+        //mapViewShow.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
+        
+        let Bounds = mapUtils.getBoundCoords(RouteList)
+        var coordArray = Bounds.coordboundArray
+        let coordBounds = Bounds.coordbound
+        let boundDistance = Bounds.distance
+        
+        //get centerpoint
+        let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
+        
+        
+        print(boundDistance)
+        
+        //define camera and set it to startpoint
+        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: boundDistance*1.4, pitch: globalCamPitch.gCamPitch, heading: 0)
+        mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
+
+        
+        
+        //print route polygon
+        //let line = MGLPolyline(coordinates: &coordArray, count: UInt(coordArray.count))
+        //mapViewShow.addAnnotation(line)
+        
+        
+        //let edges = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
+        
+        //mapViewShow.setVisibleCoordinates(UnsafeMutablePointer(coordArray), count: 4, edgePadding: edges, direction: 0, duration: 0.5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear) )
+        //{
+          //  print("end ")
+           
+        //}
+        
+    }
+    
+    
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
         
+      
+        let screenshotFilename = imageUtils.screenshotMap(self.mapViewShow)
         
-        // let MasterLocation = utils.masterLocation(locationsRoute)
-       //  let coordBounds = mapUtils.getBoundCoords(RouteList)
-        
-
-        
-        let coordArray = mapUtils.getBoundCoords(RouteList).coordboundArray
-        let coord = mapUtils.getBoundCoords(RouteList).coordbound
-        
-        
-      self.mapViewShow.setVisibleCoordinateBounds(coord, animated: true)
-        
-        let edges = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        
-        /*
-        mapViewShow.setVisibleCoordinates(UnsafeMutablePointer(coordArray), count: 4, edgePadding: edges, direction: globalHeading.gHeading, duration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear) )
-                {
-            
-            print("end")
-            
-            }
-                */
- 
-        //define camera and set it to startpoint
-     //   let camera = mapUtils.cameraDestination(mapViewShow.centerCoordinate.latitude, longitude: mapViewShow.centerCoordinate.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
-        
-        //mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
-        
-        
-        /*
-        //make new screenshot from actual mapView
-        let screenshotFilename = imageUtils.screenshotMap(mapViewShow)
-            
         //save new screenshot to realm
         //print(motoRoute)
-        try! realm.write {
-            realm.create(Route.self, value: ["id": motoRoute.id, "image": screenshotFilename], update: true)
+        try! self.realm.write {
+            self.realm.create(Route.self, value: ["id": self.motoRoute.id, "image": screenshotFilename], update: true)
             
         }
- */
+
     }
     
         
@@ -482,13 +505,18 @@ extension showRouteController: MGLMapViewDelegate {
         
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
-        
-        let image = imageUtils.drawLineOnImage()
+        print(typeMarker)
+        let image = imageUtils.drawLineOnImage(typeMarker)
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
  
         return annotationImage
- }
+    }
     
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        
+        print("did change for screenshot")
+        
+    }
     
     
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
@@ -526,7 +554,7 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 7.0
+        return 6.0
     }
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {

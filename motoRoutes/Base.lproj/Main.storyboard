@@ -10,7 +10,7 @@
         <scene sceneID="h0c-8X-voG">
             <objects>
                 <tableViewController id="0Sw-Jy-0MP" customClass="motoRouteController" customModule="motoRoutes" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="200" sectionHeaderHeight="28" sectionFooterHeight="28" id="pha-kY-QDi">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="220" sectionHeaderHeight="28" sectionFooterHeight="28" id="pha-kY-QDi">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,20 +40,13 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="230" id="8Uo-03-N6d" customClass="motoRouteCellView" customModule="motoRoutes" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="101" width="600" height="230"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="220" id="8Uo-03-N6d" customClass="MRCellView" customModule="motoRoutes" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="101" width="600" height="220"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Uo-03-N6d" id="HoN-WM-EAg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="229"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh">
-                                            <rect key="frame" x="262" y="0.0" width="338" height="229"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="338" id="Iub-qN-aU0"/>
-                                                <constraint firstAttribute="height" constant="229" id="LDc-r8-683"/>
-                                            </constraints>
-                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4F-e1-F88">
                                             <rect key="frame" x="20" y="20" width="56" height="24"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
@@ -78,17 +71,30 @@
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bike-def" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-6F-8wh" customClass="MRCellViewImage" customModule="motoRoutes" customModuleProvider="target">
+                                            <rect key="frame" x="393" y="8" width="200" height="200"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="200" id="0bA-Ih-Lw4"/>
+                                                <constraint firstAttribute="height" constant="200" id="jcX-oh-TWG"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="100"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="x4F-e1-F88" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leadingMargin" constant="12" id="0ka-6I-wTm"/>
-                                        <constraint firstItem="BbV-6F-8wh" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leadingMargin" constant="100" id="6lb-YO-z6r"/>
                                         <constraint firstAttribute="bottom" secondItem="BbV-6F-8wh" secondAttribute="bottom" id="7mZ-c7-SMX"/>
                                         <constraint firstItem="a0E-SY-58l" firstAttribute="top" secondItem="HoN-WM-EAg" secondAttribute="topMargin" constant="64" id="Hqi-SH-pvO"/>
                                         <constraint firstItem="a0E-SY-58l" firstAttribute="top" secondItem="Ogt-CA-zOx" secondAttribute="bottom" constant="8" symbolic="YES" id="LkK-Dk-2tt"/>
                                         <constraint firstAttribute="bottom" secondItem="BbV-6F-8wh" secondAttribute="bottom" id="Tsj-vB-s1o"/>
+                                        <constraint firstItem="BbV-6F-8wh" firstAttribute="top" secondItem="HoN-WM-EAg" secondAttribute="topMargin" id="aRc-Pi-bX2"/>
                                         <constraint firstItem="npH-uE-veb" firstAttribute="top" secondItem="a0E-SY-58l" secondAttribute="bottom" constant="14" id="bB6-MF-GKn"/>
                                         <constraint firstItem="npH-uE-veb" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leadingMargin" constant="12" id="d3d-uv-89L"/>
                                         <constraint firstItem="Ogt-CA-zOx" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leadingMargin" constant="12" id="fI9-33-Fo1"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="BbV-6F-8wh" secondAttribute="trailing" constant="-1" id="m8s-ID-p8M"/>
                                         <constraint firstItem="x4F-e1-F88" firstAttribute="top" secondItem="HoN-WM-EAg" secondAttribute="topMargin" constant="12" id="nPQ-dC-MIw"/>
                                         <constraint firstItem="a0E-SY-58l" firstAttribute="leading" secondItem="HoN-WM-EAg" secondAttribute="leadingMargin" constant="12" id="t2o-aY-0NA"/>
                                     </constraints>
@@ -100,6 +106,7 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="distanceLabel" destination="Ogt-CA-zOx" id="Iyl-xa-tQR"/>
                                     <outlet property="fromLabel" destination="a0E-SY-58l" id="AkC-4o-3Zd"/>
@@ -201,13 +208,6 @@
                                     <action selector="showDebug2:" destination="vMy-ZL-3Vq" eventType="touchUpInside" id="t3C-Yx-PNt"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15m-LL-PQE">
-                                <rect key="frame" x="20" y="500" width="72" height="72"/>
-                                <state key="normal" image="ic_photo_camera_white_48dp"/>
-                                <connections>
-                                    <segue destination="1H0-V0-egP" kind="presentation" identifier="showCamera" id="fby-U4-Jo4"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43g-FJ-38a" userLabel="Debug View">
                                 <rect key="frame" x="10" y="400" width="148" height="91"/>
                                 <subviews>
@@ -271,6 +271,13 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15m-LL-PQE">
+                                <rect key="frame" x="20" y="499" width="72" height="72"/>
+                                <state key="normal" image="ic_photo_camera_white_48dp"/>
+                                <connections>
+                                    <segue destination="1H0-V0-egP" kind="presentation" identifier="showCamera" id="fby-U4-Jo4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -352,6 +359,29 @@
                                     <outlet property="delegate" destination="iyu-JC-65F" id="Zea-4n-1ef"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OYv-Yc-Cvc">
+                                <rect key="frame" x="160" y="20" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="4yy-SG-gX8"/>
+                                    <constraint firstAttribute="width" constant="40" id="aUk-P4-abk"/>
+                                </constraints>
+                                <state key="normal" image="ic_photo_camera_white_48pt"/>
+                                <connections>
+                                    <action selector="newScreenshot:" destination="iyu-JC-65F" eventType="touchDown" id="IDh-aA-lbH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y8u-5b-ADq" userLabel="CenterForScreenShot">
+                                <rect key="frame" x="220" y="20" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="bNE-nz-aAc"/>
+                                    <constraint firstAttribute="height" constant="40" id="sHW-o9-W61"/>
+                                </constraints>
+                                <state key="normal" image="updown"/>
+                                <connections>
+                                    <action selector="centerForScreenshot:" destination="iyu-JC-65F" eventType="touchUpInside" id="Sgm-Eg-KlO"/>
+                                    <action selector="newScreenshot:" destination="iyu-JC-65F" eventType="touchDown" id="pKf-fD-vul"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iUE-n7-JG6">
                                 <rect key="frame" x="10" y="60" width="205" height="21"/>
                                 <constraints>
@@ -405,17 +435,6 @@
                                     <segue destination="t2r-xs-urw" kind="unwind" unwindAction="close:" id="H4l-ef-7jL"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OYv-Yc-Cvc">
-                                <rect key="frame" x="7" y="10" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="4yy-SG-gX8"/>
-                                    <constraint firstAttribute="width" constant="40" id="aUk-P4-abk"/>
-                                </constraints>
-                                <state key="normal" image="ic_photo_camera_white_48pt"/>
-                                <connections>
-                                    <action selector="newScreenshot:" destination="iyu-JC-65F" eventType="touchDown" id="IDh-aA-lbH"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nzl-Ms-cWm">
                                 <rect key="frame" x="620" y="0.0" width="320" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -429,25 +448,27 @@
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="S1h-wW-ObZ" secondAttribute="bottom" constant="-70" id="4TN-UO-6rM"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="leading" secondItem="53q-Qw-L5Y" secondAttribute="trailing" constant="40" id="5AM-BG-NcT"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="top" secondItem="KOa-KO-rv5" secondAttribute="bottom" constant="42" id="7lW-C5-51l"/>
+                            <constraint firstItem="OYv-Yc-Cvc" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leading" constant="160" id="8j8-q5-AFW"/>
+                            <constraint firstItem="OYv-Yc-Cvc" firstAttribute="top" secondItem="bbU-2r-zv2" secondAttribute="bottom" id="9MU-e1-KnA"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="top" id="AKq-CU-75N"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="top" id="Ay1-JX-vmC"/>
-                            <constraint firstItem="7LW-L1-BfS" firstAttribute="top" secondItem="OYv-Yc-Cvc" secondAttribute="top" id="E5L-Dw-NwD"/>
                             <constraint firstItem="hO5-hV-98Y" firstAttribute="top" secondItem="53q-Qw-L5Y" secondAttribute="bottom" constant="40" id="Fcb-BI-qMK"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" id="G2r-4l-ssS"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-4" id="Ggu-Ax-6Y7"/>
-                            <constraint firstItem="OYv-Yc-Cvc" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-13" id="Ldr-SU-1Oo"/>
+                            <constraint firstItem="iUE-n7-JG6" firstAttribute="top" secondItem="7LW-L1-BfS" secondAttribute="bottom" constant="10" id="NWe-2h-N9s"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="bottom" constant="-100" id="P6f-B0-05X"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="centerX" secondItem="1hV-rc-YM3" secondAttribute="centerX" id="Ruc-9x-CfZ"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="bottom" secondItem="1hV-rc-YM3" secondAttribute="bottom" id="ScV-Qt-aQ3"/>
                             <constraint firstItem="S1h-wW-ObZ" firstAttribute="leading" secondItem="1hV-rc-YM3" secondAttribute="trailing" constant="-80" id="VL2-Hv-rpp"/>
-                            <constraint firstItem="7LW-L1-BfS" firstAttribute="leading" secondItem="OYv-Yc-Cvc" secondAttribute="trailing" constant="23" id="XSg-Io-zoE"/>
                             <constraint firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="ctW-ro-1Sg"/>
-                            <constraint firstItem="OYv-Yc-Cvc" firstAttribute="top" secondItem="bbU-2r-zv2" secondAttribute="bottom" constant="-10" id="pNf-Rd-aif"/>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="centerY" secondItem="1hV-rc-YM3" secondAttribute="centerY" id="phu-x7-ycR"/>
+                            <constraint firstItem="7LW-L1-BfS" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="50" id="qao-rm-qZ2"/>
+                            <constraint firstItem="y8u-5b-ADq" firstAttribute="leading" secondItem="OYv-Yc-Cvc" secondAttribute="trailing" constant="20" id="raC-ay-rZK"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leading" id="sjx-Jg-xOc"/>
                             <constraint firstAttribute="bottom" secondItem="1hV-rc-YM3" secondAttribute="bottom" id="trZ-1e-mlb"/>
+                            <constraint firstItem="iUE-n7-JG6" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="top" constant="60" id="uVB-sd-982"/>
+                            <constraint firstItem="OYv-Yc-Cvc" firstAttribute="top" secondItem="y8u-5b-ADq" secondAttribute="top" id="wQQ-dS-XKN"/>
                             <constraint firstItem="iUE-n7-JG6" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leadingMargin" constant="-10" id="x6B-Ke-n3k"/>
-                            <constraint firstItem="iUE-n7-JG6" firstAttribute="top" secondItem="OYv-Yc-Cvc" secondAttribute="bottom" constant="10" id="yde-X0-zpq"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -464,6 +485,7 @@
                         <outlet property="optionsButton" destination="S1h-wW-ObZ" id="OAP-rq-3Qp"/>
                         <outlet property="routeImageView" destination="nzl-Ms-cWm" id="CIK-aI-AIj"/>
                         <outlet property="routeSlider" destination="3l9-36-9cr" id="tpN-v9-vhk"/>
+                        <outlet property="scenterMapButton" destination="y8u-5b-ADq" id="nHF-rO-y1n"/>
                         <outlet property="screenshotButton" destination="OYv-Yc-Cvc" id="w5u-ab-Hqw"/>
                     </connections>
                 </viewController>
@@ -607,6 +629,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="bike-def" width="960" height="639"/>
         <image name="ic_add_circle_48pt" width="48" height="48"/>
         <image name="ic_check_circle_48pt" width="48" height="48"/>
         <image name="ic_info_48pt" width="40" height="40"/>
@@ -616,5 +639,6 @@
         <image name="ic_photo_camera_white_48pt" width="48" height="48"/>
         <image name="ic_play_circle_filled_48pt" width="48" height="48"/>
         <image name="ic_play_circle_outline_white_48pt" width="48" height="48"/>
+        <image name="updown" width="48" height="48"/>
     </resources>
 </document>

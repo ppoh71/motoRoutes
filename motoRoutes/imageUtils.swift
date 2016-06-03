@@ -94,9 +94,39 @@ class imageUtils{
     
     
     /*
-     * draw a line on an image
+    * Scale image with core graphics
+    */
+    
+    class func scaleImgaeCore(image: UIImage) -> UIImage{
+        
+        let cgImage = image.CGImage
+        
+        let width = CGImageGetWidth(cgImage) / 2
+        let height = CGImageGetHeight(cgImage) / 2
+        let bitsPerComponent = CGImageGetBitsPerComponent(cgImage)
+        let bytesPerRow = CGImageGetBytesPerRow(cgImage)
+        let colorSpace = CGImageGetColorSpace(cgImage)
+        let bitmapInfo = CGImageGetBitmapInfo(cgImage)
+        
+        let context = CGBitmapContextCreate(nil, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo.rawValue)
+        
+        CGContextSetInterpolationQuality(context, .High)
+        
+        CGContextDrawImage(context, CGRect(origin: CGPointZero, size: CGSize(width: CGFloat(width), height: CGFloat(height))), cgImage)
+        
+        let scaledImage = CGBitmapContextCreateImage(context).flatMap { UIImage(CGImage: $0) }
+    
+        return scaledImage!
+    
+    }
+    
+    /*
+      draw a line on an image
+     
+     - parameter type: print for recording and scrren shot use String "Recording" else nil
+     
      */
-    static func drawLineOnImage() -> UIImage{
+    static func drawLineOnImage(type: String?) -> UIImage{
         
         //let performanceTime = CFAbsoluteTimeGetCurrent()
         
@@ -117,28 +147,46 @@ class imageUtils{
         //LineAltitude = random() % 200
         
         //percentage height of line image
-        let percent = 55
-        let heightPercent = LineHeight*percent/100
+        //let percent = 55
+       
         let altitudePercent = LineAltitude*40/100
         
         //make rect with height, position midddle due to mapbox marker image settings
+        
         
         
         //context stuff
        
         CGContextSetLineWidth(context, 1)
         CGContextMoveToPoint(context,0, 0)
-        CGContextSetAlpha(context,0.6);
+       
         
-        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
         
-        let rectangle = CGRect(x: 0, y: drawHeight/2, width: 4, height: Int(heightPercent))
+        /**
+        * change values hwen recording route and making screenshot of route
+        **/
+        var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
+        
+        if let typeX = type where type=="Recording" {
+            let heightPercent = LineHeight*25/100
+            CGContextSetAlpha(context,0.8);
+            CGContextSetStrokeColorWithColor(context, LineColor.CGColor)
+            rectangle = CGRect(x: 0, y: drawHeight/2, width: 10, height: 10)
+        
+        }else{ //default values for printing markers in show mode
+            let heightPercent = LineHeight*55/100
+             CGContextSetAlpha(context,0.6);
+            CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+            rectangle = CGRect(x: 0, y: drawHeight/2, width: 4, height: Int(heightPercent))
+        }
+        
+        
         CGContextAddRect(context, rectangle)
         CGContextStrokePath(context)
         CGContextSetFillColorWithColor(context,LineColor.CGColor)
         CGContextFillRect(context, rectangle)
         
-        
+        /*
         //CGContextDrawPath(context, .FillStroke)
         CGContextSetAlpha(context,0.9);
         let altrectangle = CGRect(x: 2, y: drawHeight/2 + altitudePercent, width: 1, height: 1)
@@ -147,7 +195,7 @@ class imageUtils{
         CGContextSetFillColorWithColor(context,UIColor.cyanColor().CGColor)
         CGContextAddRect(context, altrectangle)
         CGContextDrawPath(context, .FillStroke)
-        
+        */
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -160,6 +208,7 @@ class imageUtils{
         
     }
     
+   
     
     class func drawSliderThumb(width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
     
@@ -271,16 +320,19 @@ class imageUtils{
         //take the timestamp for the imagename
         let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + ".png"
         
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(mapView.frame.size.width*0.99,mapView.frame.size.height*0.50), false, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(mapView.frame.size.width*0.99,mapView.frame.size.height*0.99), false, 0)
         //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
-        mapView.drawViewHierarchyInRect(CGRectMake(-01, -01, mapView.frame.size.width, mapView.frame.size.height), afterScreenUpdates: true)
+        mapView.drawViewHierarchyInRect(CGRectMake(01, -01, mapView.frame.size.width, mapView.frame.size.height), afterScreenUpdates: true)
         
         let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         
+        //resite image 
+        let scaledImage = imageUtils.scaleImgaeCore(screenShot)
+        
         //screenShotRoute.image = screenShot
-        if let data = UIImagePNGRepresentation(screenShot) {
+        if let data = UIImagePNGRepresentation(scaledImage) {
             filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
             data.writeToFile(filename, atomically: true)
         }
