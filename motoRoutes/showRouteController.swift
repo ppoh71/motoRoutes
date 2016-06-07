@@ -358,8 +358,6 @@ class showRouteController: UIViewController {
     // new screenshot
     @IBAction func flyRoute(sender: UIButton) {
         
-      
-        
         sender.selected = !sender.selected;
         sender.highlighted = !sender.highlighted
         
@@ -386,8 +384,11 @@ class showRouteController: UIViewController {
         
         //print all markers
         print( RouteList.count)
+        
+        
+        
         typeMarker = "Recording"
-        //mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-1)
+        mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-1)
         typeMarker = ""
         
         //mapViewShow.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
@@ -395,16 +396,18 @@ class showRouteController: UIViewController {
         let Bounds = mapUtils.getBoundCoords(RouteList)
         var coordArray = Bounds.coordboundArray
         let coordBounds = Bounds.coordbound
-        let boundDistance = Bounds.distance
+        let distanceDiagonal = Bounds.distance
+        let distanceFactor = Bounds.distanceFactor
         
         //get centerpoint
         let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
         
         
-        print(boundDistance)
+        print(distanceDiagonal, distanceFactor)
+        
         
         //define camera and set it to startpoint
-        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: boundDistance*1.4, pitch: globalCamPitch.gCamPitch, heading: 0)
+        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
 
         
@@ -508,8 +511,10 @@ extension showRouteController: MGLMapViewDelegate {
         print(typeMarker)
         let image = imageUtils.drawLineOnImage(typeMarker)
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
- 
+
+        
         return annotationImage
+        
     }
     
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {

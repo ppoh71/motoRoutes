@@ -168,10 +168,10 @@ class imageUtils{
         var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
         
         if let typeX = type where type=="Recording" {
-            let heightPercent = LineHeight*25/100
+            let heightPercent = LineHeight*15/100
             CGContextSetAlpha(context,0.8);
             CGContextSetStrokeColorWithColor(context, LineColor.CGColor)
-            rectangle = CGRect(x: 0, y: drawHeight/2, width: 10, height: 10)
+            rectangle = CGRect(x: 0, y: drawHeight/2, width: 2, height: 2)
         
         }else{ //default values for printing markers in show mode
             let heightPercent = LineHeight*55/100

@@ -402,7 +402,7 @@ class mapUtils {
      *
      * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
-    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D], distance: Double) {
+    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D], distance: Double, distanceFactor: Double) {
         
         
         //print("#################Coords")
@@ -413,13 +413,14 @@ class mapUtils {
         var coordBounds = MGLCoordinateBounds()
         var coordBoundArray = [CLLocationCoordinate2D]()
         var distance = 0.0
+        var distanceFactor = 1.8
         
         //loop if we have locations
         guard _locationsMaster.count > 10 else {
             print("GUARD bounds: locationRoute count 0")
             let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
             
-              return (coordBounds, coordBoundArray, distance)
+              return (coordBounds, coordBoundArray, distance, distanceFactor)
         }
         
         //init with first vars
@@ -453,21 +454,32 @@ class mapUtils {
             
         }
         
-        //calc distances
-        let locationA = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.east)
-        let locationB = CLLocation(latitude: newCoordBound.north, longitude: newCoordBound.west)
-        var tmpDistance1 = locationA.distanceFromLocation(locationB)
-        
-        
-        let locationC = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.east)
-        let locationD = CLLocation(latitude: newCoordBound.north, longitude: newCoordBound.west)
-        distance = locationA.distanceFromLocation(locationB)
-        
+        //make boundigbox as MGL Object and as simple Points Array
         coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west))
         
         coordBoundArray = [CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.west)]
         
-        return (coordBounds, coordBoundArray, distance)
+        
+        
+        //calc distances of boundigbox rectangle and orientation of rect (horizontal/portrai)
+        //to get the correct zoomfactor for map
+        let locationSE = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.east)
+        let locationNW = CLLocation(latitude: newCoordBound.north, longitude: newCoordBound.west)
+        let locationNE = CLLocation(latitude: newCoordBound.north, longitude: newCoordBound.east)
+        let locationSW = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.west)
+        
+        // calc diagonal distance of boudnig box
+        distance = locationNW.distanceFromLocation(locationSE)
+        
+        
+        //cal distance horizontal/portrait bounding box orientation/ NW -> SW ort NW -> NE
+        let distanceNorthSouth = locationNW.distanceFromLocation(locationSW)
+        let distanceNorthEast = locationNW.distanceFromLocation(locationNE)
+        
+        distanceFactor = distanceNorthSouth > distanceNorthEast ? 1.3 : distanceFactor
+
+        
+        return (coordBounds, coordBoundArray, distance, distanceFactor)
         
     }
 
