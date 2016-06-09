@@ -136,7 +136,7 @@ class MediaMaster {
 
 
 /*
- Remodel data for as kind of entity model, when it comes from realm
+ Remodel data for as a kind of entity model, when it comes from realm
  */
 class RouteMaster {
 
@@ -211,12 +211,13 @@ class RouteMaster {
  */
 class realmUtils{
     
-    class func saveRouteRealm(LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ){
+    class func saveRouteRealm(LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ) -> String {
         
         // save to realm
         let newRoute = Route()
+        let id = NSUUID().UUIDString
         
-        newRoute.id = UIDevice.currentDevice().identifierForVendor!.UUIDString + "#" + String(startTimestamp)
+        newRoute.id = id
         newRoute.timestamp = NSDate()
         newRoute.distance = distance
         newRoute.duration = totalTime
@@ -273,33 +274,22 @@ class realmUtils{
         // Add to the Realm inside a transaction
         try! realm.write {
             realm.add(newRoute)
+            
         }
         
+        return id
+    }
+    
+    
+    class func getRealmByID(routeID: String) -> Results<Route>{
+        
+        let realm = try! Realm()
+        let  currRoute = realm.objects(Route.self).filter("id = '\(routeID)' ")
+        return currRoute
     }
     
 }//end Class
 
 
 
-/*
- //create a LocationMaster Object with from Core Location List
- class func createMasterLocation(locationsRoute:[CLLocation]) -> [LocationMaster]{
- 
- print("#################MasterLocation")
- print(locationsRoute)
- 
- var newRouteList = RouteMaster()._RouteList
- 
- //loop all CLLocation and create and append to LocationMaster
- for location in locationsRoute {
- 
- let locationTmp = LocationMaster(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.horizontalAccuracy, marker: false)
- 
- newRouteList.append(locationTmp)
- 
- }
- 
- return newRouteList
- }
- */
 

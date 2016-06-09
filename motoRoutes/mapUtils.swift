@@ -37,9 +37,8 @@ class mapUtils {
     
     class func printRoute(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
-        
         //performacne test
-   //     let x = CFAbsoluteTimeGetCurrent()
+        //let x = CFAbsoluteTimeGetCurrent()
         
         //guard for print routes
         guard _LocationMaster.count > 2 else {
@@ -104,7 +103,6 @@ class mapUtils {
             let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
             mapView.addAnnotation(line)
        
-            
             //print the coords for the last run
             //print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
             

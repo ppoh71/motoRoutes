@@ -12,6 +12,7 @@ import Foundation
 import RealmSwift
 import Mapbox
 import Crashlytics
+import pop
 
 
 let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
@@ -387,11 +388,19 @@ class showRouteController: UIViewController {
         
         
         
+        for annotation in mapViewShow.annotations!{
+            print("\(annotation.title)")
+            mapViewShow.removeAnnotation(annotation)
+        }
+        
+        
         typeMarker = "Recording"
         mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-1)
         typeMarker = ""
         
         //mapViewShow.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
+        
+       
         
         let Bounds = mapUtils.getBoundCoords(RouteList)
         var coordArray = Bounds.coordboundArray
@@ -408,23 +417,9 @@ class showRouteController: UIViewController {
         
         //define camera and set it to startpoint
         let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
+        
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
 
-        
-        
-        //print route polygon
-        //let line = MGLPolyline(coordinates: &coordArray, count: UInt(coordArray.count))
-        //mapViewShow.addAnnotation(line)
-        
-        
-        //let edges = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-
-        
-        //mapViewShow.setVisibleCoordinates(UnsafeMutablePointer(coordArray), count: 4, edgePadding: edges, direction: 0, duration: 0.5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear) )
-        //{
-          //  print("end ")
-           
-        //}
         
     }
     
@@ -471,8 +466,11 @@ class showRouteController: UIViewController {
         //prepare for camera/photo store to MediaObhect
         if segue.identifier == "showRouteOptions" {
           //  let destinationController = segue.destinationViewController as! motoRouteOptions
+        }
         
-            
+        //prepare for camera/photo store to MediaObhect
+        if segue.identifier == "showRouteOptions" {
+            //  let destinationController = segue.destinationViewController as! motoRouteOptions
         }
     }
     
@@ -519,8 +517,25 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         
-        print("did change for screenshot")
+        print("regionDidChangeAnimated")
         
+    }
+    
+    func mapViewRegionIsChanging(mapView: MGLMapView) {
+        print("region is chanhing")
+    }
+    
+    
+    func mapView(mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
+        print("region will change")
+    }
+    
+    func mapViewWillStartLoadingMap(mapView: MGLMapView) {
+        print("mapViewWillStartLoadingMap")
+    }
+    
+    func mapViewDidFinishRenderingMap(mapView: MGLMapView, fullyRendered: Bool) {
+        print("mapViewDidFinishRenderingMap")
     }
     
     

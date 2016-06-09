@@ -247,15 +247,15 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="zem-z1-SpS" firstAttribute="trailing" secondItem="1l7-Sv-mBz" secondAttribute="trailing" id="3xj-Fq-8yS"/>
-                                    <constraint firstAttribute="trailing" secondItem="zem-z1-SpS" secondAttribute="trailing" constant="-9" id="8No-Lw-sin"/>
                                     <constraint firstItem="zem-z1-SpS" firstAttribute="leading" secondItem="o86-4c-Lxs" secondAttribute="leading" id="JIc-zL-jmt"/>
                                     <constraint firstItem="zem-z1-SpS" firstAttribute="leading" secondItem="1l7-Sv-mBz" secondAttribute="leading" id="K7n-84-k4z"/>
                                     <constraint firstItem="zem-z1-SpS" firstAttribute="leading" secondItem="aho-xv-tS2" secondAttribute="leading" id="Tjf-jQ-gSr"/>
+                                    <constraint firstAttribute="trailing" secondItem="o86-4c-Lxs" secondAttribute="trailing" constant="-9" id="Vi3-uC-U1o"/>
+                                    <constraint firstItem="o86-4c-Lxs" firstAttribute="top" secondItem="43g-FJ-38a" secondAttribute="top" constant="6" id="dV0-rG-7fj"/>
                                     <constraint firstItem="zem-z1-SpS" firstAttribute="trailing" secondItem="o86-4c-Lxs" secondAttribute="trailing" id="glh-QL-tu0"/>
-                                    <constraint firstItem="zem-z1-SpS" firstAttribute="top" secondItem="43g-FJ-38a" secondAttribute="top" constant="36" id="kCi-1e-bPm"/>
                                     <constraint firstItem="zem-z1-SpS" firstAttribute="top" secondItem="1l7-Sv-mBz" secondAttribute="bottom" constant="2" id="kfC-W2-OKb"/>
-                                    <constraint firstItem="zem-z1-SpS" firstAttribute="leading" secondItem="43g-FJ-38a" secondAttribute="leadingMargin" id="m7m-7B-uC7"/>
                                     <constraint firstItem="1l7-Sv-mBz" firstAttribute="top" secondItem="o86-4c-Lxs" secondAttribute="bottom" id="rAd-mC-xmq"/>
+                                    <constraint firstItem="o86-4c-Lxs" firstAttribute="leading" secondItem="43g-FJ-38a" secondAttribute="leadingMargin" id="ws7-oh-DRQ"/>
                                     <constraint firstItem="aho-xv-tS2" firstAttribute="top" secondItem="zem-z1-SpS" secondAttribute="bottom" constant="4" id="ztR-gv-u2T"/>
                                 </constraints>
                             </view>
@@ -271,9 +271,14 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15m-LL-PQE">
-                                <rect key="frame" x="20" y="499" width="72" height="72"/>
-                                <state key="normal" image="ic_photo_camera_white_48dp"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15m-LL-PQE" customClass="motoButtons" customModule="motoRoutes" customModuleProvider="target">
+                                <rect key="frame" x="20" y="526" width="109" height="43"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="CKz-KO-1bA"/>
+                                    <constraint firstAttribute="width" constant="109" id="LRx-xh-wVu"/>
+                                </constraints>
+                                <state key="normal" title="ScreenShot"/>
                                 <connections>
                                     <segue destination="1H0-V0-egP" kind="presentation" identifier="showCamera" id="fby-U4-Jo4"/>
                                 </connections>
@@ -281,27 +286,27 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="43g-FJ-38a" secondAttribute="trailing" constant="442" id="1eM-16-KBF"/>
                             <constraint firstItem="M0A-Pq-7zG" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="trailing" constant="-120" id="3zp-Wn-1zF"/>
-                            <constraint firstItem="15m-LL-PQE" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-100" id="7nr-7Y-IiS"/>
+                            <constraint firstItem="15m-LL-PQE" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-74" id="6Tv-Wk-CVh"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="top" secondItem="HRR-Nu-FDj" secondAttribute="top" id="Afk-bd-Iqy"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="top" secondItem="Mdw-Mu-ECu" secondAttribute="bottom" constant="-68" id="Djf-Bu-DMI"/>
-                            <constraint firstItem="15m-LL-PQE" firstAttribute="top" secondItem="43g-FJ-38a" secondAttribute="bottom" constant="9" id="GcC-lC-ix9"/>
-                            <constraint firstItem="43g-FJ-38a" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-200" id="HdC-7t-eP4"/>
-                            <constraint firstItem="43g-FJ-38a" firstAttribute="leading" secondItem="HRR-Nu-FDj" secondAttribute="leadingMargin" constant="-10" id="Hkd-Va-P5a"/>
+                            <constraint firstItem="43g-FJ-38a" firstAttribute="top" secondItem="HRR-Nu-FDj" secondAttribute="top" constant="400" id="GNS-8x-Yeb"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="jZU-Gu-ejo" secondAttribute="trailing" constant="-137" id="IZl-LT-tYP"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="top" secondItem="jZU-Gu-ejo" secondAttribute="bottom" constant="-47" id="S1a-Vs-k8w"/>
                             <constraint firstItem="YLN-R0-HQw" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-78" id="SgP-5e-eQZ"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="61Y-BX-kEk" secondAttribute="trailing" constant="180" id="ZaC-kS-wKJ"/>
-                            <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="43g-FJ-38a" secondAttribute="trailing" constant="-158" id="ben-Jz-e67"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="bottom" secondItem="wuy-R8-b0h" secondAttribute="top" id="bfj-Sm-u4j"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="uMs-kW-sUA" secondAttribute="trailing" constant="-225" id="byc-ne-jp9"/>
                             <constraint firstItem="YLN-R0-HQw" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="trailing" constant="-60" id="e7C-og-KfO"/>
-                            <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="15m-LL-PQE" secondAttribute="trailing" constant="-92" id="exv-af-zSh"/>
                             <constraint firstItem="61Y-BX-kEk" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-75" id="fTV-JW-dB7"/>
                             <constraint firstAttribute="trailing" secondItem="vOs-uf-hXw" secondAttribute="trailing" id="gjj-kS-ob1"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="top" secondItem="uMs-kW-sUA" secondAttribute="bottom" constant="-92" id="kV6-x5-stc"/>
                             <constraint firstItem="M0A-Pq-7zG" firstAttribute="top" secondItem="vOs-uf-hXw" secondAttribute="bottom" constant="-78" id="lQC-db-TCO"/>
+                            <constraint firstItem="43g-FJ-38a" firstAttribute="leading" secondItem="HRR-Nu-FDj" secondAttribute="leadingMargin" constant="-10" id="lzI-xg-pR5"/>
+                            <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="15m-LL-PQE" secondAttribute="trailing" constant="-129" id="ofT-Sh-Ykv"/>
                             <constraint firstItem="Mdw-Mu-ECu" firstAttribute="leading" secondItem="vOs-uf-hXw" secondAttribute="trailing" constant="-60" id="u0V-0V-zGZ"/>
+                            <constraint firstItem="15m-LL-PQE" firstAttribute="top" secondItem="43g-FJ-38a" secondAttribute="bottom" constant="35" id="v5I-Qg-mxV"/>
                             <constraint firstItem="vOs-uf-hXw" firstAttribute="leading" secondItem="HRR-Nu-FDj" secondAttribute="leading" id="xll-X4-pT0"/>
                         </constraints>
                     </view>
@@ -316,7 +321,9 @@
                         <outlet property="mapView" destination="vOs-uf-hXw" id="rEc-dH-2XV"/>
                         <outlet property="recRouteBtn" destination="YLN-R0-HQw" id="Wog-FN-q7r"/>
                         <outlet property="saveRouteBtn" destination="M0A-Pq-7zG" id="FEp-fk-iH5"/>
+                        <outlet property="screenshotButtonConstraint" destination="ofT-Sh-Ykv" id="inj-hI-bdq"/>
                         <outlet property="timeLabel" destination="jZU-Gu-ejo" id="RTX-0J-lDS"/>
+                        <segue destination="iyu-JC-65F" kind="show" identifier="goFromAdd2Show" id="KJs-LQ-4ee"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bPd-ju-BWS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -398,7 +405,7 @@
                                     <segue destination="MRL-i5-VW3" kind="show" identifier="showRoutesOptions" id="dm2-gl-IZQ"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53q-Qw-L5Y">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53q-Qw-L5Y">
                                 <rect key="frame" x="20" y="486" width="560" height="30"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3l9-36-9cr" customClass="RouteSlider" customModule="motoRoutes" customModuleProvider="target">
@@ -411,7 +418,7 @@
                                     </slider>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOa-KO-rv5">
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOa-KO-rv5">
                                 <rect key="frame" x="16" y="396" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" image="ic_play_circle_outline_white_48pt">
@@ -492,7 +499,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ieq-0x-0We" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="t2r-xs-urw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="968" y="1044"/>
+            <point key="canvasLocation" x="1099" y="1091"/>
         </scene>
         <!--Moto Route Camera-->
         <scene sceneID="gEV-2p-D7I">
@@ -574,7 +581,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lob-tI-4YJ">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lob-tI-4YJ">
                                 <rect key="frame" x="529" y="509" width="46" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="sok-c3-DKW"/>
@@ -635,10 +642,12 @@
         <image name="ic_info_48pt" width="40" height="40"/>
         <image name="ic_panorama_fish_eye_48pt" width="48" height="48"/>
         <image name="ic_pause_circle_outline_white_48pt" width="48" height="48"/>
-        <image name="ic_photo_camera_white_48dp" width="72" height="72"/>
         <image name="ic_photo_camera_white_48pt" width="48" height="48"/>
         <image name="ic_play_circle_filled_48pt" width="48" height="48"/>
         <image name="ic_play_circle_outline_white_48pt" width="48" height="48"/>
         <image name="updown" width="48" height="48"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="KJs-LQ-4ee"/>
+    </inferredMetricsTieBreakers>
 </document>

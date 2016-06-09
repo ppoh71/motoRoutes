@@ -12,15 +12,15 @@ import Foundation
 import RealmSwift
 import Mapbox
 import Crashlytics
+import pop
 
+
+let saveOverlaytNotificationKey = "motoRoutes.saveOverlay"
 
 class addRouteController: UIViewController {
     
-    // managedObjectContext var
-    //var managedObjectContext: NSManagedObjectContext?
-
-    //Outlets
     
+    //Outlets
     @IBOutlet var debugButton:UIButton!
     @IBOutlet var debugView:UIView!
     @IBOutlet var timeLabel:UILabel!
@@ -35,6 +35,9 @@ class addRouteController: UIViewController {
     @IBOutlet var mapView:MGLMapView!
     
 
+    @IBOutlet weak var screenshotButtonConstraint: NSLayoutConstraint!
+
+    
     //location manager
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -60,6 +63,7 @@ class addRouteController: UIViewController {
     var speed:Double = 0
     var recordingActive:Bool = false
     var cnt = 20
+    var savedRoute:Results<Route>!
    
     
     //start timestamp of route start
@@ -85,6 +89,11 @@ class addRouteController: UIViewController {
     //svaeing and making screenshot
     var centerBoundsAnimation = false
     
+    //Msg Overlay
+    var msgOverlay: MsgOverlay!
+    //var animEngine: AnimationEngine!
+    
+    
     
     //
     // override func super init
@@ -95,6 +104,16 @@ class addRouteController: UIViewController {
         //map camera init settings
         mapView.zoomLevel = 9
         mapView.camera.heading = 60
+        
+        
+        //init Msg Overlay
+        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
+        msgOverlay.center = AnimationEngine.offScreenLeftPosition
+        msgOverlay.delegate = self
+        self.view.addSubview(msgOverlay)
+        
+        //init aniEngine
+       //self.animEngine = AnimationEngine(constraints: [screenshotButtonConstraint])
         
         // Add UIApplicationWillResignActiveNotification observer
         NSNotificationCenter.defaultCenter().addObserver(
@@ -144,9 +163,16 @@ class addRouteController: UIViewController {
         if CLLocationManager.locationServicesEnabled() {
              locationManager.startUpdatingLocation()
         }
+        
+       //self.animEngine.animateOnScreen(2)
 
+        
+        //Listen to save from overlay notification
+      //  NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(addRouteController.saveRouteToRealm), name: saveOverlaytNotificationKey, object: nil)
+  
     }
 
+    
     //
     // view will disappear, stop location updates and timer
     //
@@ -172,6 +198,28 @@ class addRouteController: UIViewController {
         }
     }
     
+    func startTimer(){
+        timer = NSTimer.scheduledTimerWithTimeInterval(1,
+           target: self,
+           selector: #selector(addRouteController.perSecond(_:)),
+           userInfo: nil,
+           repeats: true)
+    }
+    
+    func pauseLocationUpdates(){
+        locationManager.stopUpdatingLocation();
+        mapView.showsUserLocation = false
+        timer.invalidate()
+    }
+    
+    
+    func resumeLocationUpdates(){
+        locationManager.startUpdatingLocation();
+        mapView.showsUserLocation = true
+        startTimer()
+    }
+    
+    
     //
     // timer update per second
     //
@@ -191,43 +239,48 @@ class addRouteController: UIViewController {
     }
 
     
+    func showSaveOverlay(){
+        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.screenCenterPosition)
+    }
+    
+    func hideShowOverlay(){
+        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.offScreenLeftPosition)
+    }
+    
     
     //
     // preppare to save motoRoute to core data
     //
-    func saveRoute() {
+    func prepareSaveRoute() {
         
-        //stop locatoin updates, don‘t move
-        locationManager.stopUpdatingLocation();
+        pauseLocationUpdates()
         
-        //dont show user location, no blue dot on screenshot
-        mapView.showsUserLocation = false
+        //make routre model
+        let RouteList = RouteMaster.createMasterFromCLLocation(locationsRoute)
+
+        //get bounds, centerpoints, of the whole Route
+        let Bounds = mapUtils.getBoundCoords(RouteList)
+        let coordArray = Bounds.coordboundArray
+        //let coordBounds = Bounds.coordbound
+        let distanceDiagonal = Bounds.distance
+        let distanceFactor = Bounds.distanceFactor
+
+        //get centerpoint
+        let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
+
+        //define camera and set it to startpoint
+        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
         
-        //stop timer
-        timer.invalidate()
+        //animate camera to center point, launch save overlay
+        mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
+            
+            self.showSaveOverlay()
         
-        print("Location Route")
-       // print(locationsRoute)
-                
-        //get the middle coord of the whole route
-        //let middleCoord = locationsRoute[Int(round(Double(locationsRoute.count/2)))]
+        }
         
-        //get coord bounds for route, nortwest & souteast
-        
-       let RouteList = RouteMaster.createMasterFromCLLocation(locationsRoute)
-       let coordBounds = mapUtils.getBoundCoords(RouteList).coordbound
-       //var coordArray = mapUtils.getBoundCoords(RouteList).coordboundArray
-        
-        // set visible bounds
-        // to get a proper screenshot
-        // listen to delegate when animation of map viewport animation is finished
-        centerBoundsAnimation = true
-        self.mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
-        
-    
-       
     }
  
+    
     
     //make ScreenShot and save to realm
     func saveRouteToRealm(){
@@ -236,7 +289,12 @@ class addRouteController: UIViewController {
         let screenshotFilename = imageUtils.screenshotMap(self.mapView)
         
         //save rout to realm
-        realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+       let routeRealmID = realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+        
+        //load saved realm object passit to seague for showcontroller
+        savedRoute = realmUtils.getRealmByID(routeRealmID)
+        performSegueWithIdentifier("goFromAdd2Show", sender: nil)
+        print(savedRoute)
         
     }
     
@@ -251,12 +309,7 @@ class addRouteController: UIViewController {
         second = 0
         distance = 0.0
         locationsRoute.removeAll(keepCapacity: false)
-        timer = NSTimer.scheduledTimerWithTimeInterval(1,
-            target: self,
-            selector: #selector(addRouteController.perSecond(_:)),
-            userInfo: nil,
-            repeats: true)
-        
+        startTimer()
         startLocationUpdates()
     }
     
@@ -266,7 +319,7 @@ class addRouteController: UIViewController {
         
         //save route
         if(locationsRoute.count>2){
-            saveRoute()
+            prepareSaveRoute()
             timer.invalidate() //stop timer
             print("saved")
         } else{
@@ -322,6 +375,18 @@ class addRouteController: UIViewController {
             destinationController.latitude = latitude
             destinationController.longitude = longitude
         }
+        
+        //prepare for camera/photo store to MediaObhect
+        if segue.identifier == "goFromAdd2Show" {
+            let destinationController = segue.destinationViewController as! showRouteController
+
+            destinationController.motoRoute = savedRoute[0]
+            
+        }
+        
+        
+        
+        
     }
     
     
@@ -490,6 +555,7 @@ extension addRouteController: CLLocationManagerDelegate {
 extension addRouteController: MGLMapViewDelegate {
     
     
+    
     func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
@@ -539,9 +605,12 @@ extension addRouteController: MGLMapViewDelegate {
     }
 
 
+    func mapViewWillStartLoadingMap(mapView: MGLMapView) {
+        print("mapViewWillStartLoadingMap")
+    }
     
-    func mapViewWillStartRenderingMap(mapView: MGLMapView) {
-        print("will start render map")
+    func mapViewDidFinishRenderingMap(mapView: MGLMapView, fullyRendered: Bool) {
+        print("mapViewDidFinishRenderingMap")
     }
     
     
@@ -561,12 +630,25 @@ extension addRouteController: MGLMapViewDelegate {
     }
     
     
-    
-    
     func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
         return UIColor.whiteColor()
     }
     
+}
+
+extension addRouteController: msgOverlayDelegate{
+
+    func pressedResume() {
+        print("pressed resume")
+        //roll back overlay
+        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.offScreenLeftPosition)
+        resumeLocationUpdates()
+    }
+    
+    func pressedSave(){
+        print("pressed save")
+        saveRouteToRealm()
+    }
     
     
 }

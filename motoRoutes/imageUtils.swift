@@ -175,7 +175,7 @@ class imageUtils{
         
         }else{ //default values for printing markers in show mode
             let heightPercent = LineHeight*55/100
-             CGContextSetAlpha(context,0.6);
+            CGContextSetAlpha(context,0.4);
             CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
             rectangle = CGRect(x: 0, y: drawHeight/2, width: 4, height: Int(heightPercent))
         }
