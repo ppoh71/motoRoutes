@@ -1,0 +1,45 @@
+
+/* Class = "UIButton"; normalTitle = "ScreenShot"; ObjectID = "15m-LL-PQE"; */
+"15m-LL-PQE.normalTitle" = "ScreenShot";
+
+/* Class = "UILabel"; text = "La"; ObjectID = "1l7-Sv-mBz"; */
+"1l7-Sv-mBz.text" = "La";
+
+/* Class = "UILabel"; text = "Distance"; ObjectID = "Ogt-CA-zOx"; */
+"Ogt-CA-zOx.text" = "Entfernung";
+
+/* Class = "UIButton"; normalTitle = "Options"; ObjectID = "S1h-wW-ObZ"; */
+"S1h-wW-ObZ.normalTitle" = "Options";
+
+/* Class = "UILabel"; text = "From"; ObjectID = "a0E-SY-58l"; */
+"a0E-SY-58l.text" = "Von";
+
+/* Class = "UILabel"; text = "Alt"; ObjectID = "aho-xv-tS2"; */
+"aho-xv-tS2.text" = "Alt";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "iUE-n7-JG6"; */
+"iUE-n7-JG6.text" = "Label";
+
+/* Class = "UILabel"; text = "00:00:00"; ObjectID = "jZU-Gu-ejo"; */
+"jZU-Gu-ejo.text" = "00:00:00";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "lob-tI-4YJ"; */
+"lob-tI-4YJ.normalTitle" = "zurück";
+
+/* Class = "UILabel"; text = "To"; ObjectID = "npH-uE-veb"; */
+"npH-uE-veb.text" = "zu";
+
+/* Class = "UILabel"; text = "Lo"; ObjectID = "o86-4c-Lxs"; */
+"o86-4c-Lxs.text" = "Lo";
+
+/* Class = "UILabel"; text = "0.000 km "; ObjectID = "uMs-kW-sUA"; */
+"uMs-kW-sUA.text" = "0.000 km ";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "x4F-e1-F88"; */
+"x4F-e1-F88.text" = "Name";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "xwO-c2-fcb"; */
+"xwO-c2-fcb.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Acc"; ObjectID = "zem-z1-SpS"; */
+"zem-z1-SpS.text" = "Acc";

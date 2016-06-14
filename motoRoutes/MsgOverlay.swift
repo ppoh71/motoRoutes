@@ -21,11 +21,19 @@ class MsgOverlay: UIView {
     var delegate: msgOverlayDelegate? 
     
     @IBOutlet var saveButton: UIButton!
-    @IBOutlet var resumeButtin: UIButton!
+    @IBOutlet var resumeButton: UIButton!
+    @IBOutlet var textLabel: UILabel!
+    
+    
+    let saveBtnText = "Save"
+    let resumeBtnText = "Resume"
+    let saveLabelText = "Save Route ?"
+    let resumeLabelText = "Resume Recording. Not enough GPS Data"
+    
     
     @IBInspectable var CornerRadius: CGFloat = 3.0 {
         didSet{
-            setupView()
+            setupView(nil)
         }
     }
     
@@ -50,16 +58,36 @@ class MsgOverlay: UIView {
     
     override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
-        setupView()
+        setupView(nil)
         
     }
     
     override func awakeFromNib() {
-        setupView()
+        setupView(nil)
     }
     
-    func setupView(){
+    /**
+     Setup Overlay Layout
+     
+     - parameter type: optional String of lyout type "saveLayout", "resumeLayout"
+     
+     */
+    func setupView(type: String?){
         self.layer.cornerRadius = CornerRadius
+       
+        if(type=="saveLayout"){
+            saveButton.enabled = true
+            resumeButton.enabled = true
+            textLabel.text = saveLabelText
+        }
+        
+        if(type=="resumeLayout"){
+            saveButton.enabled = false
+            resumeButton.enabled = true
+            textLabel.text = resumeLabelText
+        }
+        
+        
     }
 
 }

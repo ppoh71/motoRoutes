@@ -15,15 +15,13 @@ import CoreLocation
 
 class motoRouteController: UITableViewController {
     
-
-    
     // realm object list
     var motoRoutes =  Results<Route>!(nil)
 
+
     //Action methods
-    @IBAction func close(segue:UIStoryboardSegue) {
-        
-      
+    @IBAction func closeToMR(segue:UIStoryboardSegue) {
+         print("close mc \(segue.sourceViewController)")
     }
     
     
@@ -32,22 +30,23 @@ class motoRouteController: UITableViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         let realm = try! Realm()
-        motoRoutes = realm.objects(Route)
+        motoRoutes = realm.objects(Route).sorted("timestamp", ascending: false)
         
         print(realm)      
         print(motoRoutes.count)
-        
     }
     
 
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData() // [2]
     }
 
+    override func viewDidAppear(animated: Bool) {
+  
+    }
     
     //
     // MARK: - Table view data source / Table rows and cells
@@ -71,6 +70,7 @@ class motoRouteController: UITableViewController {
         
         let route = motoRoutes[indexPath.row]
         
+        //print(route)
         
         //get the stuff for the cell
 
@@ -102,7 +102,6 @@ class motoRouteController: UITableViewController {
     */
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
-        
         //delete routes
         if editingStyle == .Delete {
             print("deleting row \(motoRoutes[indexPath.row])")
@@ -122,10 +121,11 @@ class motoRouteController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showRouteController" {
             
-            if let indexPath = tableView.indexPathForSelectedRow {
-                let destinationController = segue.destinationViewController as! showRouteController
-                destinationController.motoRoute = motoRoutes[indexPath.row]
-            }
+            let destinationController = segue.destinationViewController as! showRouteController
+            
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    destinationController.motoRoute = motoRoutes[indexPath.row]
+                }           
         }
     }
     

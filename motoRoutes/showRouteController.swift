@@ -23,8 +23,6 @@ class showRouteController: UIViewController {
     
     //Outlets
     @IBOutlet var cancelButton:UIButton!
-    @IBOutlet var screenshotButton:UIButton!
-    @IBOutlet var scenterMapButton:UIButton!
     @IBOutlet var flyButton:UIButton!
     //@IBOutlet var SpeedLabel:UILabel!
     @IBOutlet var DistanceLabel:UILabel!
@@ -52,6 +50,7 @@ class showRouteController: UIViewController {
     // realm object list
     var motoRoute =  Route()
     var RouteList = RouteMaster()._RouteList
+    var segueFromAddRoute = false
     
     //media stuff
     var markerImageName:String = ""
@@ -86,10 +85,7 @@ class showRouteController: UIViewController {
         
         let x = CFAbsoluteTimeGetCurrent()
         
-        //color speed label
-        screenshotButton.tintColor = globalColor.gColor
-        
-        
+
         // MODEL: set max on route slider
         routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
        
@@ -102,6 +98,8 @@ class showRouteController: UIViewController {
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
         mapViewShow.camera.heading = globalHeading.gHeading
+        
+        
  
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: RouteList[0].latitude, longitude: RouteList[0].longitude),  animated: false)
         
@@ -377,52 +375,13 @@ class showRouteController: UIViewController {
     }
    
     
-    
-    
-    // new screenshot
-    @IBAction func centerForScreenshot(sender: UIButton) {
+    @IBAction func createAlleMarker(){
     
         
-        //print all markers
-        print( RouteList.count)
+         mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-5)
         
-        
-        
-        for annotation in mapViewShow.annotations!{
-            print("\(annotation.title)")
-            mapViewShow.removeAnnotation(annotation)
-        }
-        
-        
-        typeMarker = "Recording"
-        mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-1)
-        typeMarker = ""
-        
-        //mapViewShow.styleURL = NSURL(string: "mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1")
-        
-       
-        
-        let Bounds = mapUtils.getBoundCoords(RouteList)
-        var coordArray = Bounds.coordboundArray
-        let coordBounds = Bounds.coordbound
-        let distanceDiagonal = Bounds.distance
-        let distanceFactor = Bounds.distanceFactor
-        
-        //get centerpoint
-        let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
-        
-        
-        print(distanceDiagonal, distanceFactor)
-        
-        
-        //define camera and set it to startpoint
-        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
-        
-        mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
-
-        
+    
     }
-    
     
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
@@ -468,11 +427,23 @@ class showRouteController: UIViewController {
           //  let destinationController = segue.destinationViewController as! motoRouteOptions
         }
         
-        //prepare for camera/photo store to MediaObhect
-        if segue.identifier == "showRouteOptions" {
-            //  let destinationController = segue.destinationViewController as! motoRouteOptions
+        //unwind
+        if segue.identifier == "unwindExitShowRoute" {
+           print("unwinding")
+            
+            
         }
+        
+        
     }
+    
+
+    @IBAction func unwindTo(unwindSegue: UIStoryboardSegue) {
+    
+        print("unwind seague \(unwindSegue)")
+        
+    }
+    
     
     
     /*

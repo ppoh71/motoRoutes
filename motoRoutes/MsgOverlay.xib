@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,31 +12,24 @@
             <rect key="frame" x="0.0" y="0.0" width="190" height="183"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Save Route ?" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mKY-Xh-TLn">
-                    <rect key="frame" x="43" y="37" width="105" height="30"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="1r0-l1-Rr1"/>
-                        <constraint firstAttribute="width" constant="105" id="8Wi-Wd-TFR"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <stackView contentMode="scaleToFill" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="Irb-KJ-N4R">
-                    <rect key="frame" x="35" y="98" width="120" height="30"/>
+                <stackView contentMode="scaleToFill" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="Irb-KJ-N4R">
+                    <rect key="frame" x="22" y="98" width="147" height="28"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gn-1J-NAc" customClass="motoButtons" customModule="motoRoutes" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                            <rect key="frame" x="0.0" y="0.0" width="44" height="28"/>
                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="tintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" title="Yes"/>
+                            <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                            <state key="normal" title="Save"/>
                             <connections>
                                 <action selector="saveAction:" destination="iN0-l3-epB" eventType="touchDown" id="EyX-l3-biD"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKH-bM-OzI" customClass="motoButtons" customModule="motoRoutes" customModuleProvider="target">
-                            <rect key="frame" x="90" y="0.0" width="30" height="30"/>
+                            <rect key="frame" x="82" y="0.0" width="65" height="28"/>
                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" title="No">
+                            <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                            <state key="normal" title="Resume">
                                 <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -44,18 +38,29 @@
                         </button>
                     </subviews>
                 </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg0-bs-9eL">
+                    <rect key="frame" x="8" y="18" width="174" height="53"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="53" id="bVu-j7-Q7a"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Irb-KJ-N4R" firstAttribute="top" secondItem="mKY-Xh-TLn" secondAttribute="bottom" constant="31" id="A7O-FQ-1zU"/>
-                <constraint firstItem="mKY-Xh-TLn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="0.5" id="AF4-47-MKY"/>
-                <constraint firstItem="Irb-KJ-N4R" firstAttribute="centerX" secondItem="mKY-Xh-TLn" secondAttribute="centerX" id="ZNU-3s-D6t"/>
-                <constraint firstItem="mKY-Xh-TLn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-39.5" id="qdQ-B6-BIE"/>
+                <constraint firstItem="Irb-KJ-N4R" firstAttribute="top" secondItem="Lg0-bs-9eL" secondAttribute="bottom" constant="27" id="3lH-Ui-s97"/>
+                <constraint firstItem="Lg0-bs-9eL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="5mS-FD-Mef"/>
+                <constraint firstItem="Lg0-bs-9eL" firstAttribute="centerX" secondItem="Irb-KJ-N4R" secondAttribute="centerX" id="CjE-Qc-G4o"/>
+                <constraint firstItem="Irb-KJ-N4R" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="YE1-hO-iqg"/>
+                <constraint firstItem="Lg0-bs-9eL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="lFE-o1-U0Z"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="resumeButtin" destination="dKH-bM-OzI" id="2fr-6a-0rT"/>
+                <outlet property="resumeButton" destination="dKH-bM-OzI" id="YAZ-LY-72H"/>
                 <outlet property="saveButton" destination="1gn-1J-NAc" id="aLQ-9I-Adc"/>
+                <outlet property="textLabel" destination="Lg0-bs-9eL" id="YzZ-mo-Xn2"/>
             </connections>
             <point key="canvasLocation" x="348" y="291.5"/>
         </view>

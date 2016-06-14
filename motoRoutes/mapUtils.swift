@@ -414,7 +414,7 @@ class mapUtils {
         var distanceFactor = 1.8
         
         //loop if we have locations
-        guard _locationsMaster.count > 10 else {
+        guard _locationsMaster.count > 4 else {
             print("GUARD bounds: locationRoute count 0")
             let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
             
