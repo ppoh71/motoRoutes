@@ -32,6 +32,7 @@
 		55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E149701CE22DE000B576BB /* RouteSlider.swift */; };
 		55E3C7E41CF743E2008FE121 /* geocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E3C7E31CF743E2008FE121 /* geocodeUtils.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
+		55F009191D1148BA00FA2400 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55F0091B1D1148BA00FA2400 /* Localizable.strings */; };
 		55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEF51D0700950051F338 /* MsgOverlay.swift */; };
 		55F7CEF81D0700CF0051F338 /* MsgOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */; };
 		55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEFA1D07093B0051F338 /* motoButtons.swift */; };
@@ -65,6 +66,7 @@
 		556368A91CEF4681004BBB6F /* Speedometer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Speedometer.swift; sourceTree = "<group>"; };
 		556B8A671CE4B9A4000EE047 /* CameraSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSlider.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* MRCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellView.swift; sourceTree = "<group>"; };
+		55B323441D12F5FF00EA5C57 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSliderCustom.swift; sourceTree = "<group>"; };
 		55DA72981D0030DD0095C52E /* MRCellViewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellViewImage.swift; sourceTree = "<group>"; };
@@ -73,6 +75,8 @@
 		55E149701CE22DE000B576BB /* RouteSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteSlider.swift; sourceTree = "<group>"; };
 		55E3C7E31CF743E2008FE121 /* geocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = geocodeUtils.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
+		55F0091D1D114B6300FA2400 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55F009211D114B9D00FA2400 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F7CEF51D0700950051F338 /* MsgOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MsgOverlay.swift; sourceTree = "<group>"; };
 		55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MsgOverlay.xib; sourceTree = "<group>"; };
 		55F7CEFA1D07093B0051F338 /* motoButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoButtons.swift; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 		553AB5001C50056400AC12A5 /* motoRoutes */ = {
 			isa = PBXGroup;
 			children = (
+				55F0091C1D11496500FA2400 /* LocalizationStrings */,
 				555C0D7F1CE47EF100DABBD4 /* Recources */,
 				55E1496F1CE22D7E00B576BB /* View */,
 				55E1496C1CE1C87A00B576BB /* Controller */,
@@ -187,6 +192,14 @@
 				55DA72981D0030DD0095C52E /* MRCellViewImage.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		55F0091C1D11496500FA2400 /* LocalizationStrings */ = {
+			isa = PBXGroup;
+			children = (
+				55F0091B1D1148BA00FA2400 /* Localizable.strings */,
+			);
+			name = LocalizationStrings;
 			sourceTree = "<group>";
 		};
 		55F7CEF31D06FAFC0051F338 /* Overlay */ = {
@@ -290,6 +303,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 553AB4F51C50056400AC12A5;
 			productRefGroup = 553AB4FF1C50056400AC12A5 /* Products */;
@@ -310,6 +324,7 @@
 				553D05E71CE4AB7400D8555D /* Roboto-Thin.ttf in Resources */,
 				553D05E61CE4AB7400D8555D /* Roboto-Regular.ttf in Resources */,
 				55C567C31C6284E2008E045B /* Settings.bundle in Resources */,
+				55F009191D1148BA00FA2400 /* Localizable.strings in Resources */,
 				553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */,
 				553D05E51CE4AB7400D8555D /* Roboto-Bold.ttf in Resources */,
 				553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */,
@@ -444,6 +459,16 @@
 				5530AFBD1D104E9800925A07 /* de */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		55F0091B1D1148BA00FA2400 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55F0091D1D114B6300FA2400 /* en */,
+				55F009211D114B9D00FA2400 /* Base */,
+				55B323441D12F5FF00EA5C57 /* de */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

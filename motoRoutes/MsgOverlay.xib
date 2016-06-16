@@ -44,9 +44,12 @@
                         <constraint firstAttribute="height" constant="53" id="bVu-j7-Q7a"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QDw-lJ-6ZW">
+                    <rect key="frame" x="22" y="159" width="150" height="2"/>
+                </progressView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -58,6 +61,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="progressBar" destination="QDw-lJ-6ZW" id="uca-xx-ObC"/>
                 <outlet property="resumeButton" destination="dKH-bM-OzI" id="YAZ-LY-72H"/>
                 <outlet property="saveButton" destination="1gn-1J-NAc" id="aLQ-9I-Adc"/>
                 <outlet property="textLabel" destination="Lg0-bs-9eL" id="YzZ-mo-Xn2"/>

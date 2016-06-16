@@ -39,8 +39,7 @@ class AnimationEngine {
     
     }
     
-    
-    
+
     func animateOnScreen(delay: Int ){
     
         //let d:Int64 = delay != nil ? Int64(Double(ANIM_DELA) * Double(NSEC_PER_SEC)) : delay!
@@ -77,6 +76,15 @@ class AnimationEngine {
         moveAnim.springSpeed = 8
         view.pop_addAnimation(moveAnim, forKey: "movePosition")
         
+    }
+    
+    
+    class func showMsgOverlay(viewObejct: UIView){
+        AnimationEngine.animationToPosition(viewObejct, position: AnimationEngine.screenCenterPosition)
+    }
+    
+    class func hideMsgOverlay(viewObejct: UIView){
+        AnimationEngine.animationToPosition(viewObejct, position: AnimationEngine.offScreenLeftPosition)
     }
     
         

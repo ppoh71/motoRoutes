@@ -12,28 +12,45 @@ protocol msgOverlayDelegate {
     
     func pressedResume()
     func pressedSave()
-    
-    
 }
+
+
+enum MsgType {
+    case Save
+    case Resume
+    case Cancel
+    case Print
+    
+    init(){
+        self = .Save
+    }
+}
+
 
 class MsgOverlay: UIView {
     
-    var delegate: msgOverlayDelegate? 
+    var delegate: msgOverlayDelegate?
+    var msgType = MsgType()
     
     @IBOutlet var saveButton: UIButton!
     @IBOutlet var resumeButton: UIButton!
     @IBOutlet var textLabel: UILabel!
     
+    @IBOutlet weak var progressBar: UIProgressView!
     
-    let saveBtnText = "Save"
-    let resumeBtnText = "Resume"
-    let saveLabelText = "Save Route ?"
-    let resumeLabelText = "Resume Recording. Not enough GPS Data"
+    let saveLabelText = NSLocalizedString("View.Overlay.SaveRouteText", comment: "Save Route Text")
+    let resumeLabelText = NSLocalizedString("View.Overlay.ResumeRouteText", comment: "Resume Route Text")
+    let printAllMarkerlText = NSLocalizedString("View.Overlay.PrintAllMarkerText", comment: "Print All Marker Text")
+    
+    let saveButtonText = NSLocalizedString("View.Overlay.SaveButtonText", comment: "Save Button Text")
+    let resumeButtonText = NSLocalizedString("View.Overlay.ResumeButtonText", comment: "Resume Button Text")
+    let okButtonText = NSLocalizedString("View.Overlay.OKButtonText", comment: "OK Button Text")
+    let cancelButtonText = NSLocalizedString("View.Overlay.CancelButtonText", comment: "Cancel Button Text")
     
     
     @IBInspectable var CornerRadius: CGFloat = 3.0 {
         didSet{
-            setupView(nil)
+            setupView()
         }
     }
     
@@ -58,35 +75,56 @@ class MsgOverlay: UIView {
     
     override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
-        setupView(nil)
+        setupView()
         
     }
     
     override func awakeFromNib() {
-        setupView(nil)
+        setupView()
     }
     
     /**
      Setup Overlay Layout
      
-     - parameter type: optional String of lyout type "saveLayout", "resumeLayout"
      
      */
-    func setupView(type: String?){
+    func setupView(){
         self.layer.cornerRadius = CornerRadius
        
-        if(type=="saveLayout"){
+        
+        switch msgType {
+        
+        case .Save:
+            print("Save enum case")
+            saveButton.setTitle(saveButtonText, forState: UIControlState.Normal)
+            resumeButton.setTitle(resumeButtonText, forState: UIControlState.Normal)
             saveButton.enabled = true
             resumeButton.enabled = true
             textLabel.text = saveLabelText
-        }
-        
-        if(type=="resumeLayout"){
+            
+        case .Resume:
+            print("Resume enum case")
+            saveButton.setTitle(saveButtonText, forState: UIControlState.Normal)
+            resumeButton.setTitle(resumeButtonText, forState: UIControlState.Normal)
             saveButton.enabled = false
             resumeButton.enabled = true
             textLabel.text = resumeLabelText
+        
+        case .Print:
+            print("Resume enum case")
+            saveButton.setTitle(okButtonText, forState: UIControlState.Normal)
+            resumeButton.setTitle(cancelButtonText, forState: UIControlState.Normal)
+            saveButton.enabled = true
+            resumeButton.enabled = true
+            textLabel.text = printAllMarkerlText
+            
+        default:
+            print("default")
+            
         }
         
+        
+                
         
     }
 

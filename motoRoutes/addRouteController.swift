@@ -105,6 +105,7 @@ class addRouteController: UIViewController {
         msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
         msgOverlay.center = AnimationEngine.offScreenLeftPosition
         msgOverlay.delegate = self
+        msgOverlay.msgType = .Save
         self.view.addSubview(msgOverlay)
     }
     
@@ -166,13 +167,7 @@ class addRouteController: UIViewController {
         startTimer()
     }
     
-    func showSaveOverlay(){
-        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.screenCenterPosition)
-    }
-    
-    func hideShowOverlay(){
-        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.offScreenLeftPosition)
-    }
+
     
     // timer update per second
     //
@@ -220,13 +215,16 @@ class addRouteController: UIViewController {
                 //animate camera to center point, launch save overlay
                 mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
                     
-                    self.msgOverlay.setupView("saveLayout")
-                    self.showSaveOverlay()
+                    self.msgOverlay.msgType = .Save
+                    self.msgOverlay.setupView()
+                    AnimationEngine.showMsgOverlay(self.msgOverlay)
                 }
             
         } else{
-            msgOverlay.setupView("resumeLayout")
-            self.showSaveOverlay()
+            
+            self.msgOverlay.msgType = .Resume
+            self.msgOverlay.setupView()
+            AnimationEngine.showMsgOverlay(self.msgOverlay)
         }
             
     }
@@ -287,7 +285,6 @@ class addRouteController: UIViewController {
         if segue.identifier == "goFromAdd2Show" {
             let destinationController = segue.destinationViewController as! showRouteController
 
-            destinationController.segueFromAddRoute = true
             destinationController.motoRoute = savedRoute[0]
         }
     }
@@ -438,8 +435,7 @@ extension addRouteController: MGLMapViewDelegate {
         //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
         
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
-
-        
+      
         //}
         
         return annotationImage
@@ -457,13 +453,6 @@ extension addRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         
-        //save the route and make screenshot, when route is centered
-        if centerBoundsAnimation == true {
-        
-            saveRouteToRealm()
-            centerBoundsAnimation = false
-        
-        }
         print("regio did  change animated")
     }
     
@@ -513,7 +502,7 @@ extension addRouteController: msgOverlayDelegate{
         print("pressed resume")
         //roll back overlay
         cnt=20
-        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.offScreenLeftPosition)
+        AnimationEngine.hideMsgOverlay(msgOverlay)
         resumeLocationUpdates()
     }
     
@@ -521,7 +510,5 @@ extension addRouteController: msgOverlayDelegate{
         print("pressed save")
         saveRouteToRealm()
     }
-    
-    
 }
 

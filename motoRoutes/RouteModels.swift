@@ -9,6 +9,7 @@
 import RealmSwift
 import Foundation
 import CoreLocation
+import Mapbox
 
 
 // Route Realm Model
@@ -54,7 +55,6 @@ class Location: Object {
 //Media Object for location
 class Media: Object {
 
-    
     dynamic var image = ""
     dynamic var latitude = 0.0
     dynamic var longitude = 0.0
@@ -131,8 +131,25 @@ class MediaMaster {
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
     
+    init(){
+    }
+    
 }
 
+
+// Annotation Class for Marker Sztorage, Deletaion
+class MarkerAnnotation {
+
+    var annotaion: MGLPointAnnotation
+    var key: Int
+    
+    init(annotaion: MGLPointAnnotation, key: Int){
+        
+        self.annotaion = annotaion
+        self.key = key
+    }
+    
+}
 
 
 /*

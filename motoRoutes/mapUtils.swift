@@ -64,7 +64,7 @@ class mapUtils {
             speedIndex = utils.getSpeedIndex(location.speed)
             
        
-            print("\(globalSpeedSet.speedSet)")
+            //print("\(globalSpeedSet.speedSet)")
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
@@ -155,22 +155,21 @@ class mapUtils {
         - parameter mapView: current Mapview
     *
     **/
-    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int){
+    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int) -> [MarkerAnnotation]{
     
+        //define sliced Array
+        let sliceEnd = key+amount
+        let _LocationSlice = _LocationMaster[key...sliceEnd-1]
+        var markersSet = [MarkerAnnotation]()
         
         //guard 
         guard _LocationMaster.count > key+amount else {
             print("GUARD print routes: not enough routes \(_LocationMaster.count) .. \(key+amount) .. \(amount)")
-            return
+            return markersSet
         }
         
-        //define sliced Array
-        let sliceEnd = key+amount
-        let _LocationSlice = _LocationMaster[key...sliceEnd-1]
         
-        //print("MARKER PRINT \(key+1) .. \(key+amount) / Count: \(_LocationSlice.count)")
-        
-        for master in _LocationSlice {
+        for (index, master) in _LocationSlice.enumerate(){
            
             //print("enum \(_LocationSlice.enumerate())")
             //set speed and altiude globals
@@ -181,19 +180,24 @@ class mapUtils {
             
                 let newMarker = MGLPointAnnotation()
                 newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
-                   //newMarker.subtitle = "route marker"
-                    //newMarker.subtitle = "SpeedMarker\(key)"
-                    //newMarker.description = media.image
+                newMarker.subtitle = "speed marker \(key+index)"
+               //newMarker.description = media.image
             
                 mapView.addAnnotation(newMarker)
                 
                 //mark marker as printed "true" back in MasterRoute Array
                 master.marker = true
                 
+                //save marker to markersSet Array
+                let markerKey = key+index
+                let tmpMarker = MarkerAnnotation(annotaion: newMarker, key: markerKey)
+                markersSet.append(tmpMarker)
             }
+     
          }
-    
+        return markersSet
     }
+    
     
     
     class func printSingleSpeedMarker( mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
@@ -282,7 +286,7 @@ class mapUtils {
         //var plabckCameraDuration:Double = 0.2
         // var cameraDistance = globalCamDistance.gCamDistance
         var distance = 0.0
-        print("INIT Instance: \(initInstance) / \(identifier)")
+        //print("INIT Instance: \(initInstance) / \(identifier)")
         
         //Struct to hold static var, to identify running instances fo function and stop if needed
         struct Holder {
@@ -301,12 +305,12 @@ class mapUtils {
             var n = nx
             let currentInstance:String = instance
             
-            print("FLY Instance: \(instance)")
+            //print("FLY Instance: \(instance)")
             
             /* check if there are marker on the route point, when in autofly mode */
             if(_LocationMaster[n].marker == false && globalAutoplay.gAutoplay == true) {
                 
-                print("Notify send")
+              //  print("Notify send")
                 let arrayN = [n]
                 NSNotificationCenter.defaultCenter().postNotificationName(markerNotSetNotificationKey, object: arrayN)
                 
@@ -351,7 +355,7 @@ class mapUtils {
             if let tmpRouteSlider = routeSlider {
                 // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
                 tmpRouteSlider.setValue(Float(n), animated: true)
-                print("Slider Move \(n)")
+                //print("Slider Move \(n)")
                 tmpRouteSlider.setLabel((utils.distanceFormat(distance)), timeText: timespendString)
             }
             
@@ -365,10 +369,10 @@ class mapUtils {
                 
                 //create instance to track loop func call
                 
-                print("LOOP INSTANCE \( Holder.staticInstance) - \(currentInstance)")
+               // print("LOOP INSTANCE \( Holder.staticInstance) - \(currentInstance)")
                 
                 if( Holder.staticInstance != currentInstance){
-                     print("NOT EQUAL \( Holder.staticInstance) - \(currentInstance)")
+                    // print("NOT EQUAL \( Holder.staticInstance) - \(currentInstance)")
                 }
                 
                 
