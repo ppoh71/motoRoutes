@@ -301,23 +301,9 @@ class showRouteController: UIViewController {
             
                 //print("timer running and printeing routes \(sliceStart)")
                 
-                //print marker
-                
-                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                                    let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
-                                    self.markersSet.appendContentsOf(tmpMarkers)
-                                    self.unsetMarker(&self.markersSet)
-
-                    dispatch_async(dispatch_get_main_queue()) {
-                        // update some UI
-                        // self.msgOverlay.textLabel.text = "\(marker.latitude)"
-                    }
-                }
-                
-//                let tmpMarkers = mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  sliceStart, amount: sliceAmount)
-//                markersSet.appendContentsOf(tmpMarkers)
-//                unsetMarker(&markersSet)
+                let tmpMarkers = mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  sliceStart, amount: sliceAmount)
+                markersSet.appendContentsOf(tmpMarkers)
+                unsetMarker(&markersSet)
                 
                 sliceStart += sliceAmount //move array to next route
                 count+=1 //counter to center map, fly camer to marker
