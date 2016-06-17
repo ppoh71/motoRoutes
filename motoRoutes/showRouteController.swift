@@ -61,7 +61,7 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.0001
+    var timeIntervalMarker = 0.05
     var performanceTime:Double = 0
     
     //Debug Label
@@ -261,6 +261,22 @@ class showRouteController: UIViewController {
         debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
     }
     
+    func dispatch(){
+    
+        
+        
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            self.printMarker()
+            dispatch_async(dispatch_get_main_queue()) {
+                // update some UI
+                // self.msgOverlay.textLabel.text = "\(marker.latitude)"
+            }
+        }
+
+    
+    
+    }
     
     //stop all running Timer flying cameras
     func stopAll(){
@@ -291,64 +307,72 @@ class showRouteController: UIViewController {
     //printing speedmarker on the map
     func printMarker(){
         
+        
+        print("paztch")
+        
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+        
         let counterStep = 1 // when to fly next marker
    
         //if not at end of array
-        if( RouteList.count > sliceStart+sliceAmount){
+        if( self.RouteList.count > self.sliceStart+self.sliceAmount){
             
             //Print Marker if not already set
-            if(RouteList[sliceStart].marker==false){
+            if(self.RouteList[self.sliceStart].marker==false){
             
-                //print("timer running and printeing routes \(sliceStart)")
+               print("timer running and printeing routes \(self.sliceStart)")
                 
                 //print marker
                 
-                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                                    let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
-                                    self.markersSet.appendContentsOf(tmpMarkers)
-                                    self.unsetMarker(&self.markersSet)
+                
+                
+                  let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
+                  self.markersSet.appendContentsOf(tmpMarkers)
+                  self.unsetMarker(&self.markersSet)
 
-                    dispatch_async(dispatch_get_main_queue()) {
-                        // update some UI
-                        // self.msgOverlay.textLabel.text = "\(marker.latitude)"
-                    }
-                }
                 
-//                let tmpMarkers = mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  sliceStart, amount: sliceAmount)
-//                markersSet.appendContentsOf(tmpMarkers)
-//                unsetMarker(&markersSet)
-                
-                sliceStart += sliceAmount //move array to next route
-                count+=1 //counter to center map, fly camer to marker
+                self.sliceStart += self.sliceAmount //move array to next route
+                self.count+=1 //counter to center map, fly camer to marker
                 
                 
                 //fly camera to current marker
-                if(count==counterStep){
+                if(self.count==counterStep){
+                    
+                    print("stop")
                     
                     //stop timer, flyto route and re-init timer, set counter to zero
-                    timer.invalidate()
-                    mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: speedoMeter)
-                    count=0
-                    startMarkerTimer()
+                    //self.timer.invalidate()
+                    mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.sliceStart, routeSlider: self.routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: self.speedoMeter)
+                    self.count=0
+                   //self.startMarkerTimer()
                 }
+                
+                
+                
             
             } else{ //if marker is already set
             
-                //print("marker already set start fly")
+                print("marker already set start fly")
                 
-                stopAll()
-                startFlytoAuto()
+                self.stopAll()
+                self.startFlytoAuto()
                 //start flyto with autoplay
             }
      
         } else{ // end of array
-         //print("All Marker took: \(utils.absolutePeromanceTime(performanceTime)) ")
-         stopAll()
+         print("All Marker took: ")
+         self.stopAll()
             //print(RouteList[0].marker)
         }
         
         
+            dispatch_async(dispatch_get_main_queue()) {
+                // update some UI
+                // self.msgOverlay.textLabel.text = "\(marker.latitude)"
+            }
+        }
+
         //print("MARKERS SET \(markersSet.count)")
         
     }
