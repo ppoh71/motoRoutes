@@ -45,11 +45,12 @@ class Location: Object {
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
 
+    let route = LinkingObjects(fromType: Route.self, property: "locationsList")
     
-    var route: [Route] {
-        // Realm doesn't persist this property because it only has a getter defined
-        return linkingObjects(Route.self, forProperty: "locationsList")
-    }
+//    var route: [Route] {
+//        // Realm doesn't persist this property because it only has a getter defined
+//        return test
+//    }
 }
 
 //Media Object for location
@@ -64,10 +65,12 @@ class Media: Object {
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
     
-    var route: [Route] {
-        // Realm doesn't persist this property because it only has a getter defined
-        return linkingObjects(Route.self, forProperty: "mediaList")
-    }
+    let route = LinkingObjects(fromType: Route.self, property: "mediaList")
+    
+//    var route: [Route] {
+//        // Realm doesn't persist this property because it only has a getter defined
+//        return LinkingObjects(fromType: Route.self, property: "mediaList")
+//    }
 }
 
 
@@ -76,10 +79,12 @@ class Gyroscope: Object {
     
     dynamic var timestamp = NSDate()
     
-    var route: [Route] {
-        // Realm doesn't persist this property because it only has a getter defined
-        return linkingObjects(Route.self, forProperty: "gyroscopeList")
-    }
+    let route = LinkingObjects(fromType: Route.self, property: "gyroscopeList")
+    
+//    var route: [Route] {
+//        // Realm doesn't persist this property because it only has a getter defined
+//        return LinkingObjects(fromType: Route.self, property: "gyroscopeList")
+//    }
 }
 
 

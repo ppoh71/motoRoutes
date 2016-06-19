@@ -61,7 +61,7 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.05
+    var timeIntervalMarker = 0.0005
     var performanceTime:Double = 0
     
     //Debug Label
@@ -310,8 +310,7 @@ class showRouteController: UIViewController {
         
         print("paztch")
         
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+
         
         let counterStep = 1 // when to fly next marker
    
@@ -319,46 +318,54 @@ class showRouteController: UIViewController {
         if( self.RouteList.count > self.sliceStart+self.sliceAmount){
             
             //Print Marker if not already set
-            if(self.RouteList[self.sliceStart].marker==false){
+            
             
                print("timer running and printeing routes \(self.sliceStart)")
                 
                 //print marker
                 
                 
-                
-                  let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
-                  self.markersSet.appendContentsOf(tmpMarkers)
-                  self.unsetMarker(&self.markersSet)
+                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                    
+                    if(self.RouteList[self.sliceStart].marker==false){
+                    
+                        let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
+                        self.markersSet.appendContentsOf(tmpMarkers)
+                        self.unsetMarker(&self.markersSet)
+                        self.sliceStart += self.sliceAmount //move array to next route
+                        self.count+=1 //counter to center map, fly camer to marker
+                        
+                        
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        // update some UI
+                        // self.msgOverlay.textLabel.text = "\(marker.latitude)"
+                        //fly camera to current marker
+                        if(self.count==counterStep && self.RouteList[self.sliceStart].marker==false){
+                            
+                            print("stop")
+                            
+                            //stop timer, flyto route and re-init timer, set counter to zero
+                            //self.timer.invalidate()
+                            mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.sliceStart, routeSlider: self.routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: self.speedoMeter)
+                            self.count=0
+                            //self.startMarkerTimer()
+                        }
 
-                
-                self.sliceStart += self.sliceAmount //move array to next route
-                self.count+=1 //counter to center map, fly camer to marker
-                
-                
-                //fly camera to current marker
-                if(self.count==counterStep){
-                    
-                    print("stop")
-                    
-                    //stop timer, flyto route and re-init timer, set counter to zero
-                    //self.timer.invalidate()
-                    mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.sliceStart, routeSlider: self.routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: self.speedoMeter)
-                    self.count=0
-                   //self.startMarkerTimer()
+                    }
                 }
-                
-                
-                
-            
-            } else{ //if marker is already set
-            
-                print("marker already set start fly")
-                
-                self.stopAll()
-                self.startFlytoAuto()
-                //start flyto with autoplay
-            }
+
+             
+//            } else{ //if marker is already set
+//            
+//                print("marker already set start fly")
+//                
+//                self.stopAll()
+//                self.startFlytoAuto()
+//                //start flyto with autoplay
+//            }
      
         } else{ // end of array
          print("All Marker took: ")
@@ -367,11 +374,7 @@ class showRouteController: UIViewController {
         }
         
         
-            dispatch_async(dispatch_get_main_queue()) {
-                // update some UI
-                // self.msgOverlay.textLabel.text = "\(marker.latitude)"
-            }
-        }
+
 
         //print("MARKERS SET \(markersSet.count)")
         
@@ -381,6 +384,7 @@ class showRouteController: UIViewController {
     //delete older marker when there are to many
     func unsetMarker(inout markersSet: [MarkerAnnotation]){
     
+        /*
         let markerAmount = 150
         let markerToDelete = 1
         
@@ -398,6 +402,7 @@ class showRouteController: UIViewController {
             //    print("delete marker \(index) \(markersSet.count) \(mremove.annotaion)")
             }
         }
+ */
     }
     
     
