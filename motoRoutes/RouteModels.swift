@@ -44,17 +44,18 @@ class Location: Object {
     dynamic var accuracy = 0.0
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
-
     
-    var route: [Route] {
-        // Realm doesn't persist this property because it only has a getter defined
-        return linkingObjects(Route.self, forProperty: "locationsList")
-    }
+    let route = LinkingObjects(fromType: Route.self, property: "locationsList")
+    
+    //    var route: [Route] {
+    //        // Realm doesn't persist this property because it only has a getter defined
+    //        return test
+    //    }
 }
 
 //Media Object for location
 class Media: Object {
-
+    
     dynamic var image = ""
     dynamic var latitude = 0.0
     dynamic var longitude = 0.0
@@ -64,10 +65,12 @@ class Media: Object {
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
     
-    var route: [Route] {
-        // Realm doesn't persist this property because it only has a getter defined
-        return linkingObjects(Route.self, forProperty: "mediaList")
-    }
+    let route = LinkingObjects(fromType: Route.self, property: "mediaList")
+    
+    //    var route: [Route] {
+    //        // Realm doesn't persist this property because it only has a getter defined
+    //        return LinkingObjects(fromType: Route.self, property: "mediaList")
+    //    }
 }
 
 
@@ -76,10 +79,12 @@ class Gyroscope: Object {
     
     dynamic var timestamp = NSDate()
     
-    var route: [Route] {
-        // Realm doesn't persist this property because it only has a getter defined
-        return linkingObjects(Route.self, forProperty: "gyroscopeList")
-    }
+    let route = LinkingObjects(fromType: Route.self, property: "gyroscopeList")
+    
+    //    var route: [Route] {
+    //        // Realm doesn't persist this property because it only has a getter defined
+    //        return LinkingObjects(fromType: Route.self, property: "gyroscopeList")
+    //    }
 }
 
 
@@ -97,10 +102,10 @@ class LocationMaster {
     var accuracy = 0.0
     var marker = false
     var distance = 0.0
-
+    
     
     init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:NSDate, accuracy:Double, marker:Bool, distance:Double ){
-    
+        
         self.latitude = latitude
         self.longitude = longitude
         self.altitude = altitude
@@ -110,12 +115,12 @@ class LocationMaster {
         self.accuracy = accuracy
         self.marker = marker
         self.distance = distance
-    
+        
     }
     
     init(){
     }
-
+    
 }
 
 
@@ -139,7 +144,7 @@ class MediaMaster {
 
 // Annotation Class for Marker Sztorage, Deletaion
 class MarkerAnnotation {
-
+    
     var annotaion: MGLPointAnnotation
     var key: Int
     
@@ -156,27 +161,27 @@ class MarkerAnnotation {
  Remodel data for as a kind of entity model, when it comes from realm
  */
 class RouteMaster {
-
+    
     
     var _RouteList = [LocationMaster]()
     
     init(){
-    
+        
     }
- 
+    
     
     //create a LocationMaster Object with from Realm List
     class func createMasterLocationRealm(LocationsList:List<Location>!) -> [LocationMaster]{
-    
+        
         var newRouteList = RouteMaster()._RouteList
-    
+        
         //loop all CLLocation and create and append to LocationMaster
         for location in LocationsList {
             
             let locationTmp = LocationMaster(latitude: location.latitude, longitude: location.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.accuracy, marker: false, distance: location.distance)
-    
+            
             newRouteList.append(locationTmp)
-    
+            
         }
         
         return newRouteList
@@ -199,12 +204,12 @@ class RouteMaster {
         
         return newRouteList
     }
-
     
-
+    
+    
     //update the marker object, so we know that the speedmarker has been set
     class func updateMarkerBool(RouteList: [LocationMaster], n: Int){
-    
+        
         //the marker for this location has been set
         RouteList[n].marker = true
         

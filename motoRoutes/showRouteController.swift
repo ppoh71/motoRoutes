@@ -61,7 +61,7 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.0001
+    var timeIntervalMarker = 0.0005
     var performanceTime:Double = 0
     
     //Debug Label
