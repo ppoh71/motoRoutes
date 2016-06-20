@@ -566,6 +566,7 @@ extension showRouteController: MGLMapViewDelegate {
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
         //print(typeMarker)
         let image = imageUtils.drawLineOnImage(typeMarker)
+        
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
         
         return annotationImage
