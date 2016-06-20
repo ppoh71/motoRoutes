@@ -61,7 +61,7 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.0005
+    var timeIntervalMarker = 0.06
     var performanceTime:Double = 0
     
     //Debug Label
@@ -124,6 +124,8 @@ class showRouteController: UIViewController {
         //Setup Custom UI
         cameraCustomSlider.addTarget(self, action: #selector(showRouteController.cameraSliderValueChanged), forControlEvents: .ValueChanged)
         setupCustomUI()
+        
+        globalRoutePos.gRoutePos = 0
         
     }
     
@@ -219,14 +221,15 @@ class showRouteController: UIViewController {
     @IBAction func sliderRouteChanged(sender: UISlider) {
         
         //get slider value as int
-        sliceStart = Int(sender.value)
+        //sliceStart = Int(sender.value)
+        globalRoutePos.gRoutePos = Int(sender.value)
         
         //routeSlider.setValues()
         //stop camera flightm when selecting new route point
         globalAutoplay.gAutoplay = false
         
         //fly to route n destination
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: globalRoutePos.gRoutePos, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
         //print("Slider Route value \(sliderRouteValue)")
     }
     
@@ -261,22 +264,7 @@ class showRouteController: UIViewController {
         debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
     }
     
-    func dispatch(){
-    
-        
-        
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            self.printMarker()
-            dispatch_async(dispatch_get_main_queue()) {
-                // update some UI
-                // self.msgOverlay.textLabel.text = "\(marker.latitude)"
-            }
-        }
 
-    
-    
-    }
     
     //stop all running Timer flying cameras
     func stopAll(){
@@ -307,54 +295,75 @@ class showRouteController: UIViewController {
     //printing speedmarker on the map
     func printMarker(){
         
-        
-        print("paztch")
-        
-
-        
+       // print("paztch")
+  
         let counterStep = 1 // when to fly next marker
    
         //if not at end of array
-        if( self.RouteList.count > self.sliceStart+self.sliceAmount){
+
+        if( self.RouteList.count > globalRoutePos.gRoutePos+self.sliceAmount){
             
             //Print Marker if not already set
-            
-            
-               print("timer running and printeing routes \(self.sliceStart)")
-                
-                //print marker
-                
-                
+
                 let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                var tmpRoutePos = 0
                 dispatch_async(dispatch_get_global_queue(priority, 0)) {
                     
-                    if(self.RouteList[self.sliceStart].marker==false){
                     
-                        let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  self.sliceStart, amount: self.sliceAmount)
-                        self.markersSet.appendContentsOf(tmpMarkers)
-                        self.unsetMarker(&self.markersSet)
-                        self.sliceStart += self.sliceAmount //move array to next route
+                    if(self.RouteList[globalRoutePos.gRoutePos].marker==false){
+                    
+                        //let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  globalRoutePos.gRoutePos, amount: self.sliceAmount)
+                        //self.markersSet.appendContentsOf(tmpMarkers)
+                        
+                        let newMarker = MGLPointAnnotation()
+                        newMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[globalRoutePos.gRoutePos].latitude, self.RouteList[globalRoutePos.gRoutePos].longitude)
+                        self.RouteList[globalRoutePos.gRoutePos].annotation = newMarker
+                        self.RouteList[globalRoutePos.gRoutePos].marker = true
+                        
+                        globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
+                        self.mapViewShow.addAnnotation(newMarker)
+                        
+                        
+                       // self.unsetMarker(&self.markersSet)
+                        globalRoutePos.gRoutePos += self.sliceAmount //move array to next route
+                        tmpRoutePos = globalRoutePos.gRoutePos
+                        
                         self.count+=1 //counter to center map, fly camer to marker
                         
-                        
+                        //delete marker trail
+                        let delPos = 80
+                        if((tmpRoutePos - delPos) > 0 && self.RouteList[tmpRoutePos-delPos].marker==true){
+                            self.mapViewShow.removeAnnotation(self.RouteList[tmpRoutePos-delPos].annotation)
+                        }
+
+              
                     }
                     
                     dispatch_async(dispatch_get_main_queue()) {
+                        
                         // update some UI
                         // self.msgOverlay.textLabel.text = "\(marker.latitude)"
                         //fly camera to current marker
-                        if(self.count==counterStep && self.RouteList[self.sliceStart].marker==false){
-                            
-                            print("stop")
-                            
+                        //if(self.count==counterStep && self.RouteList[globalRoutePos.gRoutePos].marker==true){
                             //stop timer, flyto route and re-init timer, set counter to zero
                             //self.timer.invalidate()
-                            mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.sliceStart, routeSlider: self.routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: self.speedoMeter)
+                        
+                        self.speedoMeter.moveSpeedo(Double(utils.getSpeed(self.RouteList[tmpRoutePos].speed)))
+                        
+                        self.routeSlider.setValue(Float(tmpRoutePos), animated: true)
+                        //print("Slider Move \(n)")
+                        self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
+
+                        
+                        if(self.count > 5){
+                           mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
                             self.count=0
                             //self.startMarkerTimer()
-                        }
-
                     }
+                       // }
+                        
+                    }
+ 
                 }
 
              

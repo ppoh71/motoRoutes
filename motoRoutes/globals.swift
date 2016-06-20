@@ -87,6 +87,11 @@ class global {
         self.gHeading = gHeading
     }
     
+    var gRoutePos:Int = 0
+    init(gRoutePos:Int){
+        self.gRoutePos = gRoutePos
+    }
+    
     
     
     
@@ -107,5 +112,6 @@ var globalMarkerID = global(gMarkerID: "")
 var globalCounter = global(gCounter: 0)
 var globalAltitude = global(gAltitude: 0)
 var globalHeading = global(gHeading: -60)
+var globalRoutePos = global(gRoutePos: 0)
 
 

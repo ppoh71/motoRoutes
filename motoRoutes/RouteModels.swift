@@ -102,7 +102,7 @@ class LocationMaster {
     var accuracy = 0.0
     var marker = false
     var distance = 0.0
-
+    var annotation = MGLPointAnnotation()
     
     init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:NSDate, accuracy:Double, marker:Bool, distance:Double ){
     
