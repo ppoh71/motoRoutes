@@ -61,7 +61,7 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.0005
+    var timeIntervalMarker = 0.001
     var performanceTime:Double = 0
     
     //Debug Label
@@ -310,7 +310,7 @@ class showRouteController: UIViewController {
                 
                 
                 //fly camera to current marker
-                if(count==counterStep){
+                if(count==100){
                     
                     //stop timer, flyto route and re-init timer, set counter to zero
                     timer.invalidate()
