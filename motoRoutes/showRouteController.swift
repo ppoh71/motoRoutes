@@ -320,8 +320,10 @@ class showRouteController: UIViewController {
                         self.RouteList[globalRoutePos.gRoutePos].annotation = newMarker
                         self.RouteList[globalRoutePos.gRoutePos].marker = true
                         
-                        globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
+                        
+                        print(self.count)
                         self.mapViewShow.addAnnotation(newMarker)
+                        globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
                         
                         
                        // self.unsetMarker(&self.markersSet)
@@ -355,9 +357,9 @@ class showRouteController: UIViewController {
                         self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
 
                         
-                        if(self.count > 5){
-                           mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
-                            self.count=0
+                        if(self.count > 150){
+                          // mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
+                           // self.count=0
                             //self.startMarkerTimer()
                     }
                        // }
