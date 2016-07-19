@@ -61,8 +61,9 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.06
+    var timeIntervalMarker = 0.001
     var performanceTime:Double = 0
+    var tmpRoutePos = 0
     
     //Debug Label
     var debugTimer = NSTimer()
@@ -304,13 +305,13 @@ class showRouteController: UIViewController {
         if( self.RouteList.count > globalRoutePos.gRoutePos+self.sliceAmount){
             
             //Print Marker if not already set
+            //print("before: \(globalRoutePos.gRoutePos) - \(RouteList[globalRoutePos.gRoutePos].marker)")
+            if(self.RouteList[globalRoutePos.gRoutePos].marker==false){
+                
+                let priority = Int(QOS_CLASS_USER_INTERACTIVE.rawValue)
 
-                let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                var tmpRoutePos = 0
-                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                dispatch_sync(dispatch_get_global_queue(priority, 0)) {
                     
-                    
-                    if(self.RouteList[globalRoutePos.gRoutePos].marker==false){
                     
                         //let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  globalRoutePos.gRoutePos, amount: self.sliceAmount)
                         //self.markersSet.appendContentsOf(tmpMarkers)
@@ -325,42 +326,38 @@ class showRouteController: UIViewController {
                         
                         
                        // self.unsetMarker(&self.markersSet)
-                        globalRoutePos.gRoutePos += self.sliceAmount //move array to next route
-                        tmpRoutePos = globalRoutePos.gRoutePos
+                        globalRoutePos.gRoutePos = globalRoutePos.gRoutePos + self.sliceAmount //move array to next route
+                        self.tmpRoutePos = globalRoutePos.gRoutePos
                         
                         self.count+=1 //counter to center map, fly camer to marker
-                        
+                    
+                        print("a: \(globalRoutePos.gRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
+                    
                         //delete marker trail
-                        let delPos = 80
-                        if((tmpRoutePos - delPos) > 0 && self.RouteList[tmpRoutePos-delPos].marker==true){
-                            self.mapViewShow.removeAnnotation(self.RouteList[tmpRoutePos-delPos].annotation)
+                        let delPos = 120
+                        if((self.tmpRoutePos - delPos) > 0 && self.RouteList[self.tmpRoutePos-delPos].marker==true){
+                            self.mapViewShow.removeAnnotation(self.RouteList[self.tmpRoutePos-delPos].annotation)
+                           
                         }
 
-              
-                    }
-                    
+                
                     dispatch_async(dispatch_get_main_queue()) {
                         
-                        // update some UI
-                        // self.msgOverlay.textLabel.text = "\(marker.latitude)"
-                        //fly camera to current marker
-                        //if(self.count==counterStep && self.RouteList[globalRoutePos.gRoutePos].marker==true){
-                            //stop timer, flyto route and re-init timer, set counter to zero
-                            //self.timer.invalidate()
+                   print("b: \(self.tmpRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
                         
-                        self.speedoMeter.moveSpeedo(Double(utils.getSpeed(self.RouteList[tmpRoutePos].speed)))
+                        self.speedoMeter.moveSpeedo(Double(utils.getSpeed(self.RouteList[self.tmpRoutePos].speed)))
                         
-                        self.routeSlider.setValue(Float(tmpRoutePos), animated: true)
+                        self.routeSlider.setValue(Float(self.tmpRoutePos), animated: true)
                         //print("Slider Move \(n)")
                         self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
 
                         
-                        if(self.count > 5){
-                           mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
+                        if(self.count > 50){
+                          // mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
                             self.count=0
                             //self.startMarkerTimer()
                     }
-                       // }
+                }
                         
                     }
  
