@@ -141,7 +141,8 @@ final class imageUtils{
         //get height and color for line
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        let LineAltitude  = Int(globalAltitude.gAltitude)
+        var LineAltitude  = Int(globalAltitude.gAltitude)
+        //LineAltitude = round(1000 * LineAltitude) / 1000
 
 
         
@@ -168,8 +169,9 @@ final class imageUtils{
             //drawAltitude(&context!, drawHeight: drawHeight)
            
         case .PrintAltitude:
-              print("PrintAltitude")
-             drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: LineColor, perCent: 10)
+              print("PrintAltitude \(LineAltitude)")
+             drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: LineColor, perCent: 5)
+            
             
         default:
             break

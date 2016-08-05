@@ -607,19 +607,20 @@ extension showRouteController: MGLMapViewDelegate {
         var reuseIdentifier = "MarkerImage"
         
         //reuse identifier
-        switch(funcType) {
+        switch(self.funcType) {
         
         case .PrintMarker:
-            reuseIdentifier =  "MarkerImage\(utils.getSpeed(globalSpeed.gSpeed))"
+            reuseIdentifier =  "MarkerImageSpeed\(utils.getSpeed(globalSpeed.gSpeed))"
             
         case .PrintAltitude:
-            reuseIdentifier =  "MarkerImage\(globalAltitude.gAltitude)"
+            reuseIdentifier =  "MarkerImageAlt\(globalAltitude.gAltitude)\(utils.getUniqueUUID())"
             
         default:
             reuseIdentifier = "MarkerImage\(utils.getUniqueUUID())"
         
         }
         
+        print(reuseIdentifier)
         
         let image = imageUtils.drawLineOnImage(self.funcType)
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
