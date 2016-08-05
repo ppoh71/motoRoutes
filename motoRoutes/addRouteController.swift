@@ -91,6 +91,8 @@ class addRouteController: UIViewController {
     var msgOverlay: MsgOverlay!
     //var animEngine: AnimationEngine!
     
+    var funcType = FuncTypes.Recording
+    
     //
     // override func super init
     //
@@ -100,6 +102,8 @@ class addRouteController: UIViewController {
         //map camera init settings
         mapView.zoomLevel = 9
         mapView.camera.heading = 60
+        
+        
         
         //init Msg Overlay
         msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
@@ -115,6 +119,12 @@ class addRouteController: UIViewController {
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        mapView.logoView.frame =  CGRectMake( 300, 300, 100 , mapView.logoView.frame.size.height )
+        
+        mapView.attributionButton.hidden = true
+        
+        
         
         //allow location use
         locationManager.requestAlwaysAuthorization()
@@ -431,7 +441,7 @@ extension addRouteController: MGLMapViewDelegate {
         
         //if annotationImage == nil {
         
-        let image = imageUtils.drawLineOnImage("Recording")
+        let image = imageUtils.drawLineOnImage(funcType)
         //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
         
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")

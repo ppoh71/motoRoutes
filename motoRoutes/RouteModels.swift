@@ -21,6 +21,8 @@ class Route: Object {
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
     dynamic var image = ""
+    dynamic var locationStart = ""
+    dynamic var locationEnd = ""
     
     override static func primaryKey() -> String? {
         return "id"
@@ -64,6 +66,7 @@ class Media: Object {
     dynamic var course = 0.0
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
+
     
     let route = LinkingObjects(fromType: Route.self, property: "mediaList")
     

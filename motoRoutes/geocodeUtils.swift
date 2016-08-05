@@ -12,7 +12,7 @@ import MapboxGeocoder
 let geocoder = Geocoder.sharedGeocoder
 
 
-class geocodeUtils {
+final class geocodeUtils {
 
 
     /* get adress from location

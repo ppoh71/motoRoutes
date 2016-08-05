@@ -14,7 +14,7 @@ import Mapbox
 import GLKit
 
 
-class mapUtils {
+final class mapUtils {
     
     
     //Bound Structure
@@ -27,13 +27,13 @@ class mapUtils {
     
     
     /*
-    
-    Print route with colored polylines
-    
-    - parameter LocationMaster: LocationMaster Object
-    - parameter mapView: current Mapview
-    
-    */
+     
+     Print route with colored polylines
+     
+     - parameter LocationMaster: LocationMaster Object
+     - parameter mapView: current Mapview
+     
+     */
     
     class func printRoute(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
@@ -53,18 +53,11 @@ class mapUtils {
         var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
         globalSpeedSet.speedSet = speedIndex
         
-        //temp speed
-        //var tempSpeedIndex = speedIndex
-        //reset global spped set to zero
-        
         //loop through LocationMaster
         for location in _LocationMaster {
             
             //get speed index
             speedIndex = utils.getSpeedIndex(location.speed)
-            
-       
-            //print("\(globalSpeedSet.speedSet)")
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
@@ -87,9 +80,9 @@ class mapUtils {
                 coords = [CLLocationCoordinate2D]()
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
+                print(globalSpeedSet.speedSet)
             }
-            
-         }
+        }
         
         
         
@@ -102,15 +95,7 @@ class mapUtils {
             //print route polygon
             let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
             mapView.addAnnotation(line)
-       
-            //print the coords for the last run
-            //print("counts: \(coords.count) - sppedindex \(globalSpeedSet.speedSet) ")
-            
         }
-        
-        //print(" coord count  \(_LocationMaster.count)")
-        //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
-
     }
     
     
@@ -118,7 +103,7 @@ class mapUtils {
         
         
         //performacne test
-       // let x = CFAbsoluteTimeGetCurrent()
+        // let x = CFAbsoluteTimeGetCurrent()
         
         //guard for print routes
         guard _LocationMaster.count > 2 else {
@@ -130,7 +115,7 @@ class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        let speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
+        let speedIndex:Int = utils.getSpeedIndex(3)
         globalSpeedSet.speedSet = speedIndex
         
         
@@ -146,85 +131,91 @@ class mapUtils {
         //print(" coord count  \(_LocationMaster.count)")
         //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
-
+    
     
     /**
-    *   Print Route aArker on Route
+     *   Print Route aArker on Route
      
-        - parameter LocationMaster: LocationMaster Object
-        - parameter mapView: current Mapview
-    *
-    **/
-    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int) -> [MarkerAnnotation]{
-    
+     - parameter LocationMaster: LocationMaster Object
+     - parameter mapView: current Mapview
+     *
+     **/
+    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, funcType: FuncTypes) {
+        
+        //let x = CFAbsoluteTimeGetCurrent()
+        
         //define sliced Array
         let sliceEnd = key+amount
         let _LocationSlice = _LocationMaster[key...sliceEnd-1]
-        var markersSet = [MarkerAnnotation]()
+      //  var markersSet = [MarkerAnnotation]()
+        var cnt = 0
         
-        //guard 
+        //guard
         guard _LocationMaster.count > key+amount else {
             print("GUARD print routes: not enough routes \(_LocationMaster.count) .. \(key+amount) .. \(amount)")
-            return markersSet
+            return
         }
         
         
-        for (index, master) in _LocationSlice.enumerate(){
-           
-            //print("enum \(_LocationSlice.enumerate())")
+        for master in _LocationSlice{
+            
             //set speed and altiude globals
             globalSpeed.gSpeed = master.speed
             globalAltitude.gAltitude = master.altitude
             
             if master.marker == false {
-            
-                let newMarker = MGLPointAnnotation()
-                newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
-                newMarker.subtitle = "speed marker \(key+index)"
-               //newMarker.description = media.image
-            
-                mapView.addAnnotation(newMarker)
                 
-                //mark marker as printed "true" back in MasterRoute Array
-                master.marker = true
+                // print only every x marker
+                cnt = cnt > 3 ? 0 : cnt
                 
-                //save marker to markersSet Array
-                let markerKey = key+index
-                let tmpMarker = MarkerAnnotation(annotaion: newMarker, key: markerKey)
-                markersSet.append(tmpMarker)
+                if(cnt==0){
+                    let newMarker = MGLPointAnnotation()
+                    newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
+                    mapView.addAnnotation(newMarker)
+                    
+                    //mark marker as printed "true" back in MasterRoute Array
+                    switch funcType {
+                        
+                        case .PrintBaseHeight:
+                            master.marker = false
+                        
+                        case .PrintMarker:
+                            master.marker = true
+                        
+                        default:
+                            master.marker = true
+                    }
+                }
+                cnt+=1
             }
-     
-         }
-        return markersSet
+        }
     }
+    
+    
+    
+    
     
     
     
     class func printSingleSpeedMarker( mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
-    
-    
+        
         let newMarker = MGLPointAnnotation()
         
         newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        //   newMarker.subtitle = "route marker"
-       // newMarker.subtitle = "SpeedMarker\(key)"
-        // newMarker.description = media.image
         
         //globalLineAltitude.gLineAltitude = master.altitude
         globalSpeed.gSpeed = speed
-       // globalMarkerID.gMarkerID = "\(master.timestamp.timeIntervalSince1970)-\(master.latitude)"
         
         //addSpeedMarker(newMarker)
         mapView.addAnnotation(newMarker)
-        // master.marker = true
-    
+        
     }
     
     
     /*
-    * create camera from location, distance, pitch and heading
-    * can use for cameraflyto animations
-    */
+     * create camera from location, distance, pitch and heading
+     * can use for cameraflyto animations
+     */
     class func cameraDestination(latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
         
         let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -236,8 +227,8 @@ class mapUtils {
     
     
     /*
-    * print route
-    */
+     * print route
+     */
     
     class func cameraAni(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
@@ -295,7 +286,7 @@ class mapUtils {
         
         //assign instance to global static
         Holder.staticInstance = initInstance
-
+        
         
         /**
          *  Camera fly to fx
@@ -310,16 +301,16 @@ class mapUtils {
             /* check if there are marker on the route point, when in autofly mode */
             if(_LocationMaster[n].marker == false && globalAutoplay.gAutoplay == true) {
                 
-              //  print("Notify send")
+                //  print("Notify send")
                 let arrayN = [n]
                 NSNotificationCenter.defaultCenter().postNotificationName(markerNotSetNotificationKey, object: arrayN)
                 
             }
- 
+            
             
             //assign course of locationfor camera animation
             headingCourse = _LocationMaster[n].course+globalHeading.gHeading
-
+            
             //get next array key by amoutn of arraySteps; default 1
             let nextIndex = n+globalArrayStep.gArrayStep < _LocationMaster.count ? n+globalArrayStep.gArrayStep : _LocationMaster.count-1
             
@@ -341,14 +332,14 @@ class mapUtils {
             speedoMeter?.moveSpeedo(Double(utils.getSpeed(_LocationMaster[n].speed)))
             
             /**
-            *  Update Lables / Slider
-            **/
+             *  Update Lables / Slider
+             **/
             
             //Update UILabel Speed
-//            if let tmpSpeedLabel = SpeedLabel {
-//                tmpSpeedLabel.textColor =  colorUtils.polylineColors(speedIndex)
-//                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
-//            }
+            //            if let tmpSpeedLabel = SpeedLabel {
+            //                tmpSpeedLabel.textColor =  colorUtils.polylineColors(speedIndex)
+            //                tmpSpeedLabel.text =  " \(utils.getSpeed(_LocationMaster[n].speed))"
+            //            }
             
             
             //Update UILabel in Slider
@@ -361,16 +352,11 @@ class mapUtils {
             
             
             /**
-            * Let it fly
-            **/
+             * Let it fly
+             **/
             
             mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
-                // mapView.flyToCamera(camera, withDuration: plabckCameraDuration) {
-                
-                //create instance to track loop func call
-                
-               // print("LOOP INSTANCE \( Holder.staticInstance) - \(currentInstance)")
-                
+
                 if( Holder.staticInstance != currentInstance){
                     // print("NOT EQUAL \( Holder.staticInstance) - \(currentInstance)")
                 }
@@ -380,10 +366,9 @@ class mapUtils {
                 if(n+globalArrayStep.gArrayStep < _LocationMaster.count && globalAutoplay.gAutoplay == true && currentInstance == Holder.staticInstance ){
                     
                     n = n+globalArrayStep.gArrayStep
-                   
                     fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse, instance: currentInstance)
                 }
-        
+                
             }
         }
         
@@ -422,7 +407,7 @@ class mapUtils {
             print("GUARD bounds: locationRoute count 0")
             let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
             
-              return (coordBounds, coordBoundArray, distance, distanceFactor)
+            return (coordBounds, coordBoundArray, distance, distanceFactor)
         }
         
         //init with first vars
@@ -479,12 +464,12 @@ class mapUtils {
         let distanceNorthEast = locationNW.distanceFromLocation(locationNE)
         
         distanceFactor = distanceNorthSouth > distanceNorthEast ? 1.3 : distanceFactor
-
+        
         
         return (coordBounds, coordBoundArray, distance, distanceFactor)
         
     }
-
+    
     
     /*
      * calculate the center point of multiple latitude longitude coordinate-pairs
@@ -521,7 +506,7 @@ class mapUtils {
         let resultLong = atan2(y, x);
         let resultHyp = sqrt(x * x + y * y);
         let resultLat = atan2(z, resultHyp);
-    
+        
         centerPoint = CLLocationCoordinate2D(latitude: CLLocationDegrees(GLKMathRadiansToDegrees(Float(resultLat))), longitude: CLLocationDegrees(GLKMathRadiansToDegrees(Float(resultLong))));
         
         return centerPoint;

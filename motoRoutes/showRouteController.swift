@@ -27,10 +27,10 @@ class showRouteController: UIViewController {
     @IBOutlet var DistanceLabel:UILabel!
     @IBOutlet var TimeLabel:UILabel!
     @IBOutlet var AltitudeLabel:UILabel!
-
+    
     @IBOutlet var routeSlider:RouteSlider!{
         didSet{
-           routeSlider.setLabel("0.000", timeText: "00:00")
+            routeSlider.setLabel("0.000", timeText: "00:00")
         }
     }
     
@@ -39,15 +39,15 @@ class showRouteController: UIViewController {
     @IBOutlet var debugLabel: UILabel!
     @IBOutlet var optionsButton: UIButton!
     
-
+    
     //add gesture
     var toggleImageViewGesture = UISwipeGestureRecognizer()
-
+    
     // Get the default Realm
     let realm = try! Realm()
     
     // realm object list
-    var motoRoute =  Route()
+    var motoRoute: Route?
     var RouteList = RouteMaster()._RouteList
     var markersSet = [MarkerAnnotation]()
     
@@ -61,7 +61,7 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-    var timeIntervalMarker = 0.001
+    var timeIntervalMarker = 0.01
     var performanceTime:Double = 0
     var tmpRoutePos = 0
     
@@ -74,10 +74,10 @@ class showRouteController: UIViewController {
     var cameraCustomSlider = CameraSliderCustom()
     
     //make screenshot
-    var typeMarker = ""
+    var funcType = FuncTypes.Default
     var msgOverlay: MsgOverlay!
     
-
+    
     //
     // override func super init
     //
@@ -86,13 +86,13 @@ class showRouteController: UIViewController {
         
         let x = CFAbsoluteTimeGetCurrent()
         
-
+        
         // MODEL: set max on route slider
-        routeSlider.maximumValue = Float(motoRoute.locationsList.count-1)
-       
+        routeSlider.maximumValue = Float(motoRoute!.locationsList.count-1)
+        
         //MODEL: covert Realm LocationList to Location Master Object
-        RouteList =  RouteMaster.createMasterLocationRealm(motoRoute.locationsList)
-       
+        RouteList =  RouteMaster.createMasterLocationRealm(motoRoute!.locationsList)
+        
         //print(utils.absolutePeromanceTime(x))
         print("List count \(RouteList.count)")
         
@@ -130,8 +130,8 @@ class showRouteController: UIViewController {
         
     }
     
-
-
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         
@@ -184,7 +184,7 @@ class showRouteController: UIViewController {
         //add Subviews
         view.addSubview(speedoMeter)
         view.addSubview(cameraCustomSlider)
-
+        
     }
     
     
@@ -234,22 +234,18 @@ class showRouteController: UIViewController {
         //print("Slider Route value \(sliderRouteValue)")
     }
     
-
+    
     //touch event for rourte slider
     func touchDowntRouteSlide(){
         stopAll()
-        //print("touch down stopall()")
     }
     
     //touch event for rourte slider
     func touchUpRouteSlide(){
-        //StartStop(true)
-        //print("touch up slide, nothing")
     }
     
     //update debug label
     func updateDebugLabel(){
-        //print("dwbug")
         debugSeconds += 1
         debugLabel.text = "\(debugSeconds) / \(sliceStart) "
     }
@@ -265,11 +261,9 @@ class showRouteController: UIViewController {
         debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
     }
     
-
     
     //stop all running Timer flying cameras
     func stopAll(){
-        //print("stopAll")
         timer.invalidate()
         debugTimer.invalidate()
         globalAutoplay.gAutoplay =  false
@@ -283,105 +277,99 @@ class showRouteController: UIViewController {
         let arrayObject =  notification.object as! [AnyObject]
         
         if let receivedKey = arrayObject[0] as? Int {
-        
+            
             //set new sliceStartKey
             sliceStart = receivedKey
-            //print("Notify received Func \(receivedKey)")
             stopAll()
             StartStop(true)
         }
-            //print("Notify received Func \(nRoute)")
     }
     
-    //printing speedmarker on the map
+    /**
+    * printing speedmarker on the map
+    **/
     func printMarker(){
         
-       // print("paztch")
-  
-        let counterStep = 1 // when to fly next marker
-   
         //if not at end of array
-
         if( self.RouteList.count > globalRoutePos.gRoutePos+self.sliceAmount){
             
             //Print Marker if not already set
-            //print("before: \(globalRoutePos.gRoutePos) - \(RouteList[globalRoutePos.gRoutePos].marker)")
             if(self.RouteList[globalRoutePos.gRoutePos].marker==false){
                 
                 let priority = Int(QOS_CLASS_USER_INTERACTIVE.rawValue)
-
+                
                 dispatch_sync(dispatch_get_global_queue(priority, 0)) {
                     
+                    self.funcType = .PrintMarker
                     
-                        //let tmpMarkers = mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  globalRoutePos.gRoutePos, amount: self.sliceAmount)
-                        //self.markersSet.appendContentsOf(tmpMarkers)
-                        
-                        let newMarker = MGLPointAnnotation()
-                        newMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[globalRoutePos.gRoutePos].latitude, self.RouteList[globalRoutePos.gRoutePos].longitude)
-                        self.RouteList[globalRoutePos.gRoutePos].annotation = newMarker
-                        self.RouteList[globalRoutePos.gRoutePos].marker = true
-                        
-                        globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
-                        self.mapViewShow.addAnnotation(newMarker)
-                        
-                        
-                       // self.unsetMarker(&self.markersSet)
-                        globalRoutePos.gRoutePos = globalRoutePos.gRoutePos + self.sliceAmount //move array to next route
-                        self.tmpRoutePos = globalRoutePos.gRoutePos
-                        
-                        self.count+=1 //counter to center map, fly camer to marker
+                    let newMarker = MGLPointAnnotation()
+                    newMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[globalRoutePos.gRoutePos].latitude, self.RouteList[globalRoutePos.gRoutePos].longitude)
+                    self.RouteList[globalRoutePos.gRoutePos].annotation = newMarker
+                    self.RouteList[globalRoutePos.gRoutePos].marker = true
                     
-                        print("a: \(globalRoutePos.gRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
+                    /* set globals */
+                    globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
+                    globalAltitude.gAltitude = self.RouteList[globalRoutePos.gRoutePos].altitude
                     
-                        //delete marker trail
-                        let delPos = 120
-                        if((self.tmpRoutePos - delPos) > 0 && self.RouteList[self.tmpRoutePos-delPos].marker==true){
-                            self.mapViewShow.removeAnnotation(self.RouteList[self.tmpRoutePos-delPos].annotation)
-                           
-                        }
-
-                
+                    self.mapViewShow.addAnnotation(newMarker)
+                    
+                    
+                    // self.unsetMarker(&self.markersSet)
+                    globalRoutePos.gRoutePos = globalRoutePos.gRoutePos + self.sliceAmount //move array to next route
+                    self.tmpRoutePos = globalRoutePos.gRoutePos
+                    
+                    self.count+=1 //counter to center map, fly camer to marker
+                    
+                    //print("a: \(globalRoutePos.gRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
+                    
+                    //delete marker trail
+                    let delPos = 120
+                    if((self.tmpRoutePos - delPos) > 0 && self.RouteList[self.tmpRoutePos-delPos].marker==true){
+                        self.mapViewShow.removeAnnotation(self.RouteList[self.tmpRoutePos-delPos].annotation)
+                        
+                    }
+                    
                     dispatch_async(dispatch_get_main_queue()) {
                         
-                   print("b: \(self.tmpRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
+                       // print("b: \(self.tmpRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
                         
                         self.speedoMeter.moveSpeedo(Double(utils.getSpeed(self.RouteList[self.tmpRoutePos].speed)))
                         
                         self.routeSlider.setValue(Float(self.tmpRoutePos), animated: true)
                         //print("Slider Move \(n)")
                         self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
-
                         
-                        if(self.count > 50){
-                          // mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
+                        
+                        if(self.count > 1){
+                             mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
                             self.count=0
                             //self.startMarkerTimer()
+                        }
                     }
+                    
                 }
-                        
-                    }
- 
-                }
-
-             
-//            } else{ //if marker is already set
-//            
-//                print("marker already set start fly")
-//                
-//                self.stopAll()
-//                self.startFlytoAuto()
-//                //start flyto with autoplay
-//            }
-     
+                
+            }
+            
+            
+            //            } else{ //if marker is already set
+            //
+            //                print("marker already set start fly")
+            //
+            //                self.stopAll()
+            //                self.startFlytoAuto()
+            //                //start flyto with autoplay
+            //            }
+            
         } else{ // end of array
-         print("All Marker took: ")
-         self.stopAll()
+            print("All Marker took: ")
+            self.stopAll()
             //print(RouteList[0].marker)
         }
         
         
-
-
+        
+        
         //print("MARKERS SET \(markersSet.count)")
         
     }
@@ -389,26 +377,26 @@ class showRouteController: UIViewController {
     
     //delete older marker when there are to many
     func unsetMarker(inout markersSet: [MarkerAnnotation]){
-    
+        
         /*
-        let markerAmount = 150
-        let markerToDelete = 1
-        
-        if(markersSet.count > markerAmount) {
-        
-            let markerSlice = markersSet[0...markerToDelete]
-            
-            for marker in markerSlice {
-                let annotation = marker.annotaion
-                //print(annotation)
-                mapViewShow.removeAnnotation(annotation)
-                
-                markersSet.removeAtIndex(0) // remove deleted markers from array
-                RouteList[marker.key].marker = false
-            //    print("delete marker \(index) \(markersSet.count) \(mremove.annotaion)")
-            }
-        }
- */
+         let markerAmount = 150
+         let markerToDelete = 1
+         
+         if(markersSet.count > markerAmount) {
+         
+         let markerSlice = markersSet[0...markerToDelete]
+         
+         for marker in markerSlice {
+         let annotation = marker.annotaion
+         //print(annotation)
+         mapViewShow.removeAnnotation(annotation)
+         
+         markersSet.removeAtIndex(0) // remove deleted markers from array
+         RouteList[marker.key].marker = false
+         //    print("delete marker \(index) \(markersSet.count) \(mremove.annotaion)")
+         }
+         }
+         */
     }
     
     
@@ -422,10 +410,10 @@ class showRouteController: UIViewController {
         
         //make route fly
         mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
-    
+        
     }
     
-
+    
     
     //start/stop button function
     func StartStop(active: Bool){
@@ -436,8 +424,8 @@ class showRouteController: UIViewController {
             flyButton.selected = true
             
         } else{
-             stopAll()
-              }
+            stopAll()
+        }
         
     }
     
@@ -461,51 +449,48 @@ class showRouteController: UIViewController {
         //mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, routeSlider: routeSlider)
         
     }
-   
+    
     
     @IBAction func createAlleMarker(){
+       
+        printAllMarker(FuncTypes.PrintMarker)
         
+        /*
         msgOverlay.msgType = .Print
         msgOverlay.setupView()
         
         AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.screenCenterPosition)
         
         //mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-5)
-    
-    
+        */
+        
     }
     
-    
-    func printAllMarker(){
-    
-
-    
-        //mapViewShow.hidden = true
+    @IBAction func printAltitude(sender: AnyObject) {
         
-         //  let time = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(1) * Double(NSEC_PER_SEC)))
+        printAllMarker(FuncTypes.PrintAltitude)
         
- 
-        //for marker in self.RouteList{
-        // mapUtils.printSingleSpeedMarker(self.mapViewShow, latitude: marker.latitude, longitude: marker.longitude, speed: marker.speed)
-            //msgOverlay.saveButton.backgroundColor = colorUtils.randomColor()
+    }
+    
+    func printAllMarker(funcSwitch: FuncTypes){
+        
+        self.funcType = funcSwitch
+        
+        // mapUtils.printRoute(RouteList, mapView: mapViewShow)
+        //mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5, funcType: self.funcType)
+        
+        let priority = Int(QOS_CLASS_UTILITY.rawValue)
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
             
-            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-            dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5)
-                dispatch_async(dispatch_get_main_queue()) {
-                    // update some UI
-                    // self.msgOverlay.textLabel.text = "\(marker.latitude)"
-                }
+            //mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5, funcType: self.funcType)
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5, funcType: self.funcType)
+                // update some UI
+                // self.msgOverlay.textLabel.text = "\(marker.latitude)"
             }
-
-           // print("printing... \(marker.latitude)")
-            
-           // mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-5)
-
-     
-        //}
-
-            
+        }
+        
     }
     
     
@@ -520,43 +505,47 @@ class showRouteController: UIViewController {
         //Set marker bool to false, to print new marker
         for marker in RouteList{
             marker.marker = false
+            marker.annotation = MGLPointAnnotation()
         }
     }
+    
+    
+
     
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
         
-      
+        
         let screenshotFilename = imageUtils.screenshotMap(self.mapViewShow)
         
         //save new screenshot to realm
         //print(motoRoute)
         try! self.realm.write {
-            self.realm.create(Route.self, value: ["id": self.motoRoute.id, "image": screenshotFilename], update: true)
+            self.realm.create(Route.self, value: ["id": self.motoRoute!.id, "image": screenshotFilename], update: true)
             
         }
-
+        
     }
     
-        
-    func togglePhotoView(){
     
+    func togglePhotoView(){
+        
         let animateX:CGFloat = self.routeImageView.frame.origin.x<100 ? 320 : -320; //animnate x var
         //print("x: \(self.routeImageView.frame.origin.x)")
-    
+        
         //aimate view
         UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
             
             self.routeImageView.transform = CGAffineTransformMakeTranslation(animateX, 0)
             
             }, completion: nil)
-    
+        
         //print("x: \(self.routeImageView.frame.origin.x)")
-
+        
     }
     
     
-   
+    
     /*
      * Prepare Segue / camera stuff
      */
@@ -564,18 +553,18 @@ class showRouteController: UIViewController {
         
         //prepare for camera/photo store to MediaObhect
         if segue.identifier == "showRouteOptions" {
-          //  let destinationController = segue.destinationViewController as! motoRouteOptions
+            //  let destinationController = segue.destinationViewController as! motoRouteOptions
         }
         
         //unwind
         if segue.identifier == "unwindExitShowRoute" {
-           //print("unwinding")
+            //print("unwinding")
         }
     }
     
-
-    @IBAction func unwindTo(unwindSegue: UIStoryboardSegue) {
     
+    @IBAction func unwindTo(unwindSegue: UIStoryboardSegue) {
+        
         //print("unwind seague \(unwindSegue)")
         
     }
@@ -598,7 +587,7 @@ class showRouteController: UIViewController {
             
         }
     }
-
+    
     
 }
 
@@ -613,16 +602,34 @@ extension showRouteController: MGLMapViewDelegate {
         
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
-        //print(typeMarker)
-        let image = imageUtils.drawLineOnImage(typeMarker)
-        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
+        //print(self.funcType)
+        
+        var reuseIdentifier = "MarkerImage"
+        
+        //reuse identifier
+        switch(funcType) {
+        
+        case .PrintMarker:
+            reuseIdentifier =  "MarkerImage\(utils.getSpeed(globalSpeed.gSpeed))"
+            
+        case .PrintAltitude:
+            reuseIdentifier =  "MarkerImage\(globalAltitude.gAltitude)"
+            
+        default:
+            reuseIdentifier = "MarkerImage\(utils.getUniqueUUID())"
+        
+        }
+        
+        
+        let image = imageUtils.drawLineOnImage(self.funcType)
+        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
         
         return annotationImage
         
     }
-    
+
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-       // print("regionDidChangeAnimated")
+        // print("regionDidChangeAnimated")
         
     }
     
@@ -647,22 +654,22 @@ extension showRouteController: MGLMapViewDelegate {
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
         
         //print("annotation")
-      //  print(" a \(annotation.subtitle!!)")
+        //  print(" a \(annotation.subtitle!!)")
         
         
         /*
-        if let imgNameAnnotation:String = annotation.subtitle!! {
-            let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
-            let image = imageUtils.loadImageFromPath(imgPath)
-        
-            //show image
-            routeImageView.image = image
-            togglePhotoView()
-        
-            //deselect annotation
-        mapView.deselectAnnotation(annotation, animated: false)
-        }
- */
+         if let imgNameAnnotation:String = annotation.subtitle!! {
+         let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgNameAnnotation)
+         let image = imageUtils.loadImageFromPath(imgPath)
+         
+         //show image
+         routeImageView.image = image
+         togglePhotoView()
+         
+         //deselect annotation
+         mapView.deselectAnnotation(annotation, animated: false)
+         }
+         */
         
     }
     
@@ -678,13 +685,14 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 6.0
+        return 3.0
     }
     
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         
         //let speedIndex =  Int(round(speed/10))
-        return colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
+        //print(globalSpeedSet.speedSet)
+        return colorUtils.polylineColors(globalSpeedSet.speedSet)
     }
     
 }
@@ -694,12 +702,12 @@ extension showRouteController: msgOverlayDelegate{
     func pressedResume() {
         print("pressed resume")
         AnimationEngine.hideMsgOverlay(msgOverlay)
-
+        
     }
     
     func pressedSave(){
         print("pressed save")
-        printAllMarker()
+        printAllMarker(FuncTypes.PrintMarker)
         //msgOverlay.saveButton.backgroundColor = colorUtils.randomColor()
     }
 }

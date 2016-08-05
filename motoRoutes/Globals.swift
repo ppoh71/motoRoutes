@@ -9,7 +9,19 @@
 import Foundation
 import UIKit
 
-class global {
+
+
+
+enum FuncTypes: String {
+    case Recording
+    case PrintMarker
+    case PrintBaseHeight
+    case PrintAltitude
+    case Default
+}
+
+
+final class Global {
     
     //init sppedSet ( needed in same speed same color routes)
     var speedSet:Int = 0
@@ -92,26 +104,23 @@ class global {
         self.gRoutePos = gRoutePos
     }
     
-    
-    
-    
 }
 
 
 
-var globalSpeedSet = global(speedSet:0)
-var globalColor = global(gColor: UIColor.whiteColor())
-var globalCamDistance = global(gCamDistance: 11500)
-var globalCamDuration = global(gCamDuration: 0.2)
-var globalCamPitch = global(gCamPitch: 60)
-var globalArrayStep = global(gArrayStep: 1)
-var globalAutoplay = global(gAutoplay: false)
-var globalLineAltitude = global(gLineAltitude: 0.0)
-var globalSpeed = global(gSpeed: 0.0)
-var globalMarkerID = global(gMarkerID: "")
-var globalCounter = global(gCounter: 0)
-var globalAltitude = global(gAltitude: 0)
-var globalHeading = global(gHeading: -60)
-var globalRoutePos = global(gRoutePos: 0)
+var globalSpeedSet = Global(speedSet:0)
+var globalColor = Global(gColor: UIColor.whiteColor())
+var globalCamDistance = Global(gCamDistance: 11500)
+var globalCamDuration = Global(gCamDuration: 0.2)
+var globalCamPitch = Global(gCamPitch: 60)
+var globalArrayStep = Global(gArrayStep: 1)
+var globalAutoplay = Global(gAutoplay: false)
+var globalLineAltitude = Global(gLineAltitude: 0.0)
+var globalSpeed = Global(gSpeed: 0.0)
+var globalMarkerID = Global(gMarkerID: "")
+var globalCounter = Global(gCounter: 0)
+var globalAltitude = Global(gAltitude: 0)
+var globalHeading = Global(gHeading: -60)
+var globalRoutePos = Global(gRoutePos: 0)
 
 
