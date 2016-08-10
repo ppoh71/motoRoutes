@@ -102,14 +102,6 @@ class addRouteController: UIViewController {
         //map camera init settings
         mapView.zoomLevel = 9
         mapView.camera.heading = 60
-        
-        
-        //init Msg Overlay
-        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
-        msgOverlay.center = AnimationEngine.offScreenLeftPosition
-        msgOverlay.delegate = self
-        msgOverlay.msgType = .Save
-        self.view.addSubview(msgOverlay)
     }
     
     
@@ -124,12 +116,6 @@ class addRouteController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        mapView.logoView.frame =  CGRectMake( 300, 300, 100 , mapView.logoView.frame.size.height )
-        
-        mapView.attributionButton.hidden = true
-        
-        
-        
         //allow location use
         locationManager.requestAlwaysAuthorization()
         
@@ -139,6 +125,14 @@ class addRouteController: UIViewController {
         if CLLocationManager.locationServicesEnabled() {
              locationManager.startUpdatingLocation()
         }
+        
+        
+        //init Msg Overlay
+        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
+        msgOverlay.center = AnimationEngine.offScreenLeftPosition
+        msgOverlay.delegate = self
+        msgOverlay.msgType = .Save
+        self.view.addSubview(msgOverlay)
     }
 
     
@@ -149,6 +143,10 @@ class addRouteController: UIViewController {
         print("addRoute will disappear")
         super.viewWillDisappear(animated)
         pauseLocationUpdates()
+        
+        view.subviews.forEach {
+            $0.removeFromSuperview()
+        }
 
     }
     

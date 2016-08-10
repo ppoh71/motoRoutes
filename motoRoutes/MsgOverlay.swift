@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol msgOverlayDelegate {
+protocol msgOverlayDelegate: class {
     
     func pressedResume()
     func pressedSave()
@@ -29,7 +29,7 @@ enum MsgType {
 
 class MsgOverlay: UIView {
     
-    var delegate: msgOverlayDelegate?
+    weak var delegate: msgOverlayDelegate?
     var msgType = MsgType()
     
     @IBOutlet var saveButton: UIButton!

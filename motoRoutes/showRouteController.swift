@@ -23,23 +23,24 @@ let getLocationSetNotificationKey = "motoRoutes.getLocationString"
 class showRouteController: UIViewController {
     
     //Outlets
-    @IBOutlet var cancelButton:UIButton!
-    @IBOutlet var flyButton:UIButton!
+    @IBOutlet weak var  cancelButton:UIButton!
+    @IBOutlet weak var  flyButton:UIButton!
     //@IBOutlet var SpeedLabel:UILabel!
-    @IBOutlet var DistanceLabel:UILabel!
-    @IBOutlet var TimeLabel:UILabel!
-    @IBOutlet var AltitudeLabel:UILabel!
+    @IBOutlet weak var  DistanceLabel:UILabel!
+    @IBOutlet weak var  TimeLabel:UILabel!
+    @IBOutlet weak var  AltitudeLabel:UILabel!
+    @IBOutlet weak var followCameraButton: UIButton!
     
-    @IBOutlet var routeSlider:RouteSlider!{
+    @IBOutlet weak var  routeSlider:RouteSlider!{
         didSet{
             routeSlider.setLabel("0.000", timeText: "00:00")
         }
     }
     
-    @IBOutlet var routeImageView:UIImageView!
-    @IBOutlet var mapViewShow: MGLMapView!
-    @IBOutlet var debugLabel: UILabel!
-    @IBOutlet var optionsButton: UIButton!
+    @IBOutlet weak var  routeImageView:UIImageView!
+    @IBOutlet weak var  mapViewShow: MGLMapView!
+    @IBOutlet weak var  debugLabel: UILabel!
+    @IBOutlet weak var  optionsButton: UIButton!
     
     
     //add gesture
@@ -63,11 +64,10 @@ class showRouteController: UIViewController {
     var key = 0
     var count:Int = 0
     var timer = NSTimer()
-
     var timeIntervalMarker = 0.01
-
     var performanceTime:Double = 0
     var tmpRoutePos = 0
+    var followCamera = false
     
     //Debug Label
     var debugTimer = NSTimer()
@@ -116,12 +116,12 @@ class showRouteController: UIViewController {
         routeSlider.addTarget(self, action: #selector(showRouteController.touchUpRouteSlide), forControlEvents: UIControlEvents.TouchUpOutside)
         routeSlider.addTarget(self, action: #selector(showRouteController.touchDowntRouteSlide), forControlEvents: UIControlEvents.TouchDown)
         
-        //init Msg Overlay
-        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
-        msgOverlay.center = AnimationEngine.offScreenLeftPosition
-        msgOverlay.delegate = self
-        msgOverlay.msgType = .Save
-        self.view.addSubview(msgOverlay)
+//        //init Msg Overlay
+//        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
+//        msgOverlay.center = AnimationEngine.offScreenLeftPosition
+//        msgOverlay.delegate = self
+//        msgOverlay.msgType = .Save
+//        self.view.addSubview(msgOverlay)
         
         
         //Setup Custom UI
@@ -404,7 +404,7 @@ class showRouteController: UIViewController {
                         self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
                         
                         
-                        if(self.count < 0){
+                        if(self.count > 0 && self.followCamera == true){
                              mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
                             self.count=0
                             //self.startMarkerTimer()
@@ -561,6 +561,19 @@ class showRouteController: UIViewController {
     }
     
       
+    @IBAction func switchCameraFollow(sender: AnyObject) {
+        
+        if followCamera==false{
+            followCamera=true
+            followCameraButton.enabled = false
+        } else{
+            followCamera=false
+            followCameraButton.enabled = true
+            
+        }
+    }
+    
+    
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
               
