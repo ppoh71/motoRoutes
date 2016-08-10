@@ -91,6 +91,8 @@ class addRouteController: UIViewController {
     var msgOverlay: MsgOverlay!
     //var animEngine: AnimationEngine!
     
+    var funcType = FuncTypes.Recording
+    
     //
     // override func super init
     //
@@ -101,6 +103,7 @@ class addRouteController: UIViewController {
         mapView.zoomLevel = 9
         mapView.camera.heading = 60
         
+        
         //init Msg Overlay
         msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
         msgOverlay.center = AnimationEngine.offScreenLeftPosition
@@ -109,12 +112,23 @@ class addRouteController: UIViewController {
         self.view.addSubview(msgOverlay)
     }
     
+    
+    deinit {
+        print("deinit called")
+    }
 
+    
     //
     // view will appesar
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        mapView.logoView.frame =  CGRectMake( 300, 300, 100 , mapView.logoView.frame.size.height )
+        
+        mapView.attributionButton.hidden = true
+        
+        
         
         //allow location use
         locationManager.requestAlwaysAuthorization()
@@ -135,6 +149,7 @@ class addRouteController: UIViewController {
         print("addRoute will disappear")
         super.viewWillDisappear(animated)
         pauseLocationUpdates()
+
     }
     
     // helper functions
@@ -236,10 +251,10 @@ class addRouteController: UIViewController {
         let screenshotFilename = imageUtils.screenshotMap(self.mapView)
         
         //save rout to realm and get reamlID
-        routeRealmID = realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+        routeRealmID = RealmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
         
         //load saved realm object passit to seague for showcontroller
-        savedRoute = realmUtils.getRealmByID(routeRealmID)
+        savedRoute = RealmUtils.getRealmByID(routeRealmID)
         performSegueWithIdentifier("goFromAdd2Show", sender: nil)
         
     }
@@ -431,7 +446,7 @@ extension addRouteController: MGLMapViewDelegate {
         
         //if annotationImage == nil {
         
-        let image = imageUtils.drawLineOnImage("Recording")
+        let image = imageUtils.drawLineOnImage(funcType)
         //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
         
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")

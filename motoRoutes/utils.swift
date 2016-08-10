@@ -15,7 +15,13 @@ import Mapbox
 
 
 
-public class utils {
+
+
+
+
+
+
+final class utils {
     
     /*
      * get Time stamp

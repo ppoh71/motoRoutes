@@ -10,7 +10,7 @@ import UIKit
 import pop
 
 
-class AnimationEngine {
+final class AnimationEngine {
 
     class var offScreenRightPosition: CGPoint{
         return CGPointMake(UIScreen.mainScreen().bounds.width, CGRectGetMidY(UIScreen.mainScreen().bounds))

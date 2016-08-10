@@ -39,17 +39,14 @@ class MRCellView: UITableViewCell {
     }
     
     //config func of cell
-    func configureCell(name:String, distance:String, image: UIImage, fromCoordinate: CLLocationCoordinate2D, toCoordinate: CLLocationCoordinate2D){
+    func configureCell(name:String, distance:String, image: UIImage, fromLocation: String, toLocation: String){
     
         nameLabel.text = name
         distanceLabel.text = distance
         routeImage.image   = image
-        
-        
-        //assign async text to label
-        geocodeUtils.setAdress2Label(fromCoordinate, format: nil, label: fromLabel)
-        geocodeUtils.setAdress2Label(toCoordinate, format: nil, label: toLabel)
-        
+        fromLabel.text = fromLocation
+        toLabel.text = toLocation
+            
     }
     
 

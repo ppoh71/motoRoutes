@@ -12,9 +12,9 @@ import Mapbox
 
 
 
-class imageUtils{
-
-
+final class imageUtils{
+    
+    
     /*
      * load images from path and return image
      */
@@ -94,8 +94,8 @@ class imageUtils{
     
     
     /*
-    * Scale image with core graphics
-    */
+     * Scale image with core graphics
+     */
     
     class func scaleImgaeCore(image: UIImage) -> UIImage{
         
@@ -115,103 +115,100 @@ class imageUtils{
         CGContextDrawImage(context, CGRect(origin: CGPointZero, size: CGSize(width: CGFloat(width), height: CGFloat(height))), cgImage)
         
         let scaledImage = CGBitmapContextCreateImage(context).flatMap { UIImage(CGImage: $0) }
-    
+        
         return scaledImage!
-    
+        
     }
     
     /*
-      draw a line on an image
+     draw a line on an image
      
      - parameter type: print for recording and scrren shot use String "Recording" else nil
      
      */
-    static func drawLineOnImage(type: String?) -> UIImage{
+    class func drawLineOnImage(funcType: FuncTypes) -> UIImage{
         
-        //let performanceTime = CFAbsoluteTimeGetCurrent()
-        
+        //def vars
         let drawHeight = 200
+        //var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 5, height: drawHeight), false, 0)
-        let context = UIGraphicsGetCurrentContext()
+        var context = UIGraphicsGetCurrentContext()
         
         //flipp-coords
         CGContextTranslateCTM(context, 0, CGFloat(drawHeight));
         CGContextScaleCTM(context, 1.0, -1.0);
-       
         
         //get height and color for line
-
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        let LineAltitude  = Int(globalAltitude.gAltitude/10)
-        //LineAltitude = random() % 200
-        
-        //percentage height of line image
-        //let percent = 55
-       
-        let altitudePercent = LineAltitude*40/100
-        
-        //make rect with height, position midddle due to mapbox marker image settings
-        
-        
-        
+        let LineAltitude  = Int(globalAltitude.gAltitude)
+        //LineAltitude = round(1000 * LineAltitude) / 1000
+    
         //context stuff
-       
         CGContextSetLineWidth(context, 1)
-        CGContextMoveToPoint(context,0, 0)
-       
         
+        //switch some func cases for image height
+        switch funcType {
+            
+        case .Recording:
+            //print("Recording")
+            drawCircle(&context!, height: drawHeight, LineColor: LineColor)
+            
+        case .PrintCircles:
+            //print("Recording")
+            drawCircle(&context!, height: drawHeight, LineColor: LineColor)
         
-        /**
-        * change values hwen recording route and making screenshot of route
-        **/
-        var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
+        case .PrintBaseHeight:
+            //print("Base")
+            drawLine(&context!, drawHeight: drawHeight/2, LineHeight: LineHeight, LineColor: LineColor, perCent: 15, alpha: 0.3)
+
+        case .PrintMarker:
+            //print("PrintMarker")
+            drawLine(&context!, drawHeight: drawHeight/2, LineHeight: LineHeight, LineColor: LineColor, perCent: 55, alpha: 0.4)
+           
+        case .PrintAltitude:
+             //print("PrintAltitude \(LineAltitude)")
+            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: UIColor.whiteColor(), perCent: 5, alpha: 0.1)
         
-        if let typeX = type where type=="Recording" {
-            let heightPercent = LineHeight*15/100
-            CGContextSetAlpha(context,0.8);
-            CGContextSetStrokeColorWithColor(context, LineColor.CGColor)
-            rectangle = CGRect(x: 0, y: drawHeight/2, width: 2, height: 2)
-        
-        }else{ //default values for printing markers in show mode
-            let heightPercent = LineHeight*55/100
-            CGContextSetAlpha(context,0.4);
-            CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
-            rectangle = CGRect(x: 0, y: drawHeight/2, width: 4, height: Int(heightPercent))
+        default:
+            break
         }
         
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         
+        return img
+    }
+    
+    
+    /* helper func draw circle line */
+    static func drawCircle (inout context:CGContext, height:Int, LineColor : UIColor) {
+        CGContextAddArc(context, 2.5, CGFloat(height/2), 1, 0, CGFloat(M_PI * 2), 0)
+        CGContextSetFillColorWithColor(context,LineColor.CGColor)
+        CGContextSetStrokeColorWithColor(context,LineColor.CGColor)
+        CGContextDrawPath(context, .FillStroke)
+    }
+    
+    
+    /* helper func draw pixel line */
+    static func drawLine (inout context: CGContext, drawHeight: Int, LineHeight: Int, LineColor: UIColor, perCent: Int, alpha: Double) {
+        
+        let heightPercent = LineHeight*perCent/100
+        
+        CGContextMoveToPoint(context,0, 0)
+        CGContextSetAlpha(context, CGFloat(alpha));
+        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+        let rectangle = CGRect(x: 0, y: drawHeight, width: 4, height: Int(heightPercent))
         CGContextAddRect(context, rectangle)
         CGContextStrokePath(context)
         CGContextSetFillColorWithColor(context,LineColor.CGColor)
         CGContextFillRect(context, rectangle)
         
-        /*
-        //CGContextDrawPath(context, .FillStroke)
-        CGContextSetAlpha(context,0.9);
-        let altrectangle = CGRect(x: 2, y: drawHeight/2 + altitudePercent, width: 1, height: 1)
-        CGContextMoveToPoint(context,1, 0)
-        CGContextSetStrokeColorWithColor(context, UIColor.cyanColor().CGColor)
-        CGContextSetFillColorWithColor(context,UIColor.cyanColor().CGColor)
-        CGContextAddRect(context, altrectangle)
-        CGContextDrawPath(context, .FillStroke)
-        */
-        
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-         //print("Image took: \(utils.absolutePeromanceTime(performanceTime)) ")
-        //saveImageToFile(img, imageName: "Marker-Speed-\(Int(globalSpeed.gSpeed)).png")
-        //print("draw image\(utils.getSpeed(globalSpeed.gSpeed)).png")
-        
-        return img
-        
     }
     
-   
+    
     
     class func drawSliderThumb(width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
-    
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         let context = UIGraphicsGetCurrentContext()
@@ -220,7 +217,7 @@ class imageUtils{
         CGContextTranslateCTM(context, 0, CGFloat(height));
         CGContextScaleCTM(context, 1.0, -1.0);
         
-       
+        
         CGContextSetLineWidth(context, CGFloat(lineWidth))
         CGContextMoveToPoint(context,0, 0)
         CGContextSetAlpha(context, CGFloat(alpha));
@@ -243,7 +240,7 @@ class imageUtils{
     
     
     static func makeSpeedometerImage(width: Int, height: Int)-> UIImage{
-    
+        
         let colors = ColorPalette.colors
         
         
@@ -255,7 +252,7 @@ class imageUtils{
         CGContextScaleCTM(context, 1.0, -1.0);
         
         for (index, color) in colors.enumerate() {
-        
+            
             
             let currentColor = colorUtils.hexTorgbColor(color)
             CGContextSetStrokeColorWithColor(context, currentColor.CGColor)
@@ -267,9 +264,9 @@ class imageUtils{
             CGContextStrokePath(context)
             CGContextSetFillColorWithColor(context, currentColor.CGColor)
             CGContextFillRect(context, rectangle)
-
+            
             print(color)
-        
+            
         }
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
@@ -282,17 +279,17 @@ class imageUtils{
      * generate spped marker images
      */
     /*
-    class func generateSpeedMarker(){
-        
-        var x:Double = 0;
-        
-        while x<350 {
-            globalSpeed.gSpeed = x
-                      x += 1
-            //print("key: \(x) ")
-        }
-    }
-    */
+     class func generateSpeedMarker(){
+     
+     var x:Double = 0;
+     
+     while x<350 {
+     globalSpeed.gSpeed = x
+     x += 1
+     //print("key: \(x) ")
+     }
+     }
+     */
     
     /*
      * save imge to file
@@ -328,7 +325,7 @@ class imageUtils{
         UIGraphicsEndImageContext()
         
         
-        //resite image 
+        //resite image
         let scaledImage = imageUtils.scaleImgaeCore(screenShot)
         
         //screenShotRoute.image = screenShot
@@ -344,6 +341,6 @@ class imageUtils{
         return timestampFilename
         
     }
-
-
+    
+    
 } // end

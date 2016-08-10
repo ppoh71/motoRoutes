@@ -26,18 +26,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.sharedSDK().debug = true
         Fabric.with([Crashlytics.self])
         
-         print("oldschema \(Realm.Configuration.defaultConfiguration)")
+        print("oldschema \(Realm.Configuration.defaultConfiguration)")
         
         Realm.Configuration.defaultConfiguration = Realm.Configuration(
-            schemaVersion: 2,
+            schemaVersion: 3,
             migrationBlock: { migration, oldSchemaVersion in
                 
-               
-                if (oldSchemaVersion < 2) {
+                
+                if (oldSchemaVersion < 3) {
                     // The enumerate(_:_:) method iterates
                     migration.enumerate(Location.className()) { oldObject, newObject in
-                       // newObject!["course"] = 0.0
                         newObject!["distance"] = 0.0
+                    }
+                    
+                    migration.enumerate(Route.className()) { oldObject, newObject in
+                        newObject!["locationStart"] = "Start Location"
+                        newObject!["locationEnd"] = "End Location"
                     }
                 }
         })

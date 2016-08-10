@@ -71,7 +71,7 @@ struct ColorPalette {
     
 }
 
-class colorUtils {
+final class colorUtils {
     
 
 

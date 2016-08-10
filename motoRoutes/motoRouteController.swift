@@ -22,6 +22,9 @@ class motoRouteController: UITableViewController {
     //Action methods
     @IBAction func closeToMR(segue:UIStoryboardSegue) {
          print("close mc \(segue.sourceViewController)")
+        
+        segue.sourceViewController.removeFromParentViewController()
+        
     }
     
     
@@ -87,11 +90,8 @@ class motoRouteController: UITableViewController {
         let distanceLabel = "\(utils.distanceFormat(route.distance))"
         
         
-        let from = CLLocationCoordinate2D(latitude: route.locationsList[0].latitude, longitude:route.locationsList[0].longitude)
-        let to = CLLocationCoordinate2D(latitude: route.locationsList[route.locationsList.count-1].latitude, longitude: route.locationsList[route.locationsList.count-1].longitude)
-        
         //configure cell
-        cell.configureCell(nameLabel, distance: distanceLabel, image: image!, fromCoordinate: from, toCoordinate: to)
+        cell.configureCell(nameLabel, distance: distanceLabel, image: image!, fromLocation: route.locationStart, toLocation: route.locationEnd)
         
         return cell
     }
