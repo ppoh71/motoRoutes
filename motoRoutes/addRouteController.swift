@@ -104,7 +104,6 @@ class addRouteController: UIViewController {
         mapView.camera.heading = 60
         
         
-        
         //init Msg Overlay
         msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
         msgOverlay.center = AnimationEngine.offScreenLeftPosition
@@ -113,7 +112,12 @@ class addRouteController: UIViewController {
         self.view.addSubview(msgOverlay)
     }
     
+    
+    deinit {
+        print("deinit called")
+    }
 
+    
     //
     // view will appesar
     //
@@ -145,6 +149,7 @@ class addRouteController: UIViewController {
         print("addRoute will disappear")
         super.viewWillDisappear(animated)
         pauseLocationUpdates()
+
     }
     
     // helper functions
@@ -246,10 +251,10 @@ class addRouteController: UIViewController {
         let screenshotFilename = imageUtils.screenshotMap(self.mapView)
         
         //save rout to realm and get reamlID
-        routeRealmID = realmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+        routeRealmID = RealmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
         
         //load saved realm object passit to seague for showcontroller
-        savedRoute = realmUtils.getRealmByID(routeRealmID)
+        savedRoute = RealmUtils.getRealmByID(routeRealmID)
         performSegueWithIdentifier("goFromAdd2Show", sender: nil)
         
     }

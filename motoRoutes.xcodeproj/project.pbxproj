@@ -30,7 +30,7 @@
 		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
 		55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */; };
 		55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E149701CE22DE000B576BB /* RouteSlider.swift */; };
-		55E3C7E41CF743E2008FE121 /* geocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E3C7E31CF743E2008FE121 /* geocodeUtils.swift */; };
+		55E3C7E41CF743E2008FE121 /* GeocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E3C7E31CF743E2008FE121 /* GeocodeUtils.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		55F009191D1148BA00FA2400 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55F0091B1D1148BA00FA2400 /* Localizable.strings */; };
 		55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEF51D0700950051F338 /* MsgOverlay.swift */; };
@@ -48,7 +48,7 @@
 		5506E0D81C650A230091364B /* colorUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = colorUtils.swift; sourceTree = "<group>"; };
 		551EFF931CC11F640065204D /* imageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = imageUtils.swift; sourceTree = "<group>"; };
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
-		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
+		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
 		5530AFBC1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		5530AFBD1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		553565541C5A83A2002628AD /* RouteModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteModels.swift; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
 		55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteOptions.swift; sourceTree = "<group>"; };
 		55E149701CE22DE000B576BB /* RouteSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteSlider.swift; sourceTree = "<group>"; };
-		55E3C7E31CF743E2008FE121 /* geocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = geocodeUtils.swift; sourceTree = "<group>"; };
+		55E3C7E31CF743E2008FE121 /* GeocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeUtils.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		55F0091D1D114B6300FA2400 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F009211D114B9D00FA2400 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 			children = (
 				A90D6F9A1C9471E2002E7980 /* Globals.swift */,
 				A90D6F981C947101002E7980 /* mapUtils.swift */,
-				55E3C7E31CF743E2008FE121 /* geocodeUtils.swift */,
+				55E3C7E31CF743E2008FE121 /* GeocodeUtils.swift */,
 				5506E0D81C650A230091364B /* colorUtils.swift */,
 				5562BA541C73663900EF340D /* utils.swift */,
 				551EFF931CC11F640065204D /* imageUtils.swift */,
@@ -473,7 +473,7 @@
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */,
-				55E3C7E41CF743E2008FE121 /* geocodeUtils.swift in Sources */,
+				55E3C7E41CF743E2008FE121 /* GeocodeUtils.swift in Sources */,
 				55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */,
 				55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */,
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,

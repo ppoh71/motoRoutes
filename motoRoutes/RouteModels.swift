@@ -107,7 +107,7 @@ class LocationMaster {
     var distance = 0.0
     var annotation = MGLPointAnnotation()
     
-    init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:NSDate, accuracy:Double, marker:Bool, distance:Double ){
+    init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:NSDate, accuracy:Double, marker:Bool, distance:Double){
     
         self.latitude = latitude
         self.longitude = longitude
@@ -118,7 +118,6 @@ class LocationMaster {
         self.accuracy = accuracy
         self.marker = marker
         self.distance = distance
-    
     }
     
     init(){
@@ -181,7 +180,7 @@ class RouteMaster {
         //loop all CLLocation and create and append to LocationMaster
         for location in LocationsList {
             
-            let locationTmp = LocationMaster(latitude: location.latitude, longitude: location.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.accuracy, marker: false, distance: location.distance)
+            let locationTmp = LocationMaster(latitude: location.latitude, longitude: location.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.accuracy, marker: false, distance: location.distance )
     
             newRouteList.append(locationTmp)
     
@@ -234,7 +233,7 @@ class RouteMaster {
  
  *
  */
-class realmUtils{
+class RealmUtils{
     
     class func saveRouteRealm(LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ) -> String {
         
@@ -288,7 +287,6 @@ class realmUtils{
             newMedia.image = media.image
             
             newRoute.mediaList.append(newMedia)
-            
         }
         
         
@@ -299,7 +297,6 @@ class realmUtils{
         // Add to the Realm inside a transaction
         try! realm.write {
             realm.add(newRoute)
-            
         }
         
         return id
@@ -312,6 +309,29 @@ class realmUtils{
         let  currRoute = realm.objects(Route.self).filter("id = '\(routeID)' ")
         return currRoute
     }
+    
+    
+    class func updateLocation2Realm(route: Route, location: String, field: String) {
+    
+        let realm = try! Realm()
+        try! realm.write {
+            
+            switch(field){
+            
+                case "from":
+                    route.locationStart = location
+                
+                case "to":
+                    route.locationEnd = location
+                
+            default:
+                break
+                
+            }
+        }
+    }
+    
+    
     
 }//end Class
 

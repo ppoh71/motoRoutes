@@ -12,15 +12,19 @@ import UIKit
 
 
 
+
+//Enum function types
 enum FuncTypes: String {
     case Recording
     case PrintMarker
     case PrintBaseHeight
     case PrintAltitude
+    case PrintCircles
     case Default
 }
 
 
+//dirty globl vars
 final class Global {
     
     //init sppedSet ( needed in same speed same color routes)

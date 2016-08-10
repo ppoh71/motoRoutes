@@ -15,8 +15,10 @@ import Crashlytics
 import pop
 
 
-let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
 
+//Notification Center keys
+let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
+let getLocationSetNotificationKey = "motoRoutes.getLocationString"
 
 class showRouteController: UIViewController {
     
@@ -49,7 +51,7 @@ class showRouteController: UIViewController {
     // realm object list
     var motoRoute: Route?
     var RouteList = RouteMaster()._RouteList
-    var markersSet = [MarkerAnnotation]()
+   // var markersSet = [MarkerAnnotation]()
     
     //media stuff
     var markerImageName:String = ""
@@ -78,20 +80,18 @@ class showRouteController: UIViewController {
     var msgOverlay: MsgOverlay!
     
     
-    //
     // override func super init
-    //
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let x = CFAbsoluteTimeGetCurrent()
-        
         
         // MODEL: set max on route slider
         routeSlider.maximumValue = Float(motoRoute!.locationsList.count-1)
         
         //MODEL: covert Realm LocationList to Location Master Object
         RouteList =  RouteMaster.createMasterLocationRealm(motoRoute!.locationsList)
+        
         
         //print(utils.absolutePeromanceTime(x))
         print("List count \(RouteList.count)")
@@ -137,9 +137,15 @@ class showRouteController: UIViewController {
         
         //Listen from FlyoverRoutes if Markers are set
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.saveLocationString), name: getLocationSetNotificationKey, object: nil)
+
+        //get locationString if emtpy and set start/end marker
+        checkLocationStartEnd(motoRoute!)
         
         //print the route in 1 color
         mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+        //printCricleRoute()
+        
         
         //define camera and set it to startpoint
         let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
@@ -153,10 +159,64 @@ class showRouteController: UIViewController {
     // view will disappear, stop everythink
     //
     override func viewWillDisappear(animated:Bool) {
-        
         stopAll()
         NSNotificationCenter.defaultCenter().removeObserver(self)
         super.viewWillDisappear(animated)
+    }
+    
+    
+    /* check if we have the locationStrings already */
+    func checkLocationStartEnd(route:Route){
+    
+        if(route.locationStart.isEmpty || route.locationEnd.isEmpty || route.locationStart == "Start Location" ) {
+            
+            let fromLocation = CLLocationCoordinate2D(latitude: route.locationsList[0].latitude, longitude:route.locationsList[0].longitude)
+            let toLocation = CLLocationCoordinate2D(latitude: route.locationsList[route.locationsList.count-1].latitude, longitude: route.locationsList[route.locationsList.count-1].longitude)
+            
+            //assign async text to label
+            GeocodeUtils.getAdressFromCoord(fromLocation, field: "to")
+            GeocodeUtils.getAdressFromCoord(toLocation, field: "from")
+            
+            print("location is empty")
+        
+        } else{
+            print("location not empty \(route.locationStart)")
+            
+            setStartEndMarker()
+        }
+    }
+    
+    /* add start/end markers with locationString text */
+    func setStartEndMarker(){
+        print("Add Start/End Marker")
+        
+        let startMarker = MGLPointAnnotation()
+        startMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[0].latitude, self.RouteList[0].longitude)
+        startMarker.title = "Start"
+        startMarker.subtitle = motoRoute!.locationStart
+        self.mapViewShow.addAnnotation(startMarker)
+        
+        let endMarker = MGLPointAnnotation()
+        endMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[RouteList.count-1].latitude, self.RouteList[RouteList.count-1].longitude)
+        endMarker.title = "End"
+        endMarker.subtitle = motoRoute!.locationEnd
+        self.mapViewShow.addAnnotation(endMarker)
+    }
+    
+    
+    //save location string from geolocation(notification center to realm
+    func saveLocationString(notification: NSNotification){
+        
+         print("from notifycation 1\(notification.object)")
+        
+        let arrayObject =  notification.object as! [AnyObject]
+        
+        if let address = arrayObject[0] as? String {
+            if let field = arrayObject[1] as? String {
+                RealmUtils.updateLocation2Realm(motoRoute!, location: address, field: field)
+            }
+            setStartEndMarker()
+        }
     }
     
     
@@ -304,15 +364,16 @@ class showRouteController: UIViewController {
                     
                     let newMarker = MGLPointAnnotation()
                     newMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[globalRoutePos.gRoutePos].latitude, self.RouteList[globalRoutePos.gRoutePos].longitude)
-                    self.RouteList[globalRoutePos.gRoutePos].annotation = newMarker
-                    self.RouteList[globalRoutePos.gRoutePos].marker = true
-                    
+                    newMarker.title = "SpeedAltMarker"
+        
                     /* set globals */
                     globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
                     globalAltitude.gAltitude = self.RouteList[globalRoutePos.gRoutePos].altitude
                     
                     self.mapViewShow.addAnnotation(newMarker)
                     
+                    self.RouteList[globalRoutePos.gRoutePos].annotation = newMarker
+                    self.RouteList[globalRoutePos.gRoutePos].marker = true
                     
                     // self.unsetMarker(&self.markersSet)
                     globalRoutePos.gRoutePos = globalRoutePos.gRoutePos + self.sliceAmount //move array to next route
@@ -340,7 +401,7 @@ class showRouteController: UIViewController {
                         self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
                         
                         
-                        if(self.count > 1){
+                        if(self.count < 0){
                              mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
                             self.count=0
                             //self.startMarkerTimer()
@@ -351,26 +412,11 @@ class showRouteController: UIViewController {
                 
             }
             
-            
-            //            } else{ //if marker is already set
-            //
-            //                print("marker already set start fly")
-            //
-            //                self.stopAll()
-            //                self.startFlytoAuto()
-            //                //start flyto with autoplay
-            //            }
-            
         } else{ // end of array
             print("All Marker took: ")
             self.stopAll()
             //print(RouteList[0].marker)
         }
-        
-        
-        
-        
-        //print("MARKERS SET \(markersSet.count)")
         
     }
     
@@ -436,86 +482,84 @@ class showRouteController: UIViewController {
         sender.selected = !sender.selected;
         sender.highlighted = !sender.highlighted
         
-        //print("play button \(sender.selected)")
-        
+        //print("play button \(sender.selected)"
         StartStop(sender.selected )
         
-        
-        //switch
-        //globalAutoplay.gAutoplay = globalAutoplay.gAutoplay==false ? true : false
-        
-        //make route fly
-        //print("let it fly")
-        //mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliderRouteValue, SpeedLabel: SpeedLabel, routeSlider: routeSlider)
-        
     }
     
-    
-    @IBAction func createAlleMarker(){
-       
-        printAllMarker(FuncTypes.PrintMarker)
-        
-        /*
-        msgOverlay.msgType = .Print
-        msgOverlay.setupView()
-        
-        AnimationEngine.animationToPosition(msgOverlay, position: AnimationEngine.screenCenterPosition)
-        
-        //mapUtils.printSpeedMarker(RouteList, mapView: mapViewShow,  key:  0, amount: RouteList.count-5)
-        */
-        
-    }
-    
-    @IBAction func printAltitude(sender: AnyObject) {
-        
-        printAllMarker(FuncTypes.PrintAltitude)
-        
-    }
     
     func printAllMarker(funcSwitch: FuncTypes){
         
         self.funcType = funcSwitch
-        
-        // mapUtils.printRoute(RouteList, mapView: mapViewShow)
-        //mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5, funcType: self.funcType)
+         self.deleteAllMarker()
         
         let priority = Int(QOS_CLASS_UTILITY.rawValue)
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
             
-            //mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5, funcType: self.funcType)
-            
             dispatch_async(dispatch_get_main_queue()) {
-                mapUtils.printSpeedMarker(self.RouteList, mapView: self.mapViewShow,  key:  0, amount: self.RouteList.count-5, funcType: self.funcType)
-                // update some UI
-                // self.msgOverlay.textLabel.text = "\(marker.latitude)"
+                mapUtils.printMarker(self.RouteList, mapView: self.mapViewShow, key: 0, amount: self.RouteList.count-1 , gap: 3, funcType: self.funcType )
+                self.centerMap()
             }
         }
-        
     }
     
     
-    
-    @IBAction func removewMarker(sender: UIButton) {
+    func deleteAllMarker(){
+     
         
         //delete all annotations
-        for annotation in mapViewShow.annotations!{
-            mapViewShow.removeAnnotation(annotation)
+      //  for annotation in mapViewShow.annotations!{
+      //      mapViewShow.removeAnnotation(annotation)
+      //  }
+        
+        
+        //self.mapViewShow.removeAnnotations(self.mapView.annotations)
+        
+        if mapViewShow.annotations?.count > 0{
+            self.mapViewShow.removeAnnotations(mapViewShow.annotations!)
+            //self.mapViewShow.annotations!.forEach {
+            //    mapViewShow.removeAnnotation($0)
+            //}
         }
+        
         
         //Set marker bool to false, to print new marker
         for marker in RouteList{
             marker.marker = false
-            marker.annotation = MGLPointAnnotation()
         }
     }
     
     
-
+    @IBAction func printCircleMarker(sender: AnyObject) {
+        deleteAllMarker()
+        printAllMarker(FuncTypes.PrintCircles)
+    }
     
+    @IBAction func printAltitude(sender: AnyObject) {
+        deleteAllMarker()
+        printAllMarker(FuncTypes.PrintAltitude)
+    }
+
+    @IBAction func printSpeedMarker(sender: AnyObject) {
+        deleteAllMarker()
+        printAllMarker(FuncTypes.PrintBaseHeight)
+    }
+    
+    @IBAction func printRoute(sender: AnyObject) {
+        deleteAllMarker()
+        mapUtils.printRoute(RouteList, mapView: mapViewShow)
+    }
+    
+
+    @IBAction func resetMarker(sender: AnyObject) {
+         deleteAllMarker()
+        // mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+    }
+    
+      
     // new screenshot
     @IBAction func newScreenshot(sender: UIButton) {
-        
-        
+              
         let screenshotFilename = imageUtils.screenshotMap(self.mapViewShow)
         
         //save new screenshot to realm
@@ -524,10 +568,35 @@ class showRouteController: UIViewController {
             self.realm.create(Route.self, value: ["id": self.motoRoute!.id, "image": screenshotFilename], update: true)
             
         }
-        
     }
     
     
+    
+    func centerMap(){
+    
+        //get bounds, centerpoints, of the whole Route
+        let Bounds = mapUtils.getBoundCoords(RouteList)
+        let coordArray = Bounds.coordboundArray
+        //let coordBounds = Bounds.coordbound
+        let distanceDiagonal = Bounds.distance
+        let distanceFactor = Bounds.distanceFactor
+    
+        //get centerpoint
+        let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
+        
+        //define camera and set it to startpoint
+        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
+        
+        //animate camera to center point, launch save overlay
+        mapViewShow.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
+            
+    
+        }
+
+    
+    }
+
+
     func togglePhotoView(){
         
         let animateX:CGFloat = self.routeImageView.frame.origin.x<100 ? 320 : -320; //animnate x var
@@ -604,6 +673,8 @@ extension showRouteController: MGLMapViewDelegate {
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
         //print(self.funcType)
         
+        var image: UIImage
+        
         var reuseIdentifier = "MarkerImage"
         
         //reuse identifier
@@ -612,21 +683,35 @@ extension showRouteController: MGLMapViewDelegate {
         case .PrintMarker:
             reuseIdentifier =  "MarkerImageSpeed\(utils.getSpeed(globalSpeed.gSpeed))"
             
+        case .PrintBaseHeight:
+            reuseIdentifier =  "MarkerImageSpeedBaseHeight\(utils.getSpeed(globalSpeed.gSpeed))"
+            
         case .PrintAltitude:
-            reuseIdentifier =  "MarkerImageAlt\(globalAltitude.gAltitude)\(utils.getUniqueUUID())"
+            reuseIdentifier =  "MarkerImageAlt\(round(globalAltitude.gAltitude))"
+            
+        case .Recording:
+            reuseIdentifier =  "MarkerImageCircleSpeed\(utils.getSpeed(globalSpeed.gSpeed))"
+            
+        case .PrintCircles:
+            reuseIdentifier =  "MarkerImageCircle\(utils.getSpeed(globalSpeed.gSpeed))"
             
         default:
-            reuseIdentifier = "MarkerImage\(utils.getUniqueUUID())"
+            break
         
         }
         
-        print(reuseIdentifier)
+        //print(reuseIdentifier)
         
-        let image = imageUtils.drawLineOnImage(self.funcType)
+        if(annotation.title! == "SpeedAltMarker"){
+            image = imageUtils.drawLineOnImage(self.funcType)
+        } else{
+            image = UIImage(named: "updown.png")!
+        }
+        
+        
         let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
-        
         return annotationImage
-        
+
     }
 
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {

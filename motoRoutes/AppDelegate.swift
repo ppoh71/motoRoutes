@@ -43,8 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newObject!["locationStart"] = "Start Location"
                         newObject!["locationEnd"] = "End Location"
                     }
-                    
-                    
                 }
         })
         

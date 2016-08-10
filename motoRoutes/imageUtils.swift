@@ -130,7 +130,7 @@ final class imageUtils{
         
         //def vars
         let drawHeight = 200
-        var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
+        //var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 5, height: drawHeight), false, 0)
         var context = UIGraphicsGetCurrentContext()
         
@@ -141,42 +141,38 @@ final class imageUtils{
         //get height and color for line
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        var LineAltitude  = Int(globalAltitude.gAltitude)
+        let LineAltitude  = Int(globalAltitude.gAltitude)
         //LineAltitude = round(1000 * LineAltitude) / 1000
-
-
-        
+    
         //context stuff
         CGContextSetLineWidth(context, 1)
-
         
-
         //switch some func cases for image height
         switch funcType {
             
         case .Recording:
-            print("Recording")
+            //print("Recording")
             drawCircle(&context!, height: drawHeight, LineColor: LineColor)
             
-        case .PrintBaseHeight:
-            print("Base")
+        case .PrintCircles:
+            //print("Recording")
             drawCircle(&context!, height: drawHeight, LineColor: LineColor)
+        
+        case .PrintBaseHeight:
+            //print("Base")
+            drawLine(&context!, drawHeight: drawHeight/2, LineHeight: LineHeight, LineColor: LineColor, perCent: 15, alpha: 0.3)
 
         case .PrintMarker:
-            print("PrintMarker")
-            drawLine(&context!, drawHeight: drawHeight/2, LineHeight: LineHeight, LineColor: LineColor, perCent: 55)
-            drawLine(&context!, drawHeight: (drawHeight/2) + (LineAltitude*40/100), LineHeight: 2, LineColor: UIColor.cyanColor(), perCent: 100)
-            //drawAltitude(&context!, drawHeight: drawHeight)
+            //print("PrintMarker")
+            drawLine(&context!, drawHeight: drawHeight/2, LineHeight: LineHeight, LineColor: LineColor, perCent: 55, alpha: 0.4)
            
         case .PrintAltitude:
-              print("PrintAltitude \(LineAltitude)")
-             drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: LineColor, perCent: 5)
-            
-            
+             //print("PrintAltitude \(LineAltitude)")
+            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: UIColor.whiteColor(), perCent: 5, alpha: 0.1)
+        
         default:
             break
         }
-        
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -195,12 +191,12 @@ final class imageUtils{
     
     
     /* helper func draw pixel line */
-    static func drawLine (inout context: CGContext, drawHeight: Int, LineHeight: Int, LineColor: UIColor, perCent: Int) {
+    static func drawLine (inout context: CGContext, drawHeight: Int, LineHeight: Int, LineColor: UIColor, perCent: Int, alpha: Double) {
         
         let heightPercent = LineHeight*perCent/100
         
         CGContextMoveToPoint(context,0, 0)
-        CGContextSetAlpha(context,0.4);
+        CGContextSetAlpha(context, CGFloat(alpha));
         CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
         let rectangle = CGRect(x: 0, y: drawHeight, width: 4, height: Int(heightPercent))
         CGContextAddRect(context, rectangle)
@@ -212,9 +208,7 @@ final class imageUtils{
     
     
     
-    
     class func drawSliderThumb(width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
-        
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         let context = UIGraphicsGetCurrentContext()

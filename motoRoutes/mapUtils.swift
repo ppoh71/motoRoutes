@@ -63,7 +63,6 @@ final class mapUtils {
             if(speedIndex == globalSpeedSet.speedSet){
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
-                
             } else{ // if the speedIndex is different, ad the last location and print the route
                 
                 //add first location with diff speedIndex to mind gaps
@@ -115,7 +114,7 @@ final class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        let speedIndex:Int = utils.getSpeedIndex(3)
+        let speedIndex:Int = utils.getSpeedIndex(0)
         globalSpeedSet.speedSet = speedIndex
         
         
@@ -133,22 +132,19 @@ final class mapUtils {
     }
     
     
+    
     /**
-     *   Print Route aArker on Route
-     
-     - parameter LocationMaster: LocationMaster Object
-     - parameter mapView: current Mapview
-     *
+     *   Print Route Marker on Route
+    
      **/
-    class func printSpeedMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, funcType: FuncTypes) {
+    class func printMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, gap: Int, funcType: FuncTypes) {
         
         //let x = CFAbsoluteTimeGetCurrent()
         
         //define sliced Array
         let sliceEnd = key+amount
         let _LocationSlice = _LocationMaster[key...sliceEnd-1]
-      //  var markersSet = [MarkerAnnotation]()
-        var cnt = 0
+        var count = 0
         
         //guard
         guard _LocationMaster.count > key+amount else {
@@ -156,44 +152,36 @@ final class mapUtils {
             return
         }
         
-        
         for master in _LocationSlice{
-            
-            //set speed and altiude globals
-            globalSpeed.gSpeed = master.speed
-            globalAltitude.gAltitude = master.altitude
             
             if master.marker == false {
                 
-                // print only every x marker
-                cnt = cnt > 3 ? 0 : cnt
+                // print only every n marker, defined by gap
+                count = count > gap ? 0 : count
                 
-                if(cnt==0){
-                    let newMarker = MGLPointAnnotation()
-                    newMarker.coordinate = CLLocationCoordinate2DMake(master.latitude, master.longitude)
-                    mapView.addAnnotation(newMarker)
-                    
-                    //mark marker as printed "true" back in MasterRoute Array
-                    switch funcType {
-                        
-                        case .PrintBaseHeight:
-                            master.marker = false
-                        
-                        case .PrintMarker:
-                            master.marker = true
-                        
-                        default:
-                            master.marker = true
-                    }
+                if(count==0){
+                   addNewAnnotation(mapView, location: master)
                 }
-                cnt+=1
+                count = count + 1
             }
         }
     }
+
     
     
-    
-    
+    static func addNewAnnotation(mapView:MGLMapView, location: LocationMaster){
+        
+        //set speed and altiude globals
+        globalSpeed.gSpeed = location.speed
+        globalAltitude.gAltitude = location.altitude
+        
+        let newMarker = MGLPointAnnotation()
+        newMarker.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude)
+        newMarker.title = "SpeedAltMarker"
+        mapView.addAnnotation(newMarker)
+        location.marker = true
+        
+    }
     
     
     
