@@ -23,6 +23,7 @@
 		5562BA551C73663900EF340D /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5562BA541C73663900EF340D /* utils.swift */; };
 		556368AA1CEF4681004BBB6F /* Speedometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556368A91CEF4681004BBB6F /* Speedometer.swift */; };
 		556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556B8A671CE4B9A4000EE047 /* CameraSlider.swift */; };
+		5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */; };
 		559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* MRCellView.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
 		55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */; };
@@ -30,7 +31,6 @@
 		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
 		55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */; };
 		55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E149701CE22DE000B576BB /* RouteSlider.swift */; };
-		55E3C7E41CF743E2008FE121 /* GeocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E3C7E31CF743E2008FE121 /* GeocodeUtils.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		55F009191D1148BA00FA2400 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55F0091B1D1148BA00FA2400 /* Localizable.strings */; };
 		55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEF51D0700950051F338 /* MsgOverlay.swift */; };
@@ -66,6 +66,7 @@
 		5562BA541C73663900EF340D /* utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 		556368A91CEF4681004BBB6F /* Speedometer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Speedometer.swift; sourceTree = "<group>"; };
 		556B8A671CE4B9A4000EE047 /* CameraSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSlider.swift; sourceTree = "<group>"; };
+		5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeUtils.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* MRCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellView.swift; sourceTree = "<group>"; };
 		55B323441D12F5FF00EA5C57 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
 		55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteOptions.swift; sourceTree = "<group>"; };
 		55E149701CE22DE000B576BB /* RouteSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteSlider.swift; sourceTree = "<group>"; };
-		55E3C7E31CF743E2008FE121 /* GeocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeUtils.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		55F0091D1D114B6300FA2400 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F009211D114B9D00FA2400 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -160,9 +160,9 @@
 		55AB5D4B1C5694FE005E8A26 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */,
 				A90D6F9A1C9471E2002E7980 /* Globals.swift */,
 				A90D6F981C947101002E7980 /* mapUtils.swift */,
-				55E3C7E31CF743E2008FE121 /* GeocodeUtils.swift */,
 				5506E0D81C650A230091364B /* colorUtils.swift */,
 				5562BA541C73663900EF340D /* utils.swift */,
 				551EFF931CC11F640065204D /* imageUtils.swift */,
@@ -469,11 +469,11 @@
 				553565551C5A83A2002628AD /* RouteModels.swift in Sources */,
 				A90D6F991C947101002E7980 /* mapUtils.swift in Sources */,
 				55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */,
+				5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */,
 				551EFF941CC11F640065204D /* imageUtils.swift in Sources */,
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */,
-				55E3C7E41CF743E2008FE121 /* GeocodeUtils.swift in Sources */,
 				55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */,
 				55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */,
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,
