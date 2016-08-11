@@ -46,8 +46,11 @@ final class utils {
         //let speedIndex = 5
       
         switch speedIndex {
+        
+        case 0:
+            return 12
             
-        case 0..<7:
+        case 1..<7:
            return 2
         
         case 8..<16:
@@ -82,7 +85,10 @@ final class utils {
     */
     class func getSpeed(speed:Double) -> Int{
         
-        let speed = Int(round((speed*3.6))) //kmh
+        var speed = Int(round((speed*3.6))) //kmh
+        
+        //not 0 in return
+        //speed = speed == 0 ? 120 : speed
         
         return speed
         

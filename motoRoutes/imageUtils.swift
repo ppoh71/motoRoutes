@@ -168,7 +168,7 @@ final class imageUtils{
            
         case .PrintAltitude:
              //print("PrintAltitude \(LineAltitude)")
-            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: UIColor.whiteColor(), perCent: 5, alpha: 0.1)
+            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: UIColor.whiteColor(), perCent: 5, alpha: 0.3)
         
         default:
             break
@@ -203,7 +203,6 @@ final class imageUtils{
         CGContextStrokePath(context)
         CGContextSetFillColorWithColor(context,LineColor.CGColor)
         CGContextFillRect(context, rectangle)
-        
     }
     
     
@@ -217,7 +216,6 @@ final class imageUtils{
         CGContextTranslateCTM(context, 0, CGFloat(height));
         CGContextScaleCTM(context, 1.0, -1.0);
         
-        
         CGContextSetLineWidth(context, CGFloat(lineWidth))
         CGContextMoveToPoint(context,0, 0)
         CGContextSetAlpha(context, CGFloat(alpha));
@@ -229,7 +227,6 @@ final class imageUtils{
         CGContextStrokePath(context)
         CGContextSetFillColorWithColor(context,color.CGColor)
         CGContextFillRect(context, rectangle)
-        
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -243,7 +240,6 @@ final class imageUtils{
         
         let colors = ColorPalette.colors
         
-        
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         let context = UIGraphicsGetCurrentContext()
         
@@ -252,12 +248,9 @@ final class imageUtils{
         CGContextScaleCTM(context, 1.0, -1.0);
         
         for (index, color) in colors.enumerate() {
-            
-            
+           
             let currentColor = colorUtils.hexTorgbColor(color)
             CGContextSetStrokeColorWithColor(context, currentColor.CGColor)
-            
-            
             
             let rectangle = CGRect(x: 0, y: (height/colors.count)*index, width: width, height: height/colors.count)
             CGContextAddRect(context, rectangle)
@@ -266,7 +259,6 @@ final class imageUtils{
             CGContextFillRect(context, rectangle)
             
             print(color)
-            
         }
         
         let img = UIGraphicsGetImageFromCurrentImageContext()

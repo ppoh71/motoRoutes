@@ -58,6 +58,7 @@ class Speedometer: UIView {
         
         //add TextLabel
         speedLabel.text = " - "
+        
         speedLabel.frame = CGRectMake(0, 0, 100, 50)
         self.addSubview(speedLabel)
         

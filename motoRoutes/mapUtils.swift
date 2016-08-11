@@ -179,7 +179,7 @@ final class mapUtils {
         newMarker.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude)
         newMarker.title = "SpeedAltMarker"
         mapView.addAnnotation(newMarker)
-        location.marker = true
+        //location.marker = true
         
     }
     
@@ -255,6 +255,12 @@ final class mapUtils {
      *
      *
      **/
+    
+    //Struct to hold static var, to identify running instances fo function and stop if needed
+    struct Holder {
+        static var staticInstance = ""
+    }
+    
     class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, routeSlider: RouteSlider?, initInstance: String!, identifier: String, speedoMeter: Speedometer? ) -> Bool{
         
         
@@ -267,10 +273,7 @@ final class mapUtils {
         var distance = 0.0
         //print("INIT Instance: \(initInstance) / \(identifier)")
         
-        //Struct to hold static var, to identify running instances fo function and stop if needed
-        struct Holder {
-            static var staticInstance = ""
-        }
+
         
         //assign instance to global static
         Holder.staticInstance = initInstance

@@ -81,6 +81,8 @@ class showRouteController: UIViewController {
     var funcType = FuncTypes.Default
     var msgOverlay: MsgOverlay!
     
+    var countReuse = 0
+    
     
     // override func super init
     override func viewDidLoad() {
@@ -194,13 +196,13 @@ class showRouteController: UIViewController {
         
         let startMarker = MGLPointAnnotation()
         startMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[0].latitude, self.RouteList[0].longitude)
-        startMarker.title = "Start"
+        startMarker.title = "motoRoute!.locationStart"
         startMarker.subtitle = motoRoute!.locationStart
         self.mapViewShow.addAnnotation(startMarker)
         
         let endMarker = MGLPointAnnotation()
         endMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[RouteList.count-1].latitude, self.RouteList[RouteList.count-1].longitude)
-        endMarker.title = "End"
+        endMarker.title = " motoRoute!.locationEnd"
         endMarker.subtitle = motoRoute!.locationEnd
         self.mapViewShow.addAnnotation(endMarker)
     }
@@ -495,37 +497,27 @@ class showRouteController: UIViewController {
     func printAllMarker(funcSwitch: FuncTypes){
         
         self.funcType = funcSwitch
-         self.deleteAllMarker()
+        self.deleteAllMarker()
         
         let priority = Int(QOS_CLASS_UTILITY.rawValue)
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
             
+            let tmpGap = 5
+            print("image reuse size \(self.RouteList.count / tmpGap)")
+            
             dispatch_async(dispatch_get_main_queue()) {
-                mapUtils.printMarker(self.RouteList, mapView: self.mapViewShow, key: 0, amount: self.RouteList.count-1 , gap: 3, funcType: self.funcType )
-                self.centerMap()
+                mapUtils.printMarker(self.RouteList, mapView: self.mapViewShow, key: 0, amount: self.RouteList.count-1 , gap: tmpGap, funcType: self.funcType )
+                
             }
         }
     }
     
     
     func deleteAllMarker(){
-     
-        
-        //delete all annotations
-      //  for annotation in mapViewShow.annotations!{
-      //      mapViewShow.removeAnnotation(annotation)
-      //  }
-        
-        
-        //self.mapViewShow.removeAnnotations(self.mapView.annotations)
         
         if mapViewShow.annotations?.count > 0{
             self.mapViewShow.removeAnnotations(mapViewShow.annotations!)
-            //self.mapViewShow.annotations!.forEach {
-            //    mapViewShow.removeAnnotation($0)
-            //}
         }
-        
         
         //Set marker bool to false, to print new marker
         for marker in RouteList{
@@ -537,27 +529,32 @@ class showRouteController: UIViewController {
     @IBAction func printCircleMarker(sender: AnyObject) {
         deleteAllMarker()
         printAllMarker(FuncTypes.PrintCircles)
+        self.centerMap(50, duration: 3)
     }
     
     @IBAction func printAltitude(sender: AnyObject) {
         deleteAllMarker()
         printAllMarker(FuncTypes.PrintAltitude)
+        self.centerMap(52, duration: 3)
     }
 
     @IBAction func printSpeedMarker(sender: AnyObject) {
         deleteAllMarker()
-        printAllMarker(FuncTypes.PrintBaseHeight)
+        printAllMarker(FuncTypes.PrintMarker)
+        self.centerMap(54, duration: 3)
     }
     
     @IBAction func printRoute(sender: AnyObject) {
         deleteAllMarker()
         mapUtils.printRoute(RouteList, mapView: mapViewShow)
+        self.centerMap(53, duration: 3)
     }
     
 
     @IBAction func resetMarker(sender: AnyObject) {
          deleteAllMarker()
-        // mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+         mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+         self.centerMap(50, duration: 3)
     }
     
       
@@ -565,11 +562,10 @@ class showRouteController: UIViewController {
         
         if followCamera==false{
             followCamera=true
-            followCameraButton.enabled = false
+            followCameraButton.tintColor = UIColor.lightGrayColor()
         } else{
             followCamera=false
-            followCameraButton.enabled = true
-            
+            followCameraButton.tintColor = UIColor.whiteColor()
         }
     }
     
@@ -589,7 +585,7 @@ class showRouteController: UIViewController {
     
     
     
-    func centerMap(){
+    func centerMap(pitch: CGFloat, duration: Double){
     
         //get bounds, centerpoints, of the whole Route
         let Bounds = mapUtils.getBoundCoords(RouteList)
@@ -602,10 +598,10 @@ class showRouteController: UIViewController {
         let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
         
         //define camera and set it to startpoint
-        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
+        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: pitch, heading: 0)
         
         //animate camera to center point, launch save overlay
-        mapViewShow.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
+        mapViewShow.setCamera(camera, withDuration: duration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
             
     
         }
@@ -690,45 +686,58 @@ extension showRouteController: MGLMapViewDelegate {
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
 
         //print(self.funcType)
-
+        
         
         var image: UIImage
         
-        var reuseIdentifier = "MarkerImage"
+        var reuseIdentifier = ""
         
         //reuse identifier
         switch(self.funcType) {
         
         case .PrintMarker:
-            reuseIdentifier =  "MarkerImageSpeed\(utils.getSpeed(globalSpeed.gSpeed))"
+            reuseIdentifier =  "MarkerSpeed\(utils.getSpeed(globalSpeed.gSpeed))-1"
+            
             
         case .PrintBaseHeight:
-            reuseIdentifier =  "MarkerImageSpeedBaseHeight\(utils.getSpeed(globalSpeed.gSpeed))"
+            reuseIdentifier =  "MarkerSpeedBase\(utils.getSpeed(globalSpeed.gSpeed))-2"
             
         case .PrintAltitude:
-            reuseIdentifier =  "MarkerImageAlt\(round(globalAltitude.gAltitude))"
+            reuseIdentifier =  "MarkerAlt\(Int(round(globalAltitude.gAltitude / 10 )))-3"
             
         case .Recording:
-            reuseIdentifier =  "MarkerImageCircleSpeed\(utils.getSpeed(globalSpeed.gSpeed))"
+            reuseIdentifier =  "MarkerCircleSpeed\(utils.getSpeed(globalSpeed.gSpeed))-4"
+           
             
         case .PrintCircles:
-            reuseIdentifier =  "MarkerImageCircle\(utils.getSpeed(globalSpeed.gSpeed))"
+            reuseIdentifier =  "MarkerCircle\(utils.getSpeed(globalSpeed.gSpeed))-5"
             
         default:
+            print("marker image default break")
             break
         
         }
         
-        //print(reuseIdentifier)
         
-        if(annotation.title! == "SpeedAltMarker"){
-            image = imageUtils.drawLineOnImage(self.funcType)
-        } else{
-            image = UIImage(named: "updown.png")!
+        var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier(reuseIdentifier)
+        
+        if annotationImage == nil {
+            
+            countReuse+=1
+            print("reuse count \(countReuse)")
+            
+            if(annotation.title! == "SpeedAltMarker"){
+                image = imageUtils.drawLineOnImage(self.funcType)
+            } else{
+                image = UIImage(named: "ic_place.png")!
+            }
+            
+            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
+            
+           //print("iamge is nil \(reuseIdentifier) \(globalSpeed.gSpeed) \(annotation.title!) \(self.funcType) \(image)")
         }
         
         
-        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
         return annotationImage
 
     }
