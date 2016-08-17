@@ -20,6 +20,7 @@ enum FuncTypes: String {
     case PrintBaseHeight
     case PrintAltitude
     case PrintCircles
+    case PrintStartEnd
     case Default
 }
 

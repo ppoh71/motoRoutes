@@ -25,6 +25,8 @@
 		556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556B8A671CE4B9A4000EE047 /* CameraSlider.swift */; };
 		5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */; };
 		559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* MRCellView.swift */; };
+		55BB80C61D630D8B00D0CCEF /* RouteInfos.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */; };
+		55BB80C81D630DD100D0CCEF /* RouteInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BB80C71D630DD100D0CCEF /* RouteInfos.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
 		55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */; };
 		55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DA72981D0030DD0095C52E /* MRCellViewImage.swift */; };
@@ -69,6 +71,8 @@
 		5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeUtils.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* MRCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellView.swift; sourceTree = "<group>"; };
 		55B323441D12F5FF00EA5C57 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteInfos.xib; sourceTree = "<group>"; };
+		55BB80C71D630DD100D0CCEF /* RouteInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfos.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSliderCustom.swift; sourceTree = "<group>"; };
 		55DA72981D0030DD0095C52E /* MRCellViewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellViewImage.swift; sourceTree = "<group>"; };
@@ -171,6 +175,15 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		55BB80C41D630D2900D0CCEF /* RouteLabels */ = {
+			isa = PBXGroup;
+			children = (
+				55BB80C71D630DD100D0CCEF /* RouteInfos.swift */,
+				55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */,
+			);
+			name = RouteLabels;
+			sourceTree = "<group>";
+		};
 		55E1496C1CE1C87A00B576BB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +199,7 @@
 		55E1496F1CE22D7E00B576BB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				55BB80C41D630D2900D0CCEF /* RouteLabels */,
 				55F7CEF91D0708C10051F338 /* Buttons */,
 				55F7CEF41D06FB190051F338 /* Controls */,
 				55F7CEF31D06FAFC0051F338 /* Overlay */,
@@ -331,6 +345,7 @@
 				55C567C31C6284E2008E045B /* Settings.bundle in Resources */,
 				55F009191D1148BA00FA2400 /* Localizable.strings in Resources */,
 				553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */,
+				55BB80C61D630D8B00D0CCEF /* RouteInfos.xib in Resources */,
 				553D05E51CE4AB7400D8555D /* Roboto-Bold.ttf in Resources */,
 				553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */,
 				553AB5071C50056400AC12A5 /* Main.storyboard in Resources */,
@@ -465,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */,
+				55BB80C81D630DD100D0CCEF /* RouteInfos.swift in Sources */,
 				556368AA1CEF4681004BBB6F /* Speedometer.swift in Sources */,
 				553565551C5A83A2002628AD /* RouteModels.swift in Sources */,
 				A90D6F991C947101002E7980 /* mapUtils.swift in Sources */,

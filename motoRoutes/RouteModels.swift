@@ -170,50 +170,58 @@ class MarkerAnnotation {
 
 /*
  Remodel data for as a kind of entity model, when it comes from realm
+ as singleton
  */
 class RouteMaster {
     
-    
+    static let sharedInstance = RouteMaster()
+    var _MotoRoute = Route()
     var _RouteList = [LocationMaster]()
     
-    init(){
-        
+    
+    var routeTime: Int { get { return _MotoRoute.duration } }
+    var routeDistance: Double{ get{ return _MotoRoute.distance } }
+    var routeDate: NSDate { get { return _MotoRoute.timestamp } }
+    var startLocation: String { get{ return _MotoRoute.locationStart} }
+    var endLocation: String { get{ return _MotoRoute.locationEnd} }
+    
+    
+    private init(){
+        print(_MotoRoute)
+    }
+    
+    //map realm route to this Class
+    func associateRoute(motoRoute: Route){
+        _MotoRoute = motoRoute
+        createMasterLocationRealm(_MotoRoute.locationsList)
     }
     
     
     //create a LocationMaster Object with from Realm List
-    class func createMasterLocationRealm(LocationsList:List<Location>!) -> [LocationMaster]{
+    private func createMasterLocationRealm(LocationsList:List<Location>!) {
         
         var newRouteList = RouteMaster()._RouteList
         
         //loop all CLLocation and create and append to LocationMaster
         for location in LocationsList {
-            
-
             let locationTmp = LocationMaster(latitude: location.latitude, longitude: location.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.accuracy, marker: false, distance: location.distance )
-    
             newRouteList.append(locationTmp)
-            
         }
         
-        return newRouteList
+        _RouteList = newRouteList
     }
     
     
     //create a LocationMaster Object with Location List
     class func createMasterFromCLLocation(LocationsList: [CLLocation]) -> [LocationMaster]{
-        
         var newRouteList = RouteMaster()._RouteList
         
         //loop all CLLocation and create and append to LocationMaster
         for location in LocationsList {
             
             let locationTmp = LocationMaster(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.horizontalAccuracy, marker: false, distance: 0.0)
-            
             newRouteList.append(locationTmp)
-            
         }
-        
         return newRouteList
     }
     
@@ -221,13 +229,24 @@ class RouteMaster {
     
     //update the marker object, so we know that the speedmarker has been set
     class func updateMarkerBool(RouteList: [LocationMaster], n: Int){
-        
         //the marker for this location has been set
         RouteList[n].marker = true
         
     }
     
+    static func averageSpeed(){
+    }
     
+    static func highestSpeed(){
+    }
+    
+    static func highestAltitude(){
+    }
+  
+    static func deltaAltitude(){
+    }
+    
+  
 }
 
 

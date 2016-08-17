@@ -51,7 +51,8 @@ class showRouteController: UIViewController {
     
     // realm object list
     var motoRoute: Route?
-    var RouteList = RouteMaster()._RouteList
+    let _RouteMaster = RouteMaster.sharedInstance
+    var RouteList = [LocationMaster]()
    // var markersSet = [MarkerAnnotation]()
     
     //media stuff
@@ -80,6 +81,7 @@ class showRouteController: UIViewController {
     //make screenshot
     var funcType = FuncTypes.Default
     var msgOverlay: MsgOverlay!
+    var routeInfos: RouteInfos!
     
     var countReuse = 0
     
@@ -94,7 +96,10 @@ class showRouteController: UIViewController {
         routeSlider.maximumValue = Float(motoRoute!.locationsList.count-1)
         
         //MODEL: covert Realm LocationList to Location Master Object
-        RouteList =  RouteMaster.createMasterLocationRealm(motoRoute!.locationsList)
+        _RouteMaster.associateRoute(motoRoute!)
+        RouteList = _RouteMaster._RouteList
+        
+        print("Route Duration: \(_RouteMaster.routeTime)")
         
         
         //print(utils.absolutePeromanceTime(x))
@@ -125,6 +130,11 @@ class showRouteController: UIViewController {
 //        msgOverlay.msgType = .Save
 //        self.view.addSubview(msgOverlay)
         
+        //init RouteInfos
+//        routeInfos = NSBundle.mainBundle().loadNibNamed("RouteInfos", owner: self, options: nil)[0] as? RouteInfos
+//        routeInfos.center = AnimationEngine.offScreenLeftPosition
+//        self.view.addSubview(routeInfos)
+
         
         //Setup Custom UI
         cameraCustomSlider.addTarget(self, action: #selector(showRouteController.cameraSliderValueChanged), forControlEvents: .ValueChanged)
@@ -150,11 +160,12 @@ class showRouteController: UIViewController {
         mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
         //printCricleRoute()
         
-        
         //define camera and set it to startpoint
         let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
         
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
+        
+//        AnimationEngine.showMsgOverlay(routeInfos)
         
     }
     
@@ -193,6 +204,8 @@ class showRouteController: UIViewController {
     /* add start/end markers with locationString text */
     func setStartEndMarker(){
         print("Add Start/End Marker")
+        
+        funcType = .PrintStartEnd
         
         let startMarker = MGLPointAnnotation()
         startMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[0].latitude, self.RouteList[0].longitude)
@@ -507,7 +520,7 @@ class showRouteController: UIViewController {
             
             dispatch_async(dispatch_get_main_queue()) {
                 mapUtils.printMarker(self.RouteList, mapView: self.mapViewShow, key: 0, amount: self.RouteList.count-1 , gap: tmpGap, funcType: self.funcType )
-                
+                self.setStartEndMarker()
             }
         }
     }
@@ -534,6 +547,7 @@ class showRouteController: UIViewController {
     
     @IBAction func printAltitude(sender: AnyObject) {
         deleteAllMarker()
+        
         printAllMarker(FuncTypes.PrintAltitude)
         self.centerMap(52, duration: 3)
     }
@@ -711,6 +725,10 @@ extension showRouteController: MGLMapViewDelegate {
             
         case .PrintCircles:
             reuseIdentifier =  "MarkerCircle\(utils.getSpeed(globalSpeed.gSpeed))-5"
+            
+        case .PrintStartEnd:
+            reuseIdentifier = "StartEndMarker"
+            
             
         default:
             print("marker image default break")

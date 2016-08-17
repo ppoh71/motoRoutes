@@ -76,7 +76,6 @@ class MsgOverlay: UIView {
     override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
         setupView()
-        
     }
     
     override func awakeFromNib() {
