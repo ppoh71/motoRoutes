@@ -10,6 +10,8 @@ import UIKit
 
 class RouteInfos: UIView {
 
+    
+    // MARK: Outlets
     //Date
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dateRoute: UILabel!
@@ -39,6 +41,7 @@ class RouteInfos: UIView {
     @IBOutlet weak var highestAltitude: UILabel!
     
     
+    // MARK: Location Strings
     let dateLabelText = NSLocalizedString("View.RouteInfo.DateLabel", comment: "dateLabelText")
     let distanceLabelText = NSLocalizedString("View.RouteInfo.DistanceLabel", comment: "distanceLabelText")
     let durationLabelText = NSLocalizedString("View.RouteInfo.DuranceLabel", comment: "durationLabelText")
@@ -57,6 +60,20 @@ class RouteInfos: UIView {
         setupView()
     }
     
+    
+    // MARK: Setup Functions
+    func setInfos(masterRoute: RouteMaster){
+        
+        dateRoute.text = masterRoute.routeDate
+        distanceRoute.text = "\(utils.distanceFormat(masterRoute.routeDistance))"
+        durationRoute.text = "\(utils.clockFormat(masterRoute.routeTime))"
+        averageSpeed.text = masterRoute.routeAverageSpeed
+        highSpeed.text = masterRoute.routeHighSpeed
+        altitudeDelta.text = masterRoute.routeDeltaAlt
+        highestAltitude.text = masterRoute.routeHighestAlt
+    }
+    
+    
     func setupView(){
         
         self.layer.backgroundColor = UIColor.clearColor().CGColor
@@ -67,7 +84,7 @@ class RouteInfos: UIView {
         averageSpeedLabel.text = averageSpeedLabelText
         highspeedLabel.text = highspeedLabelText
         altitudeDeltaLabel.text = altitudeDeltaLabelText
-        highestAltitude.text = highestAltitudeLabelText
+        highestAltitudeLabel.text = highestAltitudeLabelText
     }
 
 }

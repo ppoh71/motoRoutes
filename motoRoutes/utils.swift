@@ -85,15 +85,26 @@ final class utils {
     */
     class func getSpeed(speed:Double) -> Int{
         
-        var speed = Int(round((speed*3.6))) //kmh
-        
+        let speed = Int(round((speed*3.6))) //kmh
         //not 0 in return
         //speed = speed == 0 ? 120 : speed
-        
         return speed
-        
     }
     
+    /*
+     * get speed km/h mph
+     */
+    class func getSpeedString(speed:Double) -> String{
+        let speed = speed*3.6//kmh
+        return String(format: "%.2f", speed)
+    }
+    
+    /*
+     * get stringformat from double
+     */
+    class func getDoubleString(double:Double) -> String{
+        return String(format: "%.2f", double)
+    }
     
     /**
     * Sets globalSppedSet by given speed (m/s)
@@ -167,7 +178,6 @@ final class utils {
     class func distanceFormat(distance:Double) -> String {
         
         let dist = String(format: "%.3f", distance/1000)
-        
         return  dist
     }
     

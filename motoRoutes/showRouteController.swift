@@ -22,6 +22,8 @@ let getLocationSetNotificationKey = "motoRoutes.getLocationString"
 
 class showRouteController: UIViewController {
     
+    //MARK: Outles
+    
     //Outlets
     @IBOutlet weak var  cancelButton:UIButton!
     @IBOutlet weak var  flyButton:UIButton!
@@ -42,6 +44,8 @@ class showRouteController: UIViewController {
     @IBOutlet weak var  debugLabel: UILabel!
     @IBOutlet weak var  optionsButton: UIButton!
     
+    
+    //MARK: Vars
     
     //add gesture
     var toggleImageViewGesture = UISwipeGestureRecognizer()
@@ -86,7 +90,8 @@ class showRouteController: UIViewController {
     var countReuse = 0
     
     
-    // override func super init
+    //MARK: Overrides
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,8 +105,9 @@ class showRouteController: UIViewController {
         RouteList = _RouteMaster._RouteList
         
         print("Route Duration: \(_RouteMaster.routeTime)")
+        print("Route Date: \(_RouteMaster.routeDate)")
         
-        
+
         //print(utils.absolutePeromanceTime(x))
         print("List count \(RouteList.count)")
         
@@ -131,9 +137,11 @@ class showRouteController: UIViewController {
 //        self.view.addSubview(msgOverlay)
         
         //init RouteInfos
-//        routeInfos = NSBundle.mainBundle().loadNibNamed("RouteInfos", owner: self, options: nil)[0] as? RouteInfos
-//        routeInfos.center = AnimationEngine.offScreenLeftPosition
-//        self.view.addSubview(routeInfos)
+        routeInfos = NSBundle.mainBundle().loadNibNamed("RouteInfos", owner: self, options: nil)[0] as? RouteInfos
+        routeInfos.setInfos(_RouteMaster)
+        routeInfos.center = AnimationEngine.offScreenLeftPosition
+        
+        self.view.addSubview(routeInfos)
 
         
         //Setup Custom UI
@@ -143,8 +151,6 @@ class showRouteController: UIViewController {
         globalRoutePos.gRoutePos = 0
         
     }
-    
-    
     
     
     override func viewDidAppear(animated: Bool) {
@@ -165,7 +171,7 @@ class showRouteController: UIViewController {
         
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
         
-//        AnimationEngine.showMsgOverlay(routeInfos)
+        AnimationEngine.showMsgOverlay(routeInfos)
         
     }
     

@@ -12,6 +12,8 @@ import CoreLocation
 import Mapbox
 
 
+//MARK: REALM Objects
+
 // Route Realm Model
 class Route: Object {
     
@@ -31,7 +33,6 @@ class Route: Object {
     let locationsList = List<Location>()
     let mediaList = List<Media>()
     let gyroscopeList = List<Gyroscope>()
-    
 }
 
 
@@ -47,14 +48,7 @@ class Location: Object {
     dynamic var distance = 0.0
     dynamic var timestamp = NSDate()
 
-
     let route = LinkingObjects(fromType: Route.self, property: "locationsList")
-    
-//    var route: [Route] {
-//        // Realm doesn't persist this property because it only has a getter defined
-//        return test
-//    }
-
 }
 
 //Media Object for location
@@ -69,15 +63,7 @@ class Media: Object {
     dynamic var timestamp = NSDate()
     dynamic var accuracy = 0.0
 
-    
     let route = LinkingObjects(fromType: Route.self, property: "mediaList")
-    
-
-//    var route: [Route] {
-//        // Realm doesn't persist this property because it only has a getter defined
-//        return LinkingObjects(fromType: Route.self, property: "mediaList")
-//    }
-
 }
 
 
@@ -85,19 +71,101 @@ class Media: Object {
 class Gyroscope: Object {
     
     dynamic var timestamp = NSDate()
-    
     let route = LinkingObjects(fromType: Route.self, property: "gyroscopeList")
-    
-
-//    var route: [Route] {
-//        // Realm doesn't persist this property because it only has a getter defined
-//        return LinkingObjects(fromType: Route.self, property: "gyroscopeList")
-//    }
-
 }
 
 
+//MARK: MASTER & LOCATION Objects
 
+
+// Remodel data for as a kind of entity model, when it comes from realm  as singleton
+class RouteMaster {
+    
+    static let sharedInstance = RouteMaster()
+    var _MotoRoute = Route()
+    var _RouteList = [LocationMaster]()
+    
+    var routeDate: String { get { return _MotoRoute.timestamp.customFormatted } }
+    var routeTime: Int { get { return _MotoRoute.duration } }
+    var routeDistance: Double{ get{ return _MotoRoute.distance } }
+    var routeAverageSpeed: String { get { return getRouteSpeedAlt().0 }}
+    var routeHighSpeed: String { get { return getRouteSpeedAlt().1 }}
+    var routeDeltaAlt: String { get { return getRouteSpeedAlt().2 }}
+    var routeHighestAlt: String { get { return getRouteSpeedAlt().3 }}
+    var startLocation: String { get{ return _MotoRoute.locationStart} }
+    var endLocation: String { get{ return _MotoRoute.locationEnd} }
+    
+    private init(){
+        print(_MotoRoute)
+    }
+    
+    //map realm route to this Class
+    func associateRoute(motoRoute: Route){
+        _MotoRoute = motoRoute
+        createMasterLocationRealm(_MotoRoute.locationsList)
+    }
+    
+    
+    //create a LocationMaster Object with from Realm List
+    private func createMasterLocationRealm(LocationsList:List<Location>!) {
+        
+        var newRouteList = RouteMaster()._RouteList
+        
+        //loop all CLLocation and create and append to LocationMaster
+        for location in LocationsList {
+            let locationTmp = LocationMaster(latitude: location.latitude, longitude: location.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.accuracy, marker: false, distance: location.distance )
+            newRouteList.append(locationTmp)
+        }
+        
+        _RouteList = newRouteList
+    }
+    
+    
+    //create a LocationMaster Object with Location List
+    class func createMasterFromCLLocation(LocationsList: [CLLocation]) -> [LocationMaster]{
+        var newRouteList = RouteMaster()._RouteList
+        
+        //loop all CLLocation and create and append to LocationMaster
+        for location in LocationsList {
+            
+            let locationTmp = LocationMaster(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.horizontalAccuracy, marker: false, distance: 0.0)
+            newRouteList.append(locationTmp)
+        }
+        return newRouteList
+    }
+    
+    
+    
+    //update the marker object, so we know that the speedmarker has been set
+    class func updateMarkerBool(RouteList: [LocationMaster], n: Int){
+        //the marker for this location has been set
+        RouteList[n].marker = true
+        
+    }
+    
+    //get speede, alt, average and stuff
+    private func getRouteSpeedAlt() -> (String, String, String, String) {
+        
+        var averageSpeed = 0.0
+        var highestSpeed = 0.0
+        var lowestAlt = 10000.0
+        var highestAlt = 0.0
+        
+        guard _RouteList.count > 0 else{
+            print("average speed guard, not enough loctaions")
+            return ("no data", "no data", "no data", "no data" )
+        }
+        
+        for item in _RouteList {
+            averageSpeed += item.speed
+            highestSpeed = item.speed > highestSpeed ? item.speed : highestSpeed
+            lowestAlt = item.altitude < lowestAlt ? item.altitude : lowestAlt
+            highestAlt = item.altitude > highestAlt ? item.altitude : highestAlt
+        }
+        
+        return (averageSpeed: utils.getSpeedString(averageSpeed/Double(_RouteList.count)) ,highSpeed: utils.getSpeedString(highestSpeed), deltaAlt: utils.getDoubleString(highestAlt - lowestAlt), highestAlt: utils.getDoubleString(highestAlt))
+    }
+}
 
 // Master Location Model for all Route Operations inside App
 class LocationMaster {
@@ -111,10 +179,8 @@ class LocationMaster {
     var accuracy = 0.0
     var marker = false
     var distance = 0.0
-
-    var annotation = MGLPointAnnotation()
     
-
+    var annotation = MGLPointAnnotation()
     
     init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:NSDate, accuracy:Double, marker:Bool, distance:Double ){
         
@@ -168,88 +234,7 @@ class MarkerAnnotation {
 }
 
 
-/*
- Remodel data for as a kind of entity model, when it comes from realm
- as singleton
- */
-class RouteMaster {
-    
-    static let sharedInstance = RouteMaster()
-    var _MotoRoute = Route()
-    var _RouteList = [LocationMaster]()
-    
-    
-    var routeTime: Int { get { return _MotoRoute.duration } }
-    var routeDistance: Double{ get{ return _MotoRoute.distance } }
-    var routeDate: NSDate { get { return _MotoRoute.timestamp } }
-    var startLocation: String { get{ return _MotoRoute.locationStart} }
-    var endLocation: String { get{ return _MotoRoute.locationEnd} }
-    
-    
-    private init(){
-        print(_MotoRoute)
-    }
-    
-    //map realm route to this Class
-    func associateRoute(motoRoute: Route){
-        _MotoRoute = motoRoute
-        createMasterLocationRealm(_MotoRoute.locationsList)
-    }
-    
-    
-    //create a LocationMaster Object with from Realm List
-    private func createMasterLocationRealm(LocationsList:List<Location>!) {
-        
-        var newRouteList = RouteMaster()._RouteList
-        
-        //loop all CLLocation and create and append to LocationMaster
-        for location in LocationsList {
-            let locationTmp = LocationMaster(latitude: location.latitude, longitude: location.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.accuracy, marker: false, distance: location.distance )
-            newRouteList.append(locationTmp)
-        }
-        
-        _RouteList = newRouteList
-    }
-    
-    
-    //create a LocationMaster Object with Location List
-    class func createMasterFromCLLocation(LocationsList: [CLLocation]) -> [LocationMaster]{
-        var newRouteList = RouteMaster()._RouteList
-        
-        //loop all CLLocation and create and append to LocationMaster
-        for location in LocationsList {
-            
-            let locationTmp = LocationMaster(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude, speed: location.speed, course: location.course, timestamp: location.timestamp, accuracy: location.horizontalAccuracy, marker: false, distance: 0.0)
-            newRouteList.append(locationTmp)
-        }
-        return newRouteList
-    }
-    
-    
-    
-    //update the marker object, so we know that the speedmarker has been set
-    class func updateMarkerBool(RouteList: [LocationMaster], n: Int){
-        //the marker for this location has been set
-        RouteList[n].marker = true
-        
-    }
-    
-    static func averageSpeed(){
-    }
-    
-    static func highestSpeed(){
-    }
-    
-    static func highestAltitude(){
-    }
-  
-    static func deltaAltitude(){
-    }
-    
-  
-}
-
-
+//MARK: REALM UTILS, Save
 
 /**
  Save new route to realm
