@@ -13,7 +13,7 @@ class RouteInfos: UIView {
     
     // MARK: Outlets
     //Date
-    @IBOutlet weak var dateLabel: UILabel!
+    //@IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dateRoute: UILabel!
     //Distance
     @IBOutlet weak var distanceLabel: UILabel!
@@ -42,7 +42,7 @@ class RouteInfos: UIView {
     
     
     // MARK: Location Strings
-    let dateLabelText = NSLocalizedString("View.RouteInfo.DateLabel", comment: "dateLabelText")
+   // let dateLabelText = NSLocalizedString("View.RouteInfo.DateLabel", comment: "dateLabelText")
     let distanceLabelText = NSLocalizedString("View.RouteInfo.DistanceLabel", comment: "distanceLabelText")
     let durationLabelText = NSLocalizedString("View.RouteInfo.DuranceLabel", comment: "durationLabelText")
     let averageSpeedLabelText = NSLocalizedString("View.RouteInfo.AverageSpeedLabel", comment: "averageSpeedLabelText")
@@ -78,7 +78,7 @@ class RouteInfos: UIView {
         
         self.layer.backgroundColor = UIColor.clearColor().CGColor
         
-        dateLabel.text = dateLabelText
+       // dateLabel.text = dateLabelText
         distanceLabel.text = distanceLabelText
         durationLabel.text = durationLabelText
         averageSpeedLabel.text = averageSpeedLabelText
