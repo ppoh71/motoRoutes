@@ -80,22 +80,32 @@ class showRouteController: UIViewController {
     
     //init custom speedometer
     var speedoMeter = Speedometer()
+    let speedoWidth:Int = 6
     var cameraCustomSlider = CameraSliderCustom()
+    let frameSizeCameraSlider = 40 //extra space for slidethumb image
     
     //make screenshot
     var funcType = FuncTypes.Default
     var msgOverlay: MsgOverlay!
     var routeInfos: RouteInfos!
-    
     var countReuse = 0
+    
+    //Display Vars
+    var screenSize: CGRect = CGRectMake(0, 0, 0, 0)
+    var screenWidth: CGFloat = 0.0
+    var screenHeight: CGFloat = 0.0
     
     
     //MARK: Overrides
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let x = CFAbsoluteTimeGetCurrent()
+        //let x = CFAbsoluteTimeGetCurrent()
+        
+        //Set screensize
+        screenSize = UIScreen.mainScreen().bounds
+        screenWidth = screenSize.width
+        screenHeight = screenSize.height
         
         // MODEL: set max on route slider
         routeSlider.maximumValue = Float(motoRoute!.locationsList.count-1)
@@ -103,19 +113,10 @@ class showRouteController: UIViewController {
         //MODEL: covert Realm LocationList to Location Master Object
         _RouteMaster.associateRoute(motoRoute!)
         RouteList = _RouteMaster._RouteList
-        
-        print("Route Duration: \(_RouteMaster.routeTime)")
-        print("Route Date: \(_RouteMaster.routeDate)")
-        
-
-        //print(utils.absolutePeromanceTime(x))
-        print("List count \(RouteList.count)")
-        
+    
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
         mapViewShow.camera.heading = globalHeading.gHeading
-        
-        
         mapViewShow.setCenterCoordinate(CLLocationCoordinate2D(latitude: RouteList[0].latitude, longitude: RouteList[0].longitude),  animated: false)
         
         // Toggle Camera recognizer
@@ -129,27 +130,17 @@ class showRouteController: UIViewController {
         routeSlider.addTarget(self, action: #selector(showRouteController.touchUpRouteSlide), forControlEvents: UIControlEvents.TouchUpOutside)
         routeSlider.addTarget(self, action: #selector(showRouteController.touchDowntRouteSlide), forControlEvents: UIControlEvents.TouchDown)
         
-//        //init Msg Overlay
-//        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
-//        msgOverlay.center = AnimationEngine.offScreenLeftPosition
-//        msgOverlay.delegate = self
-//        msgOverlay.msgType = .Save
-//        self.view.addSubview(msgOverlay)
-        
         //init RouteInfos
         routeInfos = NSBundle.mainBundle().loadNibNamed("RouteInfos", owner: self, options: nil)[0] as? RouteInfos
         routeInfos.setInfos(_RouteMaster)
-        routeInfos.center = AnimationEngine.offScreenLeftPosition
-        
+        AnimationEngine.hideViewBottomLeft(routeInfos) //move view to bottom ad off screen to the left for now
         self.view.addSubview(routeInfos)
 
-        
-        //Setup Custom UI
         cameraCustomSlider.addTarget(self, action: #selector(showRouteController.cameraSliderValueChanged), forControlEvents: .ValueChanged)
         setupCustomUI()
         
-        globalRoutePos.gRoutePos = 0
-        
+        setupCustomUI()
+        //hidePlaybackViews()
     }
     
     
@@ -171,7 +162,9 @@ class showRouteController: UIViewController {
         
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
         
-        AnimationEngine.showMsgOverlay(routeInfos)
+        //Displays
+        setupCustomUI()
+        showRouteInfos()
         
     }
     
@@ -186,6 +179,60 @@ class showRouteController: UIViewController {
     }
     
     
+    //int and setup custom controlls
+    func setupCustomUI(){
+        
+        //init Speedometer
+        let speedoHeight = screenHeight/2
+
+        speedoMeter.frame = CGRect(x: (Int(screenWidth) - speedoWidth), y: 0, width: speedoWidth, height: Int(speedoHeight))
+        speedoMeter.setup(speedoWidth, height: Int(speedoHeight))
+        
+        //init and setup custom camera slider
+        let cameraCustomHeightMinus = CGFloat(60)
+        cameraCustomSlider.frame = CGRect(x: (Int(screenWidth) - frameSizeCameraSlider), y: Int(screenHeight/2), width: frameSizeCameraSlider, height: Int(speedoHeight - cameraCustomHeightMinus))
+        cameraCustomSlider.setup(speedoWidth, height: Int(speedoHeight - cameraCustomHeightMinus), frameWidth: frameSizeCameraSlider)
+        
+        //add Subviews
+        view.addSubview(speedoMeter)
+        view.addSubview(cameraCustomSlider)
+        
+        hidePlaybackViews() // hide after setup
+    }
+    
+    
+    /*
+        Hide Playback Buttons & Slider
+    */
+    
+    func hidePlaybackViews(){
+        followCameraButton.hidden = true
+        flyButton.hidden = true
+        routeSlider.hidden = true
+        speedoMeter.hidden = true
+        cameraCustomSlider.hidden = true
+    }
+    
+    
+    func showPlaybackViews(){
+        followCameraButton.hidden = false
+        flyButton.hidden = false
+        routeSlider.hidden = false
+        speedoMeter.hidden = false
+        cameraCustomSlider.hidden = false
+    }
+
+    func showRouteInfos(){
+        AnimationEngine.showViewAnimCenterBottomPosition(routeInfos)
+    }
+    
+    func hideRouteInfos(){
+        AnimationEngine.hideViewBottomLeft(routeInfos)
+    }
+    
+    
+    
+    
     /* check if we have the locationStrings already */
     func checkLocationStartEnd(route:Route){
     
@@ -193,19 +240,17 @@ class showRouteController: UIViewController {
             
             let fromLocation = CLLocationCoordinate2D(latitude: route.locationsList[0].latitude, longitude:route.locationsList[0].longitude)
             let toLocation = CLLocationCoordinate2D(latitude: route.locationsList[route.locationsList.count-1].latitude, longitude: route.locationsList[route.locationsList.count-1].longitude)
-            
             //assign async text to label
             GeocodeUtils.getAdressFromCoord(fromLocation, field: "to")
             GeocodeUtils.getAdressFromCoord(toLocation, field: "from")
-            
             print("location is empty")
         
         } else{
             print("location not empty \(route.locationStart)")
-            
             setStartEndMarker()
         }
     }
+    
     
     /* add start/end markers with locationString text */
     func setStartEndMarker(){
@@ -243,32 +288,7 @@ class showRouteController: UIViewController {
     }
     
     
-    //int and setup custom controlls
-    func setupCustomUI(){
-        
-        //get screensize
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
-        
-        //init Speedometer
-        let speedoHeight = screenHeight/2
-        let speedoWidth:Int = 6
-        speedoMeter.frame = CGRect(x: (Int(screenWidth) - speedoWidth), y: 0, width: speedoWidth, height: Int(speedoHeight))
-        speedoMeter.setup(speedoWidth, height: Int(speedoHeight))
-        
-        
-        //init and setup custom camera slider
-        let frameSizeCameraSlider = 40 //extra space for slidethumb image
-        let cameraCustomHeightMinus = CGFloat(60)
-        cameraCustomSlider.frame = CGRect(x: (Int(screenWidth) - frameSizeCameraSlider), y: Int(screenHeight/2), width: frameSizeCameraSlider, height: Int(speedoHeight - cameraCustomHeightMinus))
-        cameraCustomSlider.setup(speedoWidth, height: Int(speedoHeight - cameraCustomHeightMinus), frameWidth: frameSizeCameraSlider)
-        
-        //add Subviews
-        view.addSubview(speedoMeter)
-        view.addSubview(cameraCustomSlider)
-        
-    }
+
     
     
     //custom camera value changed
@@ -549,6 +569,8 @@ class showRouteController: UIViewController {
         deleteAllMarker()
         printAllMarker(FuncTypes.PrintCircles)
         self.centerMap(50, duration: 3)
+        hidePlaybackViews()
+        showRouteInfos()
     }
     
     @IBAction func printAltitude(sender: AnyObject) {
@@ -575,6 +597,9 @@ class showRouteController: UIViewController {
          deleteAllMarker()
          mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
          self.centerMap(50, duration: 3)
+        hideRouteInfos()
+        showPlaybackViews()
+        print("playback show/hide")
     }
     
       
@@ -677,8 +702,6 @@ class showRouteController: UIViewController {
      * Close segue
      */
     @IBAction func close(segue:UIStoryboardSegue) {
-        
-        //print("close \(segue.sourceViewController)")
         
         if let optionController = segue.sourceViewController as? motoRouteOptions {
             
@@ -839,7 +862,7 @@ extension showRouteController: msgOverlayDelegate{
     
     func pressedResume() {
         print("pressed resume")
-        AnimationEngine.hideMsgOverlay(msgOverlay)
+        AnimationEngine.hideViewAnim(msgOverlay)
         
     }
     

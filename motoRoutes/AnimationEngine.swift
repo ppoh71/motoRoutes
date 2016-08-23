@@ -12,6 +12,7 @@ import pop
 
 final class AnimationEngine {
 
+    //MARK; Static Screen Position Vars
     class var offScreenRightPosition: CGPoint{
         return CGPointMake(UIScreen.mainScreen().bounds.width, CGRectGetMidY(UIScreen.mainScreen().bounds))
     }
@@ -23,51 +24,22 @@ final class AnimationEngine {
     class var screenCenterPosition: CGPoint{
         return CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetMidY(UIScreen.mainScreen().bounds))
     }
-
-    let ANIM_DELA:Int64 = 1
-    var originalConstans = [CGFloat]()
-    var constraints: [NSLayoutConstraint]!
     
-    init(constraints: [NSLayoutConstraint]) {
+    class var screenBottomCenterPosition: CGPoint{
+        return CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetHeight(UIScreen.mainScreen().bounds))
+    }
     
-        for con in constraints{
-            originalConstans.append(con.constant)
-            con.constant = AnimationEngine.offScreenRightPosition.x
-        }
-        
-     self.constraints = constraints
+    class var screenBottomPosition: CGPoint {
+        return CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetHeight(UIScreen.mainScreen().bounds))
+    }
+    
+    
+    init(){
     
     }
     
-
-    func animateOnScreen(delay: Int ){
     
-        //let d:Int64 = delay != nil ? Int64(Double(ANIM_DELA) * Double(NSEC_PER_SEC)) : delay!
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(delay) * Double(NSEC_PER_SEC)))
-        
-        dispatch_after(time, dispatch_get_main_queue()){
-        
-            var index = 0
-            repeat{
-                
-                let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayoutConstraintConstant)
-                moveAnim.toValue = self.originalConstans[index]
-                moveAnim.springBounciness = 12
-                moveAnim.springSpeed = 12
-                
-                let con = self.constraints[index]
-                con.pop_addAnimation(moveAnim, forKey: "moveOnScreen")
-                
-                if(index==0){
-                    moveAnim.dynamicsFriction += 10 + CGFloat(index)
-                }
-                
-                index = index+1
-                
-            } while (index < self.constraints.count)
-        }
-    }
-    
+    //MARK: Animation to Point
     class func animationToPosition(view: UIView, position: CGPoint) {
         
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
@@ -75,17 +47,81 @@ final class AnimationEngine {
         moveAnim.springBounciness = 8
         moveAnim.springSpeed = 8
         view.pop_addAnimation(moveAnim, forKey: "movePosition")
-        
     }
+
     
     
-    class func showMsgOverlay(viewObejct: UIView){
+    //MARK: Animation functions
+    
+    class func showViewAnimCenterPosition(viewObejct: UIView){
         AnimationEngine.animationToPosition(viewObejct, position: AnimationEngine.screenCenterPosition)
     }
     
-    class func hideMsgOverlay(viewObejct: UIView){
-        AnimationEngine.animationToPosition(viewObejct, position: AnimationEngine.offScreenLeftPosition)
+    class func hideViewAnim(viewObject: UIView){
+        AnimationEngine.animationToPosition(viewObject, position: AnimationEngine.offScreenLeftPosition)
     }
     
-        
+    class func hideViewBottomLeft(viewObject: UIView){
+        let offScreenLeftBottom = CGPointMake(-UIScreen.mainScreen().bounds.width, CGRectGetHeight(UIScreen.mainScreen().bounds) - (viewObject.frame.height/2))
+        AnimationEngine.animationToPosition(viewObject, position: offScreenLeftBottom)
+    }
+    
+    class func showViewAnimCenterBottomPosition(viewObject: UIView){
+        let position = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetHeight(UIScreen.mainScreen().bounds) - (viewObject.frame.height/2))
+        AnimationEngine.animationToPosition(viewObject, position: position)
+    }
+    
+    class func showViewAnimCenterTopPosition(viewObject: UIView){
+        let position = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), 0)
+        AnimationEngine.animationToPosition(viewObject, position: position)
+    }
+    
+    
+    
+    
+    
+    /*
+     
+     let ANIM_DELA:Int64 = 1
+     var originalConstans = [CGFloat]()
+     var constraints: [NSLayoutConstraint]!
+     
+     init(constraints: [NSLayoutConstraint]) {
+     
+     for con in constraints{
+     originalConstans.append(con.constant)
+     con.constant = AnimationEngine.offScreenRightPosition.x
+     }
+     
+     self.constraints = constraints
+     
+     }
+     
+     func animateOnScreen(delay: Int ){
+     
+     //let d:Int64 = delay != nil ? Int64(Double(ANIM_DELA) * Double(NSEC_PER_SEC)) : delay!
+     let time = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(delay) * Double(NSEC_PER_SEC)))
+     
+     dispatch_after(time, dispatch_get_main_queue()){
+     
+     var index = 0
+     repeat{
+     
+     let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayoutConstraintConstant)
+     moveAnim.toValue = self.originalConstans[index]
+     moveAnim.springBounciness = 12
+     moveAnim.springSpeed = 12
+     
+     let con = self.constraints[index]
+     con.pop_addAnimation(moveAnim, forKey: "moveOnScreen")
+     
+     if(index==0){
+     moveAnim.dynamicsFriction += 10 + CGFloat(index)
+     }
+     
+     index = index+1
+     
+     } while (index < self.constraints.count)
+     }
+     }    */
  }

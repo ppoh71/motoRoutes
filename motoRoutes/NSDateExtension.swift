@@ -35,8 +35,8 @@ extension NSDateFormatter {
 extension NSDate {
     
     struct Formatter {
-        static let customDE = NSDateFormatter(dateFormat: "d.m.yyyy, H:mm")
-        static let customEN = NSDateFormatter(dateFormat: "m/d/yyyy, H:mm")
+        static let customDE = NSDateFormatter(dateFormat: "MMM d, H:mm a")
+        static let customEN = NSDateFormatter(dateFormat: "MMM d, H:mm a")
     }
     
     var customFormatted: String {

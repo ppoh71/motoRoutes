@@ -230,14 +230,14 @@ class addRouteController: UIViewController {
                     
                     self.msgOverlay.msgType = .Save
                     self.msgOverlay.setupView()
-                    AnimationEngine.showMsgOverlay(self.msgOverlay)
+                    AnimationEngine.showViewAnimCenterPosition(self.msgOverlay)
                 }
             
         } else{
             
             self.msgOverlay.msgType = .Resume
             self.msgOverlay.setupView()
-            AnimationEngine.showMsgOverlay(self.msgOverlay)
+            AnimationEngine.showViewAnimCenterPosition(self.msgOverlay)
         }
             
     }
@@ -515,7 +515,7 @@ extension addRouteController: msgOverlayDelegate{
         print("pressed resume")
         //roll back overlay
         cnt=20
-        AnimationEngine.hideMsgOverlay(msgOverlay)
+        AnimationEngine.hideViewAnim(msgOverlay)
         resumeLocationUpdates()
     }
     
