@@ -172,7 +172,11 @@ final class imageUtils{
             //let altQuo = globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt
             //let altDiffQuo = altQuo/Double(drawHeight)
             
-            let newLineHeight = (LineAltitude - globalLowestAlt.gLowesttAlt) * Double(drawHeight) / (globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt)
+            var newLineHeight = (LineAltitude - globalLowestAlt.gLowesttAlt) * Double(drawHeight) / (globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt)
+            
+            guard newLineHeight > 0 else {
+                break
+            }
             
             //print(Int(LineAltitude/altDiffQuo))
             drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: Int(newLineHeight), LineColor: UIColor.whiteColor(), perCent: 30, alpha: 0.3)
