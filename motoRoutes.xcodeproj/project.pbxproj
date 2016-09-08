@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5506E0D91C650A230091364B /* colorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506E0D81C650A230091364B /* colorUtils.swift */; };
 		551EFF941CC11F640065204D /* imageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EFF931CC11F640065204D /* imageUtils.swift */; };
+		552240F11D6DE7EA00694E60 /* MotoChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552240F01D6DE7EA00694E60 /* MotoChart.swift */; };
+		552240F31D6DEA7700694E60 /* MotoChart.xib in Resources */ = {isa = PBXBuildFile; fileRef = 552240F21D6DEA7700694E60 /* MotoChart.xib */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
 		553565551C5A83A2002628AD /* RouteModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RouteModels.swift */; };
@@ -50,6 +52,8 @@
 		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5506E0D81C650A230091364B /* colorUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = colorUtils.swift; sourceTree = "<group>"; };
 		551EFF931CC11F640065204D /* imageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = imageUtils.swift; sourceTree = "<group>"; };
+		552240F01D6DE7EA00694E60 /* MotoChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotoChart.swift; sourceTree = "<group>"; };
+		552240F21D6DEA7700694E60 /* MotoChart.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MotoChart.xib; sourceTree = "<group>"; };
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
 		5530AFBC1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
@@ -113,6 +117,15 @@
 				BD75F39BE877D9D1239C31DC /* Pods_motoRoutes.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		552240EF1D6DE7BA00694E60 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				552240F01D6DE7EA00694E60 /* MotoChart.swift */,
+				552240F21D6DEA7700694E60 /* MotoChart.xib */,
+			);
+			name = Chart;
 			sourceTree = "<group>";
 		};
 		553AB4F51C50056400AC12A5 = {
@@ -210,6 +223,7 @@
 		55E1496F1CE22D7E00B576BB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				552240EF1D6DE7BA00694E60 /* Chart */,
 				55BB80C41D630D2900D0CCEF /* RouteLabels */,
 				55F7CEF91D0708C10051F338 /* Buttons */,
 				55F7CEF41D06FB190051F338 /* Controls */,
@@ -359,6 +373,7 @@
 				55BB80C61D630D8B00D0CCEF /* RouteInfos.xib in Resources */,
 				553D05E51CE4AB7400D8555D /* Roboto-Bold.ttf in Resources */,
 				553AB50C1C50056400AC12A5 /* Assets.xcassets in Resources */,
+				552240F31D6DEA7700694E60 /* MotoChart.xib in Resources */,
 				553AB5071C50056400AC12A5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -507,6 +522,7 @@
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				5562BA551C73663900EF340D /* utils.swift in Sources */,
+				552240F11D6DE7EA00694E60 /* MotoChart.swift in Sources */,
 				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
 				556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */,
 				A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */,

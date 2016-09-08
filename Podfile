@@ -8,4 +8,5 @@ pod 'pop', '~> 1.0'
 pod 'RealmSwift'
 pod 'Fabric'
 pod 'Crashlytics'
+pod 'Charts'
 end

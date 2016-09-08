@@ -109,6 +109,17 @@ final class Global {
         self.gRoutePos = gRoutePos
     }
     
+    var gHighestAlt:Double = 0
+    init(gHighestAlt:Double){
+        self.gHighestAlt = gHighestAlt
+    }
+    
+    var gLowesttAlt:Double = 0
+    init(gLowesttAlt:Double){
+        self.gLowesttAlt = gLowesttAlt
+    }
+    
+    
 }
 
 
@@ -127,5 +138,7 @@ var globalCounter = Global(gCounter: 0)
 var globalAltitude = Global(gAltitude: 0)
 var globalHeading = Global(gHeading: -60)
 var globalRoutePos = Global(gRoutePos: 0)
+var globalHighestAlt = Global(gHighestAlt: 0.0)
+var globalLowestAlt = Global(gLowesttAlt: 0.0)
 
 

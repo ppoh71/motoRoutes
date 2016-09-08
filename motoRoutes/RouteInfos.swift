@@ -62,15 +62,15 @@ class RouteInfos: UIView {
     
     
     // MARK: Setup Functions
-    func setInfos(masterRoute: RouteMaster){
+    func setInfos(routeMaster: RouteMaster){
         
-        dateRoute.text = masterRoute.routeDate
-        distanceRoute.text = "\(utils.distanceFormat(masterRoute.routeDistance))"
-        durationRoute.text = "\(utils.clockFormat(masterRoute.routeTime))"
-        averageSpeed.text = masterRoute.routeAverageSpeed
-        highSpeed.text = masterRoute.routeHighSpeed
-        altitudeDelta.text = masterRoute.routeDeltaAlt
-        highestAltitude.text = masterRoute.routeHighestAlt
+        dateRoute.text = routeMaster.routeDate
+        distanceRoute.text = "\(utils.distanceFormat(routeMaster.routeDistance))"
+        durationRoute.text = "\(utils.clockFormat(routeMaster.routeTime))"
+        averageSpeed.text = routeMaster.routeAverageSpeed
+        highSpeed.text = routeMaster.routeHighSpeed
+        altitudeDelta.text = routeMaster.routeDeltaAlt
+        highestAltitude.text = routeMaster.routeHighestAlt
     }
     
     

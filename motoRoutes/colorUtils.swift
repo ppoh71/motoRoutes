@@ -138,5 +138,22 @@ final class colorUtils {
         //retrun converted color speed color in ui.color
         return colorUtils.hexTorgbColor(colorSpeed[speedInt])
     }
+    
+    
+    static func getGradient() -> CGGradient {
+    
+//        let colorTop = UIColor(red: 192.0/255.0, green: 38.0/255.0, blue: 42.0/255.0, alpha: 1.0).CGColor
+//        let colorBottom = UIColor(red: 35.0/255.0, green: 2.0/255.0, blue: 2.0/255.0, alpha: 1.0).CGColor
+        
+        let startColor: UIColor = UIColor.whiteColor()
+        let endColor: UIColor = UIColor.lightGrayColor()
+        let colors = [startColor.CGColor, endColor.CGColor]
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorLocations:[CGFloat] = [0.0, 1.0]
+        let gradient = CGGradientCreateWithColors(colorSpace, colors, colorLocations)
+    
+        return gradient!
+    }
+    
 }
 

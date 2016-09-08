@@ -88,12 +88,19 @@ class RouteMaster {
     var routeDate: String { get { return _MotoRoute.timestamp.customFormatted } }
     var routeTime: Int { get { return _MotoRoute.duration } }
     var routeDistance: Double{ get{ return _MotoRoute.distance } }
-    var routeAverageSpeed: String { get { return getRouteSpeedAlt().0 }}
-    var routeHighSpeed: String { get { return getRouteSpeedAlt().1 }}
-    var routeDeltaAlt: String { get { return getRouteSpeedAlt().2 }}
-    var routeHighestAlt: String { get { return getRouteSpeedAlt().3 }}
     var startLocation: String { get{ return _MotoRoute.locationStart} }
     var endLocation: String { get{ return _MotoRoute.locationEnd} }
+    
+    
+    var routeAverageSpeed: String = ""
+    var routeHighSpeed: String = ""
+    var routeDeltaAlt: String = ""
+    var routeHighestAlt: String = ""
+    var routeListTimestamps: [NSDate] = [NSDate]()
+    var routeListSpeeds: [Double] = [Double]()
+    var routeListAltitudes: [Double] = [Double]()
+
+    var cnt = 0
     
     private init(){
         print(_MotoRoute)
@@ -103,6 +110,7 @@ class RouteMaster {
     func associateRoute(motoRoute: Route){
         _MotoRoute = motoRoute
         createMasterLocationRealm(_MotoRoute.locationsList)
+        setRouteListInfos()
     }
     
     
@@ -143,17 +151,23 @@ class RouteMaster {
         
     }
     
-    //get speede, alt, average and stuff
-    private func getRouteSpeedAlt() -> (String, String, String, String) {
+    //get speede, alt, average and stuff //  -> (String, String, String, String, [NSDate], [Double], [Double])
+    private func setRouteListInfos() {
+        
+        cnt += 1
         
         var averageSpeed = 0.0
         var highestSpeed = 0.0
         var lowestAlt = 10000.0
         var highestAlt = 0.0
+        var _routeListTimestamps = [NSDate]()
+        var _routeListSpeeds = [Double]()
+        var _routeListAltitudes = [Double]()
         
         guard _RouteList.count > 0 else{
             print("average speed guard, not enough loctaions")
-            return ("no data", "no data", "no data", "no data" )
+           // return ("no data", "no data", "no data", "no data", routeListTimestamps, _routeListSpeeds, _routeListAltitudes)
+            return
         }
         
         for item in _RouteList {
@@ -161,10 +175,23 @@ class RouteMaster {
             highestSpeed = item.speed > highestSpeed ? item.speed : highestSpeed
             lowestAlt = item.altitude < lowestAlt ? item.altitude : lowestAlt
             highestAlt = item.altitude > highestAlt ? item.altitude : highestAlt
+            _routeListTimestamps.append(item.timestamp)
+            _routeListSpeeds.append(Double(utils.getSpeedDouble(item.speed)))
+           _routeListAltitudes.append(item.altitude)
         }
         
-        return (averageSpeed: utils.getSpeedString(averageSpeed/Double(_RouteList.count)) ,highSpeed: utils.getSpeedString(highestSpeed), deltaAlt: utils.getDoubleString(highestAlt - lowestAlt), highestAlt: utils.getDoubleString(highestAlt))
-    }
+        routeAverageSpeed = utils.getSpeedString(averageSpeed/Double(_RouteList.count))
+        routeHighSpeed = utils.getSpeedString(highestSpeed)
+        routeDeltaAlt = utils.getDoubleString(highestAlt - lowestAlt)
+        routeHighestAlt = utils.getDoubleString(highestAlt)
+        routeListTimestamps = _routeListTimestamps
+        routeListSpeeds = _routeListSpeeds
+        routeListAltitudes = _routeListAltitudes
+        
+        //set global
+        globalHighestAlt.gHighestAlt = highestAlt
+        globalLowestAlt.gLowesttAlt = lowestAlt
+        }
 }
 
 // Master Location Model for all Route Operations inside App

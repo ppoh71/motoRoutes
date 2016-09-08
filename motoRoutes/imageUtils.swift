@@ -141,7 +141,7 @@ final class imageUtils{
         //get height and color for line
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
         let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
-        let LineAltitude  = Int(globalAltitude.gAltitude)
+        let LineAltitude  = globalAltitude.gAltitude
         //LineAltitude = round(1000 * LineAltitude) / 1000
     
         //context stuff
@@ -168,7 +168,14 @@ final class imageUtils{
            
         case .PrintAltitude:
              //print("PrintAltitude \(LineAltitude)")
-            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: LineAltitude, LineColor: UIColor.whiteColor(), perCent: 5, alpha: 0.3)
+            //get height idsplay quotient
+            //let altQuo = globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt
+            //let altDiffQuo = altQuo/Double(drawHeight)
+            
+            let newLineHeight = (LineAltitude - globalLowestAlt.gLowesttAlt) * Double(drawHeight) / (globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt)
+            
+            //print(Int(LineAltitude/altDiffQuo))
+            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: Int(newLineHeight), LineColor: UIColor.whiteColor(), perCent: 30, alpha: 0.3)
         
         default:
             break

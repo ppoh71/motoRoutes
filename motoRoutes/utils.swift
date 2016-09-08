@@ -92,10 +92,22 @@ final class utils {
     }
     
     /*
+     * get speed Double km/h mph
+     */
+    class func getSpeedDouble(speed:Double) -> Double{
+        
+        let speed = round((speed*3.6)) //kmh
+        //not 0 in return
+        //speed = speed == 0 ? 120 : speed
+        return speed
+    }
+    
+    /*
      * get speed km/h mph
      */
     class func getSpeedString(speed:Double) -> String{
         let speed = speed*3.6//kmh
+        
         return String(format: "%.2f", speed)
     }
     

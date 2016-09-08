@@ -19,6 +19,7 @@ import pop
 //Notification Center keys
 let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
 let getLocationSetNotificationKey = "motoRoutes.getLocationString"
+let chartSetNotificationKey = "motoRoutes.getKeyFromChart"
 
 class showRouteController: UIViewController {
     
@@ -87,8 +88,12 @@ class showRouteController: UIViewController {
     //make screenshot
     var funcType = FuncTypes.Default
     var msgOverlay: MsgOverlay!
-    var routeInfos: RouteInfos!
     var countReuse = 0
+    
+    //Custom Views
+    var routeInfos: RouteInfos!
+    var chartSpeed: MotoChart!
+    var chartAlt: MotoChart!
     
     //Display Vars
     var screenSize: CGRect = CGRectMake(0, 0, 0, 0)
@@ -96,7 +101,7 @@ class showRouteController: UIViewController {
     var screenHeight: CGFloat = 0.0
     
     
-    //MARK: Overrides
+    //MARK: viewDidLoad, didAppear
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -135,12 +140,23 @@ class showRouteController: UIViewController {
         routeInfos.setInfos(_RouteMaster)
         AnimationEngine.hideViewBottomLeft(routeInfos) //move view to bottom ad off screen to the left for now
         self.view.addSubview(routeInfos)
+        
+        //init Charts
+        chartSpeed = NSBundle.mainBundle().loadNibNamed("MotoChart", owner: self, options: nil)[0] as? MotoChart
+        chartSpeed.setupChart(_RouteMaster, type: "")
+        AnimationEngine.hideViewBottomLeft(chartSpeed) //move view to bottom ad off screen to the left for now
+        self.view.addSubview(chartSpeed)
+        
+        //init Charts Alt
+        chartAlt = NSBundle.mainBundle().loadNibNamed("MotoChart", owner: self, options: nil)[0] as? MotoChart
+        chartAlt.setupChart(_RouteMaster, type: "alt")
+        AnimationEngine.hideViewBottomLeft(chartAlt) //move view to bottom ad off screen to the left for now
+        self.view.addSubview(chartAlt)
 
         cameraCustomSlider.addTarget(self, action: #selector(showRouteController.cameraSliderValueChanged), forControlEvents: .ValueChanged)
         setupCustomUI()
-        
-        setupCustomUI()
-        //hidePlaybackViews()
+        hideAllBottomController()
+        //showRouteInfos()
     }
     
     
@@ -149,7 +165,8 @@ class showRouteController: UIViewController {
         //Listen from FlyoverRoutes if Markers are set
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.saveLocationString), name: getLocationSetNotificationKey, object: nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.keyFromChart), name: chartSetNotificationKey, object: nil)
+        
         //get locationString if emtpy and set start/end marker
         checkLocationStartEnd(motoRoute!)
         
@@ -161,10 +178,6 @@ class showRouteController: UIViewController {
         let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
         
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
-        
-        //Displays
-        setupCustomUI()
-        showRouteInfos()
         
     }
     
@@ -201,9 +214,12 @@ class showRouteController: UIViewController {
     }
     
     
-    /*
-        Hide Playback Buttons & Slider
-    */
+    
+    //MARK: Show/Hide Bottom Controls
+    
+    //
+    // Hide Playback Buttons & Slider
+    //
     
     func hidePlaybackViews(){
         followCameraButton.hidden = true
@@ -212,7 +228,6 @@ class showRouteController: UIViewController {
         speedoMeter.hidden = true
         cameraCustomSlider.hidden = true
     }
-    
     
     func showPlaybackViews(){
         followCameraButton.hidden = false
@@ -230,10 +245,33 @@ class showRouteController: UIViewController {
         AnimationEngine.hideViewBottomLeft(routeInfos)
     }
     
+    func hideChartSpeed(){
+        AnimationEngine.hideViewBottomLeft(chartSpeed)
+    }
+    
+    func showChartSpeed(){
+        AnimationEngine.showViewAnimCenterBottomPosition(chartSpeed)
+    }
+    
+    func hideChartAlt(){
+        AnimationEngine.hideViewBottomLeft(chartAlt)
+    }
+    
+    func showChartAlt(){
+        AnimationEngine.showViewAnimCenterBottomPosition(chartAlt)
+    }
+    
+    func hideAllBottomController(){
+        hideChartSpeed()
+        hideRouteInfos()
+        hidePlaybackViews()
+        hideChartAlt()
+    }
     
     
+    //MARK: Stuff
     
-    /* check if we have the locationStrings already */
+    //  check if we have the locationStrings already
     func checkLocationStartEnd(route:Route){
     
         if(route.locationStart.isEmpty || route.locationEnd.isEmpty || route.locationStart == "Start Location" ) {
@@ -252,7 +290,7 @@ class showRouteController: UIViewController {
     }
     
     
-    /* add start/end markers with locationString text */
+    // add start/end markers with locationString text
     func setStartEndMarker(){
         print("Add Start/End Marker")
         
@@ -272,6 +310,9 @@ class showRouteController: UIViewController {
     }
     
     
+    
+    //MARK: Notification observer functions
+    
     //save location string from geolocation(notification center to realm
     func saveLocationString(notification: NSNotification){
         
@@ -287,9 +328,35 @@ class showRouteController: UIViewController {
         }
     }
     
+    //notifycenter func: get key from swipe on chart
+    func keyFromChart(notification: NSNotification){
+        
+        print("Key from chart")
+        let arrayObject =  notification.object as! [AnyObject]
+        
+        if let receivedKey = arrayObject[0] as? Int {
+            flyToRouteKey(receivedKey)
+        }
+    }
     
-
+    //notifycenter func: when no marker while flying over routesm switch to stop all and start marker printing
+    func switchFromFly2PrintMarker(notification: NSNotification){
+        
+        //get object from notification
+        let arrayObject =  notification.object as! [AnyObject]
+        
+        if let receivedKey = arrayObject[0] as? Int {
+            
+            //set new sliceStartKey
+            sliceStart = receivedKey
+            stopAll()
+            StartStop(true)
+        }
+    }
     
+    
+    
+    //MARK: Slider Stuff
     
     //custom camera value changed
     func cameraSliderValueChanged(){
@@ -319,14 +386,11 @@ class showRouteController: UIViewController {
         }
     }
     
+
     
+    func flyToRouteKey(key: Int){
     
-    //Route Slider value changed
-    @IBAction func sliderRouteChanged(sender: UISlider) {
-        
-        //get slider value as int
-        //sliceStart = Int(sender.value)
-        globalRoutePos.gRoutePos = Int(sender.value)
+        globalRoutePos.gRoutePos = key
         
         //routeSlider.setValues()
         //stop camera flightm when selecting new route point
@@ -334,7 +398,7 @@ class showRouteController: UIViewController {
         
         //fly to route n destination
         mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: globalRoutePos.gRoutePos, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
-        //print("Slider Route value \(sliderRouteValue)")
+    
     }
     
     
@@ -347,12 +411,10 @@ class showRouteController: UIViewController {
     func touchUpRouteSlide(){
     }
     
-    //update debug label
-    func updateDebugLabel(){
-        debugSeconds += 1
-        debugLabel.text = "\(debugSeconds) / \(sliceStart) "
-    }
     
+    
+
+    //MARK: Start/Stop Print Marker  & Timer
     
     //start marker timer
     func startMarkerTimer(){
@@ -364,7 +426,6 @@ class showRouteController: UIViewController {
         debugTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(showRouteController.updateDebugLabel), userInfo: nil, repeats: true)
     }
     
-    
     //stop all running Timer flying cameras
     func stopAll(){
         timer.invalidate()
@@ -372,25 +433,46 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay =  false
         flyButton.selected = false
     }
+
     
-    //notifycenter func: when no marker while flying over routesm switch to stop all and start marker printing
-    func switchFromFly2PrintMarker(notification: NSNotification){
+    //start auto fly over routes when marker are set
+    func startFlytoAuto(){
         
-        //get object from notification
-        let arrayObject =  notification.object as! [AnyObject]
+        flyButton.selected = true
+        globalAutoplay.gAutoplay =  true
         
-        if let receivedKey = arrayObject[0] as? Int {
-            
-            //set new sliceStartKey
-            sliceStart = receivedKey
-            stopAll()
-            StartStop(true)
-        }
+        //make route fly
+        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
+        
     }
     
-    /**
-    * printing speedmarker on the map
-    **/
+    
+    //start/stop button function
+    func StartStop(active: Bool){
+        
+        if (active){
+            startMarkerTimer()
+            startDebugTimer()
+            flyButton.selected = true
+            
+        } else{
+            stopAll()
+        }
+        
+    }
+    
+    //update debug label
+    func updateDebugLabel(){
+        debugSeconds += 1
+        debugLabel.text = "\(debugSeconds) / \(sliceStart) "
+    }
+    
+    
+    //MARK: Print Marker, Print All, Delete Marker
+    
+    //
+    // printing speedmarker on the map
+    //
     func printMarker(){
         
         //if not at end of array
@@ -466,73 +548,7 @@ class showRouteController: UIViewController {
     }
     
     
-    //delete older marker when there are to many
-    func unsetMarker(inout markersSet: [MarkerAnnotation]){
-        
-        /*
-         let markerAmount = 150
-         let markerToDelete = 1
-         
-         if(markersSet.count > markerAmount) {
-         
-         let markerSlice = markersSet[0...markerToDelete]
-         
-         for marker in markerSlice {
-         let annotation = marker.annotaion
-         //print(annotation)
-         mapViewShow.removeAnnotation(annotation)
-         
-         markersSet.removeAtIndex(0) // remove deleted markers from array
-         RouteList[marker.key].marker = false
-         //    print("delete marker \(index) \(markersSet.count) \(mremove.annotaion)")
-         }
-         }
-         */
-    }
-    
-    
-    
-    
-    //start auto fly over routes when marker are set
-    func startFlytoAuto(){
-        
-        flyButton.selected = true
-        globalAutoplay.gAutoplay =  true
-        
-        //make route fly
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
-        
-    }
-    
-    
-    
-    //start/stop button function
-    func StartStop(active: Bool){
-        
-        if (active){
-            startMarkerTimer()
-            startDebugTimer()
-            flyButton.selected = true
-            
-        } else{
-            stopAll()
-        }
-        
-    }
-    
-    
-    // new screenshot
-    @IBAction func flyRoute(sender: UIButton) {
-        
-        sender.selected = !sender.selected;
-        sender.highlighted = !sender.highlighted
-        
-        //print("play button \(sender.selected)"
-        StartStop(sender.selected )
-        
-    }
-    
-    
+
     func printAllMarker(funcSwitch: FuncTypes){
         
         self.funcType = funcSwitch
@@ -565,26 +581,60 @@ class showRouteController: UIViewController {
     }
     
     
+    //MARK: IB Actions Buttons
+    
+    // new screenshot
+    @IBAction func flyRoute(sender: UIButton) {
+        sender.selected = !sender.selected;
+        sender.highlighted = !sender.highlighted
+        StartStop(sender.selected )
+    }
+    
+    
+    //Route Slider value changed
+    @IBAction func sliderRouteChanged(sender: UISlider) {
+        //get slider value as int
+        let key = Int(sender.value)
+        flyToRouteKey(key)
+    }
+    
+    @IBAction func printAltitude(sender: AnyObject) {
+        deleteAllMarker()
+        printAllMarker(FuncTypes.PrintAltitude)
+        self.centerMap(52, duration: 1)
+        hideAllBottomController()
+        showChartAlt()
+    }
+    
     @IBAction func printCircleMarker(sender: AnyObject) {
         deleteAllMarker()
         printAllMarker(FuncTypes.PrintCircles)
         self.centerMap(50, duration: 3)
         hidePlaybackViews()
-        showRouteInfos()
+        hideAllBottomController()
+        showChartSpeed()
     }
     
-    @IBAction func printAltitude(sender: AnyObject) {
-        deleteAllMarker()
-        
-        printAllMarker(FuncTypes.PrintAltitude)
-        self.centerMap(52, duration: 3)
-    }
-
+    
     @IBAction func printSpeedMarker(sender: AnyObject) {
         deleteAllMarker()
         printAllMarker(FuncTypes.PrintMarker)
         self.centerMap(54, duration: 3)
+        hideAllBottomController()
+        showRouteInfos()
     }
+    
+
+
+    @IBAction func resetMarker(sender: AnyObject) {
+        deleteAllMarker()
+        mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+        self.centerMap(50, duration: 3)
+        hideAllBottomController()
+        showPlaybackViews()
+        print("playback show/hide")
+    }
+    
     
     @IBAction func printRoute(sender: AnyObject) {
         deleteAllMarker()
@@ -592,17 +642,7 @@ class showRouteController: UIViewController {
         self.centerMap(53, duration: 3)
     }
     
-
-    @IBAction func resetMarker(sender: AnyObject) {
-         deleteAllMarker()
-         mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
-         self.centerMap(50, duration: 3)
-        hideRouteInfos()
-        showPlaybackViews()
-        print("playback show/hide")
-    }
     
-      
     @IBAction func switchCameraFollow(sender: AnyObject) {
         
         if followCamera==false{
@@ -629,7 +669,7 @@ class showRouteController: UIViewController {
     }
     
     
-    
+    //MARK: Center Map
     func centerMap(pitch: CGFloat, duration: Double){
     
         //get bounds, centerpoints, of the whole Route
@@ -647,11 +687,8 @@ class showRouteController: UIViewController {
         
         //animate camera to center point, launch save overlay
         mapViewShow.setCamera(camera, withDuration: duration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
-            
     
         }
-
-    
     }
 
 
@@ -666,16 +703,14 @@ class showRouteController: UIViewController {
             self.routeImageView.transform = CGAffineTransformMakeTranslation(animateX, 0)
             
             }, completion: nil)
-        
-        //print("x: \(self.routeImageView.frame.origin.x)")
-        
     }
     
     
+    //MARK: SEGUE Stuff
     
-    /*
-     * Prepare Segue / camera stuff
-     */
+    //
+    // Prepare Segue / camera stuff
+    //
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         
         //prepare for camera/photo store to MediaObhect
@@ -691,28 +726,17 @@ class showRouteController: UIViewController {
     
     
     @IBAction func unwindTo(unwindSegue: UIStoryboardSegue) {
-        
         //print("unwind seague \(unwindSegue)")
-        
     }
     
     
-    
-    /*
-     * Close segue
-     */
     @IBAction func close(segue:UIStoryboardSegue) {
         
         if let optionController = segue.sourceViewController as? motoRouteOptions {
-            
-            //print("close sliceAmount \(optionController.sliceAmount)")
-            
             sliceAmount = optionController.sliceAmount
             timeIntervalMarker = optionController.timeIntervalMarker
-            
         }
     }
-    
     
 }
 
@@ -727,10 +751,6 @@ extension showRouteController: MGLMapViewDelegate {
         
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
-
-        //print(self.funcType)
-        
-        
         var image: UIImage
         
         var reuseIdentifier = ""
