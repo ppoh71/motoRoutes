@@ -13,6 +13,7 @@
 		552240F31D6DEA7700694E60 /* MotoChart.xib in Resources */ = {isa = PBXBuildFile; fileRef = 552240F21D6DEA7700694E60 /* MotoChart.xib */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
+		553156611D81BDC100A53E8F /* motoRoutesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553156601D81BDC100A53E8F /* motoRoutesTests.swift */; };
 		553565551C5A83A2002628AD /* RouteModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RouteModels.swift */; };
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
@@ -47,6 +48,16 @@
 		D7F6F5E138007FBE8589C3CA /* Pods_motoRoutes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD75F39BE877D9D1239C31DC /* Pods_motoRoutes.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		553156631D81BDC100A53E8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 553AB4F61C50056400AC12A5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 553AB4FD1C50056400AC12A5;
+			remoteInfo = motoRoutes;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		18D5D00DB1EB4C74F65AE624 /* Pods-motoRoutes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutes.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutes/Pods-motoRoutes.release.xcconfig"; sourceTree = "<group>"; };
 		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +69,9 @@
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
 		5530AFBC1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		5530AFBD1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		5531565E1D81BDC100A53E8F /* motoRoutesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motoRoutesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		553156601D81BDC100A53E8F /* motoRoutesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = motoRoutesTests.swift; sourceTree = "<group>"; };
+		553156621D81BDC100A53E8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553565541C5A83A2002628AD /* RouteModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteModels.swift; sourceTree = "<group>"; };
 		553AB4FE1C50056400AC12A5 /* motoRoutes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motoRoutes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		553AB5011C50056400AC12A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +113,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5531565B1D81BDC100A53E8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		553AB4FB1C50056400AC12A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,10 +149,20 @@
 			name = Chart;
 			sourceTree = "<group>";
 		};
+		5531565F1D81BDC100A53E8F /* motoRoutesTests */ = {
+			isa = PBXGroup;
+			children = (
+				553156601D81BDC100A53E8F /* motoRoutesTests.swift */,
+				553156621D81BDC100A53E8F /* Info.plist */,
+			);
+			path = motoRoutesTests;
+			sourceTree = "<group>";
+		};
 		553AB4F51C50056400AC12A5 = {
 			isa = PBXGroup;
 			children = (
 				553AB5001C50056400AC12A5 /* motoRoutes */,
+				5531565F1D81BDC100A53E8F /* motoRoutesTests */,
 				553AB4FF1C50056400AC12A5 /* Products */,
 				52ACE237A2458B42E81E2C00 /* Frameworks */,
 				587B62920CBCC9EA76E6B460 /* Pods */,
@@ -142,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				553AB4FE1C50056400AC12A5 /* motoRoutes.app */,
+				5531565E1D81BDC100A53E8F /* motoRoutesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -291,6 +323,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5531565D1D81BDC100A53E8F /* motoRoutesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 553156671D81BDC100A53E8F /* Build configuration list for PBXNativeTarget "motoRoutesTests" */;
+			buildPhases = (
+				5531565A1D81BDC100A53E8F /* Sources */,
+				5531565B1D81BDC100A53E8F /* Frameworks */,
+				5531565C1D81BDC100A53E8F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				553156641D81BDC100A53E8F /* PBXTargetDependency */,
+			);
+			name = motoRoutesTests;
+			productName = motoRoutesTests;
+			productReference = 5531565E1D81BDC100A53E8F /* motoRoutesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		553AB4FD1C50056400AC12A5 /* motoRoutes */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 553AB5131C50056400AC12A5 /* Build configuration list for PBXNativeTarget "motoRoutes" */;
@@ -326,6 +376,10 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Peter Pohlmann";
 				TargetAttributes = {
+					5531565D1D81BDC100A53E8F = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 553AB4FD1C50056400AC12A5;
+					};
 					553AB4FD1C50056400AC12A5 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 4RGRETYKQ9;
@@ -355,11 +409,19 @@
 			projectRoot = "";
 			targets = (
 				553AB4FD1C50056400AC12A5 /* motoRoutes */,
+				5531565D1D81BDC100A53E8F /* motoRoutesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5531565C1D81BDC100A53E8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		553AB4FC1C50056400AC12A5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -501,6 +563,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5531565A1D81BDC100A53E8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553156611D81BDC100A53E8F /* motoRoutesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		553AB4FA1C50056400AC12A5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -536,6 +606,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		553156641D81BDC100A53E8F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 553AB4FD1C50056400AC12A5 /* motoRoutes */;
+			targetProxy = 553156631D81BDC100A53E8F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		553AB5051C50056400AC12A5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -568,6 +646,35 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		553156651D81BDC100A53E8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = motoRoutesTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/motoRoutes.app/motoRoutes";
+			};
+			name = Debug;
+		};
+		553156661D81BDC100A53E8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = motoRoutesTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/motoRoutes.app/motoRoutes";
+			};
+			name = Release;
+		};
 		553AB5111C50056400AC12A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -722,6 +829,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		553156671D81BDC100A53E8F /* Build configuration list for PBXNativeTarget "motoRoutesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				553156651D81BDC100A53E8F /* Debug */,
+				553156661D81BDC100A53E8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		553AB4F91C50056400AC12A5 /* Build configuration list for PBXProject "motoRoutes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
