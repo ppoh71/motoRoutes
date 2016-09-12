@@ -468,7 +468,7 @@ class showRouteController: UIViewController {
     }
     
     
-    //MARK: Print Marker, Print All, Delete Marker
+    //MARK: DISPATCH Print Marker, Print All, Delete Marker
     
     //
     // printing speedmarker on the map
@@ -490,7 +490,7 @@ class showRouteController: UIViewController {
                     
                     let newMarker = MGLPointAnnotation()
                     newMarker.coordinate = CLLocationCoordinate2DMake(self.RouteList[globalRoutePos.gRoutePos].latitude, self.RouteList[globalRoutePos.gRoutePos].longitude)
-                    newMarker.title = "SpeedAltMarker"
+                    newMarker.title = "SpeedAltMarkerView"
         
                     /* set globals */
                     globalSpeed.gSpeed = self.RouteList[globalRoutePos.gRoutePos].speed
@@ -749,6 +749,15 @@ extension showRouteController: MGLMapViewDelegate {
     
     func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
+        
+        print(annotation.title)
+        
+        guard annotation.title! == "AllSpeedAltMarker" else {
+            return nil
+        }
+        
+        
+        
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("routeline\(utils.getSpeed(globalSpeed.gSpeed))")
         var image: UIImage
@@ -793,7 +802,9 @@ extension showRouteController: MGLMapViewDelegate {
             countReuse+=1
             print("reuse count \(countReuse)")
             
-            if(annotation.title! == "SpeedAltMarker"){
+            
+            
+            if(annotation.title! == "AllSpeedAltMarker"){
                 image = imageUtils.drawLineOnImage(self.funcType)
             } else{
                 image = UIImage(named: "ic_place.png")!
@@ -804,10 +815,47 @@ extension showRouteController: MGLMapViewDelegate {
            //print("iamge is nil \(reuseIdentifier) \(globalSpeed.gSpeed) \(annotation.title!) \(self.funcType) \(image)")
         }
         
-        
         return annotationImage
 
     }
+  
+    
+    // This delegate method is where you tell the map to load a view for a specific annotation. To load a static MGLAnnotationImage, you would use `-mapView:imageForAnnotation:`.
+    func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
+        // This example is only concerned with point annotations.
+        guard annotation.title! == "SpeedAltMarkerView" else {
+            return nil
+        }
+        
+        // Use the point annotation’s longitude value (as a string) as the reuse identifier for its view.
+        let reuseIdentifier = "MarkerSpeed\(utils.getSpeed(globalSpeed.gSpeed))-1"
+        
+        
+        
+        // For better performance, always try to reuse existing annotations.
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
+        
+        // If there’s no reusable annotation view available, initialize a new one.
+        if annotationView == nil {
+            let annotationViewHeight = 200
+            annotationView = CustomAnnotationView(reuseIdentifier: reuseIdentifier)
+            annotationView!.frame = CGRectMake(0, 0, 5, CGFloat(utils.getSpeed(globalSpeed.gSpeed)))
+            annotationView!.centerOffset = CGVectorMake(0, CGFloat(annotationViewHeight/4) * -1)
+            
+            // Set the annotation view’s background color to a value determined by its longitude.
+            //let hue = CGFloat(annotation.coordinate.longitude) / 100
+            annotationView!.backgroundColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
+            
+            
+            
+        }
+        
+        
+        
+        return annotationView
+    }
+
+    
 
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         // print("regionDidChangeAnimated")
@@ -892,3 +940,30 @@ extension showRouteController: msgOverlayDelegate{
         //msgOverlay.saveButton.backgroundColor = colorUtils.randomColor()
     }
 }
+
+//
+// MGLAnnotationView subclass
+class CustomAnnotationView: MGLAnnotationView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Force the annotation view to maintain a constant size when the map is tilted.
+        scalesWithViewingDistance = false
+        
+        // Use CALayer’s corner radius to turn this view into a circle.
+//        layer.cornerRadius = frame.width / 2
+        layer.borderWidth = 1
+       layer.borderColor = UIColor.whiteColor().CGColor
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Animate the border width in/out, creating an iris effect.
+        let animation = CABasicAnimation(keyPath: "borderWidth")
+        animation.duration = 0.1
+        layer.borderWidth = selected ? frame.width / 4 : 2
+        layer.addAnimation(animation, forKey: "borderWidth")
+    }
+}
+

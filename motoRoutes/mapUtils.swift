@@ -177,7 +177,7 @@ final class mapUtils {
         
         let newMarker = MGLPointAnnotation()
         newMarker.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude)
-        newMarker.title = "SpeedAltMarker"
+        newMarker.title = "AllSpeedAltMarker"
         mapView.addAnnotation(newMarker)
         //location.marker = true
         
