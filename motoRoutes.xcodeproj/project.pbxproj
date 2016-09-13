@@ -14,6 +14,7 @@
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
 		553156611D81BDC100A53E8F /* motoRoutesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553156601D81BDC100A53E8F /* motoRoutesTests.swift */; };
+		55350C0C1D8846FA00483E1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55350C0B1D8846FA00483E1C /* GoogleService-Info.plist */; };
 		553565551C5A83A2002628AD /* RouteModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RouteModels.swift */; };
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
 		553AB5071C50056400AC12A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 553AB5051C50056400AC12A5 /* Main.storyboard */; };
@@ -72,6 +73,7 @@
 		5531565E1D81BDC100A53E8F /* motoRoutesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motoRoutesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		553156601D81BDC100A53E8F /* motoRoutesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = motoRoutesTests.swift; sourceTree = "<group>"; };
 		553156621D81BDC100A53E8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55350C0B1D8846FA00483E1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		553565541C5A83A2002628AD /* RouteModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteModels.swift; sourceTree = "<group>"; };
 		553AB4FE1C50056400AC12A5 /* motoRoutes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motoRoutes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		553AB5011C50056400AC12A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				553AB50B1C50056400AC12A5 /* Assets.xcassets */,
 				553AB50D1C50056400AC12A5 /* LaunchScreen.storyboard */,
 				553AB5101C50056400AC12A5 /* Info.plist */,
+				55350C0B1D8846FA00483E1C /* GoogleService-Info.plist */,
 				55C567C21C6284E2008E045B /* Settings.bundle */,
 				554EEB4B1D070F8200307F47 /* motoRoutes-Bridging-Header.h */,
 			);
@@ -431,6 +434,7 @@
 				553D05E61CE4AB7400D8555D /* Roboto-Regular.ttf in Resources */,
 				55C567C31C6284E2008E045B /* Settings.bundle in Resources */,
 				55F009191D1148BA00FA2400 /* Localizable.strings in Resources */,
+				55350C0C1D8846FA00483E1C /* GoogleService-Info.plist in Resources */,
 				553AB50F1C50056400AC12A5 /* LaunchScreen.storyboard in Resources */,
 				55BB80C61D630D8B00D0CCEF /* RouteInfos.xib in Resources */,
 				553D05E51CE4AB7400D8555D /* Roboto-Bold.ttf in Resources */,
@@ -836,6 +840,7 @@
 				553156661D81BDC100A53E8F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		553AB4F91C50056400AC12A5 /* Build configuration list for PBXProject "motoRoutes" */ = {
 			isa = XCConfigurationList;

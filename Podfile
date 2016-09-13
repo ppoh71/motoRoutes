@@ -9,4 +9,5 @@ pod 'RealmSwift'
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'Charts'
+pod 'Firebase'
 end

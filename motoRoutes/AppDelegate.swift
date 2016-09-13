@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import Fabric
 import Crashlytics
+import Firebase
 
 
 
@@ -25,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         Fabric.sharedSDK().debug = true
         Fabric.with([Crashlytics.self])
+        FIRApp.configure()
         
         print("oldschema \(Realm.Configuration.defaultConfiguration)")
         
