@@ -9,5 +9,7 @@ pod 'RealmSwift'
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'Charts'
-pod 'Firebase'
+pod 'Firebase/Core'
+pod 'Firebase/Auth'
+pod 'FBSDKLoginKit'
 end

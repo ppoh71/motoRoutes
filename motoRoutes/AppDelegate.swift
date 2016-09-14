@@ -11,7 +11,8 @@ import RealmSwift
 import Fabric
 import Crashlytics
 import Firebase
-
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 
 @UIApplicationMain
@@ -28,8 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         FIRApp.configure()
         
-        print("oldschema \(Realm.Configuration.defaultConfiguration)")
         
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        print("oldschema \(Realm.Configuration.defaultConfiguration)")
         Realm.Configuration.defaultConfiguration = Realm.Configuration(
             schemaVersion: 3,
             migrationBlock: { migration, oldSchemaVersion in
@@ -47,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
         })
-        
+    
         return true
     }
 
@@ -76,5 +79,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+
+//     xcode 8
+//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+//    }
+    
+    
 }
 
