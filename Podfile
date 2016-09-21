@@ -11,5 +11,7 @@ pod 'Crashlytics'
 pod 'Charts'
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
+pod 'Firebase/Database'
 pod 'FBSDKLoginKit'
+pod 'SwiftKeychainWrapper'
 end

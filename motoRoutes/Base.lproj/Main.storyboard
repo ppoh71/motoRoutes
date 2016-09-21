@@ -683,12 +683,79 @@
                     <connections>
                         <outlet property="emailField" destination="JeS-bJ-hlc" id="DzI-EW-QiA"/>
                         <outlet property="passwordField" destination="iDY-0x-Rsh" id="w6y-du-Xfv"/>
+                        <segue destination="NUh-KC-JqV" kind="show" identifier="LoggedInSegue" id="YCg-X6-Z89"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vjB-j6-LKw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="BOE-aS-v0W" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="425" y="1529"/>
+            <point key="canvasLocation" x="441" y="1531"/>
+        </scene>
+        <!--Logged In-->
+        <scene sceneID="LmZ-4N-B3L">
+            <objects>
+                <viewController id="NUh-KC-JqV" customClass="LoggedIn" customModule="motoRoutes" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bUt-mQ-uYN"/>
+                        <viewControllerLayoutGuide type="bottom" id="mU3-I3-jeF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zGm-8b-7hn">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="85M-eV-ovz">
+                                <rect key="frame" x="116" y="178" width="368" height="172"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You logged in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mEv-vc-6pY">
+                                        <rect key="frame" x="8" y="8" width="104" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c4t-td-suV">
+                                        <rect key="frame" x="1" y="56" width="60" height="30"/>
+                                        <state key="normal" title="Sign Out"/>
+                                        <connections>
+                                            <action selector="signOutTapped:" destination="NUh-KC-JqV" eventType="touchUpInside" id="6TX-Mb-071"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="mEv-vc-6pY" firstAttribute="top" secondItem="85M-eV-ovz" secondAttribute="topMargin" id="4uI-Dc-OhF"/>
+                                    <constraint firstItem="c4t-td-suV" firstAttribute="top" secondItem="mEv-vc-6pY" secondAttribute="bottom" constant="27" id="AiW-Ks-23b"/>
+                                    <constraint firstItem="c4t-td-suV" firstAttribute="leading" secondItem="85M-eV-ovz" secondAttribute="leading" constant="1" id="fXr-iZ-Xc5"/>
+                                    <constraint firstItem="mEv-vc-6pY" firstAttribute="leading" secondItem="85M-eV-ovz" secondAttribute="leadingMargin" id="vKf-qB-4tE"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCl-gC-Nq2" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
+                                <rect key="frame" x="540" y="33" width="48" height="48"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="titleShadowOffset" width="8" height="5"/>
+                                <state key="normal" image="ic_panorama_fish_eye_48pt"/>
+                                <connections>
+                                    <segue destination="0Sw-Jy-0MP" kind="show" id="Na1-r7-008"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="85M-eV-ovz" firstAttribute="top" secondItem="bUt-mQ-uYN" secondAttribute="bottom" constant="158" id="EKA-7n-f0G"/>
+                            <constraint firstItem="mU3-I3-jeF" firstAttribute="top" secondItem="85M-eV-ovz" secondAttribute="bottom" constant="250" id="J3S-pZ-mEJ"/>
+                            <constraint firstItem="RCl-gC-Nq2" firstAttribute="top" secondItem="bUt-mQ-uYN" secondAttribute="bottom" constant="13" id="Rvj-fW-aiy"/>
+                            <constraint firstItem="85M-eV-ovz" firstAttribute="leading" secondItem="zGm-8b-7hn" secondAttribute="leadingMargin" constant="96" id="gON-Or-d2S"/>
+                            <constraint firstItem="85M-eV-ovz" firstAttribute="centerX" secondItem="zGm-8b-7hn" secondAttribute="centerX" id="l1g-sk-rfS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="RCl-gC-Nq2" secondAttribute="trailing" constant="-8" id="ogM-v4-ZTe"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="vOw-8x-L9k" kind="show" identifier="ShowVCSignOut" id="TD2-Yc-PBz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d0q-Qg-qeT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-544" y="1496"/>
         </scene>
         <!--Moto Route Camera-->
         <scene sceneID="gEV-2p-D7I">
@@ -836,6 +903,7 @@
         <image name="ic_rotate" width="48" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="TD2-Yc-PBz"/>
         <segue reference="KJs-LQ-4ee"/>
     </inferredMetricsTieBreakers>
 </document>

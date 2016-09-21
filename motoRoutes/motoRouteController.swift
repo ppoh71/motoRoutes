@@ -12,6 +12,8 @@ import UIKit
 import RealmSwift
 import Crashlytics
 import CoreLocation
+import SwiftKeychainWrapper
+
 
 class motoRouteController: UITableViewController {
     
@@ -34,6 +36,10 @@ class motoRouteController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
+     
+       let authKeychain = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID)
+          print("MR: Auth key \(authKeychain)")
+     
         let realm = try! Realm()
         motoRoutes = realm.objects(Route).sorted("timestamp", ascending: false)
         
@@ -48,6 +54,8 @@ class motoRouteController: UITableViewController {
     }
 
     override func viewDidAppear(animated: Bool) {
+     
+     DataService.dataService.getRoutesFromFIR()
   
     }
     

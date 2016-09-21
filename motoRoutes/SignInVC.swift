@@ -10,23 +10,27 @@ import UIKit
 import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
+import SwiftKeychainWrapper
+
 
 
 class SignInVC: UIViewController {
 
+  
+    @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
-
-    @IBOutlet weak var emailField: UITextField!
-    @IBOutlet weak var passwordField: UITextField!
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewDidAppear(animated: Bool) {
+        
+            if let keychain =  KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID){
+                performSegueWithIdentifier("LoggedInSegue", sender: nil)
+                print("MOTOROUTES: checked keychain \(keychain)")
+            }
     }
     
     @IBAction func facebookButtonTapped(sender: AnyObject) {
@@ -62,12 +66,22 @@ class SignInVC: UIViewController {
             
                 if error == nil{
                     print("MOTOROUTES: SIGNED IN BY MAIL")
+                    
+                    if let fir_user = user {
+                        self.completeSignIn(fir_user.uid)
+                    }
+                    
                 } else {
                     print("MOTOROUTS: ERROR BY MAIL NO LOGIn, CREATE ONE")
                     FIRAuth.auth()!.createUserWithEmail(email, password: password, completion: { (user, error) in
                     
                         if error == nil{
                             print("MOTOROUTES: CREATE USER BY MAIL ")
+                            
+                            if let fir_user = user {
+                                self.completeSignIn(fir_user.uid)
+                            }
+                            
                         } else {
                              print("MOTOROUTES: ERROR CREATE USER BY MAIL \(error)")
                         }
@@ -79,15 +93,35 @@ class SignInVC: UIViewController {
     
     
     func firebaseAuth(credential: FIRAuthCredential){
+        
         FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
             
             if error != nil {
                 print("MOTOROUTES: Unable to login with firebase")
             } else {
                 print("MOTOROUTES: Auth with Firebase")
+                if let fir_user = user {
+                   self.completeSignIn(fir_user.uid)
+                }
             }
-            
         }
+    }
+    
+    //write to jeychain for autosign in
+    func completeSignIn(uid: String){
+           let keychain =  KeychainWrapper.defaultKeychainWrapper().setString((uid), forKey: KEY_UID)
+           performSegueWithIdentifier("LoggedInSegue", sender: nil)
+           print("MOTOROUTS: Saved to keyhcain \(keychain)")
+        }
+    
+    
+    /*
+     * Close segue
+     */
+    @IBAction func closeSignInVC(segue:UIStoryboardSegue) {
+        
+        print("segue close closeSignInVC")
+        
     }
     
     

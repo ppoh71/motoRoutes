@@ -13,13 +13,10 @@ import RealmSwift
 import Mapbox
 import Crashlytics
 import pop
+import SwiftKeychainWrapper
+import Firebase
 
 
-
-//Notification Center keys
-let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
-let getLocationSetNotificationKey = "motoRoutes.getLocationString"
-let chartSetNotificationKey = "motoRoutes.getKeyFromChart"
 
 class showRouteController: UIViewController {
     
@@ -161,6 +158,19 @@ class showRouteController: UIViewController {
     
     
     override func viewDidAppear(animated: Bool) {
+        
+        
+        //write to firebase test
+        
+        if let keychain =  KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID){
+            
+            DataService.dataService.addRouteToFIR(_RouteMaster, keychain: keychain)
+            print("MR: try to add to firebase")
+        } else{
+            print("MR: not logged in")
+        }
+       
+        
         
         //Listen from FlyoverRoutes if Markers are set
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
