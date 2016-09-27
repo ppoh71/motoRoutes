@@ -25,6 +25,8 @@ class Route: Object {
     dynamic var image = ""
     dynamic var locationStart = ""
     dynamic var locationEnd = ""
+    dynamic var startLatitude = 0.0
+    dynamic var startLongitude = 0.0
     
     override static func primaryKey() -> String? {
         return "id"
@@ -77,17 +79,9 @@ class Gyroscope: Object {
 
 //MARK: REALM UTILS, Save
 
-/**
- Save new route to realm
- 
- - parameter locatiobRoute: [CLLocation] List with locations
- - parameter screenshotFilename: filename of screenshot
- - parameter startTimestamp: [starttime unix int
- - parameter distance: distance in m
- - parameter totalTime: total tine in seconds
- 
- *
- */
+
+/*  Save new route to realm */
+
 class RealmUtils{
     
     class func saveRouteRealm(LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ) -> String {
@@ -157,6 +151,24 @@ class RealmUtils{
         return id
     }
     
+    class func saveRouteFromFIR(_RouteMaster: RouteMaster){
+    
+        // Get the default Realm
+        let realm = try! Realm()
+        let routetExists = realm.objects(Route).filter("id == %@", _RouteMaster._MotoRoute.id)
+        
+        if routetExists.count == 0 {
+            try! realm.write {
+                print("added route to realm")
+                realm.add(_RouteMaster._MotoRoute)
+            }
+        } else {
+            //don't add
+            print("route exists, donÄt add")
+        }
+    }
+    
+    
     
     class func getRealmByID(routeID: String) -> Results<Route>{
         
@@ -167,7 +179,6 @@ class RealmUtils{
     
     
     class func updateLocation2Realm(route: Route, location: String, field: String) {
-        
         let realm = try! Realm()
         try! realm.write {
             
@@ -181,11 +192,9 @@ class RealmUtils{
                 
             default:
                 break
-                
             }
         }
     }
-    
     
     
 }

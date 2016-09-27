@@ -13,10 +13,10 @@ import Mapbox
 
 
 
-// Remodel data for as a kind of entity model, when it comes from realm  as singleton
+// Remodel data for as a entity master model
 class RouteMaster {
     
-    static let sharedInstance = RouteMaster()
+    //static let sharedInstance = RouteMaster()
     var _MotoRoute = Route()
     var _RouteList = [LocationMaster]()
     
@@ -38,7 +38,7 @@ class RouteMaster {
 
     var cnt = 0
     
-    private init(){
+    init(){
         print(_MotoRoute)
     }
     
@@ -49,9 +49,15 @@ class RouteMaster {
         setRouteListInfos()
     }
     
+    func associateRouteFIR(){
+        createMasterLocationRealm(_MotoRoute.locationsList)
+        setRouteListInfos()
+    }
+    
+    
     
     //create a LocationMaster Object with from Realm List
-    private func createMasterLocationRealm(LocationsList:List<Location>!) {
+    func createMasterLocationRealm(LocationsList:List<Location>!) {
         
         var newRouteList = RouteMaster()._RouteList
         

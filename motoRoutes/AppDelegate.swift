@@ -34,11 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("oldschema \(Realm.Configuration.defaultConfiguration)")
         Realm.Configuration.defaultConfiguration = Realm.Configuration(
-            schemaVersion: 3,
+            schemaVersion: 5,
             migrationBlock: { migration, oldSchemaVersion in
                 
                 
-                if (oldSchemaVersion < 3) {
+                if (oldSchemaVersion < 5) {
                     // The enumerate(_:_:) method iterates
                     migration.enumerate(Location.className()) { oldObject, newObject in
                         newObject!["distance"] = 0.0
@@ -47,6 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     migration.enumerate(Route.className()) { oldObject, newObject in
                         newObject!["locationStart"] = "Start Location"
                         newObject!["locationEnd"] = "End Location"
+                    }
+                    
+                    migration.enumerate(Route.className()) { oldObject, newObject in
+                        newObject!["startLatitude"] = 0.0
+                        newObject!["startLongitude"] = 0.0
                     }
                 }
         })

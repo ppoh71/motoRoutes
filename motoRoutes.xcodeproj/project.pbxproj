@@ -15,7 +15,6 @@
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
 		553156611D81BDC100A53E8F /* motoRoutesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553156601D81BDC100A53E8F /* motoRoutesTests.swift */; };
 		5532ECD51D919D8200A7942B /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532ECD41D919D8200A7942B /* RealmModel.swift */; };
-		5532ECD71D91A03000A7942B /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532ECD61D91A03000A7942B /* FirebaseModel.swift */; };
 		55350C0C1D8846FA00483E1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55350C0B1D8846FA00483E1C /* GoogleService-Info.plist */; };
 		553565551C5A83A2002628AD /* RouteMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553565541C5A83A2002628AD /* RouteMaster.swift */; };
 		553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553AB5011C50056400AC12A5 /* AppDelegate.swift */; };
@@ -36,6 +35,7 @@
 		55BB80C61D630D8B00D0CCEF /* RouteInfos.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */; };
 		55BB80C81D630DD100D0CCEF /* RouteInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BB80C71D630DD100D0CCEF /* RouteInfos.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
+		55D997001D92B8F200AB7DAB /* exploreMotoRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D996FF1D92B8F200AB7DAB /* exploreMotoRoutes.swift */; };
 		55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */; };
 		55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DA72981D0030DD0095C52E /* MRCellViewImage.swift */; };
 		55DC39B41D65AF45002E02EC /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DC39B31D65AF45002E02EC /* NSDateExtension.swift */; };
@@ -80,7 +80,6 @@
 		553156601D81BDC100A53E8F /* motoRoutesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = motoRoutesTests.swift; sourceTree = "<group>"; };
 		553156621D81BDC100A53E8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5532ECD41D919D8200A7942B /* RealmModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModel.swift; sourceTree = "<group>"; };
-		5532ECD61D91A03000A7942B /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
 		55350C0B1D8846FA00483E1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		553565541C5A83A2002628AD /* RouteMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMaster.swift; sourceTree = "<group>"; };
 		553AB4FE1C50056400AC12A5 /* motoRoutes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motoRoutes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +105,7 @@
 		55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteInfos.xib; sourceTree = "<group>"; };
 		55BB80C71D630DD100D0CCEF /* RouteInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfos.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		55D996FF1D92B8F200AB7DAB /* exploreMotoRoutes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = exploreMotoRoutes.swift; sourceTree = "<group>"; };
 		55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSliderCustom.swift; sourceTree = "<group>"; };
 		55DA72981D0030DD0095C52E /* MRCellViewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellViewImage.swift; sourceTree = "<group>"; };
 		55DC39B31D65AF45002E02EC /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
@@ -202,6 +202,8 @@
 				55E1496C1CE1C87A00B576BB /* Controller */,
 				555C0D7F1CE47EF100DABBD4 /* Recources */,
 				55AB5D4B1C5694FE005E8A26 /* Utils */,
+				55A95CA91D93D3240049C381 /* DataServices */,
+				55A95CA81D93D30F0049C381 /* Constants */,
 				55DC39B21D65AF28002E02EC /* Extensions */,
 				553AB5011C50056400AC12A5 /* AppDelegate.swift */,
 				553AB5051C50056400AC12A5 /* Main.storyboard */,
@@ -219,25 +221,39 @@
 			isa = PBXGroup;
 			children = (
 				55F0091C1D11496500FA2400 /* LocalizationStrings */,
-				553D05E21CE4AB7400D8555D /* Roboto-Bold.ttf */,
 				553D05E31CE4AB7400D8555D /* Roboto-Regular.ttf */,
+				553D05E21CE4AB7400D8555D /* Roboto-Bold.ttf */,
 				553D05E41CE4AB7400D8555D /* Roboto-Thin.ttf */,
 			);
 			name = Recources;
 			sourceTree = "<group>";
 		};
+		55A95CA81D93D30F0049C381 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				A90D6F9A1C9471E2002E7980 /* Globals.swift */,
+				559160831D8C37CB006BEA7A /* Constants.swift */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		55A95CA91D93D3240049C381 /* DataServices */ = {
+			isa = PBXGroup;
+			children = (
+				55F72FC41D917C90002C9B4B /* DataService.swift */,
+				5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */,
+			);
+			name = DataServices;
+			sourceTree = "<group>";
+		};
 		55AB5D4B1C5694FE005E8A26 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				559160831D8C37CB006BEA7A /* Constants.swift */,
-				5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */,
-				A90D6F9A1C9471E2002E7980 /* Globals.swift */,
 				A90D6F981C947101002E7980 /* mapUtils.swift */,
 				5506E0D81C650A230091364B /* colorUtils.swift */,
 				5562BA541C73663900EF340D /* utils.swift */,
 				551EFF931CC11F640065204D /* imageUtils.swift */,
 				554EEB4F1D071DCB00307F47 /* AnimationEngine.swift */,
-				55F72FC41D917C90002C9B4B /* DataService.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -267,6 +283,7 @@
 				5522D1C81C5132B1005339BD /* motoRouteController.swift */,
 				55EF09E91C5FD89000F2857E /* showRouteController.swift */,
 				55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */,
+				55D996FF1D92B8F200AB7DAB /* exploreMotoRoutes.swift */,
 				55F4C41C1D884AC4008AA17C /* SignInVC.swift */,
 				559AF4281D905036000D2B0E /* LoggedIn.swift */,
 			);
@@ -338,7 +355,6 @@
 			children = (
 				553565541C5A83A2002628AD /* RouteMaster.swift */,
 				5532ECD41D919D8200A7942B /* RealmModel.swift */,
-				5532ECD61D91A03000A7942B /* FirebaseModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -602,7 +618,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5532ECD71D91A03000A7942B /* FirebaseModel.swift in Sources */,
 				55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */,
 				5532ECD51D919D8200A7942B /* RealmModel.swift in Sources */,
 				55BB80C81D630DD100D0CCEF /* RouteInfos.swift in Sources */,
@@ -617,6 +632,7 @@
 				5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */,
 				551EFF941CC11F640065204D /* imageUtils.swift in Sources */,
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
+				55D997001D92B8F200AB7DAB /* exploreMotoRoutes.swift in Sources */,
 				559160841D8C37CB006BEA7A /* Constants.swift in Sources */,
 				55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */,

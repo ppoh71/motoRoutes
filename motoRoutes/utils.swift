@@ -14,13 +14,6 @@ import RealmSwift
 import Mapbox
 
 
-
-
-
-
-
-
-
 final class utils {
     
     /*
@@ -33,7 +26,6 @@ final class utils {
 
     
     class func getUniqueUUID()->String{
-    
         return  NSUUID().UUIDString
     }
     

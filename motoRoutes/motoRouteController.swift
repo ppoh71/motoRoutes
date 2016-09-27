@@ -13,6 +13,7 @@ import RealmSwift
 import Crashlytics
 import CoreLocation
 import SwiftKeychainWrapper
+import Firebase
 
 
 class motoRouteController: UITableViewController {
@@ -55,7 +56,17 @@ class motoRouteController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
      
-     DataService.dataService.getRoutesFromFIR()
+     FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+          if let user = user {
+               // User is signed in.
+               print("user is logged in")
+               print(user)
+          } else {
+               // No user is signed in.
+                print("No user is logged in")
+                print(user)
+          }
+     }
   
     }
     
@@ -80,17 +91,22 @@ class motoRouteController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MRCellView
         
         let route = motoRoutes[indexPath.row]
-        
-        //print(route)
+        var image = UIImage()
+     
+     
+        print(motoRoutes[indexPath.row].id)
         
         //get the stuff for the cell
 
         let imgName = route.image
-        
-        //let path = (utils.getDocumentsDirectory() as String) + img
-        let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
-        let image = imageUtils.loadImageFromPath(imgPath)
-        
+     
+          if(imgName.characters.count > 0){
+             //let path = (utils.getDocumentsDirectory() as String) + img
+             let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
+             image = imageUtils.loadImageFromPath(imgPath)!
+          }
+     
+     
         //image = (image == nil) ? "default.jpg" : image
         print(route.id)
 
@@ -99,7 +115,7 @@ class motoRouteController: UITableViewController {
         
         
         //configure cell
-        cell.configureCell(nameLabel, distance: distanceLabel, image: image!, fromLocation: route.locationStart, toLocation: route.locationEnd)
+        cell.configureCell(nameLabel, distance: distanceLabel, image: image, fromLocation: route.locationStart, toLocation: route.locationEnd)
         
         return cell
     }

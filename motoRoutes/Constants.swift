@@ -13,6 +13,8 @@ import Foundation
 let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
 let getLocationSetNotificationKey = "motoRoutes.getLocationString"
 let chartSetNotificationKey = "motoRoutes.getKeyFromChart"
+let firbaseGetRoutesNotificationKey = "motoRoutes.getRoutesFromFirebase"
+let firbaseGetLocationsNotificationKey = "motoRoutes.getLocationsFromFirebase"
 
 //Firebase Stuff
 let KEY_UID = "uid"

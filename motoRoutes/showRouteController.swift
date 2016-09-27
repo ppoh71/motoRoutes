@@ -53,7 +53,7 @@ class showRouteController: UIViewController {
     
     // realm object list
     var motoRoute: Route?
-    let _RouteMaster = RouteMaster.sharedInstance
+    let _RouteMaster = RouteMaster()
     var RouteList = [LocationMaster]()
    // var markersSet = [MarkerAnnotation]()
     
@@ -115,7 +115,7 @@ class showRouteController: UIViewController {
         //MODEL: covert Realm LocationList to Location Master Object
         _RouteMaster.associateRoute(motoRoute!)
         RouteList = _RouteMaster._RouteList
-    
+        
         //center mapview to route coords
         mapViewShow.zoomLevel = 9
         mapViewShow.camera.heading = globalHeading.gHeading
@@ -165,13 +165,11 @@ class showRouteController: UIViewController {
         if let keychain =  KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID){
             
             DataService.dataService.addRouteToFIR(_RouteMaster, keychain: keychain)
-            print("MR: try to add to firebase")
+           // print("MR: try to add to firebase")
         } else{
             print("MR: not logged in")
         }
-       
-        
-        
+ 
         //Listen from FlyoverRoutes if Markers are set
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.saveLocationString), name: getLocationSetNotificationKey, object: nil)
