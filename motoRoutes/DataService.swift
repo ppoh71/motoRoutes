@@ -109,44 +109,42 @@ class DataService {
             if let snap = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 
                 var routes = [RouteMaster]()
-                var startLatitude = 0.0
-                var startLongitude = 0.0
-                var duration = 0
-                var distance = 0.0
                 
                 for item in snap {
                     
+                    let newRoute = Route()
+                    newRoute.id = item.key
+                    
                     if let _startLat = item.value?["startLatitude"] as? Double {
-                        startLatitude = _startLat
+                         newRoute.startLatitude = _startLat
                     }
                     
                     if let _startLong = item.value?["startLongitude"] as? Double {
-                        startLongitude = _startLong
+                        newRoute.startLongitude = _startLong
                     }
                     
                     if let _duration = item.value?["duration"] as? Int {
-                        duration = _duration
+                         newRoute.duration = _duration
                     }
                     
                     if let _distance = item.value?["distance"] as? Double {
-                        distance = _distance
+                       newRoute.distance = _distance
                     }
                     
-                    let newRoute = Route()
-                    newRoute.id = item.key
-                    newRoute.distance = distance
-                    newRoute.duration = duration
-                    newRoute.startLatitude = startLatitude
-                    newRoute.startLongitude = startLongitude
+                    if let _locationStart = item.value?["locationStart"] as? String, _locationEnd = item.value?["locationEnd"] as? String {
+                        newRoute.locationStart = _locationStart
+                        newRoute.locationEnd = _locationEnd
+                    }
                     
+                    if let _timestamp = item.value?["timestamp"] as? Int {
+                        newRoute.timestamp = NSDate(timeIntervalSinceReferenceDate: NSTimeInterval(_timestamp))
+                    }
+
                     let newMaster = RouteMaster()
                     newMaster._MotoRoute = newRoute
-                    
                     routes.append(newMaster)
-            
                 }
 
-                
                 NSNotificationCenter.defaultCenter().postNotificationName(firbaseGetRoutesNotificationKey, object: routes)
             }
             // ...
@@ -155,6 +153,7 @@ class DataService {
             print(error.localizedDescription)
         }
     }
+    
     
     //get all locations from FIR by routeID and return [LocationMaster]
     func geLocationsRouteFIR(_RouteMaster: RouteMaster){
@@ -215,9 +214,9 @@ class DataService {
                 
             // ...
         }) {
-        (error) in
-        print(error.localizedDescription)
-        }
+            (error) in
+            print(error.localizedDescription)
+            }
         }
 }
 

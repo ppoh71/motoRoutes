@@ -115,9 +115,8 @@ class SignInVC: UIViewController {
         }
     
     
-    /*
-     * Close segue
-     */
+
+    //Close segue
     @IBAction func closeSignInVC(segue:UIStoryboardSegue) {
         
         print("segue close closeSignInVC")

@@ -72,9 +72,8 @@ class exploreMotoRoutes: UIViewController {
     
     
     func showActiveRoute(){
-    
-    
     }
+    
     
     func printAllMarker(funcSwitch: FuncTypes, _RouteMaster: RouteMaster){
         
@@ -120,10 +119,7 @@ class exploreMotoRoutes: UIViewController {
 
     
     @IBAction func addRoutetoRealm(sender: AnyObject) {
-    
-    RealmUtils.saveRouteFromFIR(activeRoute)
-    
-    
+        RealmUtils.saveRouteFromFIR(activeRoute)
     }
     
     

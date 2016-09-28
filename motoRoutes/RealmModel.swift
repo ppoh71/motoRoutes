@@ -37,7 +37,6 @@ class Route: Object {
     let gyroscopeList = List<Gyroscope>()
 }
 
-
 // Location Realm Data Model
 class Location: Object {
     
@@ -164,12 +163,11 @@ class RealmUtils{
             }
         } else {
             //don't add
-            print("route exists, donÄt add")
+            print("route exists, don't add")
         }
     }
     
-    
-    
+
     class func getRealmByID(routeID: String) -> Results<Route>{
         
         let realm = try! Realm()
@@ -179,6 +177,7 @@ class RealmUtils{
     
     
     class func updateLocation2Realm(route: Route, location: String, field: String) {
+      
         let realm = try! Realm()
         try! realm.write {
             

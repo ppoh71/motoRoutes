@@ -26,8 +26,6 @@ class RouteMaster {
     var startLocation: String { get{ return _MotoRoute.locationStart} }
     var endLocation: String { get{ return _MotoRoute.locationEnd} }
     
-    
-    
     var routeAverageSpeed: String = ""
     var routeHighSpeed: String = ""
     var routeDeltaAlt: String = ""
@@ -39,16 +37,17 @@ class RouteMaster {
     var cnt = 0
     
     init(){
-        print(_MotoRoute)
+        print("init motoroute")
     }
     
-    //map realm route to this Class
+    //map realm route
     func associateRoute(motoRoute: Route){
         _MotoRoute = motoRoute
         createMasterLocationRealm(_MotoRoute.locationsList)
         setRouteListInfos()
     }
     
+    //map fir route 
     func associateRouteFIR(){
         createMasterLocationRealm(_MotoRoute.locationsList)
         setRouteListInfos()
@@ -93,7 +92,7 @@ class RouteMaster {
         
     }
     
-    //get speede, alt, average and stuff //  -> (String, String, String, String, [NSDate], [Double], [Double])
+    //get speede, alt, average and stuff
     private func setRouteListInfos() {
         
         cnt += 1
