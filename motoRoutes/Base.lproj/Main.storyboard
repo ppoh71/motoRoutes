@@ -538,7 +538,7 @@
                                     <segue destination="MRL-i5-VW3" kind="show" identifier="showRoutesOptions" id="dm2-gl-IZQ"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53q-Qw-L5Y">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53q-Qw-L5Y">
                                 <rect key="frame" x="20" y="530" width="560" height="30"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3l9-36-9cr" customClass="RouteSlider" customModule="motoRoutes" customModuleProvider="target">
@@ -551,7 +551,7 @@
                                     </slider>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOa-KO-rv5">
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOa-KO-rv5">
                                 <rect key="frame" x="10" y="467" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" image="ic_play_circle_outline_white_48pt">
@@ -575,7 +575,7 @@
                                     <segue destination="t2r-xs-urw" kind="unwind" unwindAction="closeToMR:" id="ED7-F9-Fw7"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l37-MI-AYF">
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l37-MI-AYF">
                                 <rect key="frame" x="10" y="410" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" image="ic_rotate">
@@ -921,7 +921,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lob-tI-4YJ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lob-tI-4YJ">
                                 <rect key="frame" x="529" y="509" width="46" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="sok-c3-DKW"/>
