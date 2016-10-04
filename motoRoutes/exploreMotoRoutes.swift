@@ -31,8 +31,9 @@ class exploreMotoRoutes: UIViewController {
         //Listen from FlyoverRoutes if Markers are set
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(exploreMotoRoutes.FIRRoutes), name: firbaseGetRoutesNotificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(exploreMotoRoutes.FIRLocations), name: firbaseGetLocationsNotificationKey, object: nil)
+
         
-        DataService.dataService.getRoutesFromFIR()
+        FirebaseData.dataService.getRoutesFromFIR()
         print("exokore data")
         
     }
@@ -200,7 +201,7 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
         if titleID != nil  {  
             print("Did Select Title not nil \(titleID)")
             let refRouteMaster = routeFromRouteMasters(RouteMasters, key: titleID!)
-                DataService.dataService.geLocationsRouteFIR(refRouteMaster)
+                FirebaseData.dataService.geLocationsRouteFIR(refRouteMaster)
             }
     }
     

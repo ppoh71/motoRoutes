@@ -19,19 +19,15 @@ final class imageUtils{
      * load images from path and return image
      */
     class func loadImageFromPath(path: NSString) -> UIImage? {
-        
-        //print(path)
-        
+    
         let image = UIImage(contentsOfFile: path as String)
         
-        //print(image)
         if image == nil {
-            
             print("missing image at: \(path)")
+            return UIImage()
+        } else{
+            return image
         }
-        //print("Loading image from path: \(path)") // this is just for you to see the path in case you want to go to the directory, using Finder.
-        return image
-        
     }
     
     
@@ -41,10 +37,8 @@ final class imageUtils{
     class func loadImageFromName(imgName: String) -> UIImage? {
         
         guard  imgName.characters.count > 0 else {
-            
             print("ERROR: No image name")
             return UIImage()
-            
         }
         
         let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
@@ -54,6 +48,7 @@ final class imageUtils{
         
     }
     
+
     
     /*
      * resize image by width, no transparency on png
@@ -302,10 +297,49 @@ final class imageUtils{
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(image) {
             let filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(imageName)
-            data.writeToFile(filename, atomically: true)
+            let write = data.writeToFile(filename, atomically: true)
+            
+            print("\(write) - \(filename)")
         }
         
         //print("IMAGE SAVED")
+    }
+    
+    
+    /*
+     * save imge to file
+     */
+    class func saveGoogleImageToFile(image:UIImage, key: Int, id: String) {
+        
+        //screenShotRoute.image = screenShot
+        if let data = UIImagePNGRepresentation(image) {
+            
+            imageUtils.createDirectory(id)
+            
+           let filename = utils.getDocumentsDirectory().stringByAppendingPathComponent("/\(id)/\(key).jpeg")
+           
+           // let write = data.writeToFile(filename, atomically: true)
+            
+           // let image = UIImage(data: NSData(contentsOfURL: NSURL(string: self.remoteImage)))
+            
+            UIImageJPEGRepresentation(image, 0.75)!.writeToFile(filename, atomically: true)
+            
+            print("\(write) - \(filename)")
+        }
+        
+        //print("IMAGE SAVED")
+    }
+    
+    
+    class func createDirectory(directoy: String){
+        let fileManager = NSFileManager.defaultManager()
+        let paths = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString).stringByAppendingPathComponent(directoy)
+        if !fileManager.fileExistsAtPath(paths){
+            try! fileManager.createDirectoryAtPath(paths, withIntermediateDirectories: true, attributes: nil)
+            print("created directory")
+        }else{
+            print("Already dictionary created.")
+        }
     }
     
     

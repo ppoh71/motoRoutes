@@ -42,10 +42,11 @@
 		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
 		55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */; };
 		55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E149701CE22DE000B576BB /* RouteSlider.swift */; };
+		55EB15F91D9BFB1E0013528B /* GoogleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EB15F81D9BFB1E0013528B /* GoogleData.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		55F009191D1148BA00FA2400 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55F0091B1D1148BA00FA2400 /* Localizable.strings */; };
 		55F4C41D1D884AC4008AA17C /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F4C41C1D884AC4008AA17C /* SignInVC.swift */; };
-		55F72FC51D917C90002C9B4B /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F72FC41D917C90002C9B4B /* DataService.swift */; };
+		55F72FC51D917C90002C9B4B /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F72FC41D917C90002C9B4B /* FirebaseData.swift */; };
 		55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEF51D0700950051F338 /* MsgOverlay.swift */; };
 		55F7CEF81D0700CF0051F338 /* MsgOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */; };
 		55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEFA1D07093B0051F338 /* motoButtons.swift */; };
@@ -115,11 +116,12 @@
 		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
 		55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteOptions.swift; sourceTree = "<group>"; };
 		55E149701CE22DE000B576BB /* RouteSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteSlider.swift; sourceTree = "<group>"; };
+		55EB15F81D9BFB1E0013528B /* GoogleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleData.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		55F0091D1D114B6300FA2400 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F009211D114B9D00FA2400 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F4C41C1D884AC4008AA17C /* SignInVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
-		55F72FC41D917C90002C9B4B /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		55F72FC41D917C90002C9B4B /* FirebaseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseData.swift; sourceTree = "<group>"; };
 		55F7CEF51D0700950051F338 /* MsgOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MsgOverlay.swift; sourceTree = "<group>"; };
 		55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MsgOverlay.xib; sourceTree = "<group>"; };
 		55F7CEFA1D07093B0051F338 /* motoButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoButtons.swift; sourceTree = "<group>"; };
@@ -257,8 +259,9 @@
 		55A95CA91D93D3240049C381 /* DataServices */ = {
 			isa = PBXGroup;
 			children = (
-				55F72FC41D917C90002C9B4B /* DataService.swift */,
+				55F72FC41D917C90002C9B4B /* FirebaseData.swift */,
 				5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */,
+				55EB15F81D9BFB1E0013528B /* GoogleData.swift */,
 			);
 			name = DataServices;
 			sourceTree = "<group>";
@@ -636,8 +639,9 @@
 				A90D6F991C947101002E7980 /* mapUtils.swift in Sources */,
 				55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */,
 				55DC39B41D65AF45002E02EC /* NSDateExtension.swift in Sources */,
-				55F72FC51D917C90002C9B4B /* DataService.swift in Sources */,
+				55F72FC51D917C90002C9B4B /* FirebaseData.swift in Sources */,
 				5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */,
+				55EB15F91D9BFB1E0013528B /* GoogleData.swift in Sources */,
 				551EFF941CC11F640065204D /* imageUtils.swift in Sources */,
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				55D997001D92B8F200AB7DAB /* exploreMotoRoutes.swift in Sources */,

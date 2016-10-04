@@ -12,13 +12,14 @@ pod 'pop', '~> 1.0'
 pod 'RealmSwift'
 pod 'Fabric'
 pod 'Crashlytics'
-pod 'Charts', '~> 2.3.0'
+pod 'Charts', '~> 2.2.5'
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'FBSDKLoginKit'
 pod 'SwiftKeychainWrapper'
- pod 'Alamofire', '~> 3.5'
+pod 'Alamofire', '~> 3.5'
+pod 'AlamofireImage', '~> 2.5'
 
 target 'motoRoutesTests' do
   inherit! :search_paths

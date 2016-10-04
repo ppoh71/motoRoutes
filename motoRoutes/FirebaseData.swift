@@ -12,9 +12,9 @@ import Firebase
 let FIR_DB = FIRDatabase.database().reference()
 
 
-class DataService {
+class FirebaseData {
     
-    static let dataService = DataService()
+    static let dataService = FirebaseData()
     
     var r_ = RouteMaster()
     

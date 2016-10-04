@@ -30,6 +30,7 @@ class showRouteController: UIViewController {
     @IBOutlet weak var  TimeLabel:UILabel!
     @IBOutlet weak var  AltitudeLabel:UILabel!
     @IBOutlet weak var followCameraButton: UIButton!
+    @IBOutlet weak var googleImage: UIImageView!
     
     @IBOutlet weak var  routeSlider:RouteSlider!{
         didSet{
@@ -66,6 +67,7 @@ class showRouteController: UIViewController {
     var sliceAmount = 1
     var key = 0
     var count:Int = 0
+    var countGoogle:Int = 0
     var timer = NSTimer()
     var timeIntervalMarker = 0.01
     var performanceTime:Double = 0
@@ -164,7 +166,7 @@ class showRouteController: UIViewController {
         
         if let keychain =  KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID){
             
-            DataService.dataService.addRouteToFIR(_RouteMaster, keychain: keychain)
+           // FirebaseData.dataService.addRouteToFIR(_RouteMaster, keychain: keychain)
            // print("MR: try to add to firebase")
         } else{
             print("MR: not logged in")
@@ -174,6 +176,7 @@ class showRouteController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.switchFromFly2PrintMarker), name: markerNotSetNotificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.saveLocationString), name: getLocationSetNotificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController.keyFromChart), name: chartSetNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showRouteController._GoogleImage), name: googleGetImagesNotificationKey, object: nil)
         
         //get locationString if emtpy and set start/end marker
         checkLocationStartEnd(motoRoute!)
@@ -188,6 +191,42 @@ class showRouteController: UIViewController {
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
         
     }
+    
+    
+    func _GoogleImage(notification: NSNotification){
+        
+        if let notifyObj =  notification.object as? [UIImage] {
+            for image in notifyObj{
+              print("back from google \(image)")
+              displayGoogleImage(image)
+            }
+        }
+    }
+    
+    
+    func getGoogleImageCache(id: String, key: Int){
+    
+        let imageFile = utils.getDocumentsDirectory().stringByAppendingPathComponent("/\(id)/\(key).jpeg")
+        let fileManager = NSFileManager.defaultManager()
+        if fileManager.fileExistsAtPath(imageFile) {
+            print("GOOGLE IMAGE AVAILABLE )")
+            
+            let image = imageUtils.loadImageFromPath(imageFile)
+            displayGoogleImage(image!)
+            
+        } else {
+            print("LOAD IMAGE FROm GOOGLE")
+            GoogleData.dataService.getGoogleImages(self._RouteMaster._RouteList[key].latitude, longitude: self._RouteMaster._RouteList[key].longitude, heading: self._RouteMaster._RouteList[key].course, id: id, key: key )
+        }
+    }
+    
+    
+    func displayGoogleImage(image: UIImage){
+        
+         googleImage.image = image
+       
+    }
+    
     
     
     //
@@ -398,13 +437,16 @@ class showRouteController: UIViewController {
     
     func flyToRouteKey(key: Int){
     
+        //googel Test
         globalRoutePos.gRoutePos = key
+        
+        getGoogleImageCache(_RouteMaster._MotoRoute.id, key: key)
         
         //routeSlider.setValues()
         //stop camera flightm when selecting new route point
         globalAutoplay.gAutoplay = false
         
-        //fly to route n destination
+        //fly to route to destination
         mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: globalRoutePos.gRoutePos, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
     
     }
@@ -514,7 +556,7 @@ class showRouteController: UIViewController {
                     self.tmpRoutePos = globalRoutePos.gRoutePos
                     
                     self.count+=1 //counter to center map, fly camer to marker
-                    
+                    self.countGoogle+=1
                     //print("a: \(globalRoutePos.gRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
                     
                     //delete marker trail
@@ -534,6 +576,13 @@ class showRouteController: UIViewController {
                         //print("Slider Move \(n)")
                         self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
                         
+                        
+                        
+                        if(self.countGoogle > 10){
+                            self.getGoogleImageCache(self._RouteMaster._MotoRoute.id, key: globalRoutePos.gRoutePos)
+                            self.countGoogle = 0
+                        }
+                    
                         
                         if(self.count > 0 && self.followCamera == true){
                              mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
