@@ -14,35 +14,99 @@ import Foundation
 import RealmSwift
 
 
-class exploreMotoRoutes: UIViewController {
+class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var mapView: MGLMapView!
+    @IBOutlet weak var collection: UICollectionView!
     
+    //MARK: my routes vars
     var RouteMasters = [RouteMaster]()
+    var myMotoRoutes =  Results<Route>!(nil)
+    
+    
+    //MARK: explore routes vars
     var activeRoute = RouteMaster()
+    
+    //MARK: vars
     var funcType = FuncTypes.Default
     var countReuse = 0
+    
+    
+    //MARK: overrides
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        collection.delegate = self
+        collection.dataSource = self
+        
+        let realm = try! Realm()
+        myMotoRoutes = realm.objects(Route).sorted("timestamp", ascending: false)
+        
+        print(myMotoRoutes.count)
+        
+    }
     
     override func viewDidAppear(animated: Bool) {
         
         let userID = FIRAuth.auth()?.currentUser?.uid
-        
         print(userID)
+        
         //Listen from FlyoverRoutes if Markers are set
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(exploreMotoRoutes.FIRRoutes), name: firbaseGetRoutesNotificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(exploreMotoRoutes.FIRLocations), name: firbaseGetLocationsNotificationKey, object: nil)
-
-        
-        FirebaseData.dataService.getRoutesFromFIR()
-        print("exokore data")
-        
     }
     
     
+    //MARK: Collection View Stuff
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return myMotoRoutes.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("RouteCell", forIndexPath: indexPath) as? RouteCell {
+            
+            let route = myMotoRoutes[indexPath.row]
+            var image = UIImage()
+
+            let imgName = route.image
+            
+            print("img name \(imgName)")
+            
+            if(imgName.characters.count > 0){
+                let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
+                image = imageUtils.loadImageFromPath(imgPath)!
+                print("img  \(image.size.width)x\(image.size.height)")
+            }
+            
+            cell.configureCell("test", image: image)
+            
+            return cell
+            
+        } else{
+            return UICollectionViewCell()
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(180,180)
+    }
+
+    //display Routes routes on map as Marker
     func FIRRoutes(notification: NSNotification){
         
         if let notifyObj =  notification.object as? [RouteMaster] {
-            
             RouteMasters = notifyObj
             
             for item in RouteMasters {
@@ -55,16 +119,13 @@ class exploreMotoRoutes: UIViewController {
     }
     
     
+    //print route loaction marker for each route
     func FIRLocations(notification: NSNotification){
         
         if let notifyObj =  notification.object as? [RouteMaster] {
-            
             print("get notified FIR Locations ")
-            
             for (key,item) in notifyObj.enumerate(){
                 print(key)
-                print(item)
-                
                 printAllMarker(FuncTypes.PrintCircles, _RouteMaster: item)
                 activeRoute = item
             }
@@ -101,21 +162,14 @@ class exploreMotoRoutes: UIViewController {
         if let i = RouteMasters.indexOf({$0._MotoRoute.id == key}) {
             _route = self.RouteMasters[i]
         }
-        
         return _route
     }
     
     
     func deleteAllMarker(){
-        
         if mapView.annotations?.count > 0{
             self.mapView.removeAnnotations(mapView.annotations!)
         }
-        
-        //Set marker bool to false, to print new marker
-//        for marker in RouteList{
-//            marker.marker = false
-//        }
     }
 
     

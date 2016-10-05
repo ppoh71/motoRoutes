@@ -106,7 +106,6 @@ final class imageUtils{
         let context = CGBitmapContextCreate(nil, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo.rawValue)
         
         CGContextSetInterpolationQuality(context, .High)
-        
         CGContextDrawImage(context, CGRect(origin: CGPointZero, size: CGSize(width: CGFloat(width), height: CGFloat(height))), cgImage)
         
         let scaledImage = CGBitmapContextCreateImage(context).flatMap { UIImage(CGImage: $0) }

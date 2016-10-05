@@ -18,11 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H4z-9o-iAl" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H4z-9o-iAl" customClass="MGLMapView">
+                                <rect key="frame" x="0.0" y="-82" width="600" height="682"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQh-2L-1YP" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="489" y="10" width="48" height="48"/>
+                                        <rect key="frame" x="489" y="92" width="48" height="48"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <size key="titleShadowOffset" width="8" height="5"/>
                                         <state key="normal" image="ic_add_circle_48pt"/>
@@ -34,7 +34,7 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="aQh-2L-1YP" secondAttribute="trailing" constant="63" id="SOU-h5-TEM"/>
-                                    <constraint firstItem="aQh-2L-1YP" firstAttribute="top" secondItem="H4z-9o-iAl" secondAttribute="top" constant="10" id="di9-BD-FAt"/>
+                                    <constraint firstItem="aQh-2L-1YP" firstAttribute="top" secondItem="H4z-9o-iAl" secondAttribute="top" constant="92" id="di9-BD-FAt"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1"/>
@@ -45,6 +45,85 @@
                                     <outlet property="delegate" destination="wc2-zt-K1X" id="zkZ-LX-Xcb"/>
                                 </connections>
                             </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="woV-1i-Vrd">
+                                <rect key="frame" x="0.0" y="344" width="600" height="180"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="600" id="JOd-we-2k1"/>
+                                    <constraint firstAttribute="height" constant="180" id="PMy-f9-mrW"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mDO-uk-Vvd">
+                                    <size key="itemSize" width="180" height="180"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RouteCell" id="Kc9-W1-h8c" customClass="RouteCell" customModule="motoRoutes" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="180" height="180"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="180" height="180"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bike-def" translatesAutoresizingMaskIntoConstraints="NO" id="vaL-J6-u60" customClass="MRCellViewImage" customModule="motoRoutes" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="-24" width="180" height="163"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="180" id="49f-P6-aZq"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="180" id="4ZO-R5-1xu"/>
+                                                        <constraint firstAttribute="height" constant="163" id="gaY-Za-6rP"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="llb-sv-Hbi"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKp-kf-7f6">
+                                                    <rect key="frame" x="0.0" y="139" width="180" height="41"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="led-Pv-akg">
+                                                            <rect key="frame" x="54" y="9" width="42" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.063171526960000002" blue="0.1264204545" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="180" id="hT2-ij-AB4"/>
+                                                        <constraint firstAttribute="height" constant="41" id="qds-qY-nwD"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="EkF-ro-N8Y"/>
+                                            <constraint firstAttribute="trailing" secondItem="gKp-kf-7f6" secondAttribute="trailing" id="KYq-Wg-Lp6"/>
+                                            <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="LWV-IH-fQK"/>
+                                            <constraint firstAttribute="bottom" secondItem="gKp-kf-7f6" secondAttribute="bottom" id="N2d-tC-KA3"/>
+                                            <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="OM1-jj-kwe"/>
+                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="1" id="Vxd-Yl-hgB"/>
+                                            <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="WcA-8Q-MeM"/>
+                                            <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="h41-Dc-Dxx"/>
+                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" id="u9b-Ao-GOf"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Vxd-Yl-hgB"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="routeImage" destination="vaL-J6-u60" id="kd5-sd-zoR"/>
+                                            <outlet property="routeLbl" destination="led-Pv-akg" id="nRo-wr-OX7"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rz8-Wo-jK6" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
                                 <rect key="frame" x="540" y="10" width="48" height="48"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -57,22 +136,34 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="woV-1i-Vrd" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="6uD-SS-Yyo"/>
                             <constraint firstAttribute="trailing" secondItem="H4z-9o-iAl" secondAttribute="trailing" id="AGf-eW-obU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="rz8-Wo-jK6" secondAttribute="trailing" constant="-8" id="E18-dh-4s7"/>
+                            <constraint firstItem="6Jq-hI-DK4" firstAttribute="top" secondItem="woV-1i-Vrd" secondAttribute="bottom" constant="32" id="Ge3-fH-BgX"/>
                             <constraint firstItem="H4z-9o-iAl" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="M8L-Aq-wpN"/>
-                            <constraint firstItem="H4z-9o-iAl" firstAttribute="bottom" secondItem="6Jq-hI-DK4" secondAttribute="top" id="Rj6-HK-rb1"/>
+                            <constraint firstAttribute="trailing" secondItem="woV-1i-Vrd" secondAttribute="trailing" id="Oge-rn-wiB"/>
+                            <constraint firstItem="H4z-9o-iAl" firstAttribute="bottom" secondItem="6Jq-hI-DK4" secondAttribute="top" constant="44" id="Rj6-HK-rb1"/>
                             <constraint firstItem="6Jq-hI-DK4" firstAttribute="top" secondItem="rz8-Wo-jK6" secondAttribute="bottom" constant="498" id="cJk-3y-det"/>
-                            <constraint firstItem="H4z-9o-iAl" firstAttribute="top" secondItem="q6j-ht-vRW" secondAttribute="top" id="zB8-tX-vYh"/>
+                            <constraint firstAttribute="trailing" secondItem="H4z-9o-iAl" secondAttribute="trailing" id="kxN-At-pmq"/>
+                            <constraint firstItem="H4z-9o-iAl" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="wah-aU-vfC"/>
+                            <constraint firstItem="H4z-9o-iAl" firstAttribute="top" secondItem="q6j-ht-vRW" secondAttribute="top" constant="-82" id="zB8-tX-vYh"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="AGf-eW-obU"/>
+                                <exclude reference="M8L-Aq-wpN"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
+                        <outlet property="collection" destination="woV-1i-Vrd" id="dUm-UD-BaW"/>
                         <outlet property="mapView" destination="H4z-9o-iAl" id="hzp-l9-vpb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rs2-lg-8qa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="n50-un-B7Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="152" y="-104"/>
+            <point key="canvasLocation" x="152" y="-134"/>
         </scene>
         <!--Moto Route Controller-->
         <scene sceneID="h0c-8X-voG">
