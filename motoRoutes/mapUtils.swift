@@ -100,8 +100,6 @@ final class mapUtils {
     
     class func printRouteOneColor(_LocationMaster:[LocationMaster]!, mapView:MGLMapView! ){
         
-        
-        //performacne test
         // let x = CFAbsoluteTimeGetCurrent()
         
         //guard for print routes
@@ -133,10 +131,6 @@ final class mapUtils {
     
     
     
-    /**
-     *   Print Route Marker on Route
-    
-     **/
     class func printMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, gap: Int, funcType: FuncTypes) {
         
         //let x = CFAbsoluteTimeGetCurrent()
@@ -200,10 +194,7 @@ final class mapUtils {
     }
     
     
-    /*
-     * create camera from location, distance, pitch and heading
-     * can use for cameraflyto animations
-     */
+
     class func cameraDestination(latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
         
         let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -213,11 +204,7 @@ final class mapUtils {
     }
     
     
-    
-    /*
-     * print route
-     */
-    
+
     class func cameraAni(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
         
@@ -241,6 +228,17 @@ final class mapUtils {
             // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
             
             // }
+        }
+    }
+    
+    
+    
+    class func flyToLoactionSimple(latitude: Double, longitude: Double, mapView: MGLMapView!, distance: Double, pitch: Double){
+    
+        let cameray = mapUtils.cameraDestination(latitude, longitude: longitude, fromDistance: distance, pitch: CGFloat(pitch), heading:0)
+        
+        mapView.flyToCamera(cameray) {
+            //finish code
         }
     }
     

@@ -33,6 +33,31 @@ class RouteMaster {
     var routeListTimestamps: [NSDate] = [NSDate]()
     var routeListSpeeds: [Double] = [Double]()
     var routeListAltitudes: [Double] = [Double]()
+    
+    var startLat: Double {
+        if(_MotoRoute.startLatitude != 0){
+            return _MotoRoute.startLatitude
+        } else if (_RouteList.count > 0) {
+            return _RouteList[0].latitude
+        } else if (_MotoRoute.locationsList.count > 0) {
+            return _MotoRoute.locationsList[0].latitude
+        } else {
+            return 0
+        }
+    }
+    
+    var startLong: Double {
+        if(_MotoRoute.startLongitude != 0){
+            return _MotoRoute.startLongitude
+        } else if (_RouteList.count > 0) {
+            return _RouteList[0].longitude
+        } else if (_MotoRoute.locationsList.count > 0) {
+            return _MotoRoute.locationsList[0].longitude
+        } else {
+            return 0
+        }
+    }
+    
 
     var cnt = 0
     
@@ -51,6 +76,10 @@ class RouteMaster {
     func associateRouteFIR(){
         createMasterLocationRealm(_MotoRoute.locationsList)
         setRouteListInfos()
+    }
+    
+    func associateRouteOnly(motoRoute: Route){
+        _MotoRoute = motoRoute
     }
     
     
@@ -133,7 +162,25 @@ class RouteMaster {
         globalHighestAlt.gHighestAlt = highestAlt
         globalLowestAlt.gLowesttAlt = lowestAlt
         }
+    
+    
+    class func realmResultToMasterArray(realm: Results<Route>)  -> [RouteMaster]{
+        
+        var master = [RouteMaster]()
+        
+        for item in realm{
+            let newMaster = RouteMaster()
+            newMaster.associateRouteOnly(item)
+            master.append(newMaster)
+        }
+        return master
+    }
+    
 }
+
+
+
+
 
 
 // Master Location Model for all Route Operations inside App

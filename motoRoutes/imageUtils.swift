@@ -146,11 +146,11 @@ final class imageUtils{
             
         case .Recording:
             //print("Recording")
-            drawCircle(&context!, height: drawHeight, LineColor: LineColor)
+            drawCircle(&context!, width: 5, height: drawHeight, LineColor: LineColor)
             
         case .PrintCircles:
             //print("Recording")
-            drawCircle(&context!, height: drawHeight, LineColor: LineColor)
+            drawCircle(&context!, width: 5, height: drawHeight, LineColor: LineColor)
         
         case .PrintBaseHeight:
             //print("Base")
@@ -186,9 +186,24 @@ final class imageUtils{
     }
     
     
+    class func dotColorMarker(width: Int, height: Int, color: UIColor) -> UIImage {
+    
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
+        var context = UIGraphicsGetCurrentContext()
+        
+        drawCircle(&context!, width: width, height: height, LineColor: color)
+        
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return img
+    }
+    
+    
+    
     /* helper func draw circle line */
-    static func drawCircle (inout context:CGContext, height:Int, LineColor : UIColor) {
-        CGContextAddArc(context, 2.5, CGFloat(height/2), 1, 0, CGFloat(M_PI * 2), 0)
+    static func drawCircle (inout context:CGContext, width: Int, height:Int, LineColor : UIColor) {
+        CGContextAddArc(context, CGFloat(width/2), CGFloat(height/2), CGFloat(width/2)-1, 0, CGFloat(M_PI * 2), 0)
         CGContextSetFillColorWithColor(context,LineColor.CGColor)
         CGContextSetStrokeColorWithColor(context,LineColor.CGColor)
         CGContextDrawPath(context, .FillStroke)

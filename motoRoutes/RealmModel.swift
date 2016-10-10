@@ -94,6 +94,8 @@ class RealmUtils{
         newRoute.distance = distance
         newRoute.duration = totalTime
         newRoute.image = screenshotFilename
+        newRoute.startLatitude = LocationsRoute[0].coordinate.latitude
+        newRoute.startLongitude = LocationsRoute[0].coordinate.longitude
         
         // distance calc
         var locationDistance = 0.0

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wc2-zt-K1X">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H4z-9o-iAl" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="-82" width="600" height="682"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQh-2L-1YP" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                        <rect key="frame" x="489" y="92" width="48" height="48"/>
+                                    <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQh-2L-1YP" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
+                                        <rect key="frame" x="489" y="18" width="48" height="48"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <size key="titleShadowOffset" width="8" height="5"/>
                                         <state key="normal" image="ic_add_circle_48pt"/>
@@ -32,12 +32,8 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="aQh-2L-1YP" secondAttribute="trailing" constant="63" id="SOU-h5-TEM"/>
-                                    <constraint firstItem="aQh-2L-1YP" firstAttribute="top" secondItem="H4z-9o-iAl" secondAttribute="top" constant="92" id="di9-BD-FAt"/>
-                                </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/ppoh71/cik78u1j500cnnykofeyr19z1"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/ppoh71/cik77d7g700hubtj7c1kueo2b"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="allowsZooming" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="allowsScrolling" value="YES"/>
                                 </userDefinedRuntimeAttributes>
@@ -137,16 +133,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="woV-1i-Vrd" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="6uD-SS-Yyo"/>
+                            <constraint firstAttribute="bottom" secondItem="H4z-9o-iAl" secondAttribute="bottom" id="8RN-xm-2u4"/>
                             <constraint firstAttribute="trailing" secondItem="H4z-9o-iAl" secondAttribute="trailing" id="AGf-eW-obU"/>
+                            <constraint firstAttribute="trailing" secondItem="H4z-9o-iAl" secondAttribute="trailing" id="AN4-II-LlL"/>
                             <constraint firstAttribute="trailingMargin" secondItem="rz8-Wo-jK6" secondAttribute="trailing" constant="-8" id="E18-dh-4s7"/>
                             <constraint firstItem="6Jq-hI-DK4" firstAttribute="top" secondItem="woV-1i-Vrd" secondAttribute="bottom" constant="32" id="Ge3-fH-BgX"/>
                             <constraint firstItem="H4z-9o-iAl" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="M8L-Aq-wpN"/>
                             <constraint firstAttribute="trailing" secondItem="woV-1i-Vrd" secondAttribute="trailing" id="Oge-rn-wiB"/>
-                            <constraint firstItem="H4z-9o-iAl" firstAttribute="bottom" secondItem="6Jq-hI-DK4" secondAttribute="top" constant="44" id="Rj6-HK-rb1"/>
+                            <constraint firstItem="H4z-9o-iAl" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="c3S-V0-NuQ"/>
                             <constraint firstItem="6Jq-hI-DK4" firstAttribute="top" secondItem="rz8-Wo-jK6" secondAttribute="bottom" constant="498" id="cJk-3y-det"/>
-                            <constraint firstAttribute="trailing" secondItem="H4z-9o-iAl" secondAttribute="trailing" id="kxN-At-pmq"/>
-                            <constraint firstItem="H4z-9o-iAl" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="wah-aU-vfC"/>
-                            <constraint firstItem="H4z-9o-iAl" firstAttribute="top" secondItem="q6j-ht-vRW" secondAttribute="top" constant="-82" id="zB8-tX-vYh"/>
+                            <constraint firstItem="H4z-9o-iAl" firstAttribute="top" secondItem="q6j-ht-vRW" secondAttribute="top" id="vcO-JI-2Dw"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
