@@ -6,7 +6,7 @@
 //  Copyright © 2016 Peter Pohlmann. All rights reserved.
 //
 
-
+/*
 import MapboxGeocoder
 
 
@@ -16,7 +16,7 @@ let geocoder = Geocoder.sharedGeocoder
 final class GeocodeUtils {
     
     /* get adress from location */
-    static func getAdressFromCoord(coorddinate2D: CLLocationCoordinate2D, field: String ) {
+    static func getAdressFromCoord(_ coorddinate2D: CLLocationCoordinate2D, field: String ) {
         
         var locationAdress = "EOF"
         
@@ -25,7 +25,7 @@ final class GeocodeUtils {
             
             if let error = error {
                 NSLog("%@", error)
-            } else if let placemarks = placemarks where !placemarks.isEmpty {
+            } else if let placemarks = placemarks, !placemarks.isEmpty {
                 
                 // let formatter = CNPostalAddressFormatter()
                 // print(formatter.stringFromPostalAddress(placemarks[0].postalAddress!))
@@ -42,3 +42,4 @@ final class GeocodeUtils {
         }
     }
 }
+*/

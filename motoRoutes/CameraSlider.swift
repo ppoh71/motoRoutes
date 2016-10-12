@@ -9,25 +9,25 @@
 import UIKit
 
 
-public class CameraSlider: UISlider{
+open class CameraSlider: UISlider{
 
     //init
     required public init(coder aDecoder: NSCoder) {
          super.init(coder: aDecoder)!
     
         //set trans image for track for alpha
-        let transImg = imageUtils.drawSliderThumb(1, height: 1, lineWidth: 1, color: UIColor.blackColor(), alpha: 0)
+        let transImg = imageUtils.drawSliderThumb(1, height: 1, lineWidth: 1, color: UIColor.black, alpha: 0)
         
         //set new images for controlls
-        self.setMinimumTrackImage(transImg, forState: UIControlState.Normal)
-        self.setMinimumTrackImage(transImg, forState: UIControlState.Highlighted)
-        self.setMaximumTrackImage(transImg, forState: UIControlState.Normal)
-        self.setMaximumTrackImage(transImg, forState: UIControlState.Highlighted)
+        self.setMinimumTrackImage(transImg, for: UIControlState())
+        self.setMinimumTrackImage(transImg, for: UIControlState.highlighted)
+        self.setMaximumTrackImage(transImg, for: UIControlState())
+        self.setMaximumTrackImage(transImg, for: UIControlState.highlighted)
         
       //  self.setThumbImage( UIImage(named: "updown"), forState: UIControlState.Normal )
       //  self.setThumbImage( UIImage(named: "updown"), forState: UIControlState.Highlighted )
 
         //rotate slider to vertical position
-        self.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
+        self.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
     }
 }

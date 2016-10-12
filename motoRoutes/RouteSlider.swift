@@ -9,7 +9,7 @@
 import UIKit
 
 
-public class RouteSlider: UISlider {
+open class RouteSlider: UISlider {
     
     var labelDistance:UILabel!
     var labelTime:UILabel!
@@ -29,11 +29,11 @@ public class RouteSlider: UISlider {
         
         //define labels and stuff
         labelDistance = UILabel()
-        labelDistance.textColor = UIColor.whiteColor()
+        labelDistance.textColor = UIColor.white
         labelDistance.font = UIFont(name: "Roboto", size: 13)
         
         labelTime = UILabel()
-        labelTime.textColor = UIColor.whiteColor()
+        labelTime.textColor = UIColor.white
         labelTime.font = UIFont(name: "Roboto", size: 13)
         
         timeIcon = UIImage(named: "time-text")
@@ -44,17 +44,17 @@ public class RouteSlider: UISlider {
         
         
         //change Thumb Image
-        let sliderTumb = imageUtils.drawSliderThumb(10, height: 25, lineWidth: 5, color: UIColor.whiteColor(), alpha: 1)
+        let sliderTumb = imageUtils.drawSliderThumb(10, height: 25, lineWidth: 5, color: UIColor.white, alpha: 1)
         
         //change thumb image states
-        self.setThumbImage( sliderTumb, forState: UIControlState.Normal )
-        self.setThumbImage( sliderTumb, forState: UIControlState.Highlighted )
+        self.setThumbImage( sliderTumb, for: UIControlState() )
+        self.setThumbImage( sliderTumb, for: UIControlState.highlighted )
 
         
     }
     
     //set the labels
-    func setLabel(distanceText:String, timeText:String){
+    func setLabel(_ distanceText:String, timeText:String){
         
         labelXMin = frame.origin.x + 0
         labelXMax = frame.origin.x + self.frame.width - 0
@@ -79,12 +79,12 @@ public class RouteSlider: UISlider {
             posX = posX-80
         }
         
-        labelDistance.frame = CGRectMake(self.frame.origin.x+posX+offset+25 ,self.frame.origin.y - 22, 100, 25)
-        distanceIconView.frame = CGRectMake(self.frame.origin.x+posX+offset ,self.frame.origin.y - 10, 25, 25)
+        labelDistance.frame = CGRect(x: self.frame.origin.x+posX+offset+25 ,y: self.frame.origin.y - 22, width: 100, height: 25)
+        distanceIconView.frame = CGRect(x: self.frame.origin.x+posX+offset ,y: self.frame.origin.y - 10, width: 25, height: 25)
         labelDistance.text = distanceText
         
-        labelTime.frame = CGRectMake(self.frame.origin.x+posX+offset+25, self.frame.origin.y - 42, 100, 25)
-        timeIconView.frame = CGRectMake(self.frame.origin.x+posX+offset ,self.frame.origin.y - 30, 25, 25)
+        labelTime.frame = CGRect(x: self.frame.origin.x+posX+offset+25, y: self.frame.origin.y - 42, width: 100, height: 25)
+        timeIconView.frame = CGRect(x: self.frame.origin.x+posX+offset ,y: self.frame.origin.y - 30, width: 25, height: 25)
         labelTime.text = timeText
      
         //add stuff to subview
@@ -97,7 +97,7 @@ public class RouteSlider: UISlider {
     
     
     //not sure why we need this
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
 
        // print("subviews")
         super.layoutSubviews()

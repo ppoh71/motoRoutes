@@ -25,30 +25,30 @@
 
 import Foundation
 
-extension NSDateFormatter {
+extension DateFormatter {
     convenience init(dateFormat: String) {
         self.init()
         self.dateFormat =  dateFormat
     }
 }
 
-extension NSDate {
+extension Date {
     
     struct Formatter {
-        static let customDE = NSDateFormatter(dateFormat: "MMM d, H:mm a")
-        static let customEN = NSDateFormatter(dateFormat: "MMM d, H:mm a")
+        static let customDE = DateFormatter(dateFormat: "MMM d, H:mm a")
+        static let customEN = DateFormatter(dateFormat: "MMM d, H:mm a")
     }
     
     var customFormatted: String {
         
-        let pre = NSLocale.preferredLanguages()[0]
+        let pre = Locale.preferredLanguages[0]
         
         var returnDate: String
         
         if(pre != "de-DE"){
-            returnDate =  Formatter.customEN.stringFromDate(self)
+            returnDate =  Formatter.customEN.string(from: self)
         } else {
-            returnDate =  Formatter.customDE.stringFromDate(self)
+            returnDate =  Formatter.customDE.string(from: self)
         }
         return returnDate
     }

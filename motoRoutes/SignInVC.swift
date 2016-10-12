@@ -25,44 +25,44 @@ class SignInVC: UIViewController {
 
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
-            if let keychain =  KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID){
-                performSegueWithIdentifier("LoggedInSegue", sender: nil)
+    override func viewDidAppear(_ animated: Bool) {
+       
+          if let keychain = KeychainWrapper.standard.string(forKey: KEY_UID){
+                performSegue(withIdentifier: "LoggedInSegue", sender: nil)
                 print("MOTOROUTES: checked keychain \(keychain)")
-            }
+          }
     }
     
-    @IBAction func facebookButtonTapped(sender: AnyObject) {
+    @IBAction func facebookButtonTapped(_ sender: AnyObject) {
         
         let facebookLogin = FBSDKLoginManager()
         
-        facebookLogin.logInWithReadPermissions(["email"], fromViewController: self) { (result, error) in
+        facebookLogin.logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             
             print("MOTOROUTES: Result")
-            print(result)
+           // print(result)
             
             if error != nil {
                 print("MOTOROUTES: Unable to login with facebook")
             }
             
-            else if result.isCancelled == true {
+            else if result?.isCancelled == true {
                 print("MOTOROUTES: Facebook Login is cancelled")
             }
             else{
                 print("MOTOROUTES: Successfully authentificated")
-                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
+                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 self.firebaseAuth(credential)
             }
             
         }
     }
     
-    @IBAction func signInTapped(sender: AnyObject) {
+    @IBAction func signInTapped(_ sender: AnyObject) {
         
         if let email = emailField.text, let password = passwordField.text {
             
-            FIRAuth.auth()!.signInWithEmail(email, password: password, completion: { (user, error) in
+            FIRAuth.auth()!.signIn(withEmail: email, password: password, completion: { (user, error) in
             
                 if error == nil{
                     print("MOTOROUTES: SIGNED IN BY MAIL")
@@ -73,7 +73,7 @@ class SignInVC: UIViewController {
                     
                 } else {
                     print("MOTOROUTS: ERROR BY MAIL NO LOGIn, CREATE ONE")
-                    FIRAuth.auth()!.createUserWithEmail(email, password: password, completion: { (user, error) in
+                    FIRAuth.auth()!.createUser(withEmail: email, password: password, completion: { (user, error) in
                     
                         if error == nil{
                             print("MOTOROUTES: CREATE USER BY MAIL ")
@@ -92,9 +92,9 @@ class SignInVC: UIViewController {
     }
     
     
-    func firebaseAuth(credential: FIRAuthCredential){
+    func firebaseAuth(_ credential: FIRAuthCredential){
         
-        FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
+        FIRAuth.auth()?.signIn(with: credential) { (user, error) in
             
             if error != nil {
                 print("MOTOROUTES: Unable to login with firebase")
@@ -108,16 +108,15 @@ class SignInVC: UIViewController {
     }
     
     //write to jeychain for autosign in
-    func completeSignIn(uid: String){
-           let keychain =  KeychainWrapper.defaultKeychainWrapper().setString((uid), forKey: KEY_UID)
-           performSegueWithIdentifier("LoggedInSegue", sender: nil)
-           print("MOTOROUTS: Saved to keyhcain \(keychain)")
+    func completeSignIn(_ uid: String){
+        let _ = KeychainWrapper.standard.set(uid, forKey: KEY_UID)
+        performSegue(withIdentifier: "LoggedInSegue", sender: nil)
         }
     
     
 
     //Close segue
-    @IBAction func closeSignInVC(segue:UIStoryboardSegue) {
+    @IBAction func closeSignInVC(_ segue:UIStoryboardSegue) {
         
         print("segue close closeSignInVC")
         

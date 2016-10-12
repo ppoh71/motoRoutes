@@ -30,7 +30,7 @@ class RouteMaster {
     var routeHighSpeed: String = ""
     var routeDeltaAlt: String = ""
     var routeHighestAlt: String = ""
-    var routeListTimestamps: [NSDate] = [NSDate]()
+    var routeListTimestamps: [Date] = [Date]()
     var routeListSpeeds: [Double] = [Double]()
     var routeListAltitudes: [Double] = [Double]()
     
@@ -66,7 +66,7 @@ class RouteMaster {
     }
     
     //map realm route
-    func associateRoute(motoRoute: Route){
+    func associateRoute(_ motoRoute: Route){
         _MotoRoute = motoRoute
         createMasterLocationRealm(_MotoRoute.locationsList)
         setRouteListInfos()
@@ -78,14 +78,14 @@ class RouteMaster {
         setRouteListInfos()
     }
     
-    func associateRouteOnly(motoRoute: Route){
+    func associateRouteOnly(_ motoRoute: Route){
         _MotoRoute = motoRoute
     }
     
     
     
     //create a LocationMaster Object with from Realm List
-    func createMasterLocationRealm(LocationsList:List<Location>!) {
+    func createMasterLocationRealm(_ LocationsList:List<Location>!) {
         
         var newRouteList = RouteMaster()._RouteList
         
@@ -100,7 +100,7 @@ class RouteMaster {
     
     
     //create a LocationMaster Object with Location List
-    class func createMasterFromCLLocation(LocationsList: [CLLocation]) -> [LocationMaster]{
+    class func createMasterFromCLLocation(_ LocationsList: [CLLocation]) -> [LocationMaster]{
         var newRouteList = RouteMaster()._RouteList
         
         //loop all CLLocation and create and append to LocationMaster
@@ -115,14 +115,14 @@ class RouteMaster {
     
     
     //update the marker object, so we know that the speedmarker has been set
-    class func updateMarkerBool(RouteList: [LocationMaster], n: Int){
+    class func updateMarkerBool(_ RouteList: [LocationMaster], n: Int){
         //the marker for this location has been set
         RouteList[n].marker = true
         
     }
     
     //get speede, alt, average and stuff
-    private func setRouteListInfos() {
+    fileprivate func setRouteListInfos() {
         
         cnt += 1
         
@@ -130,7 +130,7 @@ class RouteMaster {
         var highestSpeed = 0.0
         var lowestAlt = 10000.0
         var highestAlt = 0.0
-        var _routeListTimestamps = [NSDate]()
+        var _routeListTimestamps = [Date]()
         var _routeListSpeeds = [Double]()
         var _routeListAltitudes = [Double]()
         
@@ -164,7 +164,7 @@ class RouteMaster {
         }
     
     
-    class func realmResultToMasterArray(realm: Results<Route>)  -> [RouteMaster]{
+    class func realmResultToMasterArray(_ realm: Results<Route>)  -> [RouteMaster]{
         
         var master = [RouteMaster]()
         
@@ -191,14 +191,14 @@ class LocationMaster {
     var altitude = 0.0
     var speed = 0.0
     var course = 0.0
-    var timestamp = NSDate()
+    var timestamp = Date()
     var accuracy = 0.0
     var marker = false
     var distance = 0.0
     
     var annotation = MGLPointAnnotation()
     
-    init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:NSDate, accuracy:Double, marker:Bool, distance:Double ){
+    init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:Date, accuracy:Double, marker:Bool, distance:Double ){
         
         self.latitude = latitude
         self.longitude = longitude
@@ -226,7 +226,7 @@ class MediaMaster {
     dynamic var altitude = 0.0
     dynamic var speed = 0.0
     dynamic var course = 0.0
-    dynamic var timestamp = NSDate()
+    dynamic var timestamp = Date()
     dynamic var accuracy = 0.0
     
     init(){

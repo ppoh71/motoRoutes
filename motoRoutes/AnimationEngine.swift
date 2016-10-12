@@ -14,23 +14,23 @@ final class AnimationEngine {
 
     //MARK; Static Screen Position Vars
     class var offScreenRightPosition: CGPoint{
-        return CGPointMake(UIScreen.mainScreen().bounds.width, CGRectGetMidY(UIScreen.mainScreen().bounds))
+        return CGPoint(x: UIScreen.main.bounds.width, y: UIScreen.main.bounds.midY)
     }
 
     class var offScreenLeftPosition: CGPoint{
-        return CGPointMake(-UIScreen.mainScreen().bounds.width, CGRectGetMidY(UIScreen.mainScreen().bounds))
+        return CGPoint(x: -UIScreen.main.bounds.width, y: UIScreen.main.bounds.midY)
     }
 
     class var screenCenterPosition: CGPoint{
-        return CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetMidY(UIScreen.mainScreen().bounds))
+        return CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
     }
     
     class var screenBottomCenterPosition: CGPoint{
-        return CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetHeight(UIScreen.mainScreen().bounds))
+        return CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height)
     }
     
     class var screenBottomPosition: CGPoint {
-        return CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetHeight(UIScreen.mainScreen().bounds))
+        return CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height)
     }
     
     
@@ -40,39 +40,39 @@ final class AnimationEngine {
     
     
     //MARK: Animation to Point
-    class func animationToPosition(view: UIView, position: CGPoint) {
+    class func animationToPosition(_ view: UIView, position: CGPoint) {
         
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
-        moveAnim.toValue = NSValue(CGPoint: position)
-        moveAnim.springBounciness = 8
-        moveAnim.springSpeed = 8
-        view.pop_addAnimation(moveAnim, forKey: "movePosition")
+        moveAnim?.toValue = NSValue(cgPoint: position)
+        moveAnim?.springBounciness = 8
+        moveAnim?.springSpeed = 8
+        view.pop_add(moveAnim, forKey: "movePosition")
     }
 
     
     
     //MARK: Animation functions
     
-    class func showViewAnimCenterPosition(viewObejct: UIView){
+    class func showViewAnimCenterPosition(_ viewObejct: UIView){
         AnimationEngine.animationToPosition(viewObejct, position: AnimationEngine.screenCenterPosition)
     }
     
-    class func hideViewAnim(viewObject: UIView){
+    class func hideViewAnim(_ viewObject: UIView){
         AnimationEngine.animationToPosition(viewObject, position: AnimationEngine.offScreenLeftPosition)
     }
     
-    class func hideViewBottomLeft(viewObject: UIView){
-        let offScreenLeftBottom = CGPointMake(-UIScreen.mainScreen().bounds.width, CGRectGetHeight(UIScreen.mainScreen().bounds) - (viewObject.frame.height/2))
+    class func hideViewBottomLeft(_ viewObject: UIView){
+        let offScreenLeftBottom = CGPoint(x: -UIScreen.main.bounds.width, y: UIScreen.main.bounds.height - (viewObject.frame.height/2))
         AnimationEngine.animationToPosition(viewObject, position: offScreenLeftBottom)
     }
     
-    class func showViewAnimCenterBottomPosition(viewObject: UIView){
-        let position = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetHeight(UIScreen.mainScreen().bounds) - (viewObject.frame.height/2))
+    class func showViewAnimCenterBottomPosition(_ viewObject: UIView){
+        let position = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height - (viewObject.frame.height/2))
         AnimationEngine.animationToPosition(viewObject, position: position)
     }
     
-    class func showViewAnimCenterTopPosition(viewObject: UIView){
-        let position = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), 0)
+    class func showViewAnimCenterTopPosition(_ viewObject: UIView){
+        let position = CGPoint(x: UIScreen.main.bounds.midX, y: 0)
         AnimationEngine.animationToPosition(viewObject, position: position)
     }
     

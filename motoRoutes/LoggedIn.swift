@@ -13,11 +13,11 @@ import SwiftKeychainWrapper
 class LoggedIn: UIViewController {
     
     
-    @IBAction func signOutTapped(sender: AnyObject) {
+    @IBAction func signOutTapped(_ sender: AnyObject) {
         
-        KeychainWrapper.defaultKeychainWrapper().removeObjectForKey(KEY_UID)
+        let _ : Bool = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
         try! FIRAuth.auth()?.signOut()
-        performSegueWithIdentifier("ShowVCSignOut", sender: nil)
+        performSegue(withIdentifier: "ShowVCSignOut", sender: nil)
         print("MOTOROUTES: Sign out from Firebase");
 
     }

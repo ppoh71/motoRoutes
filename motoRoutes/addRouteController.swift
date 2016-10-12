@@ -41,7 +41,7 @@ class addRouteController: UIViewController {
         var _locationManager = CLLocationManager()
         _locationManager.delegate = self
         _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        _locationManager.activityType = .AutomotiveNavigation
+        _locationManager.activityType = .automotiveNavigation
         _locationManager.distanceFilter = 10.0  // Movement threshold for new events
         _locationManager.allowsBackgroundLocationUpdates = true // allow in background
         
@@ -51,7 +51,7 @@ class addRouteController: UIViewController {
     //route, location and timer vars
     lazy var locationsRoute = [CLLocation]()
     lazy var locationsRouteInactive = [CLLocation]()
-    lazy var timer = NSTimer()
+    lazy var timer = Timer()
     var second = 0
     var distance = 0.0
     var latitude:Double = 0
@@ -71,7 +71,7 @@ class addRouteController: UIViewController {
     
     //current time timestamp
     var currentTimestamp: Int {
-        return Int(NSDate().timeIntervalSince1970)
+        return Int(Date().timeIntervalSince1970)
     }
    
     //total time in sec /starttimstamp - currenttimestamp
@@ -113,7 +113,7 @@ class addRouteController: UIViewController {
     //
     // view will appesar
     //
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         //allow location use
@@ -128,10 +128,10 @@ class addRouteController: UIViewController {
         
         
         //init Msg Overlay
-        msgOverlay = NSBundle.mainBundle().loadNibNamed("MsgOverlay", owner: self, options: nil)[0] as? MsgOverlay
+        msgOverlay = Bundle.main.loadNibNamed("MsgOverlay", owner: self, options: nil)?[0] as? MsgOverlay
         msgOverlay.center = AnimationEngine.offScreenLeftPosition
         msgOverlay.delegate = self
-        msgOverlay.msgType = .Save
+        msgOverlay.msgType = .save
         self.view.addSubview(msgOverlay)
     }
 
@@ -139,7 +139,7 @@ class addRouteController: UIViewController {
     //
     // view will disappear, stop location updates and timer
     //
-    override func viewWillDisappear(animated:Bool) {
+    override func viewWillDisappear(_ animated:Bool) {
         print("addRoute will disappear")
         super.viewWillDisappear(animated)
         pauseLocationUpdates()
@@ -156,12 +156,12 @@ class addRouteController: UIViewController {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation() // start location manager
             recordingActive = true // set start of location manager true
-            startTimestamp = Int(NSDate().timeIntervalSince1970) // get timestamp for timer
+            startTimestamp = Int(Date().timeIntervalSince1970) // get timestamp for timer
         }
     }
     
     func startTimer(){
-        timer = NSTimer.scheduledTimerWithTimeInterval(1,
+        timer = Timer.scheduledTimer(timeInterval: 1,
            target: self,
            selector: #selector(addRouteController.perSecond(_:)),
            userInfo: nil,
@@ -184,7 +184,7 @@ class addRouteController: UIViewController {
     
     // timer update per second
     //
-    func perSecond(timer: NSTimer) {
+    func perSecond(_ timer: Timer) {
         
         second += 1
         totalTime = currentTimestamp - startTimestamp
@@ -228,14 +228,14 @@ class addRouteController: UIViewController {
                 //animate camera to center point, launch save overlay
                 mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
                     
-                    self.msgOverlay.msgType = .Save
+                    self.msgOverlay.msgType = .save
                     self.msgOverlay.setupView()
                     AnimationEngine.showViewAnimCenterPosition(self.msgOverlay)
                 }
             
         } else{
             
-            self.msgOverlay.msgType = .Resume
+            self.msgOverlay.msgType = .resume
             self.msgOverlay.setupView()
             AnimationEngine.showViewAnimCenterPosition(self.msgOverlay)
         }
@@ -253,22 +253,22 @@ class addRouteController: UIViewController {
         
         //load saved realm object passit to seague for showcontroller
         savedRoute = RealmUtils.getRealmByID(routeRealmID)
-        performSegueWithIdentifier("goFromAdd2Show", sender: nil)
+        performSegue(withIdentifier: "goFromAdd2Show", sender: nil)
         
     }
     
     // press on rec Button and start rec of route
-    @IBAction func startRecRoute(sender: UIButton) {
+    @IBAction func startRecRoute(_ sender: UIButton) {
         second = 0
         distance = 0.0
-        locationsRoute.removeAll(keepCapacity: false)
+        locationsRoute.removeAll(keepingCapacity: false)
         startTimer()
         startupLocationUpdates()
     }
     
 
     // save route
-    @IBAction func saveRoute(sender: UIButton) {
+    @IBAction func saveRoute(_ sender: UIButton) {
         //save route
         if(locationsRoute.count>2){
             prepareSaveRoute()
@@ -282,21 +282,21 @@ class addRouteController: UIViewController {
     /*
     * Prepare Segue / camera stuff
     */
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         
         print("segue 1 \(segue.identifier)")
                
         
         //prepare for camera/photo store to MediaObhect
         if segue.identifier == "showCamera" {
-            let destinationController = segue.destinationViewController as! motoRouteCamera
+            let destinationController = segue.destination as! motoRouteCamera
             destinationController.latitude = latitude
             destinationController.longitude = longitude
         }
         
         //prepare for camera/photo store to MediaObhect
         if segue.identifier == "goFromAdd2Show" {
-            let destinationController = segue.destinationViewController as! showRouteController
+            let destinationController = segue.destination as! showRouteController
 
             destinationController.motoRoute = savedRoute[0]
         }
@@ -306,16 +306,14 @@ class addRouteController: UIViewController {
     /*
     * Close segue
     */
-    @IBAction func close(segue:UIStoryboardSegue) {
+    @IBAction func close(_ segue:UIStoryboardSegue) {
         
         print("segue close")
         
-        if let cameraController = segue.sourceViewController as? motoRouteCamera {
-            if let MediaObjectsCamera:[MediaMaster]! = cameraController.MediaObjects {
-              
-                MediaObjects += MediaObjectsCamera
-                
-             print( "##################\(MediaObjects)")
+        if let cameraController = segue.source as? motoRouteCamera {
+            if (cameraController.MediaObjects.count > 0) {
+                MediaObjects += cameraController.MediaObjects
+                print( "##################\(MediaObjects)")
             }
         }
     }
@@ -324,7 +322,7 @@ class addRouteController: UIViewController {
     //
     // Debug Stuff
     //
-    @IBAction func showDebug2(sender: UIButton) {
+    @IBAction func showDebug2(_ sender: UIButton) {
         
         print("debug view")
         
@@ -333,19 +331,19 @@ class addRouteController: UIViewController {
         //switch button function
         if(debugButton.currentTitle=="+"){
             
-            debugButton.setTitle("-", forState: UIControlState.Normal)
+            debugButton.setTitle("-", for: UIControlState())
             animateX = -280
             
         } else{
             
-            debugButton.setTitle("+", forState: UIControlState.Normal)
+            debugButton.setTitle("+", for: UIControlState())
             animateX = -0
         }
         
         //aimate view
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.5, options: [], animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.5, options: [], animations: {
             
-            self.debugView.transform = CGAffineTransformMakeTranslation(animateX, 0)
+            self.debugView.transform = CGAffineTransform(translationX: animateX, y: 0)
             
             }, completion: nil)
     }
@@ -356,7 +354,7 @@ class addRouteController: UIViewController {
 // MARK: - CLLocationManagerDelegate
 extension addRouteController: CLLocationManagerDelegate {
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         print("Location Update:")
         print(ActiveTime)
@@ -391,7 +389,7 @@ extension addRouteController: CLLocationManagerDelegate {
                 let centerCoords = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
                 
                 //center map
-                mapView.setCenterCoordinate(centerCoords,  zoomLevel: 12, animated: true)
+                mapView.setCenter(centerCoords,  zoomLevel: 12, animated: true)
                 
                 print("Center map in startup")
             }
@@ -410,7 +408,7 @@ extension addRouteController: CLLocationManagerDelegate {
                 }
                 
                 //calc distance for display only
-                distance += location.distanceFromLocation(self.locationsRoute.last!)
+                distance += location.distance(from: self.locationsRoute.last!)
                 
                 mapUtils.printSingleSpeedMarker(mapView, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, speed: location.speed)
                 
@@ -437,7 +435,7 @@ extension addRouteController: MGLMapViewDelegate {
     
     
     
-    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         //Try to reuse the existing ‘pisa’ annotation image, if it exists
         //var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")
@@ -455,56 +453,54 @@ extension addRouteController: MGLMapViewDelegate {
     }
 
     
-    func mapViewRegionIsChanging(mapView: MGLMapView) {
+    func mapViewRegionIsChanging(_ mapView: MGLMapView) {
         print("region is chanhing")
     }
 
     
-    func mapView(mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
         print("region will change")
     }
     
-    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         
         print("regio did  change animated")
     }
     
-    func mapViewDidFailLoadingMap(mapView: MGLMapView, withError error: NSError) {
-        print("failed loading mapr")
-    }
+
    
-    func mapViewDidStopLocatingUser(mapView: MGLMapView) {
+    func mapViewDidStopLocatingUser(_ mapView: MGLMapView) {
          print("failed loading mapr")
     }
 
 
-    func mapViewWillStartLoadingMap(mapView: MGLMapView) {
+    func mapViewWillStartLoadingMap(_ mapView: MGLMapView) {
         print("mapViewWillStartLoadingMap")
     }
     
-    func mapViewDidFinishRenderingMap(mapView: MGLMapView, fullyRendered: Bool) {
+    func mapViewDidFinishRenderingMap(_ mapView: MGLMapView, fullyRendered: Bool) {
         print("mapViewDidFinishRenderingMap")
     }
     
     
-    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+    func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
         // Set the alpha for all shape annotations to 1 (full opacity)
         return 1
     }
     
-    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+    func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
         return 5.0
     }
     
-    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+    func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
        let speedIndex =  utils.getSpeedIndex(speed)
        return colorUtils.polylineColors(speedIndex)
     }
     
     
-    func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
-        return UIColor.whiteColor()
+    func mapView(_ mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
+        return UIColor.white
     }
     
 }

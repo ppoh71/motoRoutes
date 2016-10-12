@@ -93,12 +93,12 @@ final class colorUtils {
 
     
     //get rgb color from hexcoler
-    static func hexTorgbColor(hexcolor:String) -> UIColor {
+    static func hexTorgbColor(_ hexcolor:String) -> UIColor {
 
-        let hex = hexcolor.stringByTrimmingCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+        let hex = hexcolor.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         
         var int = UInt32()
-        NSScanner(string: hex).scanHexInt(&int)
+        Scanner(string: hex).scanHexInt32(&int)
         let a, r, g, b: UInt32
         switch hex.characters.count {
         case 3: // RGB (12-bit)
@@ -108,14 +108,14 @@ final class colorUtils {
         case 8: // ARGB (32-bit)
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
-            return UIColor.clearColor()
+            return UIColor.clear
         }
         return UIColor(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
 
     
     //get colors by speed
-    static func polylineColors(speed:Int) -> UIColor{
+    static func polylineColors(_ speed:Int) -> UIColor{
 
        //color spped palette in hex
        var colorSpeed = ColorPalette.colors
@@ -145,12 +145,12 @@ final class colorUtils {
 //        let colorTop = UIColor(red: 192.0/255.0, green: 38.0/255.0, blue: 42.0/255.0, alpha: 1.0).CGColor
 //        let colorBottom = UIColor(red: 35.0/255.0, green: 2.0/255.0, blue: 2.0/255.0, alpha: 1.0).CGColor
         
-        let startColor: UIColor = UIColor.whiteColor()
-        let endColor: UIColor = UIColor.lightGrayColor()
-        let colors = [startColor.CGColor, endColor.CGColor]
+        let startColor: UIColor = UIColor.white
+        let endColor: UIColor = UIColor.lightGray
+        let colors = [startColor.cgColor, endColor.cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace, colors, colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: colorLocations)
     
         return gradient!
     }

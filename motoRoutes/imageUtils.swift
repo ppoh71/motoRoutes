@@ -18,7 +18,7 @@ final class imageUtils{
     /*
      * load images from path and return image
      */
-    class func loadImageFromPath(path: NSString) -> UIImage? {
+    class func loadImageFromPath(_ path: NSString) -> UIImage? {
     
         let image = UIImage(contentsOfFile: path as String)
         
@@ -34,15 +34,15 @@ final class imageUtils{
     /*
      * load images by image name and from documantsDirectory
      */
-    class func loadImageFromName(imgName: String) -> UIImage? {
+    class func loadImageFromName(_ imgName: String) -> UIImage? {
         
         guard  imgName.characters.count > 0 else {
             print("ERROR: No image name")
             return UIImage()
         }
         
-        let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
-        let image = imageUtils.loadImageFromPath(imgPath)
+        let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
+        let image = imageUtils.loadImageFromPath(imgPath as NSString)
         
         return image
         
@@ -53,35 +53,35 @@ final class imageUtils{
     /*
      * resize image by width, no transparency on png
      */
-    class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+    class func resizeImage(_ image: UIImage, newWidth: CGFloat) -> UIImage {
         
         let scale = newWidth / image.size.width
         let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
     
     
     /*
      * scale image with also png with/alpha
      */
-    class  func scaleImage(image: UIImage, toSize newSize: CGSize) -> (UIImage) {
+    class  func scaleImage(_ image: UIImage, toSize newSize: CGSize) -> (UIImage) {
         
-        let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
+        let newRect = CGRect(x: 0,y: 0, width: newSize.width, height: newSize.height).integral
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetInterpolationQuality(context, .High)
+        context!.interpolationQuality = .high
         
-        let flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
-        CGContextConcatCTM(context, flipVertical)
-        CGContextDrawImage(context, newRect, image.CGImage)
+        let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: newSize.height)
+        context?.concatenate(flipVertical)
+        context?.draw(image.cgImage!, in: newRect)
         
-        let newImage = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
+        let newImage = UIImage(cgImage: (context?.makeImage()!)!)
         UIGraphicsEndImageContext()
         
         return newImage
@@ -92,23 +92,23 @@ final class imageUtils{
      * Scale image with core graphics
      */
     
-    class func scaleImgaeCore(image: UIImage) -> UIImage{
+    class func scaleImgaeCore(_ image: UIImage) -> UIImage{
         
-        let cgImage = image.CGImage
+        let cgImage = image.cgImage
         
-        let width = CGImageGetWidth(cgImage) / 2
-        let height = CGImageGetHeight(cgImage) / 2
-        let bitsPerComponent = CGImageGetBitsPerComponent(cgImage)
-        let bytesPerRow = CGImageGetBytesPerRow(cgImage)
-        let colorSpace = CGImageGetColorSpace(cgImage)
-        let bitmapInfo = CGImageGetBitmapInfo(cgImage)
+        let width = (cgImage?.width)! / 2
+        let height = (cgImage?.height)! / 2
+        let bitsPerComponent = cgImage?.bitsPerComponent
+        let bytesPerRow = cgImage?.bytesPerRow
+        let colorSpace = cgImage?.colorSpace
+        let bitmapInfo = cgImage?.bitmapInfo
         
-        let context = CGBitmapContextCreate(nil, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo.rawValue)
+        let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: bitsPerComponent!, bytesPerRow: bytesPerRow!, space: colorSpace!, bitmapInfo: (bitmapInfo?.rawValue)!)
         
-        CGContextSetInterpolationQuality(context, .High)
-        CGContextDrawImage(context, CGRect(origin: CGPointZero, size: CGSize(width: CGFloat(width), height: CGFloat(height))), cgImage)
+        context!.interpolationQuality = .high
+        context?.draw(cgImage!, in: CGRect(origin: CGPoint.zero, size: CGSize(width: CGFloat(width), height: CGFloat(height))))
         
-        let scaledImage = CGBitmapContextCreateImage(context).flatMap { UIImage(CGImage: $0) }
+        let scaledImage = context?.makeImage().flatMap { UIImage(cgImage: $0) }
         
         return scaledImage!
         
@@ -120,7 +120,7 @@ final class imageUtils{
      - parameter type: print for recording and scrren shot use String "Recording" else nil
      
      */
-    class func drawLineOnImage(funcType: FuncTypes) -> UIImage{
+    class func drawLineOnImage(_ funcType: FuncTypes) -> UIImage{
         
         //def vars
         let drawHeight = 200
@@ -129,8 +129,8 @@ final class imageUtils{
         var context = UIGraphicsGetCurrentContext()
         
         //flipp-coords
-        CGContextTranslateCTM(context, 0, CGFloat(drawHeight));
-        CGContextScaleCTM(context, 1.0, -1.0);
+        context?.translateBy(x: 0, y: CGFloat(drawHeight));
+        context?.scaleBy(x: 1.0, y: -1.0);
         
         //get height and color for line
         let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
@@ -139,7 +139,7 @@ final class imageUtils{
         //LineAltitude = round(1000 * LineAltitude) / 1000
     
         //context stuff
-        CGContextSetLineWidth(context, 1)
+        context?.setLineWidth(1)
         
         //switch some func cases for image height
         switch funcType {
@@ -166,14 +166,14 @@ final class imageUtils{
             //let altQuo = globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt
             //let altDiffQuo = altQuo/Double(drawHeight)
             
-            var newLineHeight = (LineAltitude - globalLowestAlt.gLowesttAlt) * Double(drawHeight) / (globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt)
+            let newLineHeight = (LineAltitude - globalLowestAlt.gLowesttAlt) * Double(drawHeight) / (globalHighestAlt.gHighestAlt - globalLowestAlt.gLowesttAlt)
             
             guard newLineHeight > 0 else {
                 break
             }
             
             //print(Int(LineAltitude/altDiffQuo))
-            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: Int(newLineHeight), LineColor: UIColor.whiteColor(), perCent: 30, alpha: 0.3)
+            drawLine(&context!, drawHeight: (drawHeight/2) , LineHeight: Int(newLineHeight), LineColor: UIColor.white, perCent: 30, alpha: 0.3)
         
         default:
             break
@@ -182,11 +182,11 @@ final class imageUtils{
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return img
+        return img!
     }
     
     
-    class func dotColorMarker(width: Int, height: Int, color: UIColor) -> UIImage {
+    class func dotColorMarker(_ width: Int, height: Int, color: UIColor) -> UIImage {
     
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         var context = UIGraphicsGetCurrentContext()
@@ -196,67 +196,68 @@ final class imageUtils{
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return img
+        return img!
     }
     
     
     
     /* helper func draw circle line */
-    static func drawCircle (inout context:CGContext, width: Int, height:Int, LineColor : UIColor) {
-        CGContextAddArc(context, CGFloat(width/2), CGFloat(height/2), CGFloat(width/2)-1, 0, CGFloat(M_PI * 2), 0)
-        CGContextSetFillColorWithColor(context,LineColor.CGColor)
-        CGContextSetStrokeColorWithColor(context,LineColor.CGColor)
-        CGContextDrawPath(context, .FillStroke)
+    static func drawCircle (_ context:inout CGContext, width: Int, height:Int, LineColor : UIColor) {
+
+        context.addArc(center: CGPoint(x: CGFloat(width/2), y: CGFloat(height/2)), radius:  CGFloat(width/2)-1, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
+        context.setFillColor(LineColor.cgColor)
+        context.setStrokeColor(LineColor.cgColor)
+        context.drawPath(using: .fillStroke)
     }
     
     
     /* helper func draw pixel line */
-    static func drawLine (inout context: CGContext, drawHeight: Int, LineHeight: Int, LineColor: UIColor, perCent: Int, alpha: Double) {
+    static func drawLine (_ context: inout CGContext, drawHeight: Int, LineHeight: Int, LineColor: UIColor, perCent: Int, alpha: Double) {
         
         let heightPercent = LineHeight*perCent/100
         
-        CGContextMoveToPoint(context,0, 0)
-        CGContextSetAlpha(context, CGFloat(alpha));
-        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+        context.move(to: CGPoint(x: 0, y: 0))
+        context.setAlpha(CGFloat(alpha));
+        context.setStrokeColor(UIColor.white.cgColor)
         let rectangle = CGRect(x: 0, y: drawHeight, width: 4, height: Int(heightPercent))
-        CGContextAddRect(context, rectangle)
-        CGContextStrokePath(context)
-        CGContextSetFillColorWithColor(context,LineColor.CGColor)
-        CGContextFillRect(context, rectangle)
+        context.addRect(rectangle)
+        context.strokePath()
+        context.setFillColor(LineColor.cgColor)
+        context.fill(rectangle)
     }
     
     
     
-    class func drawSliderThumb(width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
+    class func drawSliderThumb(_ width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         let context = UIGraphicsGetCurrentContext()
         
         //flipp-coords
-        CGContextTranslateCTM(context, 0, CGFloat(height));
-        CGContextScaleCTM(context, 1.0, -1.0);
+        context?.translateBy(x: 0, y: CGFloat(height));
+        context?.scaleBy(x: 1.0, y: -1.0);
         
-        CGContextSetLineWidth(context, CGFloat(lineWidth))
-        CGContextMoveToPoint(context,0, 0)
-        CGContextSetAlpha(context, CGFloat(alpha));
+        context?.setLineWidth(CGFloat(lineWidth))
+        context?.move(to: CGPoint(x: 0, y: 0))
+        context?.setAlpha(CGFloat(alpha));
         
-        CGContextSetStrokeColorWithColor(context, color.CGColor)
+        context?.setStrokeColor(color.cgColor)
         
         let rectangle = CGRect(x: 0, y: 0, width: lineWidth, height: height)
-        CGContextAddRect(context, rectangle)
-        CGContextStrokePath(context)
-        CGContextSetFillColorWithColor(context,color.CGColor)
-        CGContextFillRect(context, rectangle)
+        context?.addRect(rectangle)
+        context?.strokePath()
+        context?.setFillColor(color.cgColor)
+        context?.fill(rectangle)
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return img
+        return img!
     }
     
     
     
-    static func makeSpeedometerImage(width: Int, height: Int)-> UIImage{
+    static func makeSpeedometerImage(_ width: Int, height: Int)-> UIImage{
         
         let colors = ColorPalette.colors
         
@@ -264,19 +265,19 @@ final class imageUtils{
         let context = UIGraphicsGetCurrentContext()
         
         //flipp-coords
-        CGContextTranslateCTM(context, 0, CGFloat(height));
-        CGContextScaleCTM(context, 1.0, -1.0);
+        context?.translateBy(x: 0, y: CGFloat(height));
+        context?.scaleBy(x: 1.0, y: -1.0);
         
-        for (index, color) in colors.enumerate() {
+        for (index, color) in colors.enumerated() {
            
             let currentColor = colorUtils.hexTorgbColor(color)
-            CGContextSetStrokeColorWithColor(context, currentColor.CGColor)
+            context?.setStrokeColor(currentColor.cgColor)
             
             let rectangle = CGRect(x: 0, y: (height/colors.count)*index, width: width, height: height/colors.count)
-            CGContextAddRect(context, rectangle)
-            CGContextStrokePath(context)
-            CGContextSetFillColorWithColor(context, currentColor.CGColor)
-            CGContextFillRect(context, rectangle)
+            context?.addRect(rectangle)
+            context?.strokePath()
+            context?.setFillColor(currentColor.cgColor)
+            context?.fill(rectangle)
             
             print(color)
         }
@@ -284,7 +285,7 @@ final class imageUtils{
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return img
+        return img!
     }
     
     /*
@@ -306,12 +307,12 @@ final class imageUtils{
     /*
      * save imge to file
      */
-    class func saveImageToFile(image:UIImage, imageName: String){
+    class func saveImageToFile(_ image:UIImage, imageName: String){
         
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(image) {
-            let filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(imageName)
-            let write = data.writeToFile(filename, atomically: true)
+            let filename = utils.getDocumentsDirectory().appendingPathComponent(imageName)
+            let write = (try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])) != nil
             
             print("\(write) - \(filename)")
         }
@@ -323,20 +324,19 @@ final class imageUtils{
     /*
      * save imge to file
      */
-    class func saveGoogleImageToFile(image:UIImage, key: Int, id: String) {
+    class func saveGoogleImageToFile(_ image:UIImage, key: Int, id: String) {
         
         //screenShotRoute.image = screenShot
-        if let data = UIImagePNGRepresentation(image) {
+        if UIImagePNGRepresentation(image) != nil {
             
             imageUtils.createDirectory(id)
             
-           let filename = utils.getDocumentsDirectory().stringByAppendingPathComponent("/\(id)/\(key).jpeg")
+           let filename = utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
            
            // let write = data.writeToFile(filename, atomically: true)
-            
            // let image = UIImage(data: NSData(contentsOfURL: NSURL(string: self.remoteImage)))
             
-            UIImageJPEGRepresentation(image, 0.75)!.writeToFile(filename, atomically: true)
+            try? UIImageJPEGRepresentation(image, 0.75)!.write(to: URL(fileURLWithPath: filename), options: [.atomic])
             
             print("\(write) - \(filename)")
         }
@@ -345,11 +345,11 @@ final class imageUtils{
     }
     
     
-    class func createDirectory(directoy: String){
-        let fileManager = NSFileManager.defaultManager()
-        let paths = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString).stringByAppendingPathComponent(directoy)
-        if !fileManager.fileExistsAtPath(paths){
-            try! fileManager.createDirectoryAtPath(paths, withIntermediateDirectories: true, attributes: nil)
+    class func createDirectory(_ directoy: String){
+        let fileManager = FileManager.default
+        let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(directoy)
+        if !fileManager.fileExists(atPath: paths){
+            try! fileManager.createDirectory(atPath: paths, withIntermediateDirectories: true, attributes: nil)
             print("created directory")
         }else{
             print("Already dictionary created.")
@@ -360,29 +360,29 @@ final class imageUtils{
     /**
      * make screenshot and return full filename,
      */
-    class func screenshotMap(mapView:MGLMapView) -> String{
+    class func screenshotMap(_ mapView:MGLMapView) -> String{
         
         
         var filename:String = ""
         
         //take the timestamp for the imagename
-        let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + ".png"
+        let timestampFilename = String(Int(Date().timeIntervalSince1970)) + ".png"
         
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(mapView.frame.size.width*0.99,mapView.frame.size.height*0.99), false, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: mapView.frame.size.width*0.99,height: mapView.frame.size.height*0.99), false, 0)
         //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
-        mapView.drawViewHierarchyInRect(CGRectMake(01, -01, mapView.frame.size.width, mapView.frame.size.height), afterScreenUpdates: true)
+        mapView.drawHierarchy(in: CGRect(x: 01, y: -01, width: mapView.frame.size.width, height: mapView.frame.size.height), afterScreenUpdates: true)
         
         let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         
         //resite image
-        let scaledImage = imageUtils.scaleImgaeCore(screenShot)
+        let scaledImage = imageUtils.scaleImgaeCore(screenShot!)
         
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(scaledImage) {
-            filename = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
-            data.writeToFile(filename, atomically: true)
+            filename = utils.getDocumentsDirectory().appendingPathComponent(timestampFilename)
+            try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])
         }
         
         //print("filename: \(filename as String)")

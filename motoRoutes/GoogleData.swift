@@ -17,25 +17,30 @@ class GoogleData {
 
 
     
-    func getGoogleImages(latitude: Double, longitude: Double, heading: Double, id: String, key: Int){
+    func getGoogleImages(_ latitude: Double, longitude: Double, heading: Double, id: String, key: Int){
 
         let url = "https://maps.googleapis.com/maps/api/streetview?size=400x300&location=" + String(latitude) + "," + String(longitude) +  "&heading=" + String(heading) +  "&fov=120&&pitch=-0.76&key=" + GOOGLE_API_KEY
         
         
-        var fileName: String?
-        var finalPath: NSURL?
+       // var fileName: String?
+       // var finalPath: URL?
         
         
-        Alamofire.request(.GET, url).responseImage { (response) -> Void in
+       // Alamofire.request(.GET, url).responseImage { (response) -> Void in
+        print(url)
+        
+            Alamofire.request(url).responseImage { (response) -> Void in
+        
+            print(response)
             guard let image = response.result.value else { return }
           
             print("amlamooooo \(url) ")
             let returnObj = [image]
             
-            let filename = "\(key).jpeg"
-            imageUtils.saveGoogleImageToFile(image, key: key, id: id)
+            //let filename = "\(key).jpeg"
+            imageUtils.saveGoogleImageToFile(image , key: key, id: id)
             
-            NSNotificationCenter.defaultCenter().postNotificationName(googleGetImagesNotificationKey, object: returnObj)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: googleGetImagesNotificationKey), object: returnObj)
         }
 //        
 //        var localPath: NSURL?

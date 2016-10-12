@@ -16,13 +16,13 @@ protocol msgOverlayDelegate: class {
 
 
 enum MsgType {
-    case Save
-    case Resume
-    case Cancel
-    case Print
+    case save
+    case resume
+    case cancel
+    case print
     
     init(){
-        self = .Save
+        self = .save
     }
 }
 
@@ -55,19 +55,18 @@ class MsgOverlay: UIView {
     }
     
     
-    @IBAction func saveAction(sender: UIButton){
+    @IBAction func saveAction(_ sender: UIButton){
         print("save Action Button")
         if(delegate != nil){
-            print(delegate)
+           
             delegate?.pressedSave()
         }
         
     }
     
-    @IBAction func resumeAction(sender: UIButton){
+    @IBAction func resumeAction(_ sender: UIButton){
          print("resume Action Button")
         if(delegate != nil){
-            print(delegate)
             delegate?.pressedResume()
         }
         
@@ -93,28 +92,28 @@ class MsgOverlay: UIView {
         
         switch msgType {
         
-        case .Save:
+        case .save:
             print("Save enum case")
-            saveButton.setTitle(saveButtonText, forState: UIControlState.Normal)
-            resumeButton.setTitle(resumeButtonText, forState: UIControlState.Normal)
-            saveButton.enabled = true
-            resumeButton.enabled = true
+            saveButton.setTitle(saveButtonText, for: UIControlState())
+            resumeButton.setTitle(resumeButtonText, for: UIControlState())
+            saveButton.isEnabled = true
+            resumeButton.isEnabled = true
             textLabel.text = saveLabelText
             
-        case .Resume:
+        case .resume:
             print("Resume enum case")
-            saveButton.setTitle(saveButtonText, forState: UIControlState.Normal)
-            resumeButton.setTitle(resumeButtonText, forState: UIControlState.Normal)
-            saveButton.enabled = false
-            resumeButton.enabled = true
+            saveButton.setTitle(saveButtonText, for: UIControlState())
+            resumeButton.setTitle(resumeButtonText, for: UIControlState())
+            saveButton.isEnabled = false
+            resumeButton.isEnabled = true
             textLabel.text = resumeLabelText
         
-        case .Print:
+        case .print:
             print("Resume enum case")
-            saveButton.setTitle(okButtonText, forState: UIControlState.Normal)
-            resumeButton.setTitle(cancelButtonText, forState: UIControlState.Normal)
-            saveButton.enabled = true
-            resumeButton.enabled = true
+            saveButton.setTitle(okButtonText, for: UIControlState())
+            resumeButton.setTitle(cancelButtonText, for: UIControlState())
+            saveButton.isEnabled = true
+            resumeButton.isEnabled = true
             textLabel.text = printAllMarkerlText
             
         default:

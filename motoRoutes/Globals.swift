@@ -35,7 +35,7 @@ final class Global {
     }
     
     //init global color
-    var gColor:UIColor = UIColor.whiteColor()
+    var gColor:UIColor = UIColor.white
     init(gColor:UIColor) {
         self.gColor = gColor
     }
@@ -125,7 +125,7 @@ final class Global {
 
 
 var globalSpeedSet = Global(speedSet:0)
-var globalColor = Global(gColor: UIColor.whiteColor())
+var globalColor = Global(gColor: UIColor.white)
 var globalCamDistance = Global(gCamDistance: 11500)
 var globalCamDuration = Global(gCamDuration: 0.2)
 var globalCamPitch = Global(gCamPitch: 60)

@@ -7,8 +7,9 @@
 //
 
 import UIKit
-import Charts
+//import Charts
 
+/*
 class MotoChart: UIView, ChartViewDelegate {
 
 
@@ -27,7 +28,7 @@ class MotoChart: UIView, ChartViewDelegate {
     }
     
     
-    func setupChart(routeMaster: RouteMaster, type: String?){
+    func setupChart(_ routeMaster: RouteMaster, type: String?){
         
       self.lineChartView.delegate = self
 
@@ -59,13 +60,13 @@ class MotoChart: UIView, ChartViewDelegate {
         }
         
         
-      setChartData(xValsArr, yValsArr: yValsArr, label: label)
+      setChartData(xValsArr as [Date], yValsArr: yValsArr, label: label)
     }
     
    
-    func setChartData(xValsArr: [NSDate], yValsArr: [Double], label: String) {
+    func setChartData(_ xValsArr: [Date], yValsArr: [Double], label: String) {
     
-        for (index, item) in xValsArr.enumerate() {
+        for (index, item) in xValsArr.enumerated() {
             yVals1.append(ChartDataEntry(value: yValsArr[index], xIndex: index))
         }
         
@@ -101,10 +102,10 @@ class MotoChart: UIView, ChartViewDelegate {
     }
     
     
-    func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight) {
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight) {
         print(" Chart Value \(entry.value)  \(entry.xIndex)")
         let key = [entry.xIndex]
-        NSNotificationCenter.defaultCenter().postNotificationName(chartSetNotificationKey, object: key)
+        NotificationCenter.defaultCenter().postNotificationName(chartSetNotificationKey, object: key)
     }
     
-}
+}*/

@@ -37,7 +37,7 @@ class CameraSliderCustom: UIControl {
     
     
     //the actual setup, width&height for slider bar, frameWidth incl. image, for touch tracking
-    func setup(width: Int, height: Int, frameWidth: Int){
+    func setup(_ width: Int, height: Int, frameWidth: Int){
         
         //the init frameheight, will be used be the slide
         frameHeight = Double(height)
@@ -56,7 +56,7 @@ class CameraSliderCustom: UIControl {
         SliderBarBackground.bounds = CGRect(x: Int(frameWidth/2), y: 0, width: width, height: height)
         SliderBarBackground.position = CGPoint(x: Double(frameWidth-(width/2)), y: Double(height/2))
         SliderBarBackground.cornerRadius = 0
-        SliderBarBackground.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5).CGColor
+        SliderBarBackground.backgroundColor = UIColor.black.withAlphaComponent(0.5).cgColor
         
         //add to layer
         CameraSliderBackground.addSublayer(SliderBarBackground)
@@ -65,7 +65,7 @@ class CameraSliderCustom: UIControl {
         SliderBar.bounds = CGRect(x: Int(frameWidth/2), y: 0, width: width, height: height)
         SliderBar.position = CGPoint(x: Double(frameWidth-(width/2)), y: Double(height/2))
         SliderBar.cornerRadius = 0
-        SliderBar.backgroundColor = UIColor.greenColor().colorWithAlphaComponent(0.3).CGColor
+        SliderBar.backgroundColor = UIColor.green.withAlphaComponent(0.3).cgColor
         
         //add speedbat to layer
         CameraSliderBackground.addSublayer(SliderBar)
@@ -77,7 +77,7 @@ class CameraSliderCustom: UIControl {
         SlideThumb.bounds = CGRect(x: 0, y: 0, width: thumbSize, height: thumbSize)
         SlideThumb.position = CGPoint(x: thumbSize/2, y: thumbSize/2)
         //SlideThumb.backgroundColor = UIColor.cyanColor().CGColor
-        SlideThumb.contents = UIImage(named: "zoom")?.CGImage
+        SlideThumb.contents = UIImage(named: "zoom")?.cgImage
         CameraSliderBackground.addSublayer(SlideThumb)
         
         //set init value
@@ -88,7 +88,7 @@ class CameraSliderCustom: UIControl {
    
 
     //slide thumb and bar
-    func slideAnimation(y: CGFloat){
+    func slideAnimation(_ y: CGFloat){
     
         print(frameHeight)
         
@@ -107,10 +107,10 @@ class CameraSliderCustom: UIControl {
     }
     
     //trtack touch beginn
-    override func  beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
+    override func  beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         
         //trigger actual touch down position
-        touchDownLocation = touch.locationInView(self)
+        touchDownLocation = touch.location(in: self)
        
         //if touch down position is on slider image return true
         if(SlideThumb.frame.contains(touchDownLocation)){
@@ -123,8 +123,8 @@ class CameraSliderCustom: UIControl {
         
     }
     
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        let location = touch.locationInView(self)
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let location = touch.location(in: self)
         
         print(location.y)
         
@@ -137,7 +137,7 @@ class CameraSliderCustom: UIControl {
         CATransaction.commit()
     
         //add target action sender
-        sendActionsForControlEvents(.ValueChanged)
+        sendActions(for: .valueChanged)
 
         return true
     }

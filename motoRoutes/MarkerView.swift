@@ -14,7 +14,7 @@ import Mapbox
 class MarkerView: MGLAnnotationView {
     
     let shapeLayer = CAShapeLayer()
-    var dotCol = UIColor.blueColor()
+    var dotCol = UIColor.blue
     
     
     init(reuseIdentifier: String, color: UIColor) {
@@ -31,9 +31,9 @@ class MarkerView: MGLAnnotationView {
         //add dot         l
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: 5,y: 5), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
         
-        shapeLayer.path = circlePath.CGPath
-        shapeLayer.fillColor = UIColor.blueColor().CGColor
-        shapeLayer.strokeColor = color.CGColor
+        shapeLayer.path = circlePath.cgPath
+        shapeLayer.fillColor = UIColor.blue.cgColor
+        shapeLayer.strokeColor = color.cgColor
         shapeLayer.lineWidth = 1.0
         self.layer.addSublayer(shapeLayer)
         
@@ -68,18 +68,18 @@ class MarkerView: MGLAnnotationView {
         animation.duration = 0.7
         animation.autoreverses = true
         animation.repeatCount = 200000
-        shapeLayer.addAnimation(animation, forKey: "cornerRadius")
+        shapeLayer.add(animation, forKey: "cornerRadius")
     }
     
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Animate the border width in/out, creating an iris effect.
         let animation = CABasicAnimation(keyPath: "borderWidth")
         animation.duration = 0.1
         layer.borderWidth = selected ? frame.width / 4 : 2
-        layer.addAnimation(animation, forKey: "borderWidth")
+        layer.add(animation, forKey: "borderWidth")
     }
     
 }

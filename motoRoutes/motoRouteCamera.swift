@@ -55,13 +55,13 @@ class motoRouteCamera: UIViewController {
         // Preset the session for taking photo in full resolution
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         
-        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
+        let devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as! [AVCaptureDevice]
         
         // Get the front and back-facing camera for taking photos
         for device in devices {
-            if device.position == AVCaptureDevicePosition.Back {
+            if device.position == AVCaptureDevicePosition.back {
                 backFacingCamera = device
-            } else if device.position == AVCaptureDevicePosition.Front {
+            } else if device.position == AVCaptureDevicePosition.front {
                 frontFacingCamera = device
             }
         }
@@ -94,26 +94,26 @@ class motoRouteCamera: UIViewController {
         cameraPreviewLayer?.frame = view.layer.frame
         
         // Bring the camera button to front
-        view.bringSubviewToFront(cameraButton)
-        view.bringSubviewToFront(cancelButton)
-        view.bringSubviewToFront(savedImage)
+        view.bringSubview(toFront: cameraButton)
+        view.bringSubview(toFront: cancelButton)
+        view.bringSubview(toFront: savedImage)
         
         captureSession.startRunning()
         
         
         // Toggle Camera recognizer
-        toggleCameraGestureRecognizer.direction = .Up
+        toggleCameraGestureRecognizer.direction = .up
         toggleCameraGestureRecognizer.addTarget(self, action: #selector(motoRouteCamera.toggleCamera))
         view.addGestureRecognizer(toggleCameraGestureRecognizer)
         
         
         // Zoom In recognizer
-        zoomInGestureRecognizer.direction = .Right
+        zoomInGestureRecognizer.direction = .right
         zoomInGestureRecognizer.addTarget(self, action: #selector(motoRouteCamera.zoomIn))
         view.addGestureRecognizer(zoomInGestureRecognizer)
         
         // Zoom Out recognizer
-        zoomOutGestureRecognizer.direction = .Left
+        zoomOutGestureRecognizer.direction = .left
         zoomOutGestureRecognizer.addTarget(self, action: #selector(motoRouteCamera.zoomOut))
         view.addGestureRecognizer(zoomOutGestureRecognizer)
         
@@ -129,7 +129,7 @@ class motoRouteCamera: UIViewController {
         captureSession.beginConfiguration()
         
         // Change the device based on the current camera
-        let newDevice = (currentDevice?.position == AVCaptureDevicePosition.Back) ? frontFacingCamera : backFacingCamera
+        let newDevice = (currentDevice?.position == AVCaptureDevicePosition.back) ? frontFacingCamera : backFacingCamera
         
         // Remove all inputs from the session
         for input in captureSession.inputs {
@@ -162,7 +162,7 @@ class motoRouteCamera: UIViewController {
                 let newZoomFactor = min(zoomFactor + 1.0, 5.0)
                 do {
                     try currentDevice?.lockForConfiguration()
-                    currentDevice?.rampToVideoZoomFactor(newZoomFactor, withRate: 1.0)
+                    currentDevice?.ramp(toVideoZoomFactor: newZoomFactor, withRate: 1.0)
                     currentDevice?.unlockForConfiguration()
                 } catch {
                     print(error)
@@ -177,7 +177,7 @@ class motoRouteCamera: UIViewController {
                 let newZoomFactor = max(zoomFactor - 1.0, 1.0)
                 do {
                     try currentDevice?.lockForConfiguration()
-                    currentDevice?.rampToVideoZoomFactor(newZoomFactor, withRate: 1.0)
+                    currentDevice?.ramp(toVideoZoomFactor: newZoomFactor, withRate: 1.0)
                     currentDevice?.unlockForConfiguration()
                 } catch {
                     print(error)
@@ -195,25 +195,24 @@ class motoRouteCamera: UIViewController {
     
 
     
-    @IBAction func capture(sender: AnyObject) {
+    @IBAction func capture(_ sender: AnyObject) {
        
         print("capture")
         
-        let videoConnection = stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo)
-        stillImageOutput?.captureStillImageAsynchronouslyFromConnection(videoConnection, completionHandler: { (imageDataSampleBuffer, error) -> Void in
+        let videoConnection = stillImageOutput?.connection(withMediaType: AVMediaTypeVideo)
+        stillImageOutput?.captureStillImageAsynchronously(from: videoConnection, completionHandler: { (imageDataSampleBuffer, error) -> Void in
             
             let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
-            self.stillImage = UIImage(data: imageData)
+            self.stillImage = UIImage(data: imageData!)
             self.savedImage.image = self.stillImage
             
-            var filenamePath:String = ""
-            let timestampFilename = String(Int(NSDate().timeIntervalSince1970)) + "_routeimg.png"
+            let timestampFilename = String(Int(Date().timeIntervalSince1970)) + "_routeimg.png"
             
+           
+            let filenamePath =  URL(fileReferenceLiteralResourceName: utils.getDocumentsDirectory().appendingPathComponent(timestampFilename))
+           // let imgData = try! imageData?.write(to: filenamePath, options: [])
             
-            filenamePath = utils.getDocumentsDirectory().stringByAppendingPathComponent(timestampFilename)
-            imageData.writeToFile(filenamePath, atomically: true)
-
-            self.imageURL = filenamePath //assign for unwind seague
+            self.imageURL = String(describing: filenamePath) //assign for unwind seague
             
             print("capture done")
             
@@ -224,7 +223,7 @@ class motoRouteCamera: UIViewController {
             tmpMediaObject.latitude = self.latitude
             tmpMediaObject.longitude = self.longitude
             tmpMediaObject.image = timestampFilename
-            tmpMediaObject.timestamp = NSDate()
+            tmpMediaObject.timestamp = Date()
 
             
             self.MediaObjects.append(tmpMediaObject)

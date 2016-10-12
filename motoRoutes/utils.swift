@@ -21,18 +21,18 @@ final class utils {
      */
     class func getTimestamp()->Int{
         
-           return Int(NSDate().timeIntervalSince1970)
+           return Int(Date().timeIntervalSince1970)
     }
 
     
     class func getUniqueUUID()->String{
-        return  NSUUID().UUIDString
+        return  UUID().uuidString
     }
     
     /*
     * define the speedIndex. km/h / 10 = Index for speedcolors
     */
-    class func getSpeedIndex(speed:Double) -> Int{
+    class func getSpeedIndex(_ speed:Double) -> Int{
     
         let speedIndex = Int(round((speed*3.6)/10))
         //let speedIndex = 5
@@ -63,7 +63,7 @@ final class utils {
     /*
      * define the speedIndex. km/h / 10 = Index for speedcolors
      */
-    class func getSpeedIndexFull(speed:Double) -> Int{
+    class func getSpeedIndexFull(_ speed:Double) -> Int{
         
         let speedIndex = Int(round((speed*3.6)/10))
         //let speedIndex = 5
@@ -75,7 +75,7 @@ final class utils {
     /*
     * get speed km/h mph
     */
-    class func getSpeed(speed:Double) -> Int{
+    class func getSpeed(_ speed:Double) -> Int{
         
         let speed = Int(round((speed*3.6))) //kmh
         //not 0 in return
@@ -86,7 +86,7 @@ final class utils {
     /*
      * get speed Double km/h mph
      */
-    class func getSpeedDouble(speed:Double) -> Double{
+    class func getSpeedDouble(_ speed:Double) -> Double{
         
         let speed = round((speed*3.6)) //kmh
         //not 0 in return
@@ -97,7 +97,7 @@ final class utils {
     /*
      * get speed km/h mph
      */
-    class func getSpeedString(speed:Double) -> String{
+    class func getSpeedString(_ speed:Double) -> String{
         let speed = speed*3.6//kmh
         
         return String(format: "%.2f", speed)
@@ -106,14 +106,14 @@ final class utils {
     /*
      * get stringformat from double
      */
-    class func getDoubleString(double:Double) -> String{
+    class func getDoubleString(_ double:Double) -> String{
         return String(format: "%.2f", double)
     }
     
     /**
     * Sets globalSppedSet by given speed (m/s)
     */
-    class func setGlobalSpeedSet(speed:Double){
+    class func setGlobalSpeedSet(_ speed:Double){
        
         // define speedIndex and set first Index
         let speedIndex:Int = utils.getSpeedIndex(speed)
@@ -126,10 +126,10 @@ final class utils {
     * helper get Document Directory
     */
     class func getDocumentsDirectory() -> NSString {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]
         //print("Path: \(documentsDirectory)")
-        return documentsDirectory
+        return documentsDirectory as NSString
     }
  
     
@@ -137,7 +137,7 @@ final class utils {
     /*
     * return full clock time hh:mm:ss
     */
-    static func clockFormat(totalSeconds:Int) -> String {
+    static func clockFormat(_ totalSeconds:Int) -> String {
         
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60) % 60
@@ -156,7 +156,7 @@ final class utils {
     /*
     * return full short clock time mm:ss
     */
-    static func clockFormatShort(totalSeconds:Int) -> String {
+    static func clockFormatShort(_ totalSeconds:Int) -> String {
         
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60) % 60
@@ -169,7 +169,7 @@ final class utils {
     /* 
     *   Performance time helper
     */
-    class func absolutePeromanceTime(x:Double) -> String {
+    class func absolutePeromanceTime(_ x:Double) -> String {
     
          let x = (CFAbsoluteTimeGetCurrent() - x) * 1000.0
          return  "Took \(x) milliseconds"
@@ -179,7 +179,7 @@ final class utils {
     /*
     *   distance Formate
     */
-    class func distanceFormat(distance:Double) -> String {
+    class func distanceFormat(_ distance:Double) -> String {
         
         let dist = String(format: "%.3f", distance/1000)
         return  dist
@@ -188,13 +188,9 @@ final class utils {
     
 
     
-    class func delay(delay:Double, closure:()->()) {
-        dispatch_after(
-            dispatch_time(
-                UInt64(DISPATCH_TIME_NOW),
-                Int64(delay * Double(NSEC_PER_SEC))
-            ),
-            dispatch_get_main_queue(), closure)
+    class func delay(_ delay:Double, closure:@escaping ()->()) {
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
         
         //print("DISPATCH_TIME_NOW \(DISPATCH_TIME_NOW)")
     }

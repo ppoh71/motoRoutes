@@ -19,9 +19,9 @@ class buttonSytles: UIButton {
         //self.layer.shadowRadius = 5
         //self.layer.shadowOpacity = 0.6
         
-        self.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
-        self.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
-        self.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        self.contentHorizontalAlignment = UIControlContentHorizontalAlignment.fill
+        self.contentVerticalAlignment = UIControlContentVerticalAlignment.fill
+        self.imageView?.contentMode = UIViewContentMode.scaleAspectFit
         
         //let image = UIImage(named: "button_back_white.png")
         //setBackgroundImage(image, forState: .Normal)

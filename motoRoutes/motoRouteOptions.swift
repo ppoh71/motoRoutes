@@ -39,13 +39,13 @@ class motoRouteOptions: UIViewController, UIPickerViewDataSource, UIPickerViewDe
     }
     
     //picker funcs
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return pickerData.count
     }
     
     //picker funcs
     func pickerView(
-        pickerView: UIPickerView,
+        _ pickerView: UIPickerView,
         numberOfRowsInComponent component: Int
         ) -> Int {
         return pickerData[component].count
@@ -53,7 +53,7 @@ class motoRouteOptions: UIViewController, UIPickerViewDataSource, UIPickerViewDe
     
     //picker funcs
     func pickerView(
-        pickerView: UIPickerView,
+        _ pickerView: UIPickerView,
         titleForRow row: Int,
                     forComponent component: Int
         ) -> String? {
@@ -61,17 +61,17 @@ class motoRouteOptions: UIViewController, UIPickerViewDataSource, UIPickerViewDe
     }
     
     //picker funcs
-    func pickerView( pickerView: UIPickerView,  didSelectRow row: Int, inComponent component: Int) {
+    func pickerView( _ pickerView: UIPickerView,  didSelectRow row: Int, inComponent component: Int) {
         
-            if let sliceAmountPicker = Int(pickerData[0][amountPicker.selectedRowInComponent(0)]) {
+            if let sliceAmountPicker = Int(pickerData[0][amountPicker.selectedRow(inComponent: 0)]) {
                 sliceAmount = Int(sliceAmountPicker)
             }
         
-            if let timeIntervalPicker = Double(pickerData[1][amountPicker.selectedRowInComponent(1)]) {
+            if let timeIntervalPicker = Double(pickerData[1][amountPicker.selectedRow(inComponent: 1)]) {
                 timeIntervalMarker = timeIntervalPicker
             }
             
-            if let arrayStepPicker = Double(pickerData[2][amountPicker.selectedRowInComponent(2)]){
+            if let arrayStepPicker = Double(pickerData[2][amountPicker.selectedRow(inComponent: 2)]){
                 globalArrayStep.gArrayStep = Int(arrayStepPicker)
             }
     }

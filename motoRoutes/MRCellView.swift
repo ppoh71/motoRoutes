@@ -39,7 +39,7 @@ class MRCellView: UITableViewCell {
     }
     
     //config func of cell
-    func configureCell(name:String, distance:String, image: UIImage, fromLocation: String, toLocation: String){
+    func configureCell(_ name:String, distance:String, image: UIImage, fromLocation: String, toLocation: String){
     
         nameLabel.text = name
         distanceLabel.text = distance
@@ -50,7 +50,7 @@ class MRCellView: UITableViewCell {
     }
     
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

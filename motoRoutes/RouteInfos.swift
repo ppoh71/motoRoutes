@@ -62,7 +62,7 @@ class RouteInfos: UIView {
     
     
     // MARK: Setup Functions
-    func setInfos(routeMaster: RouteMaster){
+    func setInfos(_ routeMaster: RouteMaster){
         
         dateRoute.text = routeMaster.routeDate
         distanceRoute.text = "\(utils.distanceFormat(routeMaster.routeDistance))"
@@ -76,7 +76,7 @@ class RouteInfos: UIView {
     
     func setupView(){
         
-        self.layer.backgroundColor = UIColor.clearColor().CGColor
+        self.layer.backgroundColor = UIColor.clear.cgColor
         
        // dateLabel.text = dateLabelText
         distanceLabel.text = distanceLabelText

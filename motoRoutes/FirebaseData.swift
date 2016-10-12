@@ -18,9 +18,9 @@ class FirebaseData {
     
     var r_ = RouteMaster()
     
-    private var _REF_BASE = FIR_DB
-    private var _REF_ROUTES = FIR_DB.child("motoRoutes")
-    private var _REF_LOCATIONS = FIR_DB.child("Locations")
+    fileprivate var _REF_BASE = FIR_DB
+    fileprivate var _REF_ROUTES = FIR_DB.child("motoRoutes")
+    fileprivate var _REF_LOCATIONS = FIR_DB.child("Locations")
     
     var REF_Base: FIRDatabaseReference{
         return _REF_BASE
@@ -35,28 +35,28 @@ class FirebaseData {
     }
     
     
-    func addRouteToFIR(motoRoute: RouteMaster, keychain: String) {
+    func addRouteToFIR(_ motoRoute: RouteMaster, keychain: String) {
         
         //let locationKey = FIR_ROUTES.child("Locations").childByAutoId().key
         //let motoRouteKey = FIR_ROUTES.child("motoRoutes").childByAutoId().key
         let userID = FIRAuth.auth()?.currentUser?.uid
         
-        print(userID)
+        print(userID ?? "no userifd")
         
         var routeKey = motoRoute._MotoRoute.id
-        routeKey = routeKey.stringByReplacingOccurrencesOfString("#", withString: "-")
+        routeKey = routeKey.replacingOccurrences(of: "#", with: "-")
         print("ROUTEKEY: \(routeKey)")
         
         //add routeMaster data
         let motoRouteData: Dictionary<String, AnyObject> = [
-            "firUID": keychain,
-            "startLatitude": motoRoute._RouteList[0].latitude,
-            "startLongitude": motoRoute._RouteList[0].longitude,
-            "duration": motoRoute._MotoRoute.duration,
-            "timestamp": motoRoute._MotoRoute.timestamp.timeIntervalSince1970,
-            "locationStart": motoRoute._MotoRoute.locationStart,
-            "locationEnd" : motoRoute._MotoRoute.locationEnd,
-            "distance" : motoRoute._MotoRoute.distance
+            "firUID": keychain as AnyObject,
+            "startLatitude": motoRoute._RouteList[0].latitude as AnyObject,
+            "startLongitude": motoRoute._RouteList[0].longitude as AnyObject,
+            "duration": motoRoute._MotoRoute.duration as AnyObject,
+            "timestamp": motoRoute._MotoRoute.timestamp.timeIntervalSince1970 as AnyObject,
+            "locationStart": motoRoute._MotoRoute.locationStart as AnyObject,
+            "locationEnd" : motoRoute._MotoRoute.locationEnd as AnyObject,
+            "distance" : motoRoute._MotoRoute.distance as AnyObject
             ]
         childUpdatesFIR(FIR_ROUTES, key: String(routeKey), data: motoRouteData)
 
@@ -64,27 +64,27 @@ class FirebaseData {
         //add all locations
         var locationAll = [String:[String:AnyObject]]()
         
-        for (key,item) in motoRoute._RouteList.enumerate() {
+        for (key,item) in motoRoute._RouteList.enumerated() {
             let location: Dictionary<String, AnyObject> = [
                 
-                "latitude": item.latitude,
-                "longitude": item.longitude,
-                "altitude" : item.altitude,
-                "speed" : item.speed,
-                "course" : item.course,
-                "accuracy" : item.accuracy,
-                "distance" : item.distance,
-                "timestamp" : item.timestamp.timeIntervalSince1970,
+                "latitude": item.latitude as AnyObject,
+                "longitude": item.longitude as AnyObject,
+                "altitude" : item.altitude as AnyObject,
+                "speed" : item.speed as AnyObject,
+                "course" : item.course as AnyObject,
+                "accuracy" : item.accuracy as AnyObject,
+                "distance" : item.distance as AnyObject,
+                "timestamp" : item.timestamp.timeIntervalSince1970 as AnyObject,
                 ]
             locationAll[String(key)] = location
         }
         
-        childUpdatesFIR(FIR_LOCATIONS, key: String(routeKey), data: locationAll)
+        childUpdatesFIR(FIR_LOCATIONS, key: String(routeKey), data: locationAll as Dictionary<String, AnyObject>)
     }
     
     
     // firebase updates
-    func childUpdatesFIR(refFIR: FIRDatabaseReference, key: String, data:  Dictionary<String, AnyObject>){
+    func childUpdatesFIR(_ refFIR: FIRDatabaseReference, key: String, data:  Dictionary<String, AnyObject>){
     
        refFIR.child("/\(key)").updateChildValues(data, withCompletionBlock: { (error, ref) in
             print("Locations done with it")
@@ -97,14 +97,14 @@ class FirebaseData {
     }
     
     
-    func deleteFIRChild(child: String){
+    func deleteFIRChild(_ child: String){
         FIR_LOCATIONS.child("/\(child)").removeValue()
     }
     
     
     func getRoutesFromFIR(){
         
-        FIR_ROUTES.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        FIR_ROUTES.observeSingleEvent(of: .value, with: { (snapshot) in
 
             if let snap = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 
@@ -115,29 +115,31 @@ class FirebaseData {
                     let newRoute = Route()
                     newRoute.id = item.key
                     
-                    if let _startLat = item.value?["startLatitude"] as? Double {
+                    let snapshotValue = item.value as? NSDictionary
+                    
+                    if let _startLat = snapshotValue?["startLatitude"] as? Double {
                          newRoute.startLatitude = _startLat
                     }
                     
-                    if let _startLong = item.value?["startLongitude"] as? Double {
+                    if let _startLong = snapshotValue?["startLongitude"] as? Double {
                         newRoute.startLongitude = _startLong
                     }
                     
-                    if let _duration = item.value?["duration"] as? Int {
+                    if let _duration = snapshotValue?["duration"] as? Int {
                          newRoute.duration = _duration
                     }
                     
-                    if let _distance = item.value?["distance"] as? Double {
+                    if let _distance = snapshotValue?["distance"] as? Double {
                        newRoute.distance = _distance
                     }
                     
-                    if let _locationStart = item.value?["locationStart"] as? String, _locationEnd = item.value?["locationEnd"] as? String {
+                    if let _locationStart = snapshotValue?["locationStart"] as? String, let _locationEnd = snapshotValue?["locationEnd"] as? String {
                         newRoute.locationStart = _locationStart
                         newRoute.locationEnd = _locationEnd
                     }
                     
-                    if let _timestamp = item.value?["timestamp"] as? Int {
-                        newRoute.timestamp = NSDate(timeIntervalSinceReferenceDate: NSTimeInterval(_timestamp))
+                    if let _timestamp = snapshotValue?["timestamp"] as? Int {
+                        newRoute.timestamp = Date(timeIntervalSinceReferenceDate: TimeInterval(_timestamp))
                     }
 
                     let newMaster = RouteMaster()
@@ -145,7 +147,7 @@ class FirebaseData {
                     routes.append(newMaster)
                 }
 
-                NSNotificationCenter.defaultCenter().postNotificationName(firbaseGetRoutesNotificationKey, object: routes)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: firbaseGetRoutesNotificationKey), object: routes)
             }
             // ...
         }) {
@@ -156,12 +158,12 @@ class FirebaseData {
     
     
     //get all locations from FIR by routeID and return [LocationMaster]
-    func geLocationsRouteFIR(_RouteMaster: RouteMaster){
+    func geLocationsRouteFIR(_ _RouteMaster: RouteMaster){
     
         let child = _RouteMaster._MotoRoute.id
         if  child.characters.count > 5 {
         
-                FIR_LOCATIONS.child("/\(child)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                FIR_LOCATIONS.child("/\(child)").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let snap = snapshot.children.allObjects as? [FIRDataSnapshot] {
 
@@ -169,36 +171,38 @@ class FirebaseData {
                     
                         let newLocation = Location()
                         
-                        if let _accuracy = item.value?["accuracy"] as? Double {
+                        let snapshotValue = item.value as? NSDictionary
+                        
+                        if let _accuracy = snapshotValue?["accuracy"] as? Double {
                             newLocation.accuracy = _accuracy
                         }
                
-                        if let _altitude = item.value?["altitude"] as? Double {
+                        if let _altitude = snapshotValue?["altitude"] as? Double {
                             newLocation.altitude = _altitude
                         }
                         
-                        if let _course = item.value?["course"] as? Double {
+                        if let _course = snapshotValue?["course"] as? Double {
                             newLocation.course = _course
                         }
                         
-                        if let _distance = item.value?["distance"] as? Double {
+                        if let _distance = snapshotValue?["distance"] as? Double {
                             newLocation.distance = _distance
                         }
                         
-                        if let _latitude = item.value?["latitude"] as? Double {
+                        if let _latitude = snapshotValue?["latitude"] as? Double {
                             newLocation.latitude = _latitude
                         }
                         
-                        if let _longitude = item.value?["longitude"] as? Double {
+                        if let _longitude = snapshotValue?["longitude"] as? Double {
                             newLocation.longitude = _longitude
                         }
                         
-                        if let _speed = item.value?["speed"] as? Double {
+                        if let _speed = snapshotValue?["speed"] as? Double {
                             newLocation.speed = _speed
                         }
                         
-                        if let _timestamp = item.value?["timestamp"] as? Int {
-                            newLocation.timestamp = NSDate(timeIntervalSinceReferenceDate: NSTimeInterval(_timestamp))
+                        if let _timestamp = snapshotValue?["timestamp"] as? Int {
+                            newLocation.timestamp = Date(timeIntervalSinceReferenceDate: TimeInterval(_timestamp))
                         }
                         
                         //add all locations to route model as list
@@ -209,7 +213,7 @@ class FirebaseData {
                     _RouteMaster.associateRouteFIR()
                     
                     let returnObj = [_RouteMaster]
-                    NSNotificationCenter.defaultCenter().postNotificationName(firbaseGetLocationsNotificationKey, object: returnObj)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: firbaseGetLocationsNotificationKey), object: returnObj)
                 }
                 
             // ...

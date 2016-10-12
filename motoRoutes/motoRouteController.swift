@@ -12,22 +12,18 @@ import UIKit
 import RealmSwift
 import Crashlytics
 import CoreLocation
-import SwiftKeychainWrapper
+//import SwiftKeychainWrapper
 import Firebase
 
 
 class motoRouteController: UITableViewController {
     
-    // realm object list
-    var motoRoutes =  Results<Route>!(nil)
-
+    var motoRoutes: Results<Route>!
 
     //Action methods
-    @IBAction func closeToMR(segue:UIStoryboardSegue) {
-         print("close mc \(segue.sourceViewController)")
-        
-        segue.sourceViewController.removeFromParentViewController()
-        
+    @IBAction func closeToMR(_ segue:UIStoryboardSegue) {
+         print("close mc \(segue.source)")
+        segue.source.removeFromParentViewController()
     }
     
     
@@ -38,25 +34,24 @@ class motoRouteController: UITableViewController {
         super.viewDidLoad()
     
      
-       let authKeychain = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID)
-          print("MR: Auth key \(authKeychain)")
-     
+     //  let authKeychain = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID)
+
         let realm = try! Realm()
-        motoRoutes = realm.objects(Route).sorted("timestamp", ascending: false)
-        
+        motoRoutes = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
+     
         print(realm)      
-        print(motoRoutes.count)
+
     }
     
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData() // [2]
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
      
-     FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+     FIRAuth.auth()?.addStateDidChangeListener { auth, user in
           if let user = user {
                // User is signed in.
                print("user is logged in")
@@ -64,7 +59,6 @@ class motoRouteController: UITableViewController {
           } else {
                // No user is signed in.
                 print("No user is logged in")
-                print(user)
           }
      }
   
@@ -75,20 +69,20 @@ class motoRouteController: UITableViewController {
     //
     
     // number of sections
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     // number of rows
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           return motoRoutes.count
     }
     
     // data for each table cell
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "Cell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MRCellView
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MRCellView
         
         let route = motoRoutes[indexPath.row]
         var image = UIImage()
@@ -102,8 +96,8 @@ class motoRouteController: UITableViewController {
      
           if(imgName.characters.count > 0){
              //let path = (utils.getDocumentsDirectory() as String) + img
-             let imgPath = utils.getDocumentsDirectory().stringByAppendingPathComponent(imgName)
-             image = imageUtils.loadImageFromPath(imgPath)!
+             let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
+             image = imageUtils.loadImageFromPath(imgPath as NSString)!
           }
      
      
@@ -124,10 +118,10 @@ class motoRouteController: UITableViewController {
     /*
     * Swipe actions, delete share
     */
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         //delete routes
-        if editingStyle == .Delete {
+        if editingStyle == .delete {
             print("deleting row \(motoRoutes[indexPath.row])")
             
             // Get the default Realm
@@ -142,10 +136,10 @@ class motoRouteController: UITableViewController {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showRouteController" {
             
-            let destinationController = segue.destinationViewController as! showRouteController
+            let destinationController = segue.destination as! showRouteController
             
                 if let indexPath = tableView.indexPathForSelectedRow {
                     destinationController.motoRoute = motoRoutes[indexPath.row]

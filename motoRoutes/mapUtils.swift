@@ -35,7 +35,7 @@ final class mapUtils {
      
      */
     
-    class func printRoute(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
+    class func printRoute(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
         //performacne test
         //let x = CFAbsoluteTimeGetCurrent()
@@ -98,7 +98,7 @@ final class mapUtils {
     }
     
     
-    class func printRouteOneColor(_LocationMaster:[LocationMaster]!, mapView:MGLMapView! ){
+    class func printRouteOneColor(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView! ){
         
         // let x = CFAbsoluteTimeGetCurrent()
         
@@ -131,7 +131,7 @@ final class mapUtils {
     
     
     
-    class func printMarker(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, gap: Int, funcType: FuncTypes) {
+    class func printMarker(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, gap: Int, funcType: FuncTypes) {
         
         //let x = CFAbsoluteTimeGetCurrent()
         
@@ -163,7 +163,7 @@ final class mapUtils {
 
     
     
-    static func addNewAnnotation(mapView:MGLMapView, location: LocationMaster){
+    static func addNewAnnotation(_ mapView:MGLMapView, location: LocationMaster){
         
         //set speed and altiude globals
         globalSpeed.gSpeed = location.speed
@@ -179,7 +179,7 @@ final class mapUtils {
     
     
     
-    class func printSingleSpeedMarker( mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
+    class func printSingleSpeedMarker( _ mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
         
         let newMarker = MGLPointAnnotation()
         
@@ -195,17 +195,17 @@ final class mapUtils {
     
     
 
-    class func cameraDestination(latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
+    class func cameraDestination(_ latitude:CLLocationDegrees, longitude:CLLocationDegrees, fromDistance:Double, pitch:CGFloat, heading:Double) -> MGLMapCamera {
         
         let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let camera = MGLMapCamera(lookingAtCenterCoordinate: destination, fromDistance: fromDistance, pitch: pitch, heading: heading)
+        let camera = MGLMapCamera(lookingAtCenter: destination, fromDistance: fromDistance, pitch: pitch, heading: heading)
         
         return camera
     }
     
     
 
-    class func cameraAni(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
+    class func cameraAni(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
         
         //get coord bounds for route, nortwest & souteast
@@ -221,7 +221,7 @@ final class mapUtils {
         let cameray = mapUtils.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:2300, pitch:60, heading:0)
         
         
-        mapView.flyToCamera(cameray) {
+        mapView.fly(to: cameray) {
             // Optionally catch a connecting flight
             //  print("connection flight")
             // mapView.flyToCamera(cameray){
@@ -233,11 +233,11 @@ final class mapUtils {
     
     
     
-    class func flyToLoactionSimple(latitude: Double, longitude: Double, mapView: MGLMapView!, distance: Double, pitch: Double){
+    class func flyToLoactionSimple(_ latitude: Double, longitude: Double, mapView: MGLMapView!, distance: Double, pitch: Double){
     
         let cameray = mapUtils.cameraDestination(latitude, longitude: longitude, fromDistance: distance, pitch: CGFloat(pitch), heading:0)
-        
-        mapView.flyToCamera(cameray) {
+       
+        mapView.fly(to: cameray) {
             //finish code
         }
     }
@@ -259,7 +259,7 @@ final class mapUtils {
         static var staticInstance = ""
     }
     
-    class func flyOverRoutes(_LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, routeSlider: RouteSlider?, initInstance: String!, identifier: String, speedoMeter: Speedometer? ) -> Bool{
+    class func flyOverRoutes(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!, n: Int, routeSlider: RouteSlider?, initInstance: String!, identifier: String, speedoMeter: Speedometer? ) {
         
         
         let count = _LocationMaster.count
@@ -280,7 +280,7 @@ final class mapUtils {
         /**
          *  Camera fly to fx
          **/
-        func fly( nx:Int, pitch: CGFloat, heading:Double, instance: String){
+        func fly( _ nx:Int, pitch: CGFloat, heading:Double, instance: String){
             
             var n = nx
             let currentInstance:String = instance
@@ -292,7 +292,7 @@ final class mapUtils {
                 
                 //  print("Notify send")
                 let arrayN = [n]
-                NSNotificationCenter.defaultCenter().postNotificationName(markerNotSetNotificationKey, object: arrayN)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: markerNotSetNotificationKey), object: arrayN)
                 
             }
             
@@ -307,7 +307,7 @@ final class mapUtils {
             distance = _LocationMaster[n].distance
             
             //time spend on road
-            let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSinceDate(_LocationMaster[0].timestamp)
+            let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSince(_LocationMaster[0].timestamp as Date)
             let timespendString = utils.clockFormat(Int(elapsedTime))
             
             //define camera for flyTo ani
@@ -363,8 +363,7 @@ final class mapUtils {
         
         // start the whole thing
         fly(n, pitch: globalCamPitch.gCamPitch, heading: headingCourse, instance: initInstance)
-        
-        return true // when all done
+      
         
     }
     
@@ -378,7 +377,7 @@ final class mapUtils {
      *
      * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
-    class func getBoundCoords(_locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D], distance: Double, distanceFactor: Double) {
+    class func getBoundCoords(_ _locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D], distance: Double, distanceFactor: Double) {
         
         
         //print("#################Coords")
@@ -445,12 +444,12 @@ final class mapUtils {
         let locationSW = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.west)
         
         // calc diagonal distance of boudnig box
-        distance = locationNW.distanceFromLocation(locationSE)
+        distance = locationNW.distance(from: locationSE)
         
         
         //cal distance horizontal/portrait bounding box orientation/ NW -> SW ort NW -> NE
-        let distanceNorthSouth = locationNW.distanceFromLocation(locationSW)
-        let distanceNorthEast = locationNW.distanceFromLocation(locationNE)
+        let distanceNorthSouth = locationNW.distance(from: locationSW)
+        let distanceNorthEast = locationNW.distance(from: locationNE)
         
         distanceFactor = distanceNorthSouth > distanceNorthEast ? 1.3 : distanceFactor
         
@@ -463,7 +462,7 @@ final class mapUtils {
     /*
      * calculate the center point of multiple latitude longitude coordinate-pairs
      */
-    class func getCenterFromBoundig(LocationPoints: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D{
+    class func getCenterFromBoundig(_ LocationPoints: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D{
         
         var centerPoint = CLLocationCoordinate2D()
         

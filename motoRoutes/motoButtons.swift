@@ -31,31 +31,31 @@ class motoButtons: UIButton {
     
     func setupView(){
         self.layer.cornerRadius = cornerRadius
-        self.addTarget(self, action: #selector(motoButtons.scaleToSmall), forControlEvents:  .TouchDown)
-        self.addTarget(self, action: #selector(motoButtons.scaleToSmall), forControlEvents: .TouchDragEnter)
-        self.addTarget(self, action: #selector(motoButtons.scaleAnimation), forControlEvents: .TouchUpInside)
-        self.addTarget(self, action: #selector(motoButtons.scaleDefault), forControlEvents: .TouchDragExit)
+        self.addTarget(self, action: #selector(motoButtons.scaleToSmall), for:  .touchDown)
+        self.addTarget(self, action: #selector(motoButtons.scaleToSmall), for: .touchDragEnter)
+        self.addTarget(self, action: #selector(motoButtons.scaleAnimation), for: .touchUpInside)
+        self.addTarget(self, action: #selector(motoButtons.scaleDefault), for: .touchDragExit)
     }
     
     func scaleToSmall(){
         let scaleAnim = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
-        scaleAnim.toValue = NSValue(CGSize: CGSizeMake(0.95, 0.95))
-        self.layer.pop_addAnimation(scaleAnim, forKey: "layerScaleSmallAnimation")
+        scaleAnim?.toValue = NSValue(cgSize: CGSize(width: 0.95, height: 0.95))
+        self.layer.pop_add(scaleAnim, forKey: "layerScaleSmallAnimation")
         
     }
     
     func scaleAnimation(){
         let scaleAnim = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY)
-        scaleAnim.velocity = NSValue(CGSize: CGSizeMake(3.0, 3.0))
-        scaleAnim.toValue = NSValue(CGSize: CGSizeMake(1.0, 1.0))
-        scaleAnim.springBounciness = 18
-        self.layer.pop_addAnimation(scaleAnim, forKey: "layerSpringAnimation")
+        scaleAnim?.velocity = NSValue(cgSize: CGSize(width: 3.0, height: 3.0))
+        scaleAnim?.toValue = NSValue(cgSize: CGSize(width: 1.0, height: 1.0))
+        scaleAnim?.springBounciness = 18
+        self.layer.pop_add(scaleAnim, forKey: "layerSpringAnimation")
     }
     
     func scaleDefault(){
         let scaleAnim = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
-        scaleAnim.toValue    = NSValue(CGSize: CGSizeMake(1.0, 1.0))
-        self.layer.pop_addAnimation(scaleAnim, forKey: "layeeScaleDefaultAnimation")
+        scaleAnim?.toValue    = NSValue(cgSize: CGSize(width: 1.0, height: 1.0))
+        self.layer.pop_add(scaleAnim, forKey: "layeeScaleDefaultAnimation")
     }
     
 }
