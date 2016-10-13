@@ -665,7 +665,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LW-L1-BfS">
-                                <rect key="frame" x="320" y="15" width="40" height="40"/>
+                                <rect key="frame" x="223" y="15" width="40" height="40"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="ic_info_48pt">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -699,7 +699,6 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="l37-MI-AYF" secondAttribute="bottom" constant="9" id="36s-AL-31k"/>
-                            <constraint firstItem="7LW-L1-BfS" firstAttribute="leading" secondItem="EJx-Ub-4Lq" secondAttribute="trailing" constant="10" id="41Y-6f-QKh"/>
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="S1h-wW-ObZ" secondAttribute="bottom" constant="-106" id="4TN-UO-6rM"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="leading" secondItem="53q-Qw-L5Y" secondAttribute="trailing" constant="40" id="5AM-BG-NcT"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="top" secondItem="KOa-KO-rv5" secondAttribute="bottom" constant="15" id="7lW-C5-51l"/>
@@ -714,7 +713,7 @@
                             <constraint firstItem="KOa-KO-rv5" firstAttribute="top" secondItem="1hV-rc-YM3" secondAttribute="bottom" constant="-100" id="P6f-B0-05X"/>
                             <constraint firstItem="53q-Qw-L5Y" firstAttribute="centerX" secondItem="1hV-rc-YM3" secondAttribute="centerX" id="Ruc-9x-CfZ"/>
                             <constraint firstItem="nzl-Ms-cWm" firstAttribute="bottom" secondItem="1hV-rc-YM3" secondAttribute="bottom" id="ScV-Qt-aQ3"/>
-                            <constraint firstItem="7LW-L1-BfS" firstAttribute="top" secondItem="hl8-zk-aCs" secondAttribute="topMargin" constant="15" id="T5C-bY-16H"/>
+                            <constraint firstItem="1hV-rc-YM3" firstAttribute="top" secondItem="7LW-L1-BfS" secondAttribute="bottom" constant="-55" id="VKI-Os-12P"/>
                             <constraint firstItem="S1h-wW-ObZ" firstAttribute="leading" secondItem="1hV-rc-YM3" secondAttribute="trailing" constant="-80" id="VL2-Hv-rpp"/>
                             <constraint firstItem="USG-pM-9Ck" firstAttribute="leading" secondItem="l37-MI-AYF" secondAttribute="leading" id="VxJ-rb-bYg"/>
                             <constraint firstAttribute="trailing" secondItem="1hV-rc-YM3" secondAttribute="trailing" id="ctW-ro-1Sg"/>
@@ -724,6 +723,7 @@
                             <constraint firstItem="1hV-rc-YM3" firstAttribute="leading" secondItem="hl8-zk-aCs" secondAttribute="leading" id="sjx-Jg-xOc"/>
                             <constraint firstItem="EJx-Ub-4Lq" firstAttribute="leading" secondItem="USG-pM-9Ck" secondAttribute="leading" id="tUn-0o-Yi6"/>
                             <constraint firstAttribute="bottom" secondItem="1hV-rc-YM3" secondAttribute="bottom" id="trZ-1e-mlb"/>
+                            <constraint firstItem="7LW-L1-BfS" firstAttribute="leading" secondItem="fOM-KL-rzp" secondAttribute="trailing" constant="10" id="zGn-mG-eQR"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
