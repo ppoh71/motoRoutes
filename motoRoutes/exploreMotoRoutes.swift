@@ -19,15 +19,13 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     @IBOutlet weak var collection: UICollectionView!
     
     //MARK: my routes vars
-    var myMotoRoutes: Results<Route>!
-    var RouteMasters = [RouteMaster]()
-    var myRoutes = [RouteMaster]()
-    var myRouteMasters = [RouteMaster]()
+    var myMotoRoutesRealm: Results<Route>!
+    var myRoutesMaster = [RouteMaster]()
+    var expRouteMasters = [RouteMaster]()
     var markerViewResueIdentifier = ""
     var lastIndex = IndexPath(item: 0, section: 0)
     var activeIndex = IndexPath(item: 0, section: 0)
     var zoomOnSelect = true
-    
     
     //MARK: explore routes vars
     var activeRoute = RouteMaster()
@@ -38,72 +36,59 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     
     
     //MARK: overrides
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         collection.delegate = self
         collection.dataSource = self
         collection.allowsSelection = true
         
+        
         let realm = try! Realm()
-        myMotoRoutes = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
-        myRoutes = RouteMaster.realmResultToMasterArray(myMotoRoutes)
+        myMotoRoutesRealm = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
+        myRoutesMaster = RouteMaster.realmResultToMasterArray(myMotoRoutesRealm)
         
         self.view.backgroundColor = UIColor.black
-        print(myMotoRoutes.count)
+        print(myMotoRoutesRealm.count)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         let userID = FIRAuth.auth()?.currentUser?.uid
         print(userID ?? "no userid")
-        
-        var myRoutes = RouteMaster.realmResultToMasterArray(myMotoRoutes) // assign relam routes to masters
         
         //Listen from FlyoverRoutes if Markers are set
         NotificationCenter.default.addObserver(self, selector: #selector(exploreMotoRoutes.FIRRoutes), name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(exploreMotoRoutes.FIRLocations), name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
         
-        myRoutes = RouteMaster.realmResultToMasterArray(myMotoRoutes)
-        setRouteMarkers(myRoutes, markerTitle: "myMarker")
+        setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         //FirebaseData.dataService.getRoutesFromFIR()
     }
     
     
     //MARK: Collection View Stuff
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myMotoRoutes.count
+        return myRoutesMaster.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if(zoomOnSelect==true){
-            mapUtils.flyToLoactionSimple(myRoutes[(indexPath as NSIndexPath).item].startLat, longitude: myRoutes[(indexPath as NSIndexPath).item].startLong, mapView: mapView, distance: 2000000, pitch: 0)
+            mapUtils.flyToLoactionSimple(myRoutesMaster[(indexPath as NSIndexPath).item].startLat, longitude: myRoutesMaster[(indexPath as NSIndexPath).item].startLong, mapView: mapView, distance: 2000000, pitch: 0)
         }
         
         collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
         
         if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
-            print("++++++++++++++select \(indexPath)")
-            
-            
+            // print("++++++++++++++select \(indexPath)")
             cell.isSelected = true
             cell.toggleSelected()
             activeIndex = IndexPath(item: indexPath.item, section: 0)
-            
         }
-        
         zoomOnSelect = true // set back, false from mapview delegate select
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        print("################deselect \(indexPath)")
-        
-        let test = collectionView.cellForItem(at: indexPath)
-        print(test ?? "no cell")
-        
+
         if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
             print("### did really deselect \(indexPath)")
             cell.isSelected = false
@@ -115,18 +100,18 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RouteCell", for: indexPath) as? RouteCell {
-            
-            print("---------------cell \(indexPath) cellactive \(activeIndex)")
-            
-            let route = myMotoRoutes[indexPath.row]
+            cell.delegate = self
+            let route = myRoutesMaster[indexPath.row]
             var image = UIImage()
-            let imgName = route.image
+            let routeId:String = route._MotoRoute.id
+            let imgName = route._MotoRoute.image
             
             if(imgName.characters.count > 0){
                 let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
                 image = imageUtils.loadImageFromPath(imgPath as NSString)!
             }
-            cell.configureCell("test", image: image)
+            
+            cell.configureCell("test", id: routeId, image: image, index: indexPath.item)
             cell.toggleSelected()
             return cell
             
@@ -143,8 +128,6 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 180,height: 180)
     }
-    
-    
     
     func setRouteMarkers(_ myRoutes: [RouteMaster], markerTitle: String){
         for item in myRoutes {
@@ -166,9 +149,9 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     func FIRRoutes(_ notification: Notification){
         
         if let notifyObj =  notification.object as? [RouteMaster] {
-            RouteMasters = notifyObj
+            expRouteMasters = notifyObj
             
-            setRouteMarkers(RouteMasters, markerTitle: "allMarker")
+            setRouteMarkers(expRouteMasters, markerTitle: "allMarker")
             // setRouteMarkerViews(RouteMasters, markerTitle: "allMarker")
             
             //            for item in RouteMasters {
@@ -197,7 +180,6 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     
     func showActiveRoute(){
     }
-    
     
     func printAllMarker(_ funcSwitch: FuncTypes, _RouteMaster: RouteMaster){
         
@@ -242,7 +224,10 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
         collection.reloadData()
     }
     
-    
+    @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {
+        print("close mc \(segue.source)")
+        segue.source.removeFromParentViewController()
+    }
 }
 
 
@@ -260,7 +245,7 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
         
         if annotationImage == nil {
-            image = imageUtils.dotColorMarker(15, height: 15, color: dotColor)
+            image = imageUtils.dotColorMarker(10, height: 10, color: dotColor)
             annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: reuseIdentifier)
         }
         
@@ -278,30 +263,11 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
      // This delegate method is where you tell the map to load a view for a specific annotation. To load a static MGLAnnotationImage, you would use `-mapView:imageForAnnotation:`.
      func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
      
-     
-     var dotColor: UIColor {
-     if(annotation.title! == "myMarker") {
-     return UIColor.redColor()
-     } else {
-     return UIColor.blueColor()
-     }
-     }
-     
-     
-     print("marker view")
-     //        guard annotation.title! == "SpeedAltMarkerView" else {
-     //            return nil
-     //        }
-     
+
      let reuseIdentifier = markerViewResueIdentifier
      
-     
-     // For better performance, always try to reuse existing annotations.
      var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
-     
-     
-     
-     // If there’s no reusable annotation view available, initialize a new one.
+
      if annotationView == nil {
      annotationView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor)
      
@@ -317,21 +283,19 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         
         print("did select \(annotation.title) \(annotation.subtitle) ")
-        
-        
-        
+    
         guard let titleID = annotation.subtitle else {
             print("guard exploreMotoRoutes didSelect")
             return
         }
         
-        let index = findRouteInRouteMasters(myRoutes, key: titleID!).1
+        let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
         
-        print(findRouteInRouteMasters(myRoutes, key: titleID!).0)
+        print(findRouteInRouteMasters(myRoutesMaster, key: titleID!).0)
         print(index)
-        print(myRoutes.count)
+        print(myRoutesMaster.count)
         
-        if(index <= myRoutes.count) {
+        if(index <= myRoutesMaster.count) {
             
             collection.delegate?.collectionView!(collection, didDeselectItemAt: activeIndex)
             collection.selectItem(at: IndexPath(item: index, section: 0) , animated: true, scrollPosition: .centeredHorizontally)
@@ -343,7 +307,6 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         //   print("regionDidChangeAnimated")
-        
     }
     
     func mapViewRegionIsChanging(_ mapView: MGLMapView) {
@@ -353,5 +316,18 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         // Always allow callouts to popup when annotations are tapped
         return true
+    }
+}
+
+extension exploreMotoRoutes: RouteCellDelegate{
+
+    func pressedDetails(id: String, index: Int) {
+        print("pressed Details id: \(id)")
+               
+        if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
+            print("got it")
+            showRouteController.motoRoute = myRoutesMaster[index]._MotoRoute
+            self.present(showRouteController, animated: true, completion: nil)
+        }
     }
 }

@@ -14,26 +14,6 @@ import Mapbox
 import Crashlytics
 import pop
 //import SwiftKeychainWrapper
-import Firebase
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
 
 
 
@@ -644,9 +624,12 @@ class showRouteController: UIViewController {
     
     func deleteAllMarker(){
         
-        if mapViewShow.annotations?.count > 0{
-            self.mapViewShow.removeAnnotations(mapViewShow.annotations!)
+        guard (mapViewShow.annotations != nil ) else{
+            print("guard")
+            return
         }
+        
+        self.mapViewShow.removeAnnotations(self.mapViewShow.annotations!)
         
         //Set marker bool to false, to print new marker
         for marker in RouteList{
@@ -800,7 +783,7 @@ class showRouteController: UIViewController {
     
     
     @IBAction func unwindTo(_ unwindSegue: UIStoryboardSegue) {
-        //print("unwind seague \(unwindSegue)")
+        //print("unwind segue \(unwindSegue)")
     }
     
     
