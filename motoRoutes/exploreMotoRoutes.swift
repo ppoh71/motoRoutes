@@ -13,7 +13,7 @@ import CoreLocation
 import Foundation
 import RealmSwift
 
-class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class exploreMotoRoutes: UIViewController {
     
     @IBOutlet weak var mapView: MGLMapView!
     @IBOutlet weak var collection: UICollectionView!
@@ -29,6 +29,7 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     
     //MARK: explore routes vars
     var activeRoute = RouteMaster()
+    var selectedMarkerView = [MGLAnnotation]()
     
     //MARK: vars
     var funcType = FuncTypes.Default
@@ -64,85 +65,7 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     }
     
     
-    //MARK: Collection View Stuff
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myRoutesMaster.count
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if(zoomOnSelect==true){
-            mapUtils.flyToLoactionSimple(myRoutesMaster[(indexPath as NSIndexPath).item].startLat, longitude: myRoutesMaster[(indexPath as NSIndexPath).item].startLong, mapView: mapView, distance: 2000000, pitch: 0)
-        }
-        
-        collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-        
-        if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
-            // print("++++++++++++++select \(indexPath)")
-            cell.isSelected = true
-            cell.toggleSelected()
-            activeIndex = IndexPath(item: indexPath.item, section: 0)
-        }
-        zoomOnSelect = true // set back, false from mapview delegate select
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
 
-        if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
-            print("### did really deselect \(indexPath)")
-            cell.isSelected = false
-            cell.toggleSelected()
-        }
-        collection.reloadData()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RouteCell", for: indexPath) as? RouteCell {
-            cell.delegate = self
-            let route = myRoutesMaster[indexPath.row]
-            var image = UIImage()
-            let routeId:String = route._MotoRoute.id
-            let imgName = route._MotoRoute.image
-            
-            if(imgName.characters.count > 0){
-                let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
-                image = imageUtils.loadImageFromPath(imgPath as NSString)!
-            }
-            
-            cell.configureCell("test", id: routeId, image: image, index: indexPath.item)
-            cell.toggleSelected()
-            return cell
-            
-        } else{
-            return UICollectionViewCell()
-        }
-    }
-    
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 180,height: 180)
-    }
-    
-    func setRouteMarkers(_ myRoutes: [RouteMaster], markerTitle: String){
-        for item in myRoutes {
-            setMarker(item.startLat, longitude: item.startLong, id: item._MotoRoute.id, markerTitle: markerTitle)
-        }
-    }
-    
-    func setMarker(_ latitude: Double, longitude: Double, id: String, markerTitle: String){
-        let newMarker = MGLPointAnnotation()
-        newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        newMarker.title = markerTitle
-        newMarker.subtitle = "\(id)"
-        markerViewResueIdentifier = "\(id)"
-        mapView.addAnnotation(newMarker)
-    }
     
     
     //display Routes routes on map as Marker
@@ -181,6 +104,7 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
     func showActiveRoute(){
     }
     
+    
     func printAllMarker(_ funcSwitch: FuncTypes, _RouteMaster: RouteMaster){
         
         self.funcType = funcSwitch
@@ -192,7 +116,6 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
             
             DispatchQueue.global().async {
                 mapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
-                
             }
         }
     }
@@ -209,6 +132,26 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
         return (_route, index)
     }
     
+    func setMarker(_ latitude: Double, longitude: Double, id: String, markerTitle: String){
+        let newMarker = MGLPointAnnotation()
+        newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        newMarker.title = markerTitle
+        newMarker.subtitle = "\(id)"
+        markerViewResueIdentifier = "\(id)"
+        mapView.addAnnotation(newMarker)
+        
+        if(markerTitle == "SelectedRouteMarker"){
+            selectedMarkerView.append(newMarker)
+        }
+    }
+    
+    
+    func deleteSelectedMarker(){
+        for marker in selectedMarkerView{
+            
+            self.mapView.removeAnnotation(marker)
+        }
+    }
     
     func deleteAllMarker(){
         //check this fileoprovate func removed
@@ -224,6 +167,7 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
         collection.reloadData()
     }
     
+    
     @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {
         print("close mc \(segue.source)")
         segue.source.removeFromParentViewController()
@@ -231,11 +175,108 @@ class exploreMotoRoutes: UIViewController, UICollectionViewDelegate, UICollectio
 }
 
 
+//MARK: CollectionView Delegate Extension
+extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return myRoutesMaster.count
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        deleteSelectedMarker()
+        
+        let latitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLat
+        let longitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLong
+        let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id
+        
+        if(zoomOnSelect==true){
+            mapUtils.flyToLoactionSimple(latitude, longitude: longitude, mapView: mapView, distance: 2000000, pitch: 0)
+        }
+        collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
+            // print("++++++++++++++select \(indexPath)")
+            cell.isSelected = true
+            cell.toggleSelected()
+            activeIndex = IndexPath(item: indexPath.item, section: 0)
+        }
+        
+        
+        setMarker(latitude, longitude: longitude, id: routeID, markerTitle: "SelectedRouteMarker")
+        zoomOnSelect = true // set back, false from mapview delegate select
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
+            print("### did really deselect \(indexPath)")
+            cell.isSelected = false
+            cell.toggleSelected()
+        }
+        collection.reloadData()
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RouteCell", for: indexPath) as? RouteCell {
+            cell.delegate = self
+            let route = myRoutesMaster[indexPath.row]
+            var image = UIImage()
+            let routeId:String = route._MotoRoute.id
+            let imgName = route._MotoRoute.image
+            
+            if(imgName.characters.count > 0){
+                let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
+                image = imageUtils.loadImageFromPath(imgPath as NSString)!
+            }
+            
+            cell.configureCell("test", id: routeId, image: image, index: indexPath.item)
+            cell.toggleSelected()
+            return cell
+            
+        } else{
+            return UICollectionViewCell()
+        }
+    }
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 180,height: 180)
+    }
+    
+    
+    func setRouteMarkers(_ myRoutes: [RouteMaster], markerTitle: String){
+        for item in myRoutes {
+            setMarker(item.startLat, longitude: item.startLong, id: item._MotoRoute.id, markerTitle: markerTitle)
+        }
+    }
+}
+
 // MARK: - MKMapViewDelegate
 extension exploreMotoRoutes: MGLMapViewDelegate {
     
-    
+   
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        guard let markerTitle = annotation.subtitle else {
+            print("guard no tile")
+            return nil
+        }
+        
+        guard annotation.title!! != "SelectedRouteMarker" else {
+            print("guard annotation no image for: SelectedRouteMarker")
+            return nil
+        }
+        
         var image: UIImage?
         let reuseIdentifier = "Marker-\(annotation.title!))"
         var dotColor: UIColor {
@@ -253,37 +294,51 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
         
         return annotationImage
     }
-    
+ 
     
     func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {
         print("explore slect it")
     }
     
-    /*
-     // This delegate method is where you tell the map to load a view for a specific annotation. To load a static MGLAnnotationImage, you would use `-mapView:imageForAnnotation:`.
-     func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
-     
-
-     let reuseIdentifier = markerViewResueIdentifier
-     
-     var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
-
-     if annotationView == nil {
-     annotationView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor)
-     
-     annotationView!.frame = CGRectMake(0, 0, 10, 10)
-     
-     }
-     
-     return annotationView
-     }
-     */
     
+    func mapView(_ mapView: MGLMapView, didAdd annotationViews: [MGLAnnotationView]) {
+        print("")
+    }
+    
+    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+       
+        guard annotation is MGLPointAnnotation else {
+            print("guard viewannottion: no pointannotation")
+            return nil
+        }
+        
+        guard let markerTitle = annotation.title else {
+            print("guard annotationview no title")
+            return nil
+        }
+
+        guard markerTitle == "SelectedRouteMarker" else {
+            print("guard annotationview \(markerTitle)")
+            return nil
+        }
+        
+        let reuseIdentifier = markerViewResueIdentifier
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+        var dotColor: UIColor { return  annotation.title! == "allMarker" ? UIColor.red : UIColor.yellow }
+        
+        if annotationView == nil {
+            annotationView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor)
+            annotationView!.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+        }
+        return annotationView
+
+    }
+
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         
         print("did select \(annotation.title) \(annotation.subtitle) ")
-    
+        
         guard let titleID = annotation.subtitle else {
             print("guard exploreMotoRoutes didSelect")
             return
@@ -305,13 +360,16 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
         }
     }
     
+    
     func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         //   print("regionDidChangeAnimated")
     }
     
+    
     func mapViewRegionIsChanging(_ mapView: MGLMapView) {
         // print("region is chanhing")
     }
+    
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         // Always allow callouts to popup when annotations are tapped
@@ -320,10 +378,10 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
 }
 
 extension exploreMotoRoutes: RouteCellDelegate{
-
+    
     func pressedDetails(id: String, index: Int) {
         print("pressed Details id: \(id)")
-               
+        
         if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
             print("got it")
             showRouteController.motoRoute = myRoutesMaster[index]._MotoRoute

@@ -32,12 +32,12 @@ class MarkerView: MGLAnnotationView {
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: 5,y: 5), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
         
         shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = UIColor.blue.cgColor
+        shapeLayer.fillColor = UIColor.cyan.cgColor
         shapeLayer.strokeColor = color.cgColor
         shapeLayer.lineWidth = 1.0
         self.layer.addSublayer(shapeLayer)
         
-        //dotAnimation()
+        dotAnimation()
 
     }
     
@@ -55,13 +55,10 @@ class MarkerView: MGLAnnotationView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-
-        
            }
     
     
     func dotAnimation(){
-        
         let animation = CABasicAnimation(keyPath: "lineWidth")
         animation.fromValue = 0
         animation.toValue = 10
@@ -69,6 +66,10 @@ class MarkerView: MGLAnnotationView {
         animation.autoreverses = true
         animation.repeatCount = 200000
         shapeLayer.add(animation, forKey: "cornerRadius")
+    }
+    
+    func stopAnimation(){
+        shapeLayer.removeAllAnimations()
     }
     
     

@@ -531,7 +531,7 @@ class showRouteController: UIViewController {
             //Print Marker if not already set
             if(self.RouteList[globalRoutePos.gRoutePos].marker==false){
             
-                DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.global(qos: .userInteractive).async {
 
                     
                     self.funcType = .PrintMarker
@@ -576,7 +576,7 @@ class showRouteController: UIViewController {
                         
                         
                         
-                        if(self.countGoogle > 10){
+                        if(self.countGoogle > 20){
                             self.getGoogleImageCache(self._RouteMaster._MotoRoute.id, key: globalRoutePos.gRoutePos)
                             self.countGoogle = 0
                         }

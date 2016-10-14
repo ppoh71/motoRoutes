@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11535.1" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Sw-Jy-0MP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11535.1" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wc2-zt-K1X">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -171,7 +171,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rs2-lg-8qa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="n50-un-B7Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1402" y="556"/>
+            <point key="canvasLocation" x="468" y="-142"/>
         </scene>
         <!--Moto Route Controller-->
         <scene sceneID="h0c-8X-voG">
@@ -524,7 +524,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bPd-ju-BWS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Ete-9J-bbM" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="657" y="-181"/>
+            <point key="canvasLocation" x="1441" y="-209"/>
         </scene>
         <!--Show Route Controller-->
         <scene sceneID="7a5-Ye-T9h">
@@ -1088,6 +1088,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="DRE-k5-DtD"/>
-        <segue reference="KJs-LQ-4ee"/>
+        <segue reference="7WH-Bh-5na"/>
     </inferredMetricsTieBreakers>
 </document>
