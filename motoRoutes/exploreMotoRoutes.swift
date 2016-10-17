@@ -25,6 +25,7 @@ class exploreMotoRoutes: UIViewController {
     var markerViewResueIdentifier = ""
     var lastIndex = IndexPath(item: 0, section: 0)
     var activeIndex = IndexPath(item: 0, section: 0)
+    var activeAnnotationView: MarkerView?
     var zoomOnSelect = true
     
     //MARK: explore routes vars
@@ -63,9 +64,6 @@ class exploreMotoRoutes: UIViewController {
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         //FirebaseData.dataService.getRoutesFromFIR()
     }
-    
-    
-
     
     
     //display Routes routes on map as Marker
@@ -148,16 +146,18 @@ class exploreMotoRoutes: UIViewController {
     
     func deleteSelectedMarker(){
         for marker in selectedMarkerView{
-            
-            self.mapView.removeAnnotation(marker)
+           self.mapView.removeAnnotation(marker)
         }
     }
     
+    
     func deleteAllMarker(){
-        //check this fileoprovate func removed
-        if mapView.annotations!.count > 0{
-            self.mapView.removeAnnotations(mapView.annotations!)
+        
+        guard (mapView.annotations != nil) else {
+            return
         }
+        
+        self.mapView.removeAnnotations(mapView.annotations!)
     }
     
     
@@ -186,6 +186,7 @@ extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         deleteSelectedMarker()
+        activeAnnotationView?.stopAnimation()
         
         let latitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLat
         let longitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLong
@@ -197,12 +198,10 @@ extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
         
         if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
-            // print("++++++++++++++select \(indexPath)")
             cell.isSelected = true
             cell.toggleSelected()
             activeIndex = IndexPath(item: indexPath.item, section: 0)
         }
-        
         
         setMarker(latitude, longitude: longitude, id: routeID, markerTitle: "SelectedRouteMarker")
         zoomOnSelect = true // set back, false from mapview delegate select
@@ -323,16 +322,20 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
         }
         
         let reuseIdentifier = markerViewResueIdentifier
+        print(markerViewResueIdentifier)
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
         var dotColor: UIColor { return  annotation.title! == "allMarker" ? UIColor.red : UIColor.yellow }
         
         if annotationView == nil {
-            annotationView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor)
-            annotationView!.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+           let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor)
+           annotationMarkerView.backgroundColor = UIColor.blue
+           activeAnnotationView = annotationMarkerView
+          
+            return annotationMarkerView
+        } else {
+            return annotationView
         }
-        return annotationView
-
-    }
+   }
 
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {

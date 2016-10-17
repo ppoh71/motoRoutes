@@ -15,21 +15,25 @@ class MarkerView: MGLAnnotationView {
     
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
+    var color = UIColor.clear
+    var initFrame = CGRect(x: 0, y: 0, width: 200, height: 100)
     
     
     init(reuseIdentifier: String, color: UIColor) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        // Force the annotation view to maintain a constant size when the map is tilted.
         scalesWithViewingDistance = true
+        self.color = color
+
+        print("frame \(self.frame.width)")
+        let label = UILabel(frame: CGRect(x: 20, y: 20, width: 100 , height: 21))
+       // label.center = CGPoint(x: 160, y: 285)
+        label.textAlignment = .center
+        label.text = "I'am a test label"
+        self.addSubview(label)
         
-        // Use CALayer’s corner radius to turn this view into a circle.
-//        layer.cornerRadius = frame.width / 2
-//        layer.borderWidth = 1
-//        layer.borderColor = UIColor.whiteColor().CGColor
         
-        //add dot         l
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: 5,y: 5), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: initFrame.width/2,y: initFrame.height/2), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
         
         shapeLayer.path = circlePath.cgPath
         shapeLayer.fillColor = UIColor.cyan.cgColor
@@ -38,12 +42,14 @@ class MarkerView: MGLAnnotationView {
         self.layer.addSublayer(shapeLayer)
         
         dotAnimation()
-
+        
+        
     }
     
     // These two initializers are forced upon us by Swift.
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: initFrame)
+        print("init markerview frame")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,10 +57,8 @@ class MarkerView: MGLAnnotationView {
     }
     
     
-    
     override func layoutSubviews() {
         super.layoutSubviews()
-        
            }
     
     
@@ -67,6 +71,7 @@ class MarkerView: MGLAnnotationView {
         animation.repeatCount = 200000
         shapeLayer.add(animation, forKey: "cornerRadius")
     }
+    
     
     func stopAnimation(){
         shapeLayer.removeAllAnimations()
