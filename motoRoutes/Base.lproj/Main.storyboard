@@ -137,8 +137,9 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="detailBtn" destination="uA3-tf-Z5W" id="4kD-93-Liy"/>
+                                            <outlet property="distanceLbl" destination="led-Pv-akg" id="5xA-Ky-tTb"/>
+                                            <outlet property="durationLbl" destination="NYI-Js-vNT" id="4L7-M5-VyY"/>
                                             <outlet property="routeImage" destination="vaL-J6-u60" id="kd5-sd-zoR"/>
-                                            <outlet property="routeLbl" destination="led-Pv-akg" id="nRo-wr-OX7"/>
                                             <outlet property="viewLabel" destination="gKp-kf-7f6" id="bcV-AI-cWI"/>
                                         </connections>
                                     </collectionViewCell>

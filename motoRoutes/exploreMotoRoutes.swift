@@ -243,7 +243,7 @@ extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
                 image = imageUtils.loadImageFromPath(imgPath as NSString)!
             }
             
-            cell.configureCell("test", id: routeId, image: image, index: indexPath.item)
+            cell.configureCell("test", id: routeId, route: route, image: image, index: indexPath.item)
             cell.toggleSelected()
             return cell
             

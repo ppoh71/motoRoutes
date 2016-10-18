@@ -20,7 +20,8 @@ class RouteCell: UICollectionViewCell {
     weak var delegate: RouteCellDelegate?
 
     @IBOutlet weak var routeImage: UIImageView!
-    @IBOutlet weak var routeLbl: UILabel!
+    @IBOutlet weak var distanceLbl: UILabel!
+    @IBOutlet weak var durationLbl: UILabel!
     @IBOutlet weak var viewLabel: UIView!
     @IBOutlet weak var detailBtn: UIButton!
 
@@ -28,17 +29,20 @@ class RouteCell: UICollectionViewCell {
     var route: RouteMaster!
     var routeId = ""
     var index = 0
-    let aniOffset = CGFloat(50)
+    let aniOffset = CGFloat(20)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         layer.cornerRadius = 0.5
     }
     
-    func configureCell(_ label: String, id: String, image: UIImage, index: Int) {
+    func configureCell(_ label: String, id: String, route: RouteMaster, image: UIImage, index: Int) {
         self.routeId = id
         self.index = index
-        self.routeLbl.text = label
+        self.route = route
+        self.distanceLbl.text = "Dist. \(utils.distanceFormat(route.routeDistance)) km"
+        self.durationLbl.text = "Dura. \(utils.clockFormat(route.routeTime)) "
+
         self.routeImage.image = image
         
        // slideUpInfo()
