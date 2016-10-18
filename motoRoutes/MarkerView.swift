@@ -16,24 +16,33 @@ class MarkerView: MGLAnnotationView {
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
     var color = UIColor.clear
-    var initFrame = CGRect(x: 0, y: 0, width: 200, height: 100)
-    
+    var initFrame = CGRect(x: 0, y: 0, width: 50, height: 50)
+    let offset = CGFloat(0)
     
     init(reuseIdentifier: String, color: UIColor) {
         super.init(reuseIdentifier: reuseIdentifier)
         
         scalesWithViewingDistance = true
+        centerOffset = CGVector(dx: -initFrame.width/2 + offset, dy: -initFrame.height/2)
         self.color = color
 
         print("frame \(self.frame.width)")
-        let label = UILabel(frame: CGRect(x: 20, y: 20, width: 100 , height: 21))
+        
        // label.center = CGPoint(x: 160, y: 285)
+        /*
+         let label = UILabel()
         label.textAlignment = .center
-        label.text = "I'am a test label"
+        label.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
+        label.text = "Distance: 3123123\nDuration: 01:12:34\nDate: 01.02.1973\nHighspeed: 235km/h"
+        label.numberOfLines = 0
+        label.sizeToFit()
+        label.textAlignment = .left
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = UIColor.white
         self.addSubview(label)
+        */
         
-        
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: initFrame.width/2,y: initFrame.height/2), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: initFrame.width-offset,y: initFrame.height), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
         
         shapeLayer.path = circlePath.cgPath
         shapeLayer.fillColor = UIColor.cyan.cgColor

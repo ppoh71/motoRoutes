@@ -23,9 +23,12 @@ class RouteCell: UICollectionViewCell {
     @IBOutlet weak var routeLbl: UILabel!
     @IBOutlet weak var viewLabel: UIView!
     @IBOutlet weak var detailBtn: UIButton!
+
+    
     var route: RouteMaster!
     var routeId = ""
     var index = 0
+    let aniOffset = CGFloat(50)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -37,6 +40,8 @@ class RouteCell: UICollectionViewCell {
         self.index = index
         self.routeLbl.text = label
         self.routeImage.image = image
+        
+       // slideUpInfo()
     }
     
     func toggleSelected ()
@@ -44,11 +49,27 @@ class RouteCell: UICollectionViewCell {
         if (isSelected){
             print("toggle red")
             viewLabel.backgroundColor = UIColor.red
+            slideUpInfo()
         } else {
             print("toggle black")
-            viewLabel.backgroundColor = UIColor.black
+           viewLabel.backgroundColor = UIColor.red
+            slideDownInfo()
         }
     }
+    
+    func slideUpInfo(){
+        print("slide up info")
+        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - aniOffset))
+       // AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - aniOffset))
+    }
+    
+    
+    func slideDownInfo(){
+        print("slide down info")
+        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + aniOffset))
+        //AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
+    }
+    
     
     @IBAction func pressedDetail(_ sender: UIButton){
         print("pressed in cell")

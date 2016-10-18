@@ -47,7 +47,7 @@
                                 </connections>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="woV-1i-Vrd">
-                                <rect key="frame" x="0.0" y="443" width="375" height="180"/>
+                                <rect key="frame" x="0.0" y="487" width="375" height="180"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="6xP-8G-fua"/>
@@ -66,7 +66,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="180" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bike-def" translatesAutoresizingMaskIntoConstraints="NO" id="vaL-J6-u60" customClass="MRCellViewImage" customModule="motoRoutes" customModuleProvider="target">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook-circle" translatesAutoresizingMaskIntoConstraints="NO" id="vaL-J6-u60" customClass="MRCellViewImage" customModule="motoRoutes" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="-24" width="180" height="163"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -82,12 +82,15 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKp-kf-7f6">
-                                                    <rect key="frame" x="0.0" y="139" width="180" height="41"/>
+                                                    <rect key="frame" x="0.0" y="100" width="180" height="41"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="led-Pv-akg">
-                                                            <rect key="frame" x="10" y="9" width="42" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.063171526960000002" blue="0.1264204545" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="D: 1234 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="led-Pv-akg">
+                                                            <rect key="frame" x="8" y="4" width="55" height="13"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="13" id="oTs-Kn-oVR"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uA3-tf-Z5W">
@@ -101,36 +104,37 @@
                                                                 <action selector="pressedDetail:" destination="Kc9-W1-h8c" eventType="touchDown" id="n1w-3Y-T4g"/>
                                                             </connections>
                                                         </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="D: 01:10:23 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYI-Js-vNT">
+                                                            <rect key="frame" x="8" y="17" width="58" height="12"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstItem="led-Pv-akg" firstAttribute="leading" secondItem="gKp-kf-7f6" secondAttribute="leading" constant="10" id="UOT-uw-SOi"/>
-                                                        <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="gKp-kf-7f6" secondAttribute="top" constant="9" id="cLC-0i-cgX"/>
-                                                        <constraint firstAttribute="width" constant="180" id="hT2-ij-AB4"/>
-                                                        <constraint firstAttribute="bottom" secondItem="uA3-tf-Z5W" secondAttribute="bottom" constant="7" id="nQX-Kc-7ZW"/>
-                                                        <constraint firstAttribute="height" constant="41" id="qds-qY-nwD"/>
-                                                        <constraint firstAttribute="trailing" secondItem="uA3-tf-Z5W" secondAttribute="trailing" constant="15" id="vR8-Mc-uYN"/>
+                                                        <constraint firstItem="NYI-Js-vNT" firstAttribute="leading" secondItem="led-Pv-akg" secondAttribute="leading" id="6dV-cS-fQ5"/>
+                                                        <constraint firstItem="NYI-Js-vNT" firstAttribute="top" secondItem="led-Pv-akg" secondAttribute="bottom" id="DbZ-Sh-n1n"/>
+                                                        <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="gKp-kf-7f6" secondAttribute="top" constant="4" id="IOk-hl-PmV"/>
+                                                        <constraint firstItem="led-Pv-akg" firstAttribute="leading" secondItem="gKp-kf-7f6" secondAttribute="leadingMargin" id="PRZ-gi-f9t"/>
+                                                        <constraint firstItem="uA3-tf-Z5W" firstAttribute="leading" secondItem="NYI-Js-vNT" secondAttribute="trailing" constant="35" id="hx8-ls-trY"/>
+                                                        <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="uA3-tf-Z5W" secondAttribute="top" id="lcY-TT-MVc"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="EkF-ro-N8Y"/>
-                                            <constraint firstAttribute="trailing" secondItem="gKp-kf-7f6" secondAttribute="trailing" id="KYq-Wg-Lp6"/>
+                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="leading" secondItem="vaL-J6-u60" secondAttribute="leading" id="1hD-LQ-wEJ"/>
                                             <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="LWV-IH-fQK"/>
-                                            <constraint firstAttribute="bottom" secondItem="gKp-kf-7f6" secondAttribute="bottom" id="N2d-tC-KA3"/>
                                             <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="OM1-jj-kwe"/>
-                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="1" id="Vxd-Yl-hgB"/>
                                             <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="WcA-8Q-MeM"/>
                                             <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="h41-Dc-Dxx"/>
-                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" id="u9b-Ao-GOf"/>
+                                            <constraint firstItem="vaL-J6-u60" firstAttribute="top" secondItem="Kc9-W1-h8c" secondAttribute="topMargin" constant="-32" id="hg3-qe-bbF"/>
+                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="top" secondItem="Kc9-W1-h8c" secondAttribute="topMargin" constant="92" id="ihU-Hq-b1i"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="gKp-kf-7f6" secondAttribute="bottom" constant="31" id="r67-4h-t7G"/>
+                                            <constraint firstItem="gKp-kf-7f6" firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="wZo-Io-Lbg"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="Vxd-Yl-hgB"/>
-                                            </mask>
-                                        </variation>
                                         <connections>
                                             <outlet property="detailBtn" destination="uA3-tf-Z5W" id="4kD-93-Liy"/>
                                             <outlet property="routeImage" destination="vaL-J6-u60" id="kd5-sd-zoR"/>
@@ -141,7 +145,7 @@
                                 </cells>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rz8-Wo-jK6" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                <rect key="frame" x="319" y="77" width="48" height="48"/>
+                                <rect key="frame" x="319" y="121" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="titleShadowOffset" width="8" height="5"/>
                                 <state key="normal" image="ic_panorama_fish_eye_48pt"/>
@@ -171,7 +175,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rs2-lg-8qa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="n50-un-B7Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="468" y="-142"/>
+            <point key="canvasLocation" x="468" y="-142.57871064467767"/>
         </scene>
         <!--Moto Route Controller-->
         <scene sceneID="h0c-8X-voG">
@@ -1075,7 +1079,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bike-def" width="960" height="639"/>
         <image name="facebook-circle" width="512" height="512"/>
         <image name="ic_add_circle_48pt" width="48" height="48"/>
         <image name="ic_check_circle_48pt" width="48" height="48"/>
