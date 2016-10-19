@@ -38,7 +38,7 @@ class GoogleData {
             let returnObj = [image]
             
             //let filename = "\(key).jpeg"
-            imageUtils.saveGoogleImageToFile(image , key: key, id: id)
+            ImageUtils.saveGoogleImageToFile(image , key: key, id: id)
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: googleGetImagesNotificationKey), object: returnObj)
         }

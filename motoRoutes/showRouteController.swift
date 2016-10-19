@@ -182,11 +182,11 @@ class showRouteController: UIViewController {
         checkLocationStartEnd(motoRoute!)
         
         //print the route in 1 color
-        mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+        MapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
         //printCricleRoute()
         
         //define camera and set it to startpoint
-        let camera = mapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
+        let camera = MapUtils.cameraDestination(RouteList[0].latitude, longitude:RouteList[0].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: RouteList[0].course + globalHeading.gHeading)
         
         mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
         
@@ -206,12 +206,12 @@ class showRouteController: UIViewController {
     
     func getGoogleImageCache(_ id: String, key: Int){
     
-        let imageFile = utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
+        let imageFile = Utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: imageFile) {
             print("GOOGLE IMAGE AVAILABLE )")
             
-            let image = imageUtils.loadImageFromPath(imageFile as NSString)
+            let image = ImageUtils.loadImageFromPath(imageFile as NSString)
             displayGoogleImage(image!)
             
         } else {
@@ -426,7 +426,7 @@ class showRouteController: UIViewController {
             let centerCoords = mapViewShow.centerCoordinate
             
             //define camera and flyTo with zoom level
-            let camera = mapUtils.cameraDestination(centerCoords.latitude, longitude:centerCoords.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: globalHeading.gHeading)
+            let camera = MapUtils.cameraDestination(centerCoords.latitude, longitude:centerCoords.longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: globalHeading.gHeading)
             mapViewShow.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear))
             
             // print("\(mapViewShow.centerCoordinate)")
@@ -447,7 +447,7 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay = false
         
         //fly to route to destination
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: globalRoutePos.gRoutePos, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
+        MapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: globalRoutePos.gRoutePos, routeSlider: routeSlider, initInstance: Utils.getUniqueUUID(), identifier: "i1", speedoMeter: speedoMeter)
     
     }
     
@@ -492,7 +492,7 @@ class showRouteController: UIViewController {
         globalAutoplay.gAutoplay =  true
         
         //make route fly
-        mapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
+        MapUtils.flyOverRoutes(RouteList, mapView: mapViewShow, n: sliceStart, routeSlider: routeSlider, initInstance: Utils.getUniqueUUID(), identifier: "i3", speedoMeter: speedoMeter)
         
     }
     
@@ -568,11 +568,11 @@ class showRouteController: UIViewController {
                         
                        // print("b: \(self.tmpRoutePos) - \(self.RouteList[globalRoutePos.gRoutePos].marker)")
                         
-                        self.speedoMeter.moveSpeedo(Double(utils.getSpeed(self.RouteList[self.tmpRoutePos].speed)))
+                        self.speedoMeter.moveSpeedo(Double(Utils.getSpeed(self.RouteList[self.tmpRoutePos].speed)))
                         
                         self.routeSlider.setValue(Float(self.tmpRoutePos), animated: true)
                         //print("Slider Move \(n)")
-                        self.routeSlider.setLabel((utils.distanceFormat(0)), timeText: "wtf")
+                        self.routeSlider.setLabel((Utils.distanceFormat(0)), timeText: "wtf")
                         
                         
                         
@@ -583,7 +583,7 @@ class showRouteController: UIViewController {
                     
                         
                         if(self.count > 0 && self.followCamera == true){
-                             mapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
+                             MapUtils.flyOverRoutes(self.RouteList, mapView: self.mapViewShow, n: self.tmpRoutePos, routeSlider: nil, initInstance: Utils.getUniqueUUID(), identifier: "i2", speedoMeter: nil)
                             self.count=0
                             //self.startMarkerTimer()
                         }
@@ -615,7 +615,7 @@ class showRouteController: UIViewController {
             print("image reuse size \(self.RouteList.count / tmpGap)")
             
             DispatchQueue.main.async {
-                mapUtils.printMarker(self.RouteList, mapView: self.mapViewShow, key: 0, amount: self.RouteList.count-1 , gap: tmpGap, funcType: self.funcType )
+                MapUtils.printMarker(self.RouteList, mapView: self.mapViewShow, key: 0, amount: self.RouteList.count-1 , gap: tmpGap, funcType: self.funcType )
                 self.setStartEndMarker()
             }
         }
@@ -685,7 +685,7 @@ class showRouteController: UIViewController {
 
     @IBAction func resetMarker(_ sender: AnyObject) {
         deleteAllMarker()
-        mapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
+        MapUtils.printRouteOneColor(RouteList, mapView: mapViewShow)
         self.centerMap(50, duration: 3)
         hideAllBottomController()
         showPlaybackViews()
@@ -695,7 +695,7 @@ class showRouteController: UIViewController {
     
     @IBAction func printRoute(_ sender: AnyObject) {
         deleteAllMarker()
-        mapUtils.printRoute(RouteList, mapView: mapViewShow)
+        MapUtils.printRoute(RouteList, mapView: mapViewShow)
         self.centerMap(53, duration: 3)
     }
     
@@ -715,7 +715,7 @@ class showRouteController: UIViewController {
     // new screenshot
     @IBAction func newScreenshot(_ sender: UIButton) {
               
-        let screenshotFilename = imageUtils.screenshotMap(self.mapViewShow)
+        let screenshotFilename = ImageUtils.screenshotMap(self.mapViewShow)
         
         //save new screenshot to realm
         //print(motoRoute)
@@ -730,17 +730,17 @@ class showRouteController: UIViewController {
     func centerMap(_ pitch: CGFloat, duration: Double){
     
         //get bounds, centerpoints, of the whole Route
-        let Bounds = mapUtils.getBoundCoords(RouteList)
+        let Bounds = MapUtils.getBoundCoords(RouteList)
         let coordArray = Bounds.coordboundArray
         //let coordBounds = Bounds.coordbound
         let distanceDiagonal = Bounds.distance
         let distanceFactor = Bounds.distanceFactor
     
         //get centerpoint
-        let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
+        let centerPoint = MapUtils.getCenterFromBoundig(coordArray)
         
         //define camera and set it to startpoint
-        let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: pitch, heading: 0)
+        let camera = MapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: pitch, heading: 0)
         
         //animate camera to center point, launch save overlay
         mapViewShow.setCamera(camera, withDuration: duration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
@@ -816,21 +816,21 @@ extension showRouteController: MGLMapViewDelegate {
         switch(self.funcType) {
         
         case .PrintMarker:
-            reuseIdentifier =  "MarkerSpeed\(utils.getSpeed(globalSpeed.gSpeed))-1"
+            reuseIdentifier =  "MarkerSpeed\(Utils.getSpeed(globalSpeed.gSpeed))-1"
             
             
         case .PrintBaseHeight:
-            reuseIdentifier =  "MarkerSpeedBase\(utils.getSpeed(globalSpeed.gSpeed))-2"
+            reuseIdentifier =  "MarkerSpeedBase\(Utils.getSpeed(globalSpeed.gSpeed))-2"
             
         case .PrintAltitude:
             reuseIdentifier =  "MarkerAlt\(Int(round(globalAltitude.gAltitude / 10 )))-3"
             
         case .Recording:
-            reuseIdentifier =  "MarkerCircleSpeed\(utils.getSpeed(globalSpeed.gSpeed))-4"
+            reuseIdentifier =  "MarkerCircleSpeed\(Utils.getSpeed(globalSpeed.gSpeed))-4"
            
             
         case .PrintCircles:
-            reuseIdentifier =  "MarkerCircle\(utils.getSpeed(globalSpeed.gSpeed))-5"
+            reuseIdentifier =  "MarkerCircle\(Utils.getSpeed(globalSpeed.gSpeed))-5"
             
         case .PrintStartEnd:
             reuseIdentifier = "StartEndMarker"
@@ -851,7 +851,7 @@ extension showRouteController: MGLMapViewDelegate {
             print("reuse count \(countReuse)")
             
             if(annotation.title! == "SpeedAltMarker"){
-                image = imageUtils.drawLineOnImage(self.funcType)
+                image = ImageUtils.drawLineOnImage(self.funcType)
             } else{
                 image = UIImage(named: "ic_place.png")!
             }
@@ -930,7 +930,7 @@ extension showRouteController: MGLMapViewDelegate {
         
         //let speedIndex =  Int(round(speed/10))
         //print(globalSpeedSet.speedSet)
-        return colorUtils.polylineColors(globalSpeedSet.speedSet)
+        return ColorUtils.polylineColors(globalSpeedSet.speedSet)
     }
     
 }

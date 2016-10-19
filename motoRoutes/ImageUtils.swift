@@ -12,7 +12,7 @@ import Mapbox
 
 
 
-final class imageUtils{
+final class ImageUtils{
     
     
     /*
@@ -41,8 +41,8 @@ final class imageUtils{
             return UIImage()
         }
         
-        let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
-        let image = imageUtils.loadImageFromPath(imgPath as NSString)
+        let imgPath = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
+        let image = ImageUtils.loadImageFromPath(imgPath as NSString)
         
         return image
         
@@ -133,8 +133,8 @@ final class imageUtils{
         context?.scaleBy(x: 1.0, y: -1.0);
         
         //get height and color for line
-        let LineHeight = utils.getSpeed(globalSpeed.gSpeed)
-        let LineColor = colorUtils.polylineColors(utils.getSpeedIndexFull(globalSpeed.gSpeed))
+        let LineHeight = Utils.getSpeed(globalSpeed.gSpeed)
+        let LineColor = ColorUtils.polylineColors(Utils.getSpeedIndexFull(globalSpeed.gSpeed))
         let LineAltitude  = globalAltitude.gAltitude
         //LineAltitude = round(1000 * LineAltitude) / 1000
     
@@ -270,7 +270,7 @@ final class imageUtils{
         
         for (index, color) in colors.enumerated() {
            
-            let currentColor = colorUtils.hexTorgbColor(color)
+            let currentColor = ColorUtils.hexTorgbColor(color)
             context?.setStrokeColor(currentColor.cgColor)
             
             let rectangle = CGRect(x: 0, y: (height/colors.count)*index, width: width, height: height/colors.count)
@@ -288,22 +288,7 @@ final class imageUtils{
         return img!
     }
     
-    /*
-     * generate spped marker images
-     */
-    /*
-     class func generateSpeedMarker(){
-     
-     var x:Double = 0;
-     
-     while x<350 {
-     globalSpeed.gSpeed = x
-     x += 1
-     //print("key: \(x) ")
-     }
-     }
-     */
-    
+        
     /*
      * save imge to file
      */
@@ -311,7 +296,7 @@ final class imageUtils{
         
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(image) {
-            let filename = utils.getDocumentsDirectory().appendingPathComponent(imageName)
+            let filename = Utils.getDocumentsDirectory().appendingPathComponent(imageName)
             let write = (try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])) != nil
             
             print("\(write) - \(filename)")
@@ -329,9 +314,9 @@ final class imageUtils{
         //screenShotRoute.image = screenShot
         if UIImagePNGRepresentation(image) != nil {
             
-            imageUtils.createDirectory(id)
+            ImageUtils.createDirectory(id)
             
-           let filename = utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
+           let filename = Utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
            
            // let write = data.writeToFile(filename, atomically: true)
            // let image = UIImage(data: NSData(contentsOfURL: NSURL(string: self.remoteImage)))
@@ -377,11 +362,11 @@ final class imageUtils{
         
         
         //resite image
-        let scaledImage = imageUtils.scaleImgaeCore(screenShot!)
+        let scaledImage = ImageUtils.scaleImgaeCore(screenShot!)
         
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(scaledImage) {
-            filename = utils.getDocumentsDirectory().appendingPathComponent(timestampFilename)
+            filename = Utils.getDocumentsDirectory().appendingPathComponent(timestampFilename)
             try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])
         }
         

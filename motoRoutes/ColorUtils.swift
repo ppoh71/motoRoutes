@@ -71,15 +71,8 @@ struct ColorPalette {
     
 }
 
-final class colorUtils {
+final class ColorUtils {
     
-
-
-    
-    //assign instance to global static
-   // Holder.staticInstance = initInstance
- 
- 
     //random color
     static func randomColor() -> UIColor {
         let r = CGFloat(arc4random()) / CGFloat(UInt32.max)
@@ -136,7 +129,7 @@ final class colorUtils {
         //print(speedInt)
         
         //retrun converted color speed color in ui.color
-        return colorUtils.hexTorgbColor(colorSpeed[speedInt])
+        return ColorUtils.hexTorgbColor(colorSpeed[speedInt])
     }
     
     

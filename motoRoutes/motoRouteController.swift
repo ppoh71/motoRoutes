@@ -96,16 +96,16 @@ class motoRouteController: UITableViewController {
      
           if(imgName.characters.count > 0){
              //let path = (utils.getDocumentsDirectory() as String) + img
-             let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
-             image = imageUtils.loadImageFromPath(imgPath as NSString)!
+             let imgPath = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
+             image = ImageUtils.loadImageFromPath(imgPath as NSString)!
           }
      
      
         //image = (image == nil) ? "default.jpg" : image
         print(route.id)
 
-        let nameLabel = "\(utils.clockFormat(route.duration))"
-        let distanceLabel = "\(utils.distanceFormat(route.distance))"
+        let nameLabel = "\(Utils.clockFormat(route.duration))"
+        let distanceLabel = "\(Utils.distanceFormat(route.distance))"
         
         
         //configure cell

@@ -14,7 +14,7 @@ import RealmSwift
 import Mapbox
 
 
-final class utils {
+final class Utils {
     
     /*
      * get Time stamp
@@ -116,7 +116,7 @@ final class utils {
     class func setGlobalSpeedSet(_ speed:Double){
        
         // define speedIndex and set first Index
-        let speedIndex:Int = utils.getSpeedIndex(speed)
+        let speedIndex:Int = Utils.getSpeedIndex(speed)
         globalSpeedSet.speedSet = speedIndex
 
     }

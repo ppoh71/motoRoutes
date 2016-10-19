@@ -16,7 +16,7 @@ open class CameraSlider: UISlider{
          super.init(coder: aDecoder)!
     
         //set trans image for track for alpha
-        let transImg = imageUtils.drawSliderThumb(1, height: 1, lineWidth: 1, color: UIColor.black, alpha: 0)
+        let transImg = ImageUtils.drawSliderThumb(1, height: 1, lineWidth: 1, color: UIColor.black, alpha: 0)
         
         //set new images for controlls
         self.setMinimumTrackImage(transImg, for: UIControlState())

@@ -189,8 +189,8 @@ class addRouteController: UIViewController {
         second += 1
         totalTime = currentTimestamp - startTimestamp
 
-        timeLabel.text = utils.clockFormat(totalTime)
-        distanceLabel.text = "\(utils.distanceFormat(distance)) km"
+        timeLabel.text = Utils.clockFormat(totalTime)
+        distanceLabel.text = "\(Utils.distanceFormat(distance)) km"
         
         //location updates
         latitudeLabel.text = "La: \(latitude)"
@@ -211,7 +211,7 @@ class addRouteController: UIViewController {
         let RouteList = RouteMaster.createMasterFromCLLocation(locationsRoute)
 
         //get bounds, centerpoints, of the whole Route
-        let Bounds = mapUtils.getBoundCoords(RouteList)
+        let Bounds = MapUtils.getBoundCoords(RouteList)
         let coordArray = Bounds.coordboundArray
         //let coordBounds = Bounds.coordbound
         let distanceDiagonal = Bounds.distance
@@ -220,10 +220,10 @@ class addRouteController: UIViewController {
         if(coordArray.count > 0){
 
             //get centerpoint
-            let centerPoint = mapUtils.getCenterFromBoundig(coordArray)
+            let centerPoint = MapUtils.getCenterFromBoundig(coordArray)
 
             //define camera and set it to startpoint
-            let camera = mapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
+            let camera = MapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: globalCamPitch.gCamPitch, heading: 0)
             
                 //animate camera to center point, launch save overlay
                 mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
@@ -246,7 +246,7 @@ class addRouteController: UIViewController {
     func saveRouteToRealm(){
     
         //make screenshot from active
-        let screenshotFilename = imageUtils.screenshotMap(self.mapView)
+        let screenshotFilename = ImageUtils.screenshotMap(self.mapView)
         
         //save rout to realm and get reamlID
         routeRealmID = RealmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
@@ -410,13 +410,13 @@ extension addRouteController: CLLocationManagerDelegate {
                 //calc distance for display only
                 distance += location.distance(from: self.locationsRoute.last!)
                 
-                mapUtils.printSingleSpeedMarker(mapView, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, speed: location.speed)
+                MapUtils.printSingleSpeedMarker(mapView, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, speed: location.speed)
                 
                 //center map
                 if(cnt>20){
                    // mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),  animated: true)
                     
-                   let camera = mapUtils.cameraDestination(location.coordinate.latitude, longitude: location.coordinate.longitude, fromDistance:6500, pitch:60, heading:0)
+                   let camera = MapUtils.cameraDestination(location.coordinate.latitude, longitude: location.coordinate.longitude, fromDistance:6500, pitch:60, heading:0)
                    mapView.setCamera(camera, animated: true)
                    cnt=0 //reset counter
                 }
@@ -442,10 +442,10 @@ extension addRouteController: MGLMapViewDelegate {
         
         //if annotationImage == nil {
         
-        let image = imageUtils.drawLineOnImage(funcType)
+        let image = ImageUtils.drawLineOnImage(funcType)
         //let  image = UIImage(named: "Marker-Speed-\(utils.getSpeed(globalSpeed.gSpeed)).png")!
         
-        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(utils.getSpeed(globalSpeed.gSpeed))")
+        let annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "routeline\(Utils.getSpeed(globalSpeed.gSpeed))")
       
         //}
         
@@ -494,8 +494,8 @@ extension addRouteController: MGLMapViewDelegate {
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-       let speedIndex =  utils.getSpeedIndex(speed)
-       return colorUtils.polylineColors(speedIndex)
+       let speedIndex =  Utils.getSpeedIndex(speed)
+       return ColorUtils.polylineColors(speedIndex)
     }
     
     

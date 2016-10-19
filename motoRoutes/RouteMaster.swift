@@ -146,14 +146,14 @@ class RouteMaster {
             lowestAlt = item.altitude < lowestAlt ? item.altitude : lowestAlt
             highestAlt = item.altitude > highestAlt ? item.altitude : highestAlt
             _routeListTimestamps.append(item.timestamp)
-            _routeListSpeeds.append(Double(utils.getSpeedDouble(item.speed)))
+            _routeListSpeeds.append(Double(Utils.getSpeedDouble(item.speed)))
            _routeListAltitudes.append(item.altitude)
         }
         
-        routeAverageSpeed = utils.getSpeedString(averageSpeed/Double(_RouteList.count))
-        routeHighSpeed = utils.getSpeedString(highestSpeed)
-        routeDeltaAlt = utils.getDoubleString(highestAlt - lowestAlt)
-        routeHighestAlt = utils.getDoubleString(highestAlt)
+        routeAverageSpeed = Utils.getSpeedString(averageSpeed/Double(_RouteList.count))
+        routeHighSpeed = Utils.getSpeedString(highestSpeed)
+        routeDeltaAlt = Utils.getDoubleString(highestAlt - lowestAlt)
+        routeHighestAlt = Utils.getDoubleString(highestAlt)
         routeListTimestamps = _routeListTimestamps
         routeListSpeeds = _routeListSpeeds
         routeListAltitudes = _routeListAltitudes

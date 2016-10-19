@@ -76,7 +76,7 @@ class Speedometer: UIView {
         let yToMove = speedoRange - (percentSpeed*speedoRange/100)
         
         //set sppedcolr to speedbar
-        speedBar.backgroundColor = colorUtils.polylineColors(globalSpeedSet.speedSet).cgColor
+        speedBar.backgroundColor = ColorUtils.polylineColors(globalSpeedSet.speedSet).cgColor
         
         //create bar animation
         let move = CABasicAnimation(keyPath: "position.y")
@@ -95,7 +95,7 @@ class Speedometer: UIView {
         
         //set speed text, colr and animate it
         speedLabel.text = " \(Int(speed))"
-        speedLabel.textColor = colorUtils.polylineColors(globalSpeedSet.speedSet)
+        speedLabel.textColor = ColorUtils.polylineColors(globalSpeedSet.speedSet)
         speedLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 30.0)
         
         //aninate uilabel

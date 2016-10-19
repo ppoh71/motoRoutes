@@ -209,7 +209,7 @@ class motoRouteCamera: UIViewController {
             let timestampFilename = String(Int(Date().timeIntervalSince1970)) + "_routeimg.png"
             
            
-            let filenamePath =  URL(fileReferenceLiteralResourceName: utils.getDocumentsDirectory().appendingPathComponent(timestampFilename))
+            let filenamePath =  URL(fileReferenceLiteralResourceName: Utils.getDocumentsDirectory().appendingPathComponent(timestampFilename))
            // let imgData = try! imageData?.write(to: filenamePath, options: [])
             
             self.imageURL = String(describing: filenamePath) //assign for unwind seague

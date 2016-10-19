@@ -44,7 +44,7 @@ open class RouteSlider: UISlider {
         
         
         //change Thumb Image
-        let sliderTumb = imageUtils.drawSliderThumb(10, height: 25, lineWidth: 5, color: UIColor.white, alpha: 1)
+        let sliderTumb = ImageUtils.drawSliderThumb(10, height: 25, lineWidth: 5, color: UIColor.white, alpha: 1)
         
         //change thumb image states
         self.setThumbImage( sliderTumb, for: UIControlState() )

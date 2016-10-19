@@ -65,8 +65,8 @@ class RouteInfos: UIView {
     func setInfos(_ routeMaster: RouteMaster){
         
         dateRoute.text = routeMaster.routeDate
-        distanceRoute.text = "\(utils.distanceFormat(routeMaster.routeDistance))"
-        durationRoute.text = "\(utils.clockFormat(routeMaster.routeTime))"
+        distanceRoute.text = "\(Utils.distanceFormat(routeMaster.routeDistance))"
+        durationRoute.text = "\(Utils.clockFormat(routeMaster.routeTime))"
         averageSpeed.text = routeMaster.routeAverageSpeed
         highSpeed.text = routeMaster.routeHighSpeed
         altitudeDelta.text = routeMaster.routeDeltaAlt

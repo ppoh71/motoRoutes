@@ -14,7 +14,7 @@ import Mapbox
 import GLKit
 
 
-final class mapUtils {
+final class MapUtils {
     
     
     //Bound Structure
@@ -27,14 +27,8 @@ final class mapUtils {
     
     
     /*
-     
-     Print route with colored polylines
-     
-     - parameter LocationMaster: LocationMaster Object
-     - parameter mapView: current Mapview
-     
+     * Print route with colored polylines
      */
-    
     class func printRoute(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
         
         //performacne test
@@ -50,14 +44,14 @@ final class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        var speedIndex:Int = utils.getSpeedIndex(_LocationMaster[0].speed)
+        var speedIndex:Int = Utils.getSpeedIndex(_LocationMaster[0].speed)
         globalSpeedSet.speedSet = speedIndex
         
         //loop through LocationMaster
         for location in _LocationMaster {
             
             //get speed index
-            speedIndex = utils.getSpeedIndex(location.speed)
+            speedIndex = Utils.getSpeedIndex(location.speed)
             
             //add locations to coord with the same speedIndex
             if(speedIndex == globalSpeedSet.speedSet){
@@ -82,8 +76,6 @@ final class mapUtils {
                 print(globalSpeedSet.speedSet)
             }
         }
-        
-        
         
         //print last routes set, for last spped loop
         if(coords.count>0){
@@ -112,9 +104,8 @@ final class mapUtils {
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
-        let speedIndex:Int = utils.getSpeedIndex(0)
+        let speedIndex:Int = Utils.getSpeedIndex(0)
         globalSpeedSet.speedSet = speedIndex
-        
         
         //loop through LocationMaster
         for location in _LocationMaster {
@@ -128,7 +119,6 @@ final class mapUtils {
         //print(" coord count  \(_LocationMaster.count)")
         //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
     }
-    
     
     
     class func printMarker(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!, key:Int, amount: Int, gap: Int, funcType: FuncTypes) {
@@ -162,7 +152,6 @@ final class mapUtils {
     }
 
     
-    
     static func addNewAnnotation(_ mapView:MGLMapView, location: LocationMaster){
         
         //set speed and altiude globals
@@ -178,19 +167,12 @@ final class mapUtils {
     }
     
     
-    
     class func printSingleSpeedMarker( _ mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
         
         let newMarker = MGLPointAnnotation()
-        
         newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        
-        //globalLineAltitude.gLineAltitude = master.altitude
         globalSpeed.gSpeed = speed
-        
-        //addSpeedMarker(newMarker)
         mapView.addAnnotation(newMarker)
-        
     }
     
     
@@ -199,35 +181,16 @@ final class mapUtils {
         
         let destination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let camera = MGLMapCamera(lookingAtCenter: destination, fromDistance: fromDistance, pitch: pitch, heading: heading)
-        
         return camera
     }
     
     
 
     class func cameraAni(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!){
-        
-        
-        //get coord bounds for route, nortwest & souteast
-        //let coordBounds = utils.getBoundCoords(_LocationMaster)
-        
-        //set visible bounds
-        // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
-        
-        
-        //let camerax = mapFx.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:12000, pitch:60, heading:300)
-        
-        
-        let cameray = mapUtils.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:2300, pitch:60, heading:0)
-        
-        
+
+        let cameray = MapUtils.cameraDestination(_LocationMaster[0].latitude, longitude:_LocationMaster[0].longitude, fromDistance:2300, pitch:60, heading:0)
         mapView.fly(to: cameray) {
-            // Optionally catch a connecting flight
-            //  print("connection flight")
-            // mapView.flyToCamera(cameray){
-            // mapView.setVisibleCoordinateBounds(coordBounds, animated: true)
-            
-            // }
+            //code
         }
     }
     
@@ -235,8 +198,7 @@ final class mapUtils {
     
     class func flyToLoactionSimple(_ latitude: Double, longitude: Double, mapView: MGLMapView!, distance: Double, pitch: Double){
     
-        let cameray = mapUtils.cameraDestination(latitude, longitude: longitude, fromDistance: distance, pitch: CGFloat(pitch), heading:0)
-       
+        let cameray = MapUtils.cameraDestination(latitude, longitude: longitude, fromDistance: distance, pitch: CGFloat(pitch), heading:0)
         mapView.fly(to: cameray) {
             //finish code
         }
@@ -308,17 +270,17 @@ final class mapUtils {
             
             //time spend on road
             let elapsedTime = _LocationMaster[nextIndex].timestamp.timeIntervalSince(_LocationMaster[0].timestamp as Date)
-            let timespendString = utils.clockFormat(Int(elapsedTime))
+            let timespendString = Utils.clockFormat(Int(elapsedTime))
             
             //define camera for flyTo ani
-            let camera = mapUtils.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: heading)
+            let camera = MapUtils.cameraDestination(_LocationMaster[n].latitude, longitude:_LocationMaster[n].longitude, fromDistance:globalCamDistance.gCamDistance, pitch: globalCamPitch.gCamPitch, heading: heading)
             let speed = _LocationMaster[n].speed
-            let speedIndex = utils.getSpeedIndexFull(speed)
+            let speedIndex = Utils.getSpeedIndexFull(speed)
             
             globalSpeedSet.speedSet = speedIndex
             
             //update speedometer
-            speedoMeter?.moveSpeedo(Double(utils.getSpeed(_LocationMaster[n].speed)))
+            speedoMeter?.moveSpeedo(Double(Utils.getSpeed(_LocationMaster[n].speed)))
             
             /**
              *  Update Lables / Slider
@@ -336,7 +298,7 @@ final class mapUtils {
                 // tmpTimeLabel.textColor =  colorUtils.polylineColors(speedIndex)
                 tmpRouteSlider.setValue(Float(n), animated: true)
                 //print("Slider Move \(n)")
-                tmpRouteSlider.setLabel((utils.distanceFormat(distance)), timeText: timespendString)
+                tmpRouteSlider.setLabel((Utils.distanceFormat(distance)), timeText: timespendString)
             }
             
             

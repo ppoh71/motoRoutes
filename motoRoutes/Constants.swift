@@ -21,3 +21,9 @@ let googleGetImagesNotificationKey = "motoRoutes.getGoogleImages"
 let KEY_UID = "uid"
 let GOOGLE_API_KEY = "AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
 let GOOGLE_URL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
+
+//Color Definitions
+let blue1 = ColorUtils.hexTorgbColor("#006698")
+let blue2 = ColorUtils.hexTorgbColor("#00527A")
+let blue3 = ColorUtils.hexTorgbColor("#00405F")
+let blue4 = ColorUtils.hexTorgbColor("#002C42")

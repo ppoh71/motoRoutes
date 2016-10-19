@@ -13,7 +13,7 @@ import CoreLocation
 import Foundation
 import RealmSwift
 
-class exploreMotoRoutes: UIViewController {
+class ExploreMotoRoutes: UIViewController {
     
     @IBOutlet weak var mapView: MGLMapView!
     @IBOutlet weak var collection: UICollectionView!
@@ -59,8 +59,8 @@ class exploreMotoRoutes: UIViewController {
         print(userID ?? "no userid")
         
         //Listen from FlyoverRoutes if Markers are set
-        NotificationCenter.default.addObserver(self, selector: #selector(exploreMotoRoutes.FIRRoutes), name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(exploreMotoRoutes.FIRLocations), name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRRoutes), name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRLocations), name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
         
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         //FirebaseData.dataService.getRoutesFromFIR()
@@ -114,7 +114,7 @@ class exploreMotoRoutes: UIViewController {
             print("image reuse size \(_RouteMaster._RouteList.count / tmpGap)")
             
             DispatchQueue.global().async {
-                mapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
+                MapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
             }
         }
     }
@@ -183,7 +183,7 @@ class exploreMotoRoutes: UIViewController {
 
 
 //MARK: CollectionView Delegate Extension
-extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return myRoutesMaster.count
@@ -201,7 +201,7 @@ extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id
         
         if(zoomOnSelect==true){
-            mapUtils.flyToLoactionSimple(latitude, longitude: longitude, mapView: mapView, distance: 2000000, pitch: 0)
+            MapUtils.flyToLoactionSimple(latitude, longitude: longitude, mapView: mapView, distance: 2000000, pitch: 0)
         }
        
         
@@ -239,8 +239,8 @@ extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
             let imgName = route._MotoRoute.image
             
             if(imgName.characters.count > 0){
-                let imgPath = utils.getDocumentsDirectory().appendingPathComponent(imgName)
-                image = imageUtils.loadImageFromPath(imgPath as NSString)!
+                let imgPath = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
+                image = ImageUtils.loadImageFromPath(imgPath as NSString)!
             }
             
             cell.configureCell("test", id: routeId, route: route, image: image, index: indexPath.item)
@@ -259,12 +259,12 @@ extension exploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 180,height: 180)
+        return CGSize(width: 170, height: 170)
     }
 }
 
 // MARK: - MKMapViewDelegate
-extension exploreMotoRoutes: MGLMapViewDelegate {
+extension ExploreMotoRoutes: MGLMapViewDelegate {
     
    
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
@@ -288,7 +288,7 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
         
         if annotationImage == nil {
-            image = imageUtils.dotColorMarker(10, height: 10, color: dotColor)
+            image = ImageUtils.dotColorMarker(10, height: 10, color: dotColor)
             annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: reuseIdentifier)
         }
         
@@ -383,7 +383,7 @@ extension exploreMotoRoutes: MGLMapViewDelegate {
     }
 }
 
-extension exploreMotoRoutes: RouteCellDelegate{
+extension ExploreMotoRoutes: RouteCellDelegate{
     
     func pressedDetails(id: String, index: Int) {
         print("pressed Details id: \(id)")

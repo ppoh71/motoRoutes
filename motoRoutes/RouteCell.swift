@@ -9,9 +9,7 @@
 import UIKit
 
 protocol RouteCellDelegate: class {
-    
     func pressedDetails(id: String, index: Int)
-    
 }
 
 
@@ -25,53 +23,53 @@ class RouteCell: UICollectionViewCell {
     @IBOutlet weak var viewLabel: UIView!
     @IBOutlet weak var detailBtn: UIButton!
 
-    
     var route: RouteMaster!
     var routeId = ""
     var index = 0
-    let aniOffset = CGFloat(20)
+    let offsetUp = CGFloat(10)
+    let offsetDown = CGFloat(40)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        layer.cornerRadius = 0.5
+       
     }
     
     func configureCell(_ label: String, id: String, route: RouteMaster, image: UIImage, index: Int) {
         self.routeId = id
         self.index = index
         self.route = route
-        self.distanceLbl.text = "Dist. \(utils.distanceFormat(route.routeDistance)) km"
-        self.durationLbl.text = "Dura. \(utils.clockFormat(route.routeTime)) "
-
+        self.distanceLbl.text = "\(Utils.distanceFormat(route.routeDistance)) km"
+        self.durationLbl.text = "\(Utils.clockFormat(route.routeTime)) h"
         self.routeImage.image = image
-        
-       // slideUpInfo()
+        self.layer.cornerRadius = 15
+        self.layer.borderWidth = 2
+        self.layer.borderColor = blue1.cgColor
     }
+    
     
     func toggleSelected ()
     {
         if (isSelected){
-            print("toggle red")
-            viewLabel.backgroundColor = UIColor.red
+            viewLabel.backgroundColor = blue2
             slideUpInfo()
         } else {
-            print("toggle black")
-           viewLabel.backgroundColor = UIColor.red
+            viewLabel.backgroundColor = blue2
             slideDownInfo()
         }
     }
     
+    
     func slideUpInfo(){
         print("slide up info")
-        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - aniOffset))
-       // AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - aniOffset))
+        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - offsetUp))
+        AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - offsetUp))
     }
     
     
     func slideDownInfo(){
         print("slide down info")
-        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + aniOffset))
-        //AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
+        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + offsetDown))
+        AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
     }
     
     
