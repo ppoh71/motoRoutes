@@ -296,7 +296,6 @@
 				5562BA541C73663900EF340D /* Utils.swift */,
 				551EFF931CC11F640065204D /* ImageUtils.swift */,
 				554EEB4F1D071DCB00307F47 /* AnimationEngine.swift */,
-				558E00BB1DB7CDE90085DFA7 /* DotAnimation.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -346,6 +345,7 @@
 				556368A91CEF4681004BBB6F /* Speedometer.swift */,
 				559A5C4E1C57E0F500B5261F /* MRCellView.swift */,
 				55DA72981D0030DD0095C52E /* MRCellViewImage.swift */,
+				558E00BB1DB7CDE90085DFA7 /* DotAnimation.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";

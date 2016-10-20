@@ -39,10 +39,11 @@ class RouteCell: UICollectionViewCell {
         self.index = index
         self.route = route
         self.distanceLbl.text = "\(Utils.distanceFormat(route.routeDistance)) km"
-        self.durationLbl.text = "\(Utils.clockFormat(route.routeTime)) h"
+        self.distanceLbl.textColor = blue0
+        //  self.durationLbl.text = "\(Utils.clockFormat(route.routeTime)) h"
         self.routeImage.image = image
-        self.layer.cornerRadius = 15
-        self.layer.borderWidth = 2
+        self.layer.cornerRadius = cornerInfoViews
+        self.layer.borderWidth = 1
         self.layer.borderColor = blue1.cgColor
     }
     

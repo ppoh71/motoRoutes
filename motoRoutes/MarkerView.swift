@@ -16,43 +16,47 @@ class MarkerView: MGLAnnotationView {
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
     var color = UIColor.clear
-    var initFrame = CGRect(x: 0, y: 0, width: 50, height: 50)
+    var initFrame = CGRect(x: 0, y: 0, width: 90, height: 145.62)
     let offset = CGFloat(0)
     
-    init(reuseIdentifier: String, color: UIColor) {
+    init(reuseIdentifier: String, color: UIColor, routeMaster: RouteMaster) {
         super.init(reuseIdentifier: reuseIdentifier)
         
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: -initFrame.width/2 + offset, dy: -initFrame.height/2)
-        self.color = color
+        self.color = UIColor.clear
 
-        print("frame \(self.frame.width)")
+        let infoView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame .width, height: initFrame.height-50))
+        infoView.backgroundColor = blue0
+        infoView.layer.cornerRadius = cornerInfoViews
+        AnimationEngine.hideViewAnim(infoView)
+        AnimationEngine.animationToPosition(infoView, position: CGPoint(x: -50, y:0) )
         
-       // label.center = CGPoint(x: 160, y: 285)
-        /*
-         let label = UILabel()
+        
+        let label = UILabel()
         label.textAlignment = .center
-        label.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
-        label.text = "Distance: 3123123\nDuration: 01:12:34\nDate: 01.02.1973\nHighspeed: 235km/h"
+        label.frame = CGRect(x: 10, y: 0, width: initFrame .width, height: initFrame.height/2)
+        label.text = "\(Utils.clockFormat(routeMaster.routeTime)) h:m:s \n\n \nDura:01:12:34\nSpd:235km/h"
         label.numberOfLines = 0
-        label.sizeToFit()
+        label.font = label.font.withSize(10)
         label.textAlignment = .left
         label.lineBreakMode = .byWordWrapping
-        label.textColor = UIColor.white
-        self.addSubview(label)
-        */
+        label.textColor = blue1
+       
         
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: initFrame.width-offset,y: initFrame.height), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
-        
-        shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = UIColor.cyan.cgColor
-        shapeLayer.strokeColor = color.cgColor
-        shapeLayer.lineWidth = 1.0
-        self.layer.addSublayer(shapeLayer)
-        
-        dotAnimation()
+        let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            // Your code with delay
+            self.addSubview(infoView)
+             infoView.addSubview(label)
+            AnimationEngine.animationToPosition(infoView, position: CGPoint(x: 0, y: 0))
+            
+        }
         
         
+        let dot = DotAnimation(frame: CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10))
+        self.addSubview(dot)
+        dot.addDotAnimation()
     }
     
     // These two initializers are forced upon us by Swift.
@@ -70,7 +74,7 @@ class MarkerView: MGLAnnotationView {
         super.layoutSubviews()
            }
     
-    
+    /*
     func dotAnimation(){
         let animation = CABasicAnimation(keyPath: "lineWidth")
         animation.fromValue = 0
@@ -80,12 +84,9 @@ class MarkerView: MGLAnnotationView {
         animation.repeatCount = 200000
         shapeLayer.add(animation, forKey: "cornerRadius")
     }
+     */
     
-    
-    func stopAnimation(){
-        shapeLayer.removeAllAnimations()
-    }
-    
+
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

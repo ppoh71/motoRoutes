@@ -27,6 +27,7 @@ class ExploreMotoRoutes: UIViewController {
     var activeIndex = IndexPath(item: 0, section: 0)
     var activeAnnotationView: MarkerView?
     var activeRouteCell: RouteCell?
+    var activeRouteMaster = RouteMaster()
     var zoomOnSelect = true
     
     //MARK: explore routes vars
@@ -194,11 +195,12 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         
         print("did Select")
         deleteSelectedMarker()
-        activeAnnotationView?.stopAnimation()
         
         let latitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLat
         let longitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLong
         let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id
+        let routeMaster = myRoutesMaster[(indexPath as NSIndexPath).item]
+        activeRouteMaster = routeMaster
         
         if(zoomOnSelect==true){
             MapUtils.flyToLoactionSimple(latitude, longitude: longitude, mapView: mapView, distance: 2000000, pitch: 0)
@@ -282,7 +284,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         var image: UIImage?
         let reuseIdentifier = "Marker-\(annotation.title!))"
         var dotColor: UIColor {
-            return  annotation.title! == "allMarker" ? UIColor.yellow : UIColor.red
+            return  annotation.title! == "allMarker" ? UIColor.blue : green3
         }
         
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
@@ -330,10 +332,8 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         var dotColor: UIColor { return  annotation.title! == "allMarker" ? UIColor.red : UIColor.yellow }
         
         if annotationView == nil {
-           let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor)
-           annotationMarkerView.backgroundColor = UIColor.black
-           activeAnnotationView = annotationMarkerView
-          
+            let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor, routeMaster: activeRouteMaster)
+            activeAnnotationView = annotationMarkerView
             return annotationMarkerView
         } else {
             return annotationView
