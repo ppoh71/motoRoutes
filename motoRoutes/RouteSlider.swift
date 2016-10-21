@@ -36,10 +36,10 @@ open class RouteSlider: UISlider {
         labelTime.textColor = UIColor.white
         labelTime.font = UIFont(name: "Roboto", size: 13)
         
-        timeIcon = UIImage(named: "time-text")
+        timeIcon = LabelType.duration.image
         timeIconView = UIImageView(image: timeIcon!)
 
-        distanceIcon = UIImage(named: "km-text")
+        distanceIcon = LabelType.duration.image
         distanceIconView = UIImageView(image: distanceIcon!)
         
         

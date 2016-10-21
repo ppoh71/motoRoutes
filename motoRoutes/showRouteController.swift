@@ -851,7 +851,7 @@ extension showRouteController: MGLMapViewDelegate {
             if(annotation.title! == "SpeedAltMarker"){
                 image = ImageUtils.drawLineOnImage(self.funcType)
             } else{
-                image = UIImage(named: "ic_place.png")!
+                image = ImageUtils.drawLineOnImage(self.funcType)
             }
             
             annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
