@@ -82,7 +82,15 @@ class RouteMaster {
         _MotoRoute = motoRoute
     }
     
-    
+    func associateRouteListOnly(){
+        if(!_MotoRoute.id.isEmpty && self._RouteList.count==0){
+            print("RouteMaster: associated RouteList only")
+            createMasterLocationRealm(_MotoRoute.locationsList)
+            setRouteListInfos()
+        } else{
+            print("RouteMaster: already associated")
+        }
+    }
     
     //create a LocationMaster Object with from Realm List
     func createMasterLocationRealm(_ LocationsList:List<Location>!) {

@@ -222,9 +222,7 @@ class showRouteController: UIViewController {
     
     
     func displayGoogleImage(_ image: UIImage){
-        
          googleImage.image = image
-       
     }
     
     

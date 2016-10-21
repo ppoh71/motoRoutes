@@ -28,6 +28,7 @@ class RouteCell: UICollectionViewCell {
     var index = 0
     let offsetUp = CGFloat(10)
     let offsetDown = CGFloat(40)
+    var isSlideUp = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -64,13 +65,18 @@ class RouteCell: UICollectionViewCell {
         print("slide up info")
         AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - offsetUp))
         AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - offsetUp))
+        isSlideUp = true
     }
     
     
     func slideDownInfo(){
         print("slide down info")
         AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + offsetDown))
-        AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
+        
+        if(isSlideUp == true){
+            AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
+            isSlideUp = false
+        }
     }
     
     

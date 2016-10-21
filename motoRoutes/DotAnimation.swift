@@ -51,13 +51,13 @@ class DotAnimation: UIView {
         let shapeLayerInner = CAShapeLayer()
         shapeLayerInner.path = circlePath.cgPath
         shapeLayerInner.fillColor = red2.cgColor
-        shapeLayerInner.strokeColor = red2.cgColor
+        shapeLayerInner.strokeColor = UIColor.white.cgColor
         shapeLayerInner.lineWidth = 1.0
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = red3.cgColor
-        shapeLayer.strokeColor = green3.cgColor
+        shapeLayer.fillColor = red1.cgColor
+        shapeLayer.strokeColor = red1.cgColor
         shapeLayer.lineWidth = 1.0
         shapeLayer.opacity = 0.7
 
@@ -81,7 +81,7 @@ class DotAnimation: UIView {
         animation.repeatCount = 200000
         
         let animationLineWidth = CABasicAnimation(keyPath: "lineWidth")
-        animationLineWidth.fromValue = 0
+        animationLineWidth.fromValue = 10
         animationLineWidth.toValue = 28
         animationLineWidth.duration = 0.9
         animationLineWidth.autoreverses = true

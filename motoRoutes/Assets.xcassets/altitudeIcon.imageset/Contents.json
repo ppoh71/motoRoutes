@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_place.png",
+      "filename" : "altitudeIcon.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_place@2x.png",
+      "filename" : "altitudeIcon@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_place@3x.png",
+      "filename" : "altitudeIcon@3x.png",
       "scale" : "3x"
     }
   ],

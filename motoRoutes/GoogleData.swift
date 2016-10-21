@@ -15,57 +15,20 @@ class GoogleData {
 
     static let dataService = GoogleData()
 
-
-    
     func getGoogleImages(_ latitude: Double, longitude: Double, heading: Double, id: String, key: Int){
 
         let url = "https://maps.googleapis.com/maps/api/streetview?size=400x300&location=" + String(latitude) + "," + String(longitude) +  "&heading=" + String(heading) +  "&fov=120&&pitch=-0.76&key=" + GOOGLE_API_KEY
-        
-        
-       // var fileName: String?
-       // var finalPath: URL?
-        
-        
-       // Alamofire.request(.GET, url).responseImage { (response) -> Void in
-        print(url)
         
             Alamofire.request(url).responseImage { (response) -> Void in
         
             print(response)
             guard let image = response.result.value else { return }
           
-            print("amlamooooo \(url) ")
+            print("alamo \(url) ")
             let returnObj = [image]
             
-            //let filename = "\(key).jpeg"
             ImageUtils.saveGoogleImageToFile(image , key: key, id: id)
-            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: googleGetImagesNotificationKey), object: returnObj)
         }
-//        
-//        var localPath: NSURL?
-//        Alamofire.request(.GET,
-//            url,
-//            destination: { (temporaryURL, response) in
-//                let directoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-//                let pathComponent = response.suggestedFilename
-//                
-//                localPath = directoryURL.URLByAppendingPathComponent(pathComponent!)
-//                return localPath!
-//        })
-//            .response { (request, response, _, error) in
-//                print(response)
-//                print("Downloaded file to \(localPath!)")
-//                
-//                let returnObj = [String(localPath!)]
-//                NSNotificationCenter.defaultCenter().postNotificationName(googleGetImagesNotificationKey, object: returnObj)
-//                
-//        }
-        
-        
-        
     }
-    
-    
-
 }

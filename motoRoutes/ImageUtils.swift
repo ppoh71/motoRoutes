@@ -12,6 +12,10 @@ import Mapbox
 
 
 
+
+// usage Icon.plane.image
+    
+
 final class ImageUtils{
     
     

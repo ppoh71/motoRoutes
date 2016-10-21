@@ -42,13 +42,7 @@ class RouteInfos: UIView {
     
     
     // MARK: Location Strings
-   // let dateLabelText = NSLocalizedString("View.RouteInfo.DateLabel", comment: "dateLabelText")
-    let distanceLabelText = NSLocalizedString("View.RouteInfo.DistanceLabel", comment: "distanceLabelText")
-    let durationLabelText = NSLocalizedString("View.RouteInfo.DuranceLabel", comment: "durationLabelText")
-    let averageSpeedLabelText = NSLocalizedString("View.RouteInfo.AverageSpeedLabel", comment: "averageSpeedLabelText")
-    let highspeedLabelText = NSLocalizedString("View.RouteInfo.HighSpeedLabel", comment: "highspeedLabelText")
-    let altitudeDeltaLabelText = NSLocalizedString("View.RouteInfo.AltitudeDeltaLabel", comment: "altitudeDeltaLabelText")
-    let highestAltitudeLabelText = NSLocalizedString("View.RouteInfo.HighestAltLabel", comment: "highestAltitudeLabelText")
+
     
     
     override func prepareForInterfaceBuilder() {

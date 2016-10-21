@@ -214,6 +214,7 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         }
         
         collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        routeMaster.associateRouteListOnly()
         setMarker(latitude, longitude: longitude, id: routeID, markerTitle: "SelectedRouteMarker")
         zoomOnSelect = true // set back, false from mapview delegate select
     }
