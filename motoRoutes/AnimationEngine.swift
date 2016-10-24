@@ -48,6 +48,15 @@ final class AnimationEngine {
         moveAnim?.springSpeed = 8
         view.pop_add(moveAnim, forKey: "movePosition")
     }
+    
+    class func animationToPositionX(_ view: UIView, x: Double) {
+        
+        let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPositionX)
+        moveAnim?.toValue = x
+        moveAnim?.springBounciness = 8
+        moveAnim?.springSpeed = 15
+        view.pop_add(moveAnim, forKey: "movePosition")
+    }
 
     class func animationToPositionImageView(_ view: UIImageView, position: CGPoint) {
         

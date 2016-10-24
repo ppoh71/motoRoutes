@@ -34,6 +34,10 @@ class RouteMaster {
     var routeListSpeeds: [Double] = [Double]()
     var routeListAltitudes: [Double] = [Double]()
     
+    var textDuration: String { get { return "\(Utils.clockFormat(_MotoRoute.duration)) h:m" } }
+    var textHighAlt: String { get { return "\(routeHighestAlt) m" } }
+    var textHighSpeed: String { get { return "\(routeHighSpeed) km/h" } }
+    
     var startLat: Double {
         if(_MotoRoute.startLatitude != 0){
             return _MotoRoute.startLatitude
