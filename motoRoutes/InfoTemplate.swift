@@ -53,7 +53,6 @@ class InfoTemplate: UIView {
         backView.layer.opacity = 0.5
         self.addSubview(backView)
         
-        
         let iconView = UIImageView(frame: CGRect(x: 12, y: 12, width: 24, height: 24))
         iconView.image = iconImage
         self.addSubview(iconView)
@@ -67,7 +66,6 @@ class InfoTemplate: UIView {
         label.text = labelText
         self.addSubview(label)
         
-        
         let info = UILabel()
         info.frame = CGRect(x: labelLeftPos, y: padding/2*3, width: labelWidth, height: labelHeight)
         info.numberOfLines = 1
@@ -76,7 +74,5 @@ class InfoTemplate: UIView {
         info.textColor = textColor
         info.text = "01:32"
         self.addSubview(info)
-        
     }
-    
 }
