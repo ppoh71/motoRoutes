@@ -100,7 +100,7 @@ final class Utils {
     class func getSpeedString(_ speed:Double) -> String{
         let speed = speed*3.6//kmh
         
-        return String(format: "%.2f", speed)
+        return String(format: "%.1f", speed)
     }
     
     /*
@@ -144,12 +144,12 @@ final class Utils {
         let hours: Int = totalSeconds / 3600
         var time: String
         
-        if(hours<1){
-           time = String(format: "%02d:%02d", minutes, seconds)
-        } else {
-             time = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        }
-        
+//        if(hours<1){
+//           time = String(format: "%02d:%02d", minutes, seconds)
+//        } else {
+//             time = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+//        }
+        time = String(format: "%02d:%02d", hours, minutes)
         return time
     }
     

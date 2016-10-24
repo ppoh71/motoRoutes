@@ -16,72 +16,47 @@ class MarkerView: MGLAnnotationView {
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
     var color = UIColor.clear
-    var initFrame = CGRect(x: -10, y: -10, width: 140, height: 230)
+    var initFrame = CGRect(x: -10, y: -10, width: 145, height: 240)
     let offset = CGFloat(0)
+    var durationValue = ""
+    var highspeedValue = ""
+    var altitudeValue = ""
+    
     
     init(reuseIdentifier: String, color: UIColor, routeMaster: RouteMaster) {
         super.init(reuseIdentifier: reuseIdentifier)
         
+        self.durationValue = routeMaster.textDuration
+        self.altitudeValue = routeMaster.textHighAlt
+        self.highspeedValue = routeMaster.textHighSpeed
+        
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: -initFrame.width/2 + offset, dy: -initFrame.height/2)
-        //self.backgroundColor = blue1
-        //self.layer.opacity = 0.5
 
-//        let infoView = UIView(frame: CGRect(x: 52, y: 0, width: initFrame .width, height: initFrame.height-50))
-//        infoView.backgroundColor = blue4
-//        infoView.layer.cornerRadius = cornerInfoViews
-//        self.addSubview(infoView)
-        
+        //Mark: Info Label View Wrapper
         let backView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 30))
         backView.backgroundColor = blue4
         backView.layer.opacity = 0.5
         self.addSubview(backView)
         
-        let padding = 10
-        let durationLabel = InfoTemplate(labelNumber: 0, labelType: LabelType.duration)
-        durationLabel.frame.origin = CGPoint(x: padding, y: padding * 2)
-        self.addSubview(durationLabel)
+        let clipView = UIView(frame: CGRect(x: 10, y: 30, width: initFrame.width, height: initFrame.height - 30))
+        clipView.clipsToBounds = true
+        self.addSubview(clipView)
         
-        let altitudeLabel = InfoTemplate(labelNumber: 1, labelType: LabelType.altitude)
-        altitudeLabel.frame.origin = CGPoint(x: padding, y: Int(durationLabel.frame.origin.y + durationLabel.frame.height + CGFloat(padding)))
-        self.addSubview(altitudeLabel)
+        //Mark: Info Labels
+        let durationLabel = InfoTemplate(labelNumber: 0, labelType: LabelType.duration, value: durationValue, xOff: true)
+        durationLabel.aniToX(0.8)
+        clipView.addSubview(durationLabel)
         
-        let speedLabel = InfoTemplate(labelNumber: 2, labelType: LabelType.speed)
-         speedLabel.frame.origin = CGPoint(x: padding, y: Int(altitudeLabel.frame.origin.y + durationLabel.frame.height + CGFloat(padding)))
-        self.addSubview(speedLabel)
+        let altitudeLabel = InfoTemplate(labelNumber: 1, labelType: LabelType.altitude, value: altitudeValue, xOff: true)
+        altitudeLabel.aniToX(1.0)
+        clipView.addSubview(altitudeLabel)
         
+        let speedLabel = InfoTemplate(labelNumber: 2, labelType: LabelType.speed, value: highspeedValue, xOff: true)
+        speedLabel.aniToX(1.2)
+        clipView.addSubview(speedLabel)
         
-        
-        //AnimationEngine.hideViewAnim(infoView)
-        //AnimationEngine.animationToPosition(infoView, position: CGPoint(x: -50, y:0) )
-        
-        
-//        let label = UILabel()
-//        label.frame = CGRect(x: 0, y: 0, width: initFrame .width, height: initFrame.height)
-//        
-//        label.numberOfLines = 0
-//        //label.font = UIFont(name: "HelveticaNeue-UltraLight", size: 10)
-//       // label.font = label.font.withSize(10)
-//        //label.textAlignment = .left
-//        //label.lineBreakMode = .byWordWrapping
-//        //label.textColor = UIColor.white
-//        
-//        let htmlString = "<p style=\"font-family:Roboto;color: white;font-size:10;\">Duration <br /><strong>\(Utils.clockFormat(routeMaster.routeTime)) </strong><br /><br />Highest Altitude<br /><strong> \(routeMaster.routeHighestAlt)</strong></p> "
-//        label.attributedText = htmlString.attributedStringFromHtml
-
-        
-
-        
-        let when = DispatchTime.now() + 0 // change 2 to desired number of seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            // Your code with delay
-           
-            // infoView.addSubview(label)
-          //  AnimationEngine.animationToPosition(infoView, position: CGPoint(x: 0, y: 0))
-            
-        }
-        
-        
+        //Mark: dot animation
         let dot = DotAnimation(frame: CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10))
         self.addSubview(dot)
         dot.addDotAnimation()
