@@ -16,7 +16,7 @@ class MarkerView: MGLAnnotationView {
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
     var color = UIColor.clear
-    var initFrame = CGRect(x: -10, y: -10, width: 145, height: 240)
+    var initFrame = CGRect(x: 0, y: 0, width: 145, height: 260)
     let offset = CGFloat(0)
     var durationValue = ""
     var highspeedValue = ""
@@ -34,7 +34,7 @@ class MarkerView: MGLAnnotationView {
         centerOffset = CGVector(dx: -initFrame.width/2 + offset, dy: -initFrame.height/2)
 
         //Mark: Info Label View Wrapper
-        let backView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 30))
+        let backView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10))
         backView.backgroundColor = blue4
         backView.layer.opacity = 0.5
         self.addSubview(backView)
@@ -55,6 +55,17 @@ class MarkerView: MGLAnnotationView {
         let speedLabel = InfoTemplate(labelNumber: 2, labelType: LabelType.speed, value: highspeedValue, xOff: true)
         speedLabel.aniToX(1.2)
         clipView.addSubview(speedLabel)
+        
+        
+        let menuImage = UIImage(named: "menuIcon") as UIImage?
+        let button   = UIButton()
+        let buttonSize = CGPoint(x: 24, y: 24)
+        button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y + (buttonSize.y/2)) , width: buttonSize.x, height: buttonSize.y)
+        button.setImage(menuImage, for: .normal)
+       // button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
+        backView.addSubview(button)
+        
+        
         
         //Mark: dot animation
         let dot = DotAnimation(frame: CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10))

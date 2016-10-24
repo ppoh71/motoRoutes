@@ -307,8 +307,8 @@
 		55BB80C41D630D2900D0CCEF /* InfoLabels */ = {
 			isa = PBXGroup;
 			children = (
-				55BB80C71D630DD100D0CCEF /* RouteInfos.swift */,
 				55E2DE1B1DBA3DD1002C799C /* InfoTemplate.swift */,
+				55BB80C71D630DD100D0CCEF /* RouteInfos.swift */,
 				55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */,
 			);
 			name = InfoLabels;
