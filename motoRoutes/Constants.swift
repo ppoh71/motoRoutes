@@ -17,6 +17,9 @@ let chartSetNotificationKey = "motoRoutes.getKeyFromChart"
 let firbaseGetRoutesNotificationKey = "motoRoutes.getRoutesFromFirebase"
 let firbaseGetLocationsNotificationKey = "motoRoutes.getLocationsFromFirebase"
 let googleGetImagesNotificationKey = "motoRoutes.getGoogleImages"
+let actionButtonNotificationKey = "motoRoutes.actionButtons"
+
+
 
 
 //Firebase Stuff
@@ -57,6 +60,16 @@ let highspeedLabelText = NSLocalizedString("View.RouteInfo.HighSpeedLabel", comm
 let altitudeDeltaLabelText = NSLocalizedString("View.RouteInfo.AltitudeDeltaLabel", comment: "altitudeDeltaLabelText")
 let highestAltitudeLabelText = NSLocalizedString("View.RouteInfo.HighestAltLabel", comment: "highestAltitudeLabelText")
 
+//ActionButtons
+let actionButtonDetailsText = NSLocalizedString("ActionButton.details", comment: "Details")
+let actionButtonDeleteRouteText = NSLocalizedString("ActionButton.deleteRoute", comment: "Delete Route")
+let actionButtonShareRouteText = NSLocalizedString("ActionButton.shareRoute", comment: "Share Route")
+let actionButtonDownloadRouteText = NSLocalizedString("ActionButton.downloadRoute", comment: "Download Route")
+let actionButtonConfirmDeleteText =  NSLocalizedString("ActionButton.confirmDelete", comment: "Confirm Delete")
+let actionButtonConfirmShareText =  NSLocalizedString("ActionButton.confirmShare", comment: "Confirm Share")
+
+
+
 
 //LabelTYpes
 enum LabelType {
@@ -78,6 +91,63 @@ enum LabelType {
         case .altitude: return highestAltitudeLabelText
         case .speed: return highspeedLabelText
         }
+    }
+}
+
+
+//Action Button Types
+enum ActionButtonType {
+    case DefState
+    case Details
+    case DeleteRoute
+    case ShareRoute
+    case DownloadRoute
+    case ConfirmDelete
+    case ConfirmShare
+    case Cancel
+    
+    var buttonText: String {
+        switch self {
+        case .DefState: return "defState"
+        case .Details: return actionButtonDetailsText
+        case .DeleteRoute: return actionButtonDeleteRouteText
+        case .ShareRoute: return actionButtonShareRouteText
+        case .DownloadRoute: return actionButtonDownloadRouteText
+        case .ConfirmDelete: return "OK"
+        case .ConfirmShare: return "OK"
+        case .Cancel: return "Cancel"
+        }
+    }
+    
+    var confirmText: String {
+        switch self {
+        case .DefState: return "defState Confirm"
+        case .Details: return "show details"
+        case .DeleteRoute: return actionButtonConfirmDeleteText
+        case .ShareRoute: return actionButtonConfirmShareText
+        case .DownloadRoute: return "confirm 4"
+        case .ConfirmDelete: return "---"
+        case .ConfirmShare: return "--"
+        case .Cancel: return "---"
+        }
+    }
+    
+    var confirmAction: ActionButtonType{
+        switch self {
+        case .DefState: return ActionButtonType.DefState
+        case .Details: return ActionButtonType.Details
+        case .DeleteRoute: return ActionButtonType.ConfirmDelete
+        case .ShareRoute: return ActionButtonType.ConfirmShare
+        case .DownloadRoute: return ActionButtonType.DownloadRoute
+        case .ConfirmDelete: return ActionButtonType.ConfirmDelete
+        case .ConfirmShare: return ActionButtonType.ConfirmShare
+        case .Cancel: return ActionButtonType.DefState
+        }
+    }
+    
+    
+    init(){
+        self = .DefState
     }
 }
 

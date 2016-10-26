@@ -300,11 +300,11 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         return annotationImage
     }
  
-    
+    /*
     func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {
         print("explore slect it")
     }
-    
+    */
     
     func mapView(_ mapView: MGLMapView, didAdd annotationViews: [MGLAnnotationView]) {
         print("")

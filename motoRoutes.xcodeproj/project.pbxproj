@@ -32,12 +32,15 @@
 		556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556B8A671CE4B9A4000EE047 /* CameraSlider.swift */; };
 		5571D6EC1DA3E7B6000A4A3A /* RouteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5571D6EB1DA3E7B6000A4A3A /* RouteCell.swift */; };
 		5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */; };
+		557E19ED1DC0AE6800CFE07B /* ButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557E19EC1DC0AE6800CFE07B /* ButtonExtension.swift */; };
 		558E00BC1DB7CDE90085DFA7 /* DotAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558E00BB1DB7CDE90085DFA7 /* DotAnimation.swift */; };
 		559160841D8C37CB006BEA7A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559160831D8C37CB006BEA7A /* Constants.swift */; };
 		559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559A5C4E1C57E0F500B5261F /* MRCellView.swift */; };
 		559AF4291D905036000D2B0E /* LoggedIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AF4281D905036000D2B0E /* LoggedIn.swift */; };
 		55BB80C61D630D8B00D0CCEF /* RouteInfos.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */; };
 		55BB80C81D630DD100D0CCEF /* RouteInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BB80C71D630DD100D0CCEF /* RouteInfos.swift */; };
+		55C0DD341DBF96230005C578 /* ActionConfirm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0DD331DBF96230005C578 /* ActionConfirm.swift */; };
+		55C0DD361DBFA0980005C578 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C0DD351DBFA0980005C578 /* ActionButton.swift */; };
 		55C567C31C6284E2008E045B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 55C567C21C6284E2008E045B /* Settings.bundle */; };
 		55D997001D92B8F200AB7DAB /* ExploreMotoRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D996FF1D92B8F200AB7DAB /* ExploreMotoRoutes.swift */; };
 		55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */; };
@@ -57,7 +60,6 @@
 		55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEFA1D07093B0051F338 /* motoButtons.swift */; };
 		A90D6F991C947101002E7980 /* MapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* MapUtils.swift */; };
 		A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* Globals.swift */; };
-		A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983FD711C53C81100C99F83 /* buttonSytles.swift */; };
 		AE703449D5F95EB9B2319039 /* Pods_motoRoutes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62A2198077AD7DDA6D1770AA /* Pods_motoRoutes.framework */; };
 		B16276BA6816F7823DCECD41 /* Pods_motoRoutesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F3CB5F5EF3BEC3AD2CF536C /* Pods_motoRoutesTests.framework */; };
 /* End PBXBuildFile section */
@@ -110,6 +112,7 @@
 		5571D6EB1DA3E7B6000A4A3A /* RouteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteCell.swift; sourceTree = "<group>"; };
 		5574793A1D5B58F900EE8C64 /* GeocodeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeUtils.swift; sourceTree = "<group>"; };
 		557C5FDF1D8974F4004381B5 /* motoRoutes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = motoRoutes.entitlements; sourceTree = "<group>"; };
+		557E19EC1DC0AE6800CFE07B /* ButtonExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonExtension.swift; sourceTree = "<group>"; };
 		558E00BB1DB7CDE90085DFA7 /* DotAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotAnimation.swift; sourceTree = "<group>"; };
 		559160831D8C37CB006BEA7A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		559A5C4E1C57E0F500B5261F /* MRCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRCellView.swift; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 		55B323441D12F5FF00EA5C57 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteInfos.xib; sourceTree = "<group>"; };
 		55BB80C71D630DD100D0CCEF /* RouteInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfos.swift; sourceTree = "<group>"; };
+		55C0DD331DBF96230005C578 /* ActionConfirm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionConfirm.swift; sourceTree = "<group>"; };
+		55C0DD351DBFA0980005C578 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		55C567C21C6284E2008E045B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		55D996FF1D92B8F200AB7DAB /* ExploreMotoRoutes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMotoRoutes.swift; sourceTree = "<group>"; };
 		55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSliderCustom.swift; sourceTree = "<group>"; };
@@ -140,7 +145,6 @@
 		74F91450E82751ECAFC45A7C /* Pods-motoRoutesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.release.xcconfig"; sourceTree = "<group>"; };
 		A90D6F981C947101002E7980 /* MapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapUtils.swift; sourceTree = "<group>"; };
 		A90D6F9A1C9471E2002E7980 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
-		A983FD711C53C81100C99F83 /* buttonSytles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buttonSytles.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,11 +318,21 @@
 			name = InfoLabels;
 			sourceTree = "<group>";
 		};
+		55C0DD321DBF95EF0005C578 /* ActionMenu */ = {
+			isa = PBXGroup;
+			children = (
+				55C0DD331DBF96230005C578 /* ActionConfirm.swift */,
+				55C0DD351DBFA0980005C578 /* ActionButton.swift */,
+			);
+			name = ActionMenu;
+			sourceTree = "<group>";
+		};
 		55DC39B21D65AF28002E02EC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				55DC39B31D65AF45002E02EC /* NSDateExtension.swift */,
 				552D32A31DB926DD0050E62D /* HTMLStringExtension.swift */,
+				557E19EC1DC0AE6800CFE07B /* ButtonExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -341,15 +355,15 @@
 		55E1496F1CE22D7E00B576BB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				55C0DD321DBF95EF0005C578 /* ActionMenu */,
 				55399DE71DA544EA00F2337A /* MarkerView */,
 				5571D6EA1DA3E75C000A4A3A /* CollectionView */,
 				552240EF1D6DE7BA00694E60 /* Chart */,
 				55BB80C41D630D2900D0CCEF /* InfoLabels */,
-				55F7CEF91D0708C10051F338 /* Buttons */,
 				55F7CEF41D06FB190051F338 /* Controls */,
 				55F7CEF31D06FAFC0051F338 /* Overlay */,
-				556368A91CEF4681004BBB6F /* Speedometer.swift */,
 				559A5C4E1C57E0F500B5261F /* MRCellView.swift */,
+				556368A91CEF4681004BBB6F /* Speedometer.swift */,
 				55DA72981D0030DD0095C52E /* MRCellViewImage.swift */,
 				558E00BB1DB7CDE90085DFA7 /* DotAnimation.swift */,
 			);
@@ -379,17 +393,9 @@
 				55E149701CE22DE000B576BB /* RouteSlider.swift */,
 				55DA4FF51CF5DABA007C0151 /* CameraSliderCustom.swift */,
 				556B8A671CE4B9A4000EE047 /* CameraSlider.swift */,
-			);
-			name = Controls;
-			sourceTree = "<group>";
-		};
-		55F7CEF91D0708C10051F338 /* Buttons */ = {
-			isa = PBXGroup;
-			children = (
-				A983FD711C53C81100C99F83 /* buttonSytles.swift */,
 				55F7CEFA1D07093B0051F338 /* motoButtons.swift */,
 			);
-			name = Buttons;
+			name = Controls;
 			sourceTree = "<group>";
 		};
 		A983FD731C5525F600C99F83 /* Models */ = {
@@ -664,6 +670,7 @@
 			files = (
 				55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */,
 				5532ECD51D919D8200A7942B /* RealmModel.swift in Sources */,
+				55C0DD361DBFA0980005C578 /* ActionButton.swift in Sources */,
 				55BB80C81D630DD100D0CCEF /* RouteInfos.swift in Sources */,
 				55F4C41D1D884AC4008AA17C /* SignInVC.swift in Sources */,
 				558E00BC1DB7CDE90085DFA7 /* DotAnimation.swift in Sources */,
@@ -678,12 +685,14 @@
 				55F72FC51D917C90002C9B4B /* FirebaseData.swift in Sources */,
 				5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */,
 				55EB15F91D9BFB1E0013528B /* GoogleData.swift in Sources */,
+				557E19ED1DC0AE6800CFE07B /* ButtonExtension.swift in Sources */,
 				551EFF941CC11F640065204D /* ImageUtils.swift in Sources */,
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				55D997001D92B8F200AB7DAB /* ExploreMotoRoutes.swift in Sources */,
 				559160841D8C37CB006BEA7A /* Constants.swift in Sources */,
 				55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */,
+				55C0DD341DBF96230005C578 /* ActionConfirm.swift in Sources */,
 				55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */,
 				55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */,
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,
@@ -692,7 +701,6 @@
 				552D32A41DB926DD0050E62D /* HTMLStringExtension.swift in Sources */,
 				5562BA551C73663900EF340D /* Utils.swift in Sources */,
 				552240F11D6DE7EA00694E60 /* MotoChart.swift in Sources */,
-				A983FD721C53C81100C99F83 /* buttonSytles.swift in Sources */,
 				556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */,
 				A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */,
 				55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */,
