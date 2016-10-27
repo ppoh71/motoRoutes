@@ -62,9 +62,49 @@ class ExploreMotoRoutes: UIViewController {
         //Listen from FlyoverRoutes if Markers are set
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRRoutes), name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRLocations), name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm), name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
         
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         //FirebaseData.dataService.getRoutesFromFIR()
+    }
+    
+    
+    
+    
+    
+    //print route loaction marker for each route
+    func actionMenuConfirm(_ notification: Notification){
+        
+        //get object from notification
+        let notifyObj =  notification.object as! [AnyObject]
+        
+        if let actionType = notifyObj[0] as? ActionButtonType {
+            
+            switch(actionType) {
+                
+            case .Details:
+                print("NOTFY: Clicked Details")
+                gotoShowRoute(activeIndex.item)
+               
+                
+            case .ConfirmDelete:
+                print("NOTFY: Confirm Delete")
+               
+                
+            case .ConfirmShare:
+                print("NOTFY: Confirm Share")
+                
+                
+            case .ConfirmDownload:
+                print("NOTFY: Confirm Download")
+               
+                
+            default:
+                print("default click")
+                
+            }
+        }
+
     }
     
     
@@ -166,6 +206,15 @@ class ExploreMotoRoutes: UIViewController {
             return
         }
         self.mapView.removeAnnotations(mapView.annotations!)
+    }
+    
+    func gotoShowRoute(_ index: Int){
+        if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
+            print("got it")
+            showRouteController.motoRoute = myRoutesMaster[index]._MotoRoute
+            self.present(showRouteController, animated: true, completion: nil)
+        }
+
     }
     
     
@@ -388,11 +437,6 @@ extension ExploreMotoRoutes: RouteCellDelegate{
     
     func pressedDetails(id: String, index: Int) {
         print("pressed Details id: \(id)")
-        
-        if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
-            print("got it")
-            showRouteController.motoRoute = myRoutesMaster[index]._MotoRoute
-            self.present(showRouteController, animated: true, completion: nil)
-        }
-    }
+         gotoShowRoute(index)
+            }
 }

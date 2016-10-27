@@ -13,6 +13,7 @@ protocol ActionButtonDelegate: class{
     func pressedActionButton(sender: UIButton)
 }
 
+
 class ActionButton: UIView {
 
     weak var delegate: ActionButtonDelegate?
@@ -54,8 +55,8 @@ class ActionButton: UIView {
     func pressedButton(_ sender: UIButton){
         print("pressed ActionButton \(sender.actionType)")
         
-        let arrayN = [sender.actionType]
-        NotificationCenter.default.post(name: Notification.Name(rawValue: actionButtonNotificationKey), object: arrayN)
+        let notifyObj = [sender.actionType]
+        NotificationCenter.default.post(name: Notification.Name(rawValue: actionButtonNotificationKey), object: notifyObj)
         
 //        if(delegate != nil){
 //            print("pressed action button")

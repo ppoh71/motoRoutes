@@ -18,6 +18,7 @@ class MarkerView: MGLAnnotationView {
     var color = UIColor.clear
     var initFrame = CGRect(x: 0, y: 0, width: 280, height: 260)
     let offset = CGFloat(0)
+    var backView = UIView()
     let dot = DotAnimation()
     let confirmView = ActionConfirm(frame: CGRect(x: 140, y: 130, width: 125, height: 100 ), actionType: ActionButtonType.DefState)
     var durationValue = ""
@@ -29,6 +30,8 @@ class MarkerView: MGLAnnotationView {
     init(reuseIdentifier: String, color: UIColor, routeMaster: RouteMaster) {
         super.init(reuseIdentifier: reuseIdentifier)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
+        
         self.durationValue = routeMaster.textDuration
         self.altitudeValue = routeMaster.textHighAlt
         self.highspeedValue = routeMaster.textHighSpeed
@@ -37,46 +40,83 @@ class MarkerView: MGLAnnotationView {
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: 0,  dy: -initFrame.height/2)
 
-        //add transparent background view
-        let backView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10))
-        backView.backgroundColor = blue4
-        backView.layer.opacity = 0.5
-        self.addSubview(backView)
-        
+        setupBackView()
+        setupMenuButton()
         setupInfoLabels()
         setupActionMenu()
         dotAnimation()
+  
+        //add confirm screen
+        self.addSubview(confirmView)
+    }
+    
+
+    //MARK:
+    func actionButtonNotify(_ notification: Notification){
+        
+        //get object from notification
+        let notifyObj =  notification.object as! [AnyObject]
+        
+        if let actionType = notifyObj[0] as? ActionButtonType {
+            
+            switch(actionType) {
+            
+            case .Details:
+                print("NOTFY: Clicked Details")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+            
+            case .DeleteRoute:
+                print("NOTFY: Delete Route")
+                setupActionConfirm(actionType: actionType)
+                
+            case .ShareRoute:
+                print("NOTFY: Share Route")
+                setupActionConfirm(actionType: actionType)
+                
+            case .DownloadRoute:
+                print("NOTFY: Download Route")
+                setupActionConfirm(actionType: actionType)
+            
+            case .ConfirmDelete:
+                print("NOTFY: Confirm Delete")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            case .ConfirmShare:
+                print("NOTFY: Confirm Share")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            case .ConfirmDownload:
+                print("NOTFY: Confirm Download")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            default:
+                print("default click")
+                
+            }
+         }
+    }
+    
+     //MARK: Setup UI elements
+    func setupBackView(){
+        
+        backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10)
+        backView.backgroundColor = blue4
+        backView.layer.opacity = 0.5
+        self.addSubview(backView)
+    }
+    
+    
+    func setupMenuButton(){
         
         let menuImage = UIImage(named: "menuIcon") as UIImage?
         let button   = UIButton()
         let buttonSize = CGPoint(x: 24, y: 24)
         button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y + (buttonSize.y/2)) , width: buttonSize.x, height: buttonSize.y)
         button.setImage(menuImage, for: .normal)
-        backView.addSubview(button)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
-        
-        //confirmView = ActionConfirm(frame: CGRect(x: 140, y: 130, width: 125, height: 100 ), actionType: ActionButtonType.DefState)
-        self.addSubview(confirmView)
+        self.addSubview(button)
     }
     
-
     
-    //notifycenter func: when no marker while flying over routesm switch to stop all and start marker printing
-    func actionButtonNotify(_ notification: Notification){
-        
-        //get object from notification
-        let arrayObject =  notification.object as! [AnyObject]
-        
-        print("Notify by action Button \(arrayObject)")
-        if let actionType = arrayObject[0] as? ActionButtonType {
-            
-            setupActionConfirm(actionType: actionType)
-            
-        }
-    }
-    
-    //Mark: Info Labels
     func setupInfoLabels(){
     
         let clipView = UIView(frame: CGRect(x: 10, y: 30, width: initFrame.width, height: initFrame.height - 30))
@@ -97,7 +137,7 @@ class MarkerView: MGLAnnotationView {
 
     }
     
-    //Mark: ActionMenu
+    
      func setupActionMenu(){
         
         let actionView = UIView(frame: CGRect(x: 140, y: 0, width: 125, height: 100 ))
@@ -119,26 +159,19 @@ class MarkerView: MGLAnnotationView {
     }
     
     
-    func setupActionConfirm(actionType: ActionButtonType){
-        
-        confirmView.setupConfirm(actionType)
-//        let confirm = ActionConfirm(frame: CGRect(x: 140, y: 130, width: 125, height: 100 ), actionType: actionType)
-//        self.addSubview(confirm)
-
-    }
-    
-    
-    func pressedButton(_ sender: UIButton){
-        print("pressed ActionButton")
-     }
-    
     func dotAnimation(){
         dot.frame = CGRect(x: initFrame.width/2, y: initFrame.height, width: 10, height: 10)
         self.addSubview(dot)
         dot.addDotAnimation()
     }
     
-    // These two initializers are forced upon us by Swift.
+    
+    func setupActionConfirm(actionType: ActionButtonType){
+        confirmView.setupConfirm(actionType)
+    }
+    
+
+    //MARK: Initialiser
     override init(frame: CGRect) {
         super.init(frame: initFrame)
         print("init markerview frame")

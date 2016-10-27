@@ -18,11 +18,12 @@ let firbaseGetRoutesNotificationKey = "motoRoutes.getRoutesFromFirebase"
 let firbaseGetLocationsNotificationKey = "motoRoutes.getLocationsFromFirebase"
 let googleGetImagesNotificationKey = "motoRoutes.getGoogleImages"
 let actionButtonNotificationKey = "motoRoutes.actionButtons"
+let actionConfirmNotificationKey = "motoRoutes.actionButtonsConfirm"
 
 
 
 
-//Firebase Stuff
+//API Keys
 let KEY_UID = "uid"
 let GOOGLE_API_KEY = "AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
 let GOOGLE_URL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
@@ -67,6 +68,7 @@ let actionButtonShareRouteText = NSLocalizedString("ActionButton.shareRoute", co
 let actionButtonDownloadRouteText = NSLocalizedString("ActionButton.downloadRoute", comment: "Download Route")
 let actionButtonConfirmDeleteText =  NSLocalizedString("ActionButton.confirmDelete", comment: "Confirm Delete")
 let actionButtonConfirmShareText =  NSLocalizedString("ActionButton.confirmShare", comment: "Confirm Share")
+let actionButtonConfirmDownloadText =  NSLocalizedString("ActionButton.confirmDownload", comment: "Confirm Download")
 
 
 
@@ -104,6 +106,7 @@ enum ActionButtonType {
     case DownloadRoute
     case ConfirmDelete
     case ConfirmShare
+    case ConfirmDownload
     case Cancel
     
     var buttonText: String {
@@ -115,6 +118,7 @@ enum ActionButtonType {
         case .DownloadRoute: return actionButtonDownloadRouteText
         case .ConfirmDelete: return "OK"
         case .ConfirmShare: return "OK"
+        case .ConfirmDownload : return "OK"
         case .Cancel: return "Cancel"
         }
     }
@@ -125,9 +129,10 @@ enum ActionButtonType {
         case .Details: return "show details"
         case .DeleteRoute: return actionButtonConfirmDeleteText
         case .ShareRoute: return actionButtonConfirmShareText
-        case .DownloadRoute: return "confirm 4"
+        case .DownloadRoute: return actionButtonConfirmDownloadText
         case .ConfirmDelete: return "---"
         case .ConfirmShare: return "--"
+        case .ConfirmDownload: return "--"
         case .Cancel: return "---"
         }
     }
@@ -141,6 +146,7 @@ enum ActionButtonType {
         case .DownloadRoute: return ActionButtonType.DownloadRoute
         case .ConfirmDelete: return ActionButtonType.ConfirmDelete
         case .ConfirmShare: return ActionButtonType.ConfirmShare
+        case .ConfirmDownload: return ActionButtonType.ConfirmDownload
         case .Cancel: return ActionButtonType.DefState
         }
     }
