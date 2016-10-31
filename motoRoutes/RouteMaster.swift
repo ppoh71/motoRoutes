@@ -66,7 +66,7 @@ class RouteMaster {
     var cnt = 0
     
     init(){
-        print("init motoroute")
+        print("init motoroute ()")
     }
     
     //map realm route

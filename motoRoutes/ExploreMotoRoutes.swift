@@ -21,7 +21,6 @@ class ExploreMotoRoutes: UIViewController {
     //MARK: my routes vars
     var myMotoRoutesRealm: Results<Route>!
     var myRoutesMaster = [RouteMaster]()
-    var expRouteMasters = [RouteMaster]()
     var markerViewResueIdentifier = ""
     var lastIndex = IndexPath(item: 0, section: 0)
     var activeIndex = IndexPath(item: 0, section: 0)
@@ -31,7 +30,8 @@ class ExploreMotoRoutes: UIViewController {
     var zoomOnSelect = true
     
     //MARK: explore routes vars
-    var activeRoute = RouteMaster()
+    var firebaseRouteMasters = [RouteMaster]()
+    var activeFirebaseRoute = RouteMaster()
     var selectedMarkerView = [MGLAnnotation]()
     
     //MARK: vars
@@ -47,12 +47,15 @@ class ExploreMotoRoutes: UIViewController {
         collection.allowsSelection = true
         
         
-        let realm = try! Realm()
-        myMotoRoutesRealm = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
-        myRoutesMaster = RouteMaster.realmResultToMasterArray(myMotoRoutesRealm)
+        updateMyRouteMaster()
         
         self.view.backgroundColor = UIColor.black
         print(myMotoRoutesRealm.count)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collection.reloadData() // [2]
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,11 +68,15 @@ class ExploreMotoRoutes: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm), name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
         
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
-        //FirebaseData.dataService.getRoutesFromFIR()
+        FirebaseData.dataService.getRoutesFromFIR()
     }
     
     
-    
+    func updateMyRouteMaster(){
+        let realm = try! Realm()
+        myMotoRoutesRealm = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
+        myRoutesMaster = RouteMaster.realmResultToMasterArray(myMotoRoutesRealm)
+    }
     
     
     //print route loaction marker for each route
@@ -86,25 +93,21 @@ class ExploreMotoRoutes: UIViewController {
                 print("NOTFY: Clicked Details")
                 gotoShowRoute(activeIndex.item)
                
-                
             case .ConfirmDelete:
                 print("NOTFY: Confirm Delete")
+                deleteRoute()
                
-                
             case .ConfirmShare:
                 print("NOTFY: Confirm Share")
-                
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
                
-                
             default:
                 print("default click")
                 
             }
         }
-
     }
     
     
@@ -112,9 +115,9 @@ class ExploreMotoRoutes: UIViewController {
     func FIRRoutes(_ notification: Notification){
         
         if let notifyObj =  notification.object as? [RouteMaster] {
-            expRouteMasters = notifyObj
+            firebaseRouteMasters = notifyObj
             
-            setRouteMarkers(expRouteMasters, markerTitle: "allMarker")
+            setRouteMarkers(firebaseRouteMasters, markerTitle: "firebaseMarker")
             // setRouteMarkerViews(RouteMasters, markerTitle: "allMarker")
             
             //            for item in RouteMasters {
@@ -135,7 +138,7 @@ class ExploreMotoRoutes: UIViewController {
             for (key,item) in notifyObj.enumerated(){
                 print(key)
                 printAllMarker(FuncTypes.PrintCircles, _RouteMaster: item)
-                activeRoute = item
+                activeFirebaseRoute = item
             }
         }
     }
@@ -165,12 +168,15 @@ class ExploreMotoRoutes: UIViewController {
         
         var _route = RouteMaster()
         var index = 0
+        print("test 2 \(routes) \(key)")
         if let i = routes.index(where: {$0._MotoRoute.id == key}) {
+            print("test 3")
             _route = routes[i]
             index = i
         }
         return (_route, index)
     }
+    
     
     func setMarker(_ latitude: Double, longitude: Double, id: String, markerTitle: String){
         let newMarker = MGLPointAnnotation()
@@ -214,15 +220,39 @@ class ExploreMotoRoutes: UIViewController {
             showRouteController.motoRoute = myRoutesMaster[index]._MotoRoute
             self.present(showRouteController, animated: true, completion: nil)
         }
-
     }
     
     
+    func deleteRoute(){
+        
+        let realm = try! Realm()
+        try! realm.write {
+            print("try delete \(myMotoRoutesRealm[activeIndex.item]) ")
+            realm.delete(myMotoRoutesRealm[activeIndex.item])
+            self.reloadData()
+        }
+       
+    }
+    
+    func reloadData() {
+        // TODO: retrieve data from the database
+       // collection.reloadSections(NSIndexSet(index: 0) as IndexSet)
+         updateMyRouteMaster()
+        collection.reloadData()
+    }
+    
+    func addRoutetoRealm(routeMaster: RouteMaster){
+        print("active id \(routeMaster._MotoRoute.id)")
+        RealmUtils.saveRouteFromFIR(routeMaster)
+        self.reloadData()
+    }
+    
+    /*
     @IBAction func addRoutetoRealm(_ sender: AnyObject) {
         print("active id \(activeRoute._MotoRoute.id)")
         RealmUtils.saveRouteFromFIR(activeRoute)
         collection.reloadData()
-    }
+    }*/
     
     
     @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {
@@ -279,9 +309,10 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         collection.reloadData()
     }
     
-    
+   
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+      
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RouteCell", for: indexPath) as? RouteCell {
             print("ROUTE CELL INIT deque")
             cell.delegate = self
@@ -302,8 +333,9 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         } else{
             return UICollectionViewCell()
         }
+ 
     }
-    
+ 
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -334,7 +366,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         var image: UIImage?
         let reuseIdentifier = "Marker-\(annotation.title!))"
         var dotColor: UIColor {
-            return  annotation.title! == "allMarker" ? UIColor.blue : green3
+            return  annotation.title! == "firebaseMarker" ? red1 : green3
         }
         
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
@@ -379,7 +411,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         let reuseIdentifier = markerViewResueIdentifier
         print(markerViewResueIdentifier)
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
-        var dotColor: UIColor { return  annotation.title! == "allMarker" ? UIColor.red : UIColor.yellow }
+        var dotColor: UIColor { return  annotation.title! == "firebaseMarker" ? red1 : UIColor.yellow }
         
         if annotationView == nil {
             let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor, routeMaster: activeRouteMaster)
@@ -400,19 +432,28 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             return
         }
         
-        let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
-        
-        print(findRouteInRouteMasters(myRoutesMaster, key: titleID!).0)
-        print(index)
-        print(myRoutesMaster.count)
-        
-        if(index <= myRoutesMaster.count) {
+        //save to realm
+        if(annotation.title! == "firebaseMarker"){
+            print("test1")
+            let routeMaster = findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
+            print("routeMaster: save \(routeMaster._MotoRoute.duration)")
+            if (!routeMaster._MotoRoute.id.isEmpty) {
+                addRoutetoRealm(routeMaster: routeMaster)
+            }
             
-            collection.delegate?.collectionView!(collection, didDeselectItemAt: activeIndex)
-            collection.selectItem(at: IndexPath(item: index, section: 0) , animated: true, scrollPosition: .centeredHorizontally)
-            zoomOnSelect = false
-            collection.delegate?.collectionView!(collection, didSelectItemAt: IndexPath(item: index, section: 0))
-            activeIndex = IndexPath(item: index, section: 0)
+        } else {
+            let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
+            
+            print(findRouteInRouteMasters(myRoutesMaster, key: titleID!).0)
+            
+            if(index <= myRoutesMaster.count) {
+                
+                collection.delegate?.collectionView!(collection, didDeselectItemAt: activeIndex)
+                collection.selectItem(at: IndexPath(item: index, section: 0) , animated: true, scrollPosition: .centeredHorizontally)
+                zoomOnSelect = false
+                collection.delegate?.collectionView!(collection, didSelectItemAt: IndexPath(item: index, section: 0))
+                activeIndex = IndexPath(item: index, section: 0)
+            }
         }
     }
     
@@ -428,8 +469,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        // Always allow callouts to popup when annotations are tapped
-        return true
+        return false
     }
 }
 
