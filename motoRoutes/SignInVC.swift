@@ -59,7 +59,7 @@ class SignInVC: UIViewController {
     }
     
     @IBAction func signInTapped(_ sender: AnyObject) {
-        
+        print("sign in tapped")
         if let email = emailField.text, let password = passwordField.text {
             
             FIRAuth.auth()!.signIn(withEmail: email, password: password, completion: { (user, error) in

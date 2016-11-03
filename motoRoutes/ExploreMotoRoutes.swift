@@ -168,12 +168,19 @@ class ExploreMotoRoutes: UIViewController {
         
         var _route = RouteMaster()
         var index = 0
-        print("test 2 \(routes) \(key)")
+        print("test 2 \(routes.count) \(key)")
+        
+        for item in routes{
+                print("test 3 \(item._MotoRoute.id)")
+        }
+        
+        print("test 4")
         if let i = routes.index(where: {$0._MotoRoute.id == key}) {
-            print("test 3")
+            print("test 5")
             _route = routes[i]
             index = i
         }
+
         return (_route, index)
     }
     
@@ -214,6 +221,7 @@ class ExploreMotoRoutes: UIViewController {
         self.mapView.removeAnnotations(mapView.annotations!)
     }
     
+    
     func gotoShowRoute(_ index: Int){
         if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
             print("got it")
@@ -244,7 +252,7 @@ class ExploreMotoRoutes: UIViewController {
     func addRoutetoRealm(routeMaster: RouteMaster){
         print("active id \(routeMaster._MotoRoute.id)")
         RealmUtils.saveRouteFromFIR(routeMaster)
-        self.reloadData()
+        reloadData()
     }
     
     /*
