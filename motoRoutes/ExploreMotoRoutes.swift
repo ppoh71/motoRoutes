@@ -69,6 +69,9 @@ class ExploreMotoRoutes: UIViewController {
         
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         FirebaseData.dataService.getRoutesFromFIR()
+        
+        
+
     }
     
     
