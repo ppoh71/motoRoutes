@@ -27,30 +27,43 @@ class MarkerView: MGLAnnotationView {
     
     
     //MARK: INIT
-    init(reuseIdentifier: String, color: UIColor, routeMaster: RouteMaster) {
+    init(reuseIdentifier: String, routeMaster: RouteMaster, type: MarkerViewType) {
         super.init(reuseIdentifier: reuseIdentifier)
         
         NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
         
-        self.durationValue = routeMaster.textDuration
-        self.altitudeValue = routeMaster.textHighAlt
-        self.highspeedValue = routeMaster.textHighSpeed
-        self.backgroundColor = red1
+        //self.backgroundColor = red1
         
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: 0,  dy: -initFrame.height/2)
-
+        
         setupBackView()
+        dotAnimation()
+        
+        
+        switch type{
+            case .MyRoute:
+                setupAll(routeMaster)
+            
+            case .FirRoute:
+                setupSpinner()
+        }
+    }
+    
+    
+    func setupAll(_ routeMaster: RouteMaster){
+        
+        self.durationValue = routeMaster.textDuration
+        self.altitudeValue = routeMaster.textHighAlt
+        self.highspeedValue = routeMaster.textHighSpeed
+        
+        removeSpinner()
         setupMenuButton()
         setupInfoLabels()
         setupActionMenu()
-        dotAnimation()
-  
-        //add confirm screen
-        self.addSubview(confirmView)
     }
     
-
+    
     //MARK:
     func actionButtonNotify(_ notification: Notification){
         
@@ -60,11 +73,11 @@ class MarkerView: MGLAnnotationView {
         if let actionType = notifyObj[0] as? ActionButtonType {
             
             switch(actionType) {
-            
+                
             case .Details:
                 print("NOTFY: Clicked Details")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-            
+                
             case .DeleteRoute:
                 print("NOTFY: Delete Route")
                 setupActionConfirm(actionType: actionType)
@@ -76,7 +89,7 @@ class MarkerView: MGLAnnotationView {
             case .DownloadRoute:
                 print("NOTFY: Download Route")
                 setupActionConfirm(actionType: actionType)
-            
+                
             case .ConfirmDelete:
                 print("NOTFY: Confirm Delete")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
@@ -93,12 +106,11 @@ class MarkerView: MGLAnnotationView {
                 print("default click")
                 
             }
-         }
+        }
     }
     
-     //MARK: Setup UI elements
+    //MARK: Setup UI elements
     func setupBackView(){
-        
         backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10)
         backView.backgroundColor = blue4
         backView.layer.opacity = 0.5
@@ -107,18 +119,32 @@ class MarkerView: MGLAnnotationView {
     
     
     func setupMenuButton(){
-        
         let menuImage = UIImage(named: "menuIcon") as UIImage?
         let button   = UIButton()
         let buttonSize = CGPoint(x: 24, y: 24)
         button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y + (buttonSize.y/2)) , width: buttonSize.x, height: buttonSize.y)
         button.setImage(menuImage, for: .normal)
         self.addSubview(button)
+        
+
+    }
+    
+    
+    func setupSpinner(){
+        let spinner = SpinnerView(frame: CGRect(x: initFrame.width/4, y: initFrame.height/4, width: initFrame.height/6, height: initFrame.height/6))
+        spinner.tag = 99
+        self.addSubview(spinner)
+    }
+    
+    
+    func removeSpinner(){
+        if let viewWithTag = self.viewWithTag(99) {
+            viewWithTag.removeFromSuperview()
+        }
     }
     
     
     func setupInfoLabels(){
-    
         let clipView = UIView(frame: CGRect(x: 10, y: 30, width: initFrame.width, height: initFrame.height - 30))
         clipView.clipsToBounds = true
         self.addSubview(clipView)
@@ -134,11 +160,11 @@ class MarkerView: MGLAnnotationView {
         let speedLabel = InfoTemplate(labelNumber: 2, labelType: LabelType.speed, value: highspeedValue, xOff: true)
         speedLabel.aniToX(1.2)
         clipView.addSubview(speedLabel)
-
+        
     }
     
     
-     func setupActionMenu(){
+    func setupActionMenu(){
         
         let actionView = UIView(frame: CGRect(x: 140, y: 0, width: 125, height: 100 ))
         actionView.backgroundColor = green3
@@ -154,8 +180,13 @@ class MarkerView: MGLAnnotationView {
         let shareButton = ActionButton(initFrame: CGRect(x: 0, y: btnSize.y * 1 + CGFloat(offset), width: btnSize.x, height: btnSize.y), buttonType: ActionButtonType.ShareRoute)
         actionView.addSubview(shareButton)
         
-        let deleteButton = ActionButton(initFrame: CGRect(x: 0, y: btnSize.y * 2 + CGFloat(offset*2), width: btnSize.x, height: btnSize.y), buttonType: ActionButtonType.DeleteRoute)
+        let downloadButton = ActionButton(initFrame: CGRect(x: 0, y: btnSize.y * 2 + CGFloat(offset*2), width: btnSize.x, height: btnSize.y), buttonType: ActionButtonType.ConfirmDownload)
+        actionView.addSubview(downloadButton)
+        
+        let deleteButton = ActionButton(initFrame: CGRect(x: 0, y: btnSize.y * 3 + CGFloat(offset*3), width: btnSize.x, height: btnSize.y), buttonType: ActionButtonType.DeleteRoute)
         actionView.addSubview(deleteButton)
+        
+        self.addSubview(confirmView)
     }
     
     
@@ -170,7 +201,7 @@ class MarkerView: MGLAnnotationView {
         confirmView.setupConfirm(actionType)
     }
     
-
+    
     //MARK: Initialiser
     override init(frame: CGRect) {
         super.init(frame: initFrame)
@@ -183,9 +214,9 @@ class MarkerView: MGLAnnotationView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-           }
+    }
     
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         

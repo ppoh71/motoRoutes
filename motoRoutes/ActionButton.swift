@@ -23,7 +23,7 @@ class ActionButton: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        print("init action button")
+        //print("init action button")
         setupButton()
     }
     
@@ -53,7 +53,7 @@ class ActionButton: UIView {
     }
     
     func pressedButton(_ sender: UIButton){
-        print("pressed ActionButton \(sender.actionType)")
+       // print("pressed ActionButton \(sender.actionType)")
         
         let notifyObj = [sender.actionType]
         NotificationCenter.default.post(name: Notification.Name(rawValue: actionButtonNotificationKey), object: notifyObj)

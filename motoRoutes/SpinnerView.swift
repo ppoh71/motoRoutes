@@ -10,7 +10,7 @@ import UIKit
 import Mapbox
 
 
-class SpinnerView: MGLAnnotationView{
+class SpinnerView: UIView{
 
     let circleLayer = CAShapeLayer()
     
@@ -56,15 +56,7 @@ class SpinnerView: MGLAnnotationView{
     
    var animating: Bool = true     
     
-    //MARK: Initialiser
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        
-        setup()
-        updateAnimation()
-    }
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -83,7 +75,6 @@ class SpinnerView: MGLAnnotationView{
         
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
         let radius = min(bounds.width, bounds.height) / 2 - circleLayer.lineWidth/2
-        
         let startAngle = CGFloat(-M_PI_2)
         let endAngle = startAngle + CGFloat(M_PI * 2)
         let path = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)

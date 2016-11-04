@@ -18,7 +18,7 @@ class ActionConfirm: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        print("init markerview frame")
+       // print("init markerview frame")
         setupConfirm(actionType)
     }
     

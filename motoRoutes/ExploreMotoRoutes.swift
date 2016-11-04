@@ -27,6 +27,7 @@ class ExploreMotoRoutes: UIViewController {
     var activeAnnotationView: MarkerView?
     var activeRouteCell: RouteCell?
     var activeRouteMaster = RouteMaster()
+    var selectedMarker =  MGLPointAnnotation()
     var zoomOnSelect = true
     
     //MARK: explore routes vars
@@ -46,17 +47,18 @@ class ExploreMotoRoutes: UIViewController {
         collection.dataSource = self
         collection.allowsSelection = true
         
-        
         updateMyRouteMaster()
         
         self.view.backgroundColor = UIColor.black
         print(myMotoRoutesRealm.count)
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collection.reloadData() // [2]
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         let userID = FIRAuth.auth()?.currentUser?.uid
@@ -69,9 +71,6 @@ class ExploreMotoRoutes: UIViewController {
         
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         FirebaseData.dataService.getRoutesFromFIR()
-        
-        
-
     }
     
     
@@ -85,6 +84,7 @@ class ExploreMotoRoutes: UIViewController {
     //print route loaction marker for each route
     func actionMenuConfirm(_ notification: Notification){
         
+        print("###ActionButton NotifY Explore")
         //get object from notification
         let notifyObj =  notification.object as! [AnyObject]
         
@@ -94,7 +94,7 @@ class ExploreMotoRoutes: UIViewController {
                 
             case .Details:
                 print("NOTFY: Clicked Details")
-                gotoShowRoute(activeIndex.item)
+                gotoShowRoute(activeRouteMaster)
                
             case .ConfirmDelete:
                 print("NOTFY: Confirm Delete")
@@ -105,6 +105,8 @@ class ExploreMotoRoutes: UIViewController {
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
+                addRoutetoRealm(routeMaster: activeRouteMaster)
+                
                
             default:
                 print("default click")
@@ -135,7 +137,13 @@ class ExploreMotoRoutes: UIViewController {
     
     //print route loaction marker for each route
     func FIRLocations(_ notification: Notification){
+       
+        print("###got all loctions for fire_route")
         
+        if let notifyObj =  notification.object as? [RouteMaster] {
+            activeAnnotationView?.setupAll(notifyObj[0])
+        }
+        /*
         if let notifyObj =  notification.object as? [RouteMaster] {
             print("get notified FIR Locations ")
             for (key,item) in notifyObj.enumerated(){
@@ -144,6 +152,7 @@ class ExploreMotoRoutes: UIViewController {
                 activeFirebaseRoute = item
             }
         }
+        */
     }
     
     
@@ -188,20 +197,6 @@ class ExploreMotoRoutes: UIViewController {
     }
     
     
-    func setMarker(_ latitude: Double, longitude: Double, id: String, markerTitle: String){
-        let newMarker = MGLPointAnnotation()
-        newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        newMarker.title = markerTitle
-        newMarker.subtitle = "\(id)"
-        markerViewResueIdentifier = "\(id)"
-        mapView.addAnnotation(newMarker)
-        
-        if(markerTitle == "SelectedRouteMarker"){
-            selectedMarkerView.append(newMarker)
-        }
-    }
-    
-    
     func setRouteMarkers(_ myRoutes: [RouteMaster], markerTitle: String){
         for item in myRoutes {
             setMarker(item.startLat, longitude: item.startLong, id: item._MotoRoute.id, markerTitle: markerTitle)
@@ -209,10 +204,28 @@ class ExploreMotoRoutes: UIViewController {
     }
     
     
+    func setMarker(_ latitude: Double, longitude: Double, id: String, markerTitle: String){
+        let newMarker = MGLPointAnnotation()
+        newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        newMarker.title = markerTitle
+        newMarker.subtitle = "\(id)"
+        markerViewResueIdentifier = "\(id)"
+        mapView.addAnnotation(newMarker)
+        selectedMarker = newMarker
+        
+        if( (markerTitle == "MyRouteMarkerViewSelected") || (markerTitle == "FirebaseMarkerViewSelected")){
+            selectedMarkerView.append(newMarker)
+            print("added view to ###")
+        }
+    }
+
+    
     func deleteSelectedMarker(){
+        print("delete selected marker")
         for marker in selectedMarkerView{
            self.mapView.removeAnnotation(marker)
         }
+        print("done delete selected marker")
     }
     
     
@@ -225,24 +238,34 @@ class ExploreMotoRoutes: UIViewController {
     }
     
     
-    func gotoShowRoute(_ index: Int){
+    func gotoShowRoute(_ routeMaster: RouteMaster){
         if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
             print("got it")
-            showRouteController.motoRoute = myRoutesMaster[index]._MotoRoute
+            showRouteController.motoRoute = routeMaster._MotoRoute
             self.present(showRouteController, animated: true, completion: nil)
         }
     }
     
+    func addRoutetoRealm(routeMaster: RouteMaster){
+        print("active id \(routeMaster._MotoRoute.id)")
+        
+        //make copy of route first
+        var saveRoute = RouteMaster()
+        saveRoute._MotoRoute = routeMaster._MotoRoute
+        
+        RealmUtils.saveRouteFromFIR(saveRoute)
+        reloadData()
+        saveRoute = RouteMaster() //destroy route again, if
+    }
     
     func deleteRoute(){
-        
         let realm = try! Realm()
         try! realm.write {
-            print("try delete \(myMotoRoutesRealm[activeIndex.item]) ")
-            realm.delete(myMotoRoutesRealm[activeIndex.item])
+            print("try delete \(activeRouteMaster._MotoRoute) ")
+            realm.delete(activeRouteMaster._MotoRoute)
+            mapView.removeAnnotation(selectedMarker)
             self.reloadData()
         }
-       
     }
     
     func reloadData() {
@@ -252,11 +275,7 @@ class ExploreMotoRoutes: UIViewController {
         collection.reloadData()
     }
     
-    func addRoutetoRealm(routeMaster: RouteMaster){
-        print("active id \(routeMaster._MotoRoute.id)")
-        RealmUtils.saveRouteFromFIR(routeMaster)
-        reloadData()
-    }
+
     
     /*
     @IBAction func addRoutetoRealm(_ sender: AnyObject) {
@@ -305,7 +324,7 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         
         collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
         routeMaster.associateRouteListOnly()
-        setMarker(latitude, longitude: longitude, id: routeID, markerTitle: "SelectedRouteMarker")
+        setMarker(latitude, longitude: longitude, id: routeID, markerTitle: "MyRouteMarkerViewSelected")
         zoomOnSelect = true // set back, false from mapview delegate select
     }
     
@@ -369,8 +388,8 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             return nil
         }
         
-        guard annotation.title!! != "SelectedRouteMarker" else {
-            print("guard annotation no image for: SelectedRouteMarker")
+        guard annotation.title!! != "MyRouteMarkerViewSelected" else {
+            print("guard annotation no image for: MyRouteMarkerViewSelected")
             return nil
         }
         
@@ -405,27 +424,38 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
        
         guard annotation is MGLPointAnnotation else {
-           // print("guard viewannottion: no pointannotation")
             return nil
         }
         
         guard let markerTitle = annotation.title else {
-          //  print("guard annotationview no title")
             return nil
         }
 
-        guard markerTitle == "SelectedRouteMarker" else {
-          //  print("guard annotationview \(markerTitle)")
+        guard (markerTitle == "MyRouteMarkerViewSelected") || (markerTitle == "FirebaseMarkerViewSelected") else {
             return nil
         }
         
+
+        var viewType = MarkerViewType()
+        
+        switch markerTitle! {
+            case "MyRouteMarkerViewSelected":
+                viewType = .MyRoute
+        
+            case "FirebaseMarkerViewSelected":
+                viewType = .FirRoute
+          
+            default:
+                viewType = .MyRoute
+        }
+        
+        
         let reuseIdentifier = markerViewResueIdentifier
-        print(markerViewResueIdentifier)
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
-        var dotColor: UIColor { return  annotation.title! == "firebaseMarker" ? red1 : UIColor.yellow }
+        print("resuse Identifier: \(markerViewResueIdentifier)")
+        let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
         
         if annotationView == nil {
-            let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, color: dotColor, routeMaster: activeRouteMaster)
+            let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, routeMaster: activeRouteMaster, type: viewType)
             activeAnnotationView = annotationMarkerView
             return annotationMarkerView
         } else {
@@ -436,29 +466,34 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         
-        print("did select \(annotation.title) \(annotation.subtitle) ")
-        
         guard let titleID = annotation.subtitle else {
             print("guard exploreMotoRoutes didSelect")
             return
         }
+ 
+        deleteSelectedMarker()
+        selectedMarker = annotation as! MGLPointAnnotation
+        print("##did select marker \(annotation.title!) ")
         
-        //save to realm
         if(annotation.title! == "firebaseMarker"){
-            print("test1")
             let routeMaster = findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
-            print("routeMaster: save \(routeMaster._MotoRoute.duration)")
             if (!routeMaster._MotoRoute.id.isEmpty) {
-                addRoutetoRealm(routeMaster: routeMaster)
+            //    addRoutetoRealm(routeMaster: routeMaster)
+            activeRouteMaster = routeMaster
+            setMarker(routeMaster.startLat, longitude: routeMaster.startLong, id: routeMaster._MotoRoute.id, markerTitle: "FirebaseMarkerViewSelected")
+            
+                //get locationsList for this Route from firebase
+                if(routeMaster._MotoRoute.locationsList.count<1){
+                        FirebaseData.dataService.geLocationsRouteFIR(routeMaster)
+                } else{
+                     activeAnnotationView?.setupAll(routeMaster)
+                }
+                
             }
             
         } else {
             let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
-            
-            print(findRouteInRouteMasters(myRoutesMaster, key: titleID!).0)
-            
             if(index <= myRoutesMaster.count) {
-                
                 collection.delegate?.collectionView!(collection, didDeselectItemAt: activeIndex)
                 collection.selectItem(at: IndexPath(item: index, section: 0) , animated: true, scrollPosition: .centeredHorizontally)
                 zoomOnSelect = false
@@ -488,6 +523,6 @@ extension ExploreMotoRoutes: RouteCellDelegate{
     
     func pressedDetails(id: String, index: Int) {
         print("pressed Details id: \(id)")
-         gotoShowRoute(index)
+         gotoShowRoute(activeRouteMaster)
             }
 }

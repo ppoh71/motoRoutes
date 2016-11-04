@@ -158,5 +158,15 @@ enum ActionButtonType {
 }
 
 
+//Display different MarkerViewStates
+enum MarkerViewType {
+
+    case MyRoute
+    case FirRoute
+    
+    init(){
+        self = .MyRoute
+    }
+}
 
 

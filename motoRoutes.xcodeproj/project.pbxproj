@@ -212,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				55399DE81DA5450500F2337A /* MarkerView.swift */,
-				5546F02D1DCB9FDF00D13F1D /* SpinnerView.swift */,
 			);
 			name = MarkerView;
 			sourceTree = "<group>";
@@ -369,6 +368,7 @@
 				556368A91CEF4681004BBB6F /* Speedometer.swift */,
 				55DA72981D0030DD0095C52E /* MRCellViewImage.swift */,
 				558E00BB1DB7CDE90085DFA7 /* DotAnimation.swift */,
+				5546F02D1DCB9FDF00D13F1D /* SpinnerView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
