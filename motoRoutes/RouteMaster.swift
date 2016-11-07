@@ -19,6 +19,7 @@ class RouteMaster {
     //static let sharedInstance = RouteMaster()
     var _MotoRoute = Route()
     var _RouteList = [LocationMaster]()
+    var _marker = MGLPointAnnotation()
     
     var routeDate: String { get { return _MotoRoute.timestamp.customFormatted } }
     var routeTime: Int { get { return _MotoRoute.duration } }
@@ -37,6 +38,7 @@ class RouteMaster {
     var textDuration: String { get { return "\(Utils.clockFormat(_MotoRoute.duration)) h:m" } }
     var textHighAlt: String { get { return "\(routeHighestAlt) m" } }
     var textHighSpeed: String { get { return "\(routeHighSpeed) km/h" } }
+    
     
     var startLat: Double {
         if(_MotoRoute.startLatitude != 0){

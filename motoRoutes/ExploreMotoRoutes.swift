@@ -27,7 +27,7 @@ class ExploreMotoRoutes: UIViewController {
     var activeAnnotationView: MarkerView?
     var activeRouteCell: RouteCell?
     var activeRouteMaster = RouteMaster()
-    var selectedMarker =  MGLPointAnnotation()
+    var myRouteMarker = [MGLAnnotation]()
     var zoomOnSelect = true
     
     //MARK: explore routes vars
@@ -48,9 +48,7 @@ class ExploreMotoRoutes: UIViewController {
         collection.allowsSelection = true
         
         updateMyRouteMaster()
-        
         self.view.backgroundColor = UIColor.black
-        print(myMotoRoutesRealm.count)
     }
     
     
@@ -69,8 +67,8 @@ class ExploreMotoRoutes: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRLocations), name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm), name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
         
+        //FirebaseData.dataService.getRoutesFromFIR()
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
-        FirebaseData.dataService.getRoutesFromFIR()
     }
     
     
@@ -78,6 +76,7 @@ class ExploreMotoRoutes: UIViewController {
         let realm = try! Realm()
         myMotoRoutesRealm = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
         myRoutesMaster = RouteMaster.realmResultToMasterArray(myMotoRoutesRealm)
+        setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
     }
     
     
@@ -107,7 +106,6 @@ class ExploreMotoRoutes: UIViewController {
                 print("NOTFY: Confirm Download")
                 addRoutetoRealm(routeMaster: activeRouteMaster)
                 
-               
             default:
                 print("default click")
                 
@@ -165,14 +163,14 @@ class ExploreMotoRoutes: UIViewController {
         self.funcType = funcSwitch
         //self.deleteAllMarker()
         
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-            let tmpGap = 5
-            print("image reuse size \(_RouteMaster._RouteList.count / tmpGap)")
+       // DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+            let tmpGap = 20
+         //   	("image reuse size \(_RouteMaster._RouteList.count / tmpGap)")
             
-            DispatchQueue.global().async {
+         //   DispatchQueue.global().async {
                 MapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
-            }
-        }
+            //}
+       // }
     }
     
     
@@ -180,57 +178,83 @@ class ExploreMotoRoutes: UIViewController {
         
         var _route = RouteMaster()
         var index = 0
-        print("test 2 \(routes.count) \(key)")
         
-        for item in routes{
-                print("test 3 \(item._MotoRoute.id)")
-        }
-        
-        print("test 4")
         if let i = routes.index(where: {$0._MotoRoute.id == key}) {
-            print("test 5")
             _route = routes[i]
             index = i
         }
-
         return (_route, index)
     }
     
     
-    func setRouteMarkers(_ myRoutes: [RouteMaster], markerTitle: String){
-        for item in myRoutes {
-            setMarker(item.startLat, longitude: item.startLong, id: item._MotoRoute.id, markerTitle: markerTitle)
+    func setRouteMarkers(_ routes: [RouteMaster], markerTitle: String){
+        deleteMyRouteMarker()
+        for item in routes {
+            setMarker(item, markerTitle: markerTitle)
         }
     }
     
     
-    func setMarker(_ latitude: Double, longitude: Double, id: String, markerTitle: String){
+    func setMarker(_ routeMaster: RouteMaster, markerTitle: String){
+        let newMarker = makeMarker(routeMaster, markerTitle: markerTitle)
+        mapView.addAnnotation(newMarker)
+        routeMaster._marker = newMarker
+        
+        if(markerTitle=="myMarker"){
+            myRouteMarker.append(newMarker)
+        }
+    }
+
+    
+    func setViewMarker(_ routeMaster: RouteMaster, markerTitle: String){
+        deleteSelectedMarkerView()
+        let newMarker = makeMarker(routeMaster, markerTitle: markerTitle)
+        mapView.addAnnotation(newMarker)
+        selectedMarkerView.append(newMarker)
+    }
+    
+    func makeMarker(_ routeMaster: RouteMaster, markerTitle: String) -> MGLPointAnnotation {
+        let latitude = routeMaster.startLat
+        let longitude = routeMaster.startLong
+        let id = routeMaster._MotoRoute.id
+        
         let newMarker = MGLPointAnnotation()
         newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
         newMarker.title = markerTitle
         newMarker.subtitle = "\(id)"
         markerViewResueIdentifier = "\(id)"
-        mapView.addAnnotation(newMarker)
-        selectedMarker = newMarker
         
-        if( (markerTitle == "MyRouteMarkerViewSelected") || (markerTitle == "FirebaseMarkerViewSelected")){
-            selectedMarkerView.append(newMarker)
-            print("added view to ###")
+        return newMarker
+    }
+    
+    
+    func deleteSelectedMarkerView(){
+       // print("#### delete markerView\(selectedMarkerView)")
+        for marker in selectedMarkerView{
+           mapView.deselectAnnotation(marker, animated: true)
+           mapView.removeAnnotation(marker)
         }
+        selectedMarkerView = [MGLAnnotation]()
     }
 
-    
-    func deleteSelectedMarker(){
-        print("delete selected marker")
-        for marker in selectedMarkerView{
-           self.mapView.removeAnnotation(marker)
+    func deleteMyRouteMarker(){
+        // print("#### delete markerView\(selectedMarkerView)")
+        for marker in myRouteMarker{
+            mapView.deselectAnnotation(marker, animated: true)
+            mapView.removeAnnotation(marker)
         }
-        print("done delete selected marker")
+        myRouteMarker = [MGLAnnotation]()
     }
+
+    /*
+    func deleteSingleMarker(_ marker: MGLAnnotation){
+        print("#####delete single marker \(marker)")
+        //mapView.deselectAnnotation(marker, animated: true)
+        mapView.removeAnnotation(marker)
+    }*/
     
     
     func deleteAllMarker(){
-        
         guard (mapView.annotations != nil) else {
             return
         }
@@ -249,40 +273,43 @@ class ExploreMotoRoutes: UIViewController {
     func addRoutetoRealm(routeMaster: RouteMaster){
         print("active id \(routeMaster._MotoRoute.id)")
         
-        //make copy of route first
-        var saveRoute = RouteMaster()
-        saveRoute._MotoRoute = routeMaster._MotoRoute
+        mapView.deselectAnnotation(routeMaster._marker, animated: false)
+        mapView.removeAnnotation(routeMaster._marker)
         
-        RealmUtils.saveRouteFromFIR(saveRoute)
+        RealmUtils.saveRouteFromFIR(routeMaster)
+        print("#### marker from delete \(routeMaster._marker)")
+        
         reloadData()
-        saveRoute = RouteMaster() //destroy route again, if
     }
+    
     
     func deleteRoute(){
         let realm = try! Realm()
         try! realm.write {
-            print("try delete \(activeRouteMaster._MotoRoute) ")
+            
+            deleteSelectedMarkerView()
+            print("try delete \(activeRouteMaster) ")
             realm.delete(activeRouteMaster._MotoRoute)
-            mapView.removeAnnotation(selectedMarker)
             self.reloadData()
         }
     }
     
+    
     func reloadData() {
-        // TODO: retrieve data from the database
-       // collection.reloadSections(NSIndexSet(index: 0) as IndexSet)
-         updateMyRouteMaster()
+        updateMyRouteMaster()
         collection.reloadData()
     }
     
 
+    @IBAction func showFirRoutes(_ sender: AnyObject) {
+        FirebaseData.dataService.getRoutesFromFIR()
+    }
     
-    /*
-    @IBAction func addRoutetoRealm(_ sender: AnyObject) {
-        print("active id \(activeRoute._MotoRoute.id)")
-        RealmUtils.saveRouteFromFIR(activeRoute)
-        collection.reloadData()
-    }*/
+    
+    @IBAction func showMyrRoutes(_ sender: AnyObject) {
+        deleteAllMarker()
+        updateMyRouteMaster()
+    }
     
     
     @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {
@@ -302,20 +329,18 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print("did Select")
-        deleteSelectedMarker()
-        
         let latitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLat
         let longitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLong
-        let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id
+        //let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id
         let routeMaster = myRoutesMaster[(indexPath as NSIndexPath).item]
+        routeMaster.associateRouteListOnly()
         activeRouteMaster = routeMaster
-        
+        print("####selected marker \(activeRouteMaster._marker)")
+
         if(zoomOnSelect==true){
             MapUtils.flyToLoactionSimple(latitude, longitude: longitude, mapView: mapView, distance: 2000000, pitch: 0)
         }
        
-        
         if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
             cell.isSelected = true
             cell.toggleSelected()
@@ -323,8 +348,8 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         }
         
         collection.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-        routeMaster.associateRouteListOnly()
-        setMarker(latitude, longitude: longitude, id: routeID, markerTitle: "MyRouteMarkerViewSelected")
+        setViewMarker(routeMaster, markerTitle: "MyRouteMarkerViewSelected")
+        printAllMarker(.PrintMarker, _RouteMaster: routeMaster)
         zoomOnSelect = true // set back, false from mapview delegate select
     }
     
@@ -332,7 +357,7 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         if let cell = collectionView.cellForItem(at: indexPath) as? RouteCell {
-            print("### did really deselect \(indexPath)")
+           // print("### did really deselect \(indexPath)")
             cell.isSelected = false
             cell.toggleSelected()
         }
@@ -342,9 +367,8 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-      
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RouteCell", for: indexPath) as? RouteCell {
-            print("ROUTE CELL INIT deque")
+            //print("ROUTE CELL INIT deque")
             cell.delegate = self
             let route = myRoutesMaster[indexPath.row]
             var image = UIImage()
@@ -407,7 +431,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         }
         
         annotationImage?.isEnabled = true
-        
+        print("#### print image marker ")
         return annotationImage
     }
  
@@ -451,7 +475,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         
         
         let reuseIdentifier = markerViewResueIdentifier
-        print("resuse Identifier: \(markerViewResueIdentifier)")
+        //print("resuse Identifier: \(markerViewResueIdentifier)")
         let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
         
         if annotationView == nil {
@@ -471,16 +495,17 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             return
         }
  
-        deleteSelectedMarker()
-        selectedMarker = annotation as! MGLPointAnnotation
-        print("##did select marker \(annotation.title!) ")
+        //deleteSelectedMarkerView()
+        //selectedMarker = annotation as! MGLPointAnnotation
+
+        print("##did select marker \(annotation) ")
         
         if(annotation.title! == "firebaseMarker"){
             let routeMaster = findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
             if (!routeMaster._MotoRoute.id.isEmpty) {
-            //    addRoutetoRealm(routeMaster: routeMaster)
+
             activeRouteMaster = routeMaster
-            setMarker(routeMaster.startLat, longitude: routeMaster.startLong, id: routeMaster._MotoRoute.id, markerTitle: "FirebaseMarkerViewSelected")
+            setViewMarker(routeMaster, markerTitle: "FirebaseMarkerViewSelected")
             
                 //get locationsList for this Route from firebase
                 if(routeMaster._MotoRoute.locationsList.count<1){
