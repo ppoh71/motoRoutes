@@ -464,8 +464,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
    }
 
     
-    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-        
+    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {        
         guard let titleID = annotation.subtitle else {
             print("guard exploreMotoRoutes didSelect")
             return

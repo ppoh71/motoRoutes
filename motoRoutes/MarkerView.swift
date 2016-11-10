@@ -12,7 +12,6 @@ import Mapbox
 
 
 class MarkerView: MGLAnnotationView {
-    
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
     var color = UIColor.clear
@@ -40,7 +39,6 @@ class MarkerView: MGLAnnotationView {
         setupBackView()
         dotAnimation()
         
-        
         switch type{
             case .MyRoute:
                 setupAll(routeMaster)
@@ -52,7 +50,6 @@ class MarkerView: MGLAnnotationView {
     
     
     func setupAll(_ routeMaster: RouteMaster){
-        
         self.durationValue = routeMaster.textDuration
         self.altitudeValue = routeMaster.textHighAlt
         self.highspeedValue = routeMaster.textHighSpeed
@@ -126,7 +123,6 @@ class MarkerView: MGLAnnotationView {
         button.setImage(menuImage, for: .normal)
         self.addSubview(button)
         
-
     }
     
     
