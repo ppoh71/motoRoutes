@@ -62,7 +62,7 @@ class RouteCell: UICollectionViewCell {
     
     
     func slideUpInfo(){
-        print("slide up info")
+        //print("slide up info")
         AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - offsetUp))
         AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - offsetUp))
         isSlideUp = true
@@ -70,7 +70,7 @@ class RouteCell: UICollectionViewCell {
     
     
     func slideDownInfo(){
-        print("slide down info")
+        //print("slide down info")
         AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + offsetDown))
         
         if(isSlideUp == true){
@@ -81,9 +81,9 @@ class RouteCell: UICollectionViewCell {
     
     
     @IBAction func pressedDetail(_ sender: UIButton){
-        print("pressed in cell")
+      //  print("pressed in cell")
         if(delegate != nil){
-            print("pressed in cell not nil")
+           // print("pressed in cell not nil")
             delegate?.pressedDetails(id: routeId, index: index)
         }
     }

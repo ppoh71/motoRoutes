@@ -24,7 +24,7 @@ class InfoTemplate: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: initFrame)
-        print("init markerview frame")
+        //print("init markerview frame")
     }
     
     convenience init(labelNumber: Int, labelType: LabelType, value: String, xOff: Bool) {
@@ -83,7 +83,7 @@ class InfoTemplate: UIView {
         
         let when = DispatchTime.now() + delay // change 2 to desired number of seconds
         DispatchQueue.main.asyncAfter(deadline: when) {
-            print("animate point x\(self.frame.origin.y)")
+            //print("animate point x\(self.frame.origin.y)")
             AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
         }
     }
