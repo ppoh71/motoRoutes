@@ -38,7 +38,10 @@ class ExploreMotoRoutes: UIViewController {
     //MARK: vars
     var funcType = FuncTypes.Default
     var countReuse = 0
+    var firbaseUser = ""
     
+    @IBAction func addRoute(_ sender: Any) {
+    }
     
     //MARK: overrides
     override func viewDidLoad() {
@@ -51,26 +54,26 @@ class ExploreMotoRoutes: UIViewController {
         self.view.backgroundColor = UIColor.black
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collection.reloadData() // [2]
     }
     
-    
     override func viewDidAppear(_ animated: Bool) {
-        let userID = FIRAuth.auth()?.currentUser?.uid
-        print(userID ?? "no userid")
+        firbaseUser = (FIRAuth.auth()?.currentUser?.uid)!
+        print(firbaseUser ?? "no userid")
         
         //Listen from FlyoverRoutes if Markers are set
-        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRRoutes), name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRLocations), name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm), name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRRoutes),
+                                               name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRLocations),
+                                               name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm),
+                                               name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
         
         //FirebaseData.dataService.getRoutesFromFIR()
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
     }
-    
     
     func updateMyRouteMaster(){
         let realm = try! Realm()
@@ -79,16 +82,13 @@ class ExploreMotoRoutes: UIViewController {
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
     }
     
-    
     //print route loaction marker for each route
     func actionMenuConfirm(_ notification: Notification){
-        
         print("###ActionButton NotifY Explore")
         //get object from notification
         let notifyObj =  notification.object as! [AnyObject]
         
         if let actionType = notifyObj[0] as? ActionButtonType {
-            
             switch(actionType) {
                 
             case .Details:
@@ -101,6 +101,7 @@ class ExploreMotoRoutes: UIViewController {
                
             case .ConfirmShare:
                 print("NOTFY: Confirm Share")
+                FirebaseData.dataService.addRouteToFIR(activeRouteMaster, keychain: firbaseUser)
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
@@ -108,7 +109,6 @@ class ExploreMotoRoutes: UIViewController {
                 
             default:
                 print("default click")
-                
             }
         }
     }
@@ -116,66 +116,36 @@ class ExploreMotoRoutes: UIViewController {
     
     //display Routes routes on map as Marker
     func FIRRoutes(_ notification: Notification){
-        
         if let notifyObj =  notification.object as? [RouteMaster] {
             firebaseRouteMasters = notifyObj
-            
             setRouteMarkers(firebaseRouteMasters, markerTitle: "firebaseMarker")
-            // setRouteMarkerViews(RouteMasters, markerTitle: "allMarker")
-            
-            //            for item in RouteMasters {
-            //                let newMarker = MGLPointAnnotation()
-            //                newMarker.coordinate = CLLocationCoordinate2DMake(item._MotoRoute.startLatitude, item._MotoRoute.startLongitude)
-            //                newMarker.title = "\(item._MotoRoute.id)"
-            //                mapView.addAnnotation(newMarker)
-            //            }
         }
     }
-    
     
     //print route loaction marker for each route
     func FIRLocations(_ notification: Notification){
-       
         print("###got all loctions for fire_route")
-        
         if let notifyObj =  notification.object as? [RouteMaster] {
             activeAnnotationView?.setupAll(notifyObj[0])
         }
-        /*
-        if let notifyObj =  notification.object as? [RouteMaster] {
-            print("get notified FIR Locations ")
-            for (key,item) in notifyObj.enumerated(){
-                print(key)
-                printAllMarker(FuncTypes.PrintCircles, _RouteMaster: item)
-                activeFirebaseRoute = item
-            }
-        }
-        */
     }
-    
     
     func showActiveRoute(){
     }
-    
     
     func printAllMarker(_ funcSwitch: FuncTypes, _RouteMaster: RouteMaster){
         
         self.funcType = funcSwitch
         //self.deleteAllMarker()
-        
        // DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
             let tmpGap = 20
-         //   	("image reuse size \(_RouteMaster._RouteList.count / tmpGap)")
-            
          //   DispatchQueue.global().async {
-                MapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
+              //  MapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
             //}
        // }
     }
     
-    
     func findRouteInRouteMasters(_ routes: [RouteMaster], key: String) -> (RouteMaster, Int){
-        
         var _route = RouteMaster()
         var index = 0
         
@@ -186,14 +156,12 @@ class ExploreMotoRoutes: UIViewController {
         return (_route, index)
     }
     
-    
     func setRouteMarkers(_ routes: [RouteMaster], markerTitle: String){
         deleteMyRouteMarker()
         for item in routes {
             setMarker(item, markerTitle: markerTitle)
         }
     }
-    
     
     func setMarker(_ routeMaster: RouteMaster, markerTitle: String){
         let newMarker = makeMarker(routeMaster, markerTitle: markerTitle)
@@ -205,7 +173,6 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
 
-    
     func setViewMarker(_ routeMaster: RouteMaster, markerTitle: String){
         deleteSelectedMarkerView()
         let newMarker = makeMarker(routeMaster, markerTitle: markerTitle)
@@ -226,7 +193,6 @@ class ExploreMotoRoutes: UIViewController {
         
         return newMarker
     }
-    
     
     func deleteSelectedMarkerView(){
        // print("#### delete markerView\(selectedMarkerView)")
@@ -253,14 +219,12 @@ class ExploreMotoRoutes: UIViewController {
         mapView.removeAnnotation(marker)
     }*/
     
-    
     func deleteAllMarker(){
         guard (mapView.annotations != nil) else {
             return
         }
         self.mapView.removeAnnotations(mapView.annotations!)
     }
-    
     
     func gotoShowRoute(_ routeMaster: RouteMaster){
         if let showRouteController = self.storyboard?.instantiateViewController(withIdentifier: "showRouteVC") as? showRouteController {
@@ -282,7 +246,6 @@ class ExploreMotoRoutes: UIViewController {
         reloadData()
     }
     
-    
     func deleteRoute(){
         let realm = try! Realm()
         try! realm.write {
@@ -294,27 +257,27 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
     
-    
     func reloadData() {
         updateMyRouteMaster()
         collection.reloadData()
     }
     
-
     @IBAction func showFirRoutes(_ sender: AnyObject) {
         FirebaseData.dataService.getRoutesFromFIR()
     }
-    
     
     @IBAction func showMyrRoutes(_ sender: AnyObject) {
         deleteAllMarker()
         updateMyRouteMaster()
     }
     
-    
     @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {
         print("close mc \(segue.source)")
         segue.source.removeFromParentViewController()
+        
+        if segue.source is motoRoutes.showRouteController {
+            collection.reloadData()
+        }
     }
 }
 
@@ -326,9 +289,7 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         return myRoutesMaster.count
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let latitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLat
         let longitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLong
         //let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id

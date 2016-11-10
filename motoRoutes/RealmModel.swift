@@ -83,11 +83,11 @@ class Gyroscope: Object {
 
 class RealmUtils{
     
-    class func saveRouteRealm(_ LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ) -> String {
+    class func saveRouteRealm(_ id: String, LocationsRoute:[CLLocation], MediaObjects: [MediaMaster], screenshotFilename:String, startTimestamp:Int, distance:Double, totalTime:Int ) -> String {
         
         // save to realm
         let newRoute = Route()
-        let id = UUID().uuidString
+        //let id = UUID().uuidString
         
         newRoute.id = id
         newRoute.timestamp = Date()
@@ -153,7 +153,6 @@ class RealmUtils{
     }
     
     class func saveRouteFromFIR(_ _RouteMaster: RouteMaster){
-    
         // Get the default Realm
         let realm = try! Realm()
         let routetExists = realm.objects(Route.self).filter("id == %@", _RouteMaster._MotoRoute.id)
@@ -162,6 +161,8 @@ class RealmUtils{
             try! realm.write {
                 print("added route to realm")
                 realm.add(_RouteMaster._MotoRoute)
+                
+                FirebaseData.dataService.downloadRouteImage(_RouteMaster._MotoRoute.image, id: _RouteMaster._MotoRoute.id)
             }
         } else {
             //don't add

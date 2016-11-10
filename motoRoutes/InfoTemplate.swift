@@ -8,9 +8,7 @@
 
 import UIKit
 
-
 class InfoTemplate: UIView {
-    
     var initFrame = CGRect(x: 0, y: 0, width: 125, height: 48)
     let labelWidth = 100
     let labelHeight = 20
@@ -34,7 +32,6 @@ class InfoTemplate: UIView {
         self.labelText = labelType.label
         self.labelValue = value
         
-        //set y-position by amout of views
         self.frame.origin.y =  initFrame.height * CGFloat(labelNumber) + CGFloat(padding * labelNumber)
         
         if(xOff == true){ //set off screen by x
@@ -48,9 +45,7 @@ class InfoTemplate: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func setupLabels() {
-        
         let backView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height))
         backView.backgroundColor = blue3
         backView.layer.opacity = 0.5
@@ -80,12 +75,10 @@ class InfoTemplate: UIView {
     }
     
     func aniToX(_ delay: Double){
-        
         let when = DispatchTime.now() + delay // change 2 to desired number of seconds
         DispatchQueue.main.asyncAfter(deadline: when) {
             //print("animate point x\(self.frame.origin.y)")
             AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
         }
     }
-    
 }

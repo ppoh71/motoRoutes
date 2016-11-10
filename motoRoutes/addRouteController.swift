@@ -244,17 +244,17 @@ class addRouteController: UIViewController {
     
     //make ScreenShot and save to realm
     func saveRouteToRealm(){
-    
+        let id = UUID().uuidString
+        
         //make screenshot from active
-        let screenshotFilename = ImageUtils.screenshotMap(self.mapView)
+        let screenshotFilename = ImageUtils.screenshotMap(self.mapView, id: id)
         
         //save rout to realm and get reamlID
-        routeRealmID = RealmUtils.saveRouteRealm(self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
+        routeRealmID = RealmUtils.saveRouteRealm(id, LocationsRoute: self.locationsRoute, MediaObjects: self.MediaObjects, screenshotFilename: screenshotFilename, startTimestamp: self.startTimestamp, distance: self.distance, totalTime: self.totalTime )
         
         //load saved realm object passit to seague for showcontroller
         savedRoute = RealmUtils.getRealmByID(routeRealmID)
         performSegue(withIdentifier: "goFromAdd2Show", sender: nil)
-        
     }
     
     // press on rec Button and start rec of route

@@ -12,11 +12,8 @@ protocol RouteCellDelegate: class {
     func pressedDetails(id: String, index: Int)
 }
 
-
 class RouteCell: UICollectionViewCell {
-    
     weak var delegate: RouteCellDelegate?
-
     @IBOutlet weak var routeImage: UIImageView!
     @IBOutlet weak var distanceLbl: UILabel!
     @IBOutlet weak var durationLbl: UILabel!
@@ -32,7 +29,6 @@ class RouteCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-       
     }
     
     func configureCell(_ label: String, id: String, route: RouteMaster, image: UIImage, index: Int) {
@@ -41,13 +37,11 @@ class RouteCell: UICollectionViewCell {
         self.route = route
         self.distanceLbl.text = "\(Utils.distanceFormat(route.routeDistance)) km"
         self.distanceLbl.textColor = blue0
-        //  self.durationLbl.text = "\(Utils.clockFormat(route.routeTime)) h"
         self.routeImage.image = image
         self.layer.cornerRadius = cornerInfoViews
         self.layer.borderWidth = 1
         self.layer.borderColor = blue1.cgColor
     }
-    
     
     func toggleSelected ()
     {
@@ -60,14 +54,12 @@ class RouteCell: UICollectionViewCell {
         }
     }
     
-    
     func slideUpInfo(){
         //print("slide up info")
         AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - offsetUp))
         AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - offsetUp))
         isSlideUp = true
     }
-    
     
     func slideDownInfo(){
         //print("slide down info")
@@ -79,7 +71,6 @@ class RouteCell: UICollectionViewCell {
         }
     }
     
-    
     @IBAction func pressedDetail(_ sender: UIButton){
       //  print("pressed in cell")
         if(delegate != nil){
@@ -87,5 +78,4 @@ class RouteCell: UICollectionViewCell {
             delegate?.pressedDetails(id: routeId, index: index)
         }
     }
-    
 }

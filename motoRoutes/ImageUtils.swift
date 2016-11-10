@@ -100,8 +100,8 @@ final class ImageUtils{
         
         let cgImage = image.cgImage
         
-        let width = (cgImage?.width)! / 2
-        let height = (cgImage?.height)! / 2
+        let width = (cgImage?.width)! / 3
+        let height = (cgImage?.height)! / 3
         let bitsPerComponent = cgImage?.bitsPerComponent
         let bytesPerRow = cgImage?.bytesPerRow
         let colorSpace = cgImage?.colorSpace
@@ -349,38 +349,24 @@ final class ImageUtils{
     /**
      * make screenshot and return full filename,
      */
-    class func screenshotMap(_ mapView:MGLMapView) -> String{
-        
-        
-        var filename:String = ""
-        
-        //take the timestamp for the imagename
-        let timestampFilename = String(Int(Date().timeIntervalSince1970)) + ".png"
+    class func screenshotMap(_ mapView:MGLMapView, id: String) -> String{
+        let filename = id + ".png"
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: mapView.frame.size.width*0.99,height: mapView.frame.size.height*0.99), false, 0)
-        //var image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
         mapView.drawHierarchy(in: CGRect(x: 01, y: -01, width: mapView.frame.size.width, height: mapView.frame.size.height), afterScreenUpdates: true)
         
         let screenShot  = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        
-        //resite image
+        //resize image
         let scaledImage = ImageUtils.scaleImgaeCore(screenShot!)
         
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(scaledImage) {
-            filename = Utils.getDocumentsDirectory().appendingPathComponent(timestampFilename)
-            try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])
+            let filenameDirectory = Utils.getDocumentsDirectory().appendingPathComponent(filename)
+            try? data.write(to: URL(fileURLWithPath: filenameDirectory), options: [.atomic])
         }
         
-        //print("filename: \(filename as String)")
-        //print(timestampFilename)
-        //print(utils.getDocumentsDirectory())
-        
-        return timestampFilename
-        
+        return filename
     }
-    
-    
 } // end

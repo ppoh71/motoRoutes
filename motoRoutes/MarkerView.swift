@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Mapbox
 
-
 class MarkerView: MGLAnnotationView {
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
@@ -24,15 +23,13 @@ class MarkerView: MGLAnnotationView {
     var highspeedValue = ""
     var altitudeValue = ""
     
-    
     //MARK: INIT
     init(reuseIdentifier: String, routeMaster: RouteMaster, type: MarkerViewType) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
-        
-        //self.backgroundColor = red1
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify),
+                                               name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
+
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: 0,  dy: -initFrame.height/2)
         
@@ -48,7 +45,6 @@ class MarkerView: MGLAnnotationView {
         }
     }
     
-    
     func setupAll(_ routeMaster: RouteMaster){
         self.durationValue = routeMaster.textDuration
         self.altitudeValue = routeMaster.textHighAlt
@@ -60,50 +56,45 @@ class MarkerView: MGLAnnotationView {
         setupActionMenu()
     }
     
-    
     //MARK:
     func actionButtonNotify(_ notification: Notification){
-        
-        //get object from notification
         let notifyObj =  notification.object as! [AnyObject]
-        
-        if let actionType = notifyObj[0] as? ActionButtonType {
-            
-            switch(actionType) {
+            if let actionType = notifyObj[0] as? ActionButtonType {
                 
-            case .Details:
-                print("NOTFY: Clicked Details")
-                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                
-            case .DeleteRoute:
-                print("NOTFY: Delete Route")
-                setupActionConfirm(actionType: actionType)
-                
-            case .ShareRoute:
-                print("NOTFY: Share Route")
-                setupActionConfirm(actionType: actionType)
-                
-            case .DownloadRoute:
-                print("NOTFY: Download Route")
-                setupActionConfirm(actionType: actionType)
-                
-            case .ConfirmDelete:
-                print("NOTFY: Confirm Delete")
-                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                
-            case .ConfirmShare:
-                print("NOTFY: Confirm Share")
-                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                
-            case .ConfirmDownload:
-                print("NOTFY: Confirm Download")
-                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                
-            default:
-                print("default click")
-                
+                switch(actionType) {
+                    
+                case .Details:
+                    print("NOTFY: Clicked Details")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                    
+                case .DeleteRoute:
+                    print("NOTFY: Delete Route")
+                    setupActionConfirm(actionType: actionType)
+                    
+                case .ShareRoute:
+                    print("NOTFY: Share Route")
+                    setupActionConfirm(actionType: actionType)
+                    
+                case .DownloadRoute:
+                    print("NOTFY: Download Route")
+                    setupActionConfirm(actionType: actionType)
+                    
+                case .ConfirmDelete:
+                    print("NOTFY: Confirm Delete")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                    
+                case .ConfirmShare:
+                    print("NOTFY: Confirm Share")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                    
+                case .ConfirmDownload:
+                    print("NOTFY: Confirm Download")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                    
+                default:
+                    print("default click")
+                }
             }
-        }
     }
     
     //MARK: Setup UI elements
@@ -113,7 +104,6 @@ class MarkerView: MGLAnnotationView {
         backView.layer.opacity = 0.5
         self.addSubview(backView)
     }
-    
     
     func setupMenuButton(){
         let menuImage = UIImage(named: "menuIcon") as UIImage?
@@ -125,20 +115,17 @@ class MarkerView: MGLAnnotationView {
         
     }
     
-    
     func setupSpinner(){
         let spinner = SpinnerView(frame: CGRect(x: initFrame.width/4, y: initFrame.height/4, width: initFrame.height/6, height: initFrame.height/6))
         spinner.tag = 99
         self.addSubview(spinner)
     }
     
-    
     func removeSpinner(){
         if let viewWithTag = self.viewWithTag(99) {
             viewWithTag.removeFromSuperview()
         }
     }
-    
     
     func setupInfoLabels(){
         let clipView = UIView(frame: CGRect(x: 10, y: 30, width: initFrame.width, height: initFrame.height - 30))
@@ -158,10 +145,8 @@ class MarkerView: MGLAnnotationView {
         clipView.addSubview(speedLabel)
         
     }
-    
-    
+
     func setupActionMenu(){
-        
         let actionView = UIView(frame: CGRect(x: 140, y: 0, width: 125, height: 100 ))
         actionView.backgroundColor = green3
         actionView.layer.opacity = 1
@@ -185,6 +170,9 @@ class MarkerView: MGLAnnotationView {
         self.addSubview(confirmView)
     }
     
+    func setupActionConfirm(actionType: ActionButtonType){
+        confirmView.setupConfirm(actionType)
+    }
     
     func dotAnimation(){
         dot.frame = CGRect(x: initFrame.width/2, y: initFrame.height, width: 10, height: 10)
@@ -192,26 +180,19 @@ class MarkerView: MGLAnnotationView {
         dot.addDotAnimation()
     }
     
-    
-    func setupActionConfirm(actionType: ActionButtonType){
-        confirmView.setupConfirm(actionType)
-    }
-    
-    
     //MARK: Initialiser
     override init(frame: CGRect) {
         super.init(frame: initFrame)
         print("init markerview frame")
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func layoutSubviews() {
         super.layoutSubviews()
     }
-    
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -222,8 +203,4 @@ class MarkerView: MGLAnnotationView {
         layer.borderWidth = selected ? frame.width / 4 : 2
         layer.add(animation, forKey: "borderWidth")
     }
-    
 }
-
-
-

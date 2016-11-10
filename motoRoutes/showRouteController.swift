@@ -53,7 +53,7 @@ class showRouteController: UIViewController {
     let realm = try! Realm()
     
     // realm object list
-    var motoRoute: Route?
+    var motoRoute: Route!
     let _RouteMaster = RouteMaster()
     var RouteList = [LocationMaster]()
    // var markersSet = [MarkerAnnotation]()
@@ -713,7 +713,7 @@ class showRouteController: UIViewController {
     // new screenshot
     @IBAction func newScreenshot(_ sender: UIButton) {
               
-        let screenshotFilename = ImageUtils.screenshotMap(self.mapViewShow)
+        let screenshotFilename = ImageUtils.screenshotMap(self.mapViewShow, id: motoRoute.id)
         
         //save new screenshot to realm
         //print(motoRoute)

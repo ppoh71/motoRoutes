@@ -7,21 +7,23 @@
 //
 
 import Foundation
+import UIKit
 import Firebase
+import FirebaseStorage
 
-let FIR_DB = FIRDatabase.database().reference()
 
+let FirDB = FIRDatabase.database().reference()
+let FirStorage = FIRStorage.storage()
 
 class FirebaseData {
-    
     static let dataService = FirebaseData()
     
     var r_ = RouteMaster()
-    
-    fileprivate var _REF_BASE = FIR_DB
-    fileprivate var _REF_ROUTES = FIR_DB.child("motoRoutes")
-    fileprivate var _REF_LOCATIONS = FIR_DB.child("Locations")
-    
+    fileprivate var _REF_BASE = FirDB
+    fileprivate var _REF_ROUTES = FirDB.child("motoRoutes")
+    fileprivate var _REF_LOCATIONS = FirDB.child("Locations")
+    fileprivate var _REF_STORAGE = FirStorage.reference(forURL: "gs://motoroutes-c018f.appspot.com")
+
     var REF_Base: FIRDatabaseReference{
         return _REF_BASE
     }
@@ -34,18 +36,15 @@ class FirebaseData {
         return _REF_LOCATIONS
     }
     
-    
+    var FIR_STORAGE: FIRStorageReference{
+        return _REF_STORAGE
+    }
+
     func addRouteToFIR(_ motoRoute: RouteMaster, keychain: String) {
-        
-        //let locationKey = FIR_ROUTES.child("Locations").childByAutoId().key
-        //let motoRouteKey = FIR_ROUTES.child("motoRoutes").childByAutoId().key
         let userID = FIRAuth.auth()?.currentUser?.uid
-        
-        print(userID ?? "no userifd")
-        
         var routeKey = motoRoute._MotoRoute.id
         routeKey = routeKey.replacingOccurrences(of: "#", with: "-")
-        print("ROUTEKEY: \(routeKey)")
+        print(userID ?? "no userifd")
         
         //add routeMaster data
         let motoRouteData: Dictionary<String, AnyObject> = [
@@ -56,11 +55,11 @@ class FirebaseData {
             "timestamp": motoRoute._MotoRoute.timestamp.timeIntervalSince1970 as AnyObject,
             "locationStart": motoRoute._MotoRoute.locationStart as AnyObject,
             "locationEnd" : motoRoute._MotoRoute.locationEnd as AnyObject,
-            "distance" : motoRoute._MotoRoute.distance as AnyObject
+            "distance" : motoRoute._MotoRoute.distance as AnyObject,
+            "image" : motoRoute._MotoRoute.image as AnyObject
             ]
         childUpdatesFIR(FIR_ROUTES, key: String(routeKey), data: motoRouteData)
 
-    
         //add all locations
         var locationAll = [String:[String:AnyObject]]()
         
@@ -78,14 +77,12 @@ class FirebaseData {
                 ]
             locationAll[String(key)] = location
         }
-        
         childUpdatesFIR(FIR_LOCATIONS, key: String(routeKey), data: locationAll as Dictionary<String, AnyObject>)
+        uploadRouteImage(motoRoute._MotoRoute.image, id: motoRoute._MotoRoute.id)
     }
-    
     
     // firebase updates
     func childUpdatesFIR(_ refFIR: FIRDatabaseReference, key: String, data:  Dictionary<String, AnyObject>){
-    
        refFIR.child("/\(key)").updateChildValues(data, withCompletionBlock: { (error, ref) in
             print("Locations done with it")
             if error != nil {
@@ -96,26 +93,25 @@ class FirebaseData {
         })
     }
     
-    
     func deleteFIRChild(_ child: String){
         FIR_LOCATIONS.child("/\(child)").removeValue()
     }
     
-    
     func getRoutesFromFIR(){
-        
         FIR_ROUTES.observeSingleEvent(of: .value, with: { (snapshot) in
 
             if let snap = snapshot.children.allObjects as? [FIRDataSnapshot] {
-                
                 var routes = [RouteMaster]()
                 
                 for item in snap {
-                    
                     let newRoute = Route()
                     newRoute.id = item.key
                     
                     let snapshotValue = item.value as? NSDictionary
+                    
+                    if let _image = snapshotValue?["image"] as? String {
+                        newRoute.image = _image
+                    }
                     
                     if let _startLat = snapshotValue?["startLatitude"] as? Double {
                          newRoute.startLatitude = _startLat
@@ -146,7 +142,6 @@ class FirebaseData {
                     newMaster._MotoRoute = newRoute
                     routes.append(newMaster)
                 }
-
                 NotificationCenter.default.post(name: Notification.Name(rawValue: firbaseGetRoutesNotificationKey), object: routes)
             }
             // ...
@@ -156,21 +151,16 @@ class FirebaseData {
         }
     }
     
-    
-    //get all locations from FIR by routeID and return [LocationMaster]
     func geLocationsRouteFIR(_ _RouteMaster: RouteMaster){
-    
         let child = _RouteMaster._MotoRoute.id
+       
         if  child.characters.count > 5 {
-        
                 FIR_LOCATIONS.child("/\(child)").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let snap = snapshot.children.allObjects as? [FIRDataSnapshot] {
-
+                   
                     for item in snap {
-                    
                         let newLocation = Location()
-                        
                         let snapshotValue = item.value as? NSDictionary
                         
                         if let _accuracy = snapshotValue?["accuracy"] as? Double {
@@ -208,8 +198,6 @@ class FirebaseData {
                         //add all locations to route model as list
                         _RouteMaster._MotoRoute.locationsList.append(newLocation)
                     }
-                    
-                    //make locationMasters iut if list
                     _RouteMaster.associateRouteFIR()
                     
                     let returnObj = [_RouteMaster]
@@ -222,7 +210,48 @@ class FirebaseData {
             print(error.localizedDescription)
             }
         }
+    }
+    
+    func uploadRouteImage(_ imgName: String, id: String){
+        // File located on disk
+        print(id)
+        let localFile = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
+        let localFileUrl = URL(fileURLWithPath: localFile)
+        
+        // Create a reference to the file you want to upload
+        let riversRef = FIR_STORAGE.child("\(id)/\(id).png")
+        
+        // Upload the file to the path "images/rivers.jpg"
+        let _ = riversRef.putFile(localFileUrl, metadata: nil) { metadata, error in
+            if (error != nil) {
+                // Uh-oh, an error occurred!
+            } else {
+                // Metadata contains file metadata such as size, content-type, and download URL.
+                let downloadURL = metadata!.downloadURL
+                print(downloadURL)
+            }
+        }
+    }
+    
+    func downloadRouteImage(_ imgName: String, id: String){
+        // Create a reference to the file you want to download
+        let islandRef = FIR_STORAGE.child("\(id)/\(imgName)")
+        
+        // Download to the local filesystem
+        let filename = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
+        
+        // Create local filesystem URL
+        let localURL: NSURL! = NSURL(string: filename)
+        
+        // Download to the local filesystem
+        _ = islandRef.write(toFile: localURL as URL) { (URL, error) -> Void in
+            if (error != nil) {
+                // Uh-oh, an error occurred!
+            } else {
+                // Local file URL for "images/island.jpg" is returned
+            }
+        }
+    }
+
 }
 
-
-}
