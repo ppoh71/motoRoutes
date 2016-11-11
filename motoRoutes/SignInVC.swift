@@ -12,31 +12,28 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import SwiftKeychainWrapper
 
-
-
 class SignInVC: UIViewController {
-
   
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    var dontLoop = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
-       
-          if let keychain = KeychainWrapper.standard.string(forKey: KEY_UID){
+          if let keychain = KeychainWrapper.standard.string(forKey: KEY_UID ){
+            if(dontLoop == false){
                 performSegue(withIdentifier: "LoggedInSegue", sender: nil)
                 print("MOTOROUTES: checked keychain \(keychain)")
+                dontLoop = false
+            }
           }
     }
     
     @IBAction func facebookButtonTapped(_ sender: AnyObject) {
-        
         let facebookLogin = FBSDKLoginManager()
-        
         facebookLogin.logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             
             print("MOTOROUTES: Result")
@@ -54,7 +51,6 @@ class SignInVC: UIViewController {
                 let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 self.firebaseAuth(credential)
             }
-            
         }
     }
     
@@ -91,11 +87,9 @@ class SignInVC: UIViewController {
         }
     }
     
-    
     func firebaseAuth(_ credential: FIRAuthCredential){
-        
         FIRAuth.auth()?.signIn(with: credential) { (user, error) in
-            
+
             if error != nil {
                 print("MOTOROUTES: Unable to login with firebase")
             } else {
@@ -107,20 +101,13 @@ class SignInVC: UIViewController {
         }
     }
     
-    //write to jeychain for autosign in
     func completeSignIn(_ uid: String){
         let _ = KeychainWrapper.standard.set(uid, forKey: KEY_UID)
         performSegue(withIdentifier: "LoggedInSegue", sender: nil)
         }
     
-    
-
-    //Close segue
     @IBAction func closeSignInVC(_ segue:UIStoryboardSegue) {
-        
         print("segue close closeSignInVC")
-        
+        dontLoop = true
     }
-    
-    
 }

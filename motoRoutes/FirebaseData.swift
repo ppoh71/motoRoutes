@@ -58,8 +58,16 @@ class FirebaseData {
             "distance" : motoRoute._MotoRoute.distance as AnyObject,
             "image" : motoRoute._MotoRoute.image as AnyObject
             ]
-        childUpdatesFIR(FIR_ROUTES, key: String(routeKey), data: motoRouteData)
+        
+        
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+            self.childUpdatesFIR(self.FIR_ROUTES, key: String(routeKey), data: motoRouteData)
+            DispatchQueue.global().async {
+                //do stuff in main thread
+            }
+        }
 
+        
         //add all locations
         var locationAll = [String:[String:AnyObject]]()
         
@@ -77,8 +85,16 @@ class FirebaseData {
                 ]
             locationAll[String(key)] = location
         }
-        childUpdatesFIR(FIR_LOCATIONS, key: String(routeKey), data: locationAll as Dictionary<String, AnyObject>)
-        uploadRouteImage(motoRoute._MotoRoute.image, id: motoRoute._MotoRoute.id)
+        
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+            self.childUpdatesFIR(self.FIR_LOCATIONS, key: String(routeKey), data: locationAll as Dictionary<String, AnyObject>)
+            DispatchQueue.global().async {
+                //do stuff in main thread
+            }
+        }
+        
+       self.uploadRouteImage(motoRoute._MotoRoute.image, id: motoRoute._MotoRoute.id)
+       
     }
     
     // firebase updates
@@ -222,13 +238,19 @@ class FirebaseData {
         let riversRef = FIR_STORAGE.child("\(id)/\(id).png")
         
         // Upload the file to the path "images/rivers.jpg"
-        let _ = riversRef.putFile(localFileUrl, metadata: nil) { metadata, error in
-            if (error != nil) {
-                // Uh-oh, an error occurred!
-            } else {
-                // Metadata contains file metadata such as size, content-type, and download URL.
-                let downloadURL = metadata!.downloadURL
-                print(downloadURL)
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+            let _ = riversRef.putFile(localFileUrl, metadata: nil) { metadata, error in
+                if (error != nil) {
+                    // Uh-oh, an error occurred!
+                } else {
+                    // Metadata contains file metadata such as size, content-type, and download URL.
+                    let downloadURL = metadata!.downloadURL
+                    print(downloadURL)
+                }
+            }
+
+            DispatchQueue.global().async {
+                //do stuff in main thread
             }
         }
     }

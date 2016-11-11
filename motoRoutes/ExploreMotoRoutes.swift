@@ -60,8 +60,12 @@ class ExploreMotoRoutes: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        firbaseUser = (FIRAuth.auth()?.currentUser?.uid)!
-        print(firbaseUser ?? "no userid")
+        
+        if((FIRAuth.auth()?.currentUser?.uid) != nil){
+            firbaseUser = (FIRAuth.auth()?.currentUser?.uid)!
+        }
+        
+        print(firbaseUser)
         
         //Listen from FlyoverRoutes if Markers are set
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRRoutes),
@@ -101,7 +105,7 @@ class ExploreMotoRoutes: UIViewController {
                
             case .ConfirmShare:
                 print("NOTFY: Confirm Share")
-                FirebaseData.dataService.addRouteToFIR(activeRouteMaster, keychain: firbaseUser)
+                  FirebaseData.dataService.addRouteToFIR(self.activeRouteMaster, keychain: self.firbaseUser)
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
