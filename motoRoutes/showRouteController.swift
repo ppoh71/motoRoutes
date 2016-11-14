@@ -15,9 +15,6 @@ import Crashlytics
 import pop
 //import SwiftKeychainWrapper
 
-
-
-
 class showRouteController: UIViewController {
     
     //MARK: Outles

@@ -68,9 +68,9 @@ class ExploreMotoRoutes: UIViewController {
         print(firbaseUser)
         
         //Listen from FlyoverRoutes if Markers are set
-        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRRoutes),
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.gotRoutesfromFirbase),
                                                name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.FIRLocations),
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.gotLocationsFromFirbase),
                                                name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm),
                                                name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
@@ -109,6 +109,7 @@ class ExploreMotoRoutes: UIViewController {
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
+                
                 addRoutetoRealm(routeMaster: activeRouteMaster)
                 
             default:
@@ -117,9 +118,8 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
     
-    
     //display Routes routes on map as Marker
-    func FIRRoutes(_ notification: Notification){
+    func gotRoutesfromFirbase(_ notification: Notification){
         if let notifyObj =  notification.object as? [RouteMaster] {
             firebaseRouteMasters = notifyObj
             setRouteMarkers(firebaseRouteMasters, markerTitle: "firebaseMarker")
@@ -127,7 +127,7 @@ class ExploreMotoRoutes: UIViewController {
     }
     
     //print route loaction marker for each route
-    func FIRLocations(_ notification: Notification){
+    func gotLocationsFromFirbase(_ notification: Notification){
         print("###got all loctions for fire_route")
         if let notifyObj =  notification.object as? [RouteMaster] {
             activeAnnotationView?.setupAll(notifyObj[0])
@@ -142,7 +142,7 @@ class ExploreMotoRoutes: UIViewController {
         self.funcType = funcSwitch
         //self.deleteAllMarker()
        // DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-            let tmpGap = 20
+          //  let tmpGap = 20
          //   DispatchQueue.global().async {
               //  MapUtils.printMarker(_RouteMaster._RouteList, mapView: self.mapView, key: 0, amount: _RouteMaster._MotoRoute.locationsList.count-1 , gap: tmpGap, funcType: self.funcType )
             //}
@@ -273,6 +273,7 @@ class ExploreMotoRoutes: UIViewController {
     @IBAction func showMyrRoutes(_ sender: AnyObject) {
         deleteAllMarker()
         updateMyRouteMaster()
+        collection.reloadData()
     }
     
     @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {

@@ -11,7 +11,6 @@ import UIKit
 import Firebase
 import FirebaseStorage
 
-
 let FirDB = FIRDatabase.database().reference()
 let FirStorage = FIRStorage.storage()
 
@@ -59,7 +58,6 @@ class FirebaseData {
             "image" : motoRoute._MotoRoute.image as AnyObject
             ]
         
-        
         DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
             self.childUpdatesFIR(self.FIR_ROUTES, key: String(routeKey), data: motoRouteData)
             DispatchQueue.global().async {
@@ -67,7 +65,6 @@ class FirebaseData {
             }
         }
 
-        
         //add all locations
         var locationAll = [String:[String:AnyObject]]()
         
@@ -235,7 +232,7 @@ class FirebaseData {
         let localFileUrl = URL(fileURLWithPath: localFile)
         
         // Create a reference to the file you want to upload
-        let riversRef = FIR_STORAGE.child("\(id)/\(id).png")
+        let riversRef = FIR_STORAGE.child("routeImage/\(id)/\(id).png")
         
         // Upload the file to the path "images/rivers.jpg"
         DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
@@ -256,21 +253,16 @@ class FirebaseData {
     }
     
     func downloadRouteImage(_ imgName: String, id: String){
-        // Create a reference to the file you want to download
-        let islandRef = FIR_STORAGE.child("\(id)/\(imgName)")
+        let islandRef = FIR_STORAGE.child("\(id)/\(id).png")
         
-        // Download to the local filesystem
-        let filename = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
+        let localFilename = Utils.getDocumentsDirectory().appendingPathComponent("\(id).png")
         
-        // Create local filesystem URL
-        let localURL: NSURL! = NSURL(string: filename)
-        
-        // Download to the local filesystem
-        _ = islandRef.write(toFile: localURL as URL) { (URL, error) -> Void in
+        _ = islandRef.write(toFile: URL(fileURLWithPath: localFilename)) { (URL, error) -> Void in
             if (error != nil) {
-                // Uh-oh, an error occurred!
+                print("error downloading image from fire \(error)")
             } else {
                 // Local file URL for "images/island.jpg" is returned
+                print("downloaded image from FIR \(URL)")
             }
         }
     }

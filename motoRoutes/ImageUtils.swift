@@ -10,20 +10,12 @@ import Foundation
 import UIKit
 import Mapbox
 
-
-
-
-// usage Icon.plane.image
-    
-
 final class ImageUtils{
-    
     
     /*
      * load images from path and return image
      */
     class func loadImageFromPath(_ path: NSString) -> UIImage? {
-    
         let image = UIImage(contentsOfFile: path as String)
         
         if image == nil {
@@ -34,12 +26,10 @@ final class ImageUtils{
         }
     }
     
-    
     /*
      * load images by image name and from documantsDirectory
      */
     class func loadImageFromName(_ imgName: String) -> UIImage? {
-        
         guard  imgName.characters.count > 0 else {
             print("ERROR: No image name")
             return UIImage()
@@ -49,16 +39,12 @@ final class ImageUtils{
         let image = ImageUtils.loadImageFromPath(imgPath as NSString)
         
         return image
-        
     }
-    
 
-    
     /*
      * resize image by width, no transparency on png
      */
     class func resizeImage(_ image: UIImage, newWidth: CGFloat) -> UIImage {
-        
         let scale = newWidth / image.size.width
         let newHeight = image.size.height * scale
         UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
@@ -69,12 +55,10 @@ final class ImageUtils{
         return newImage!
     }
     
-    
     /*
      * scale image with also png with/alpha
      */
     class  func scaleImage(_ image: UIImage, toSize newSize: CGSize) -> (UIImage) {
-        
         let newRect = CGRect(x: 0,y: 0, width: newSize.width, height: newSize.height).integral
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         
@@ -91,15 +75,11 @@ final class ImageUtils{
         return newImage
     }
     
-    
     /*
      * Scale image with core graphics
      */
-    
     class func scaleImgaeCore(_ image: UIImage) -> UIImage{
-        
         let cgImage = image.cgImage
-        
         let width = (cgImage?.width)! / 3
         let height = (cgImage?.height)! / 3
         let bitsPerComponent = cgImage?.bitsPerComponent
@@ -115,18 +95,12 @@ final class ImageUtils{
         let scaledImage = context?.makeImage().flatMap { UIImage(cgImage: $0) }
         
         return scaledImage!
-        
     }
     
     /*
      draw a line on an image
-     
-     - parameter type: print for recording and scrren shot use String "Recording" else nil
-     
      */
     class func drawLineOnImage(_ funcType: FuncTypes) -> UIImage{
-        
-        //def vars
         let drawHeight = 200
         //var rectangle =  CGRect(x: 0, y: 0, width: 0, height: 0)
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 5, height: drawHeight), false, 0)
@@ -189,7 +163,6 @@ final class ImageUtils{
         return img!
     }
     
-    
     class func dotColorMarker(_ width: Int, height: Int, color: UIColor) -> UIImage {
     
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
@@ -203,21 +176,16 @@ final class ImageUtils{
         return img!
     }
     
-    
-    
     /* helper func draw circle line */
     static func drawCircle (_ context:inout CGContext, width: Int, height:Int, LineColor : UIColor) {
-
         context.addArc(center: CGPoint(x: CGFloat(width/2), y: CGFloat(height/2)), radius:  CGFloat(width/2)-1, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
         context.setFillColor(LineColor.cgColor)
         context.setStrokeColor(LineColor.cgColor)
         context.drawPath(using: .fillStroke)
     }
     
-    
     /* helper func draw pixel line */
     static func drawLine (_ context: inout CGContext, drawHeight: Int, LineHeight: Int, LineColor: UIColor, perCent: Int, alpha: Double) {
-        
         let heightPercent = LineHeight*perCent/100
         
         context.move(to: CGPoint(x: 0, y: 0))
@@ -230,10 +198,7 @@ final class ImageUtils{
         context.fill(rectangle)
     }
     
-    
-    
     class func drawSliderThumb(_ width:Int, height:Int, lineWidth: Int, color: UIColor, alpha: Int) -> UIImage{
-        
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         let context = UIGraphicsGetCurrentContext()
         
@@ -259,12 +224,8 @@ final class ImageUtils{
         return img!
     }
     
-    
-    
     static func makeSpeedometerImage(_ width: Int, height: Int)-> UIImage{
-        
         let colors = ColorPalette.colors
-        
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         let context = UIGraphicsGetCurrentContext()
         
@@ -273,10 +234,8 @@ final class ImageUtils{
         context?.scaleBy(x: 1.0, y: -1.0);
         
         for (index, color) in colors.enumerated() {
-           
             let currentColor = ColorUtils.hexTorgbColor(color)
             context?.setStrokeColor(currentColor.cgColor)
-            
             let rectangle = CGRect(x: 0, y: (height/colors.count)*index, width: width, height: height/colors.count)
             context?.addRect(rectangle)
             context?.strokePath()
@@ -285,19 +244,15 @@ final class ImageUtils{
             
             print(color)
         }
-        
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
         return img!
     }
-    
         
     /*
      * save imge to file
      */
     class func saveImageToFile(_ image:UIImage, imageName: String){
-        
         //screenShotRoute.image = screenShot
         if let data = UIImagePNGRepresentation(image) {
             let filename = Utils.getDocumentsDirectory().appendingPathComponent(imageName)
@@ -305,34 +260,20 @@ final class ImageUtils{
             
             print("\(write) - \(filename)")
         }
-        
-        //print("IMAGE SAVED")
     }
-    
     
     /*
      * save imge to file
      */
     class func saveGoogleImageToFile(_ image:UIImage, key: Int, id: String) {
-        
-        //screenShotRoute.image = screenShot
         if UIImagePNGRepresentation(image) != nil {
-            
             ImageUtils.createDirectory(id)
-            
-           let filename = Utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
-           
-           // let write = data.writeToFile(filename, atomically: true)
-           // let image = UIImage(data: NSData(contentsOfURL: NSURL(string: self.remoteImage)))
+            let filename = Utils.getDocumentsDirectory().appendingPathComponent("/\(id)/\(key).jpeg")
             
             try? UIImageJPEGRepresentation(image, 0.75)!.write(to: URL(fileURLWithPath: filename), options: [.atomic])
-            
             print("\(write) - \(filename)")
         }
-        
-        //print("IMAGE SAVED")
     }
-    
     
     class func createDirectory(_ directoy: String){
         let fileManager = FileManager.default
@@ -344,7 +285,6 @@ final class ImageUtils{
             print("Already dictionary created.")
         }
     }
-    
     
     /**
      * make screenshot and return full filename,
