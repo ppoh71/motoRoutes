@@ -52,6 +52,11 @@ let textColor = UIColor.white
 //CornerRadius
 let cornerInfoViews = CGFloat(5)
 
+//Info Labes and Buttons Sizes
+let actionLabelWidth = 125;
+let actionLabelHeight = 48;
+let actionLabelPadding = 12;
+
 
 // Labels
 let distanceLabelText = NSLocalizedString("View.RouteInfo.DistanceLabel", comment: "distanceLabelText")
@@ -108,6 +113,7 @@ enum ActionButtonType {
     case ConfirmShare
     case ConfirmDownload
     case Cancel
+    case ActionMenuMyRoutes
     
     var buttonText: String {
         switch self {
@@ -120,6 +126,7 @@ enum ActionButtonType {
         case .ConfirmShare: return "OK"
         case .ConfirmDownload : return "OK"
         case .Cancel: return "Cancel"
+        case .ActionMenuMyRoutes: return "ActionMenuMyRoutes"
         }
     }
     
@@ -134,6 +141,7 @@ enum ActionButtonType {
         case .ConfirmShare: return "--"
         case .ConfirmDownload: return "--"
         case .Cancel: return "---"
+        case .ActionMenuMyRoutes: return "---"
         }
     }
     
@@ -148,6 +156,7 @@ enum ActionButtonType {
         case .ConfirmShare: return ActionButtonType.ConfirmShare
         case .ConfirmDownload: return ActionButtonType.ConfirmDownload
         case .Cancel: return ActionButtonType.DefState
+        case .ActionMenuMyRoutes: return ActionButtonType.DefState
         }
     }
     
@@ -159,8 +168,17 @@ enum ActionButtonType {
 
 
 //Display different MarkerViewStates
-enum MarkerViewType {
+enum ActionMenuType {
+    case MyRoutes
+    case AllRoutes
+    
+    init(){
+        self = .MyRoutes
+    }
+}
 
+//Display different MarkerViewStates
+enum MarkerViewType {
     case MyRoute
     case FirRoute
     

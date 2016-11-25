@@ -50,7 +50,7 @@
 		55DEC6261C99C20B000BA85F /* motoRouteCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */; };
 		55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */; };
 		55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E149701CE22DE000B576BB /* RouteSlider.swift */; };
-		55E2DE1C1DBA3DD1002C799C /* InfoTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E2DE1B1DBA3DD1002C799C /* InfoTemplate.swift */; };
+		55E2DE1C1DBA3DD1002C799C /* InfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E2DE1B1DBA3DD1002C799C /* InfoLabel.swift */; };
 		55EB15F91D9BFB1E0013528B /* GoogleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EB15F81D9BFB1E0013528B /* GoogleData.swift */; };
 		55EF09EA1C5FD89000F2857E /* showRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EF09E91C5FD89000F2857E /* showRouteController.swift */; };
 		55F009191D1148BA00FA2400 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55F0091B1D1148BA00FA2400 /* Localizable.strings */; };
@@ -132,7 +132,7 @@
 		55DEC6251C99C20B000BA85F /* motoRouteCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteCamera.swift; sourceTree = "<group>"; };
 		55E1496D1CE1CD7B00B576BB /* motoRouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoRouteOptions.swift; sourceTree = "<group>"; };
 		55E149701CE22DE000B576BB /* RouteSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteSlider.swift; sourceTree = "<group>"; };
-		55E2DE1B1DBA3DD1002C799C /* InfoTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTemplate.swift; sourceTree = "<group>"; };
+		55E2DE1B1DBA3DD1002C799C /* InfoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoLabel.swift; sourceTree = "<group>"; };
 		55EB15F81D9BFB1E0013528B /* GoogleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleData.swift; sourceTree = "<group>"; };
 		55EF09E91C5FD89000F2857E /* showRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showRouteController.swift; sourceTree = "<group>"; };
 		55F0091D1D114B6300FA2400 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -313,7 +313,7 @@
 		55BB80C41D630D2900D0CCEF /* InfoLabels */ = {
 			isa = PBXGroup;
 			children = (
-				55E2DE1B1DBA3DD1002C799C /* InfoTemplate.swift */,
+				55E2DE1B1DBA3DD1002C799C /* InfoLabel.swift */,
 				55BB80C71D630DD100D0CCEF /* RouteInfos.swift */,
 				55BB80C51D630D8B00D0CCEF /* RouteInfos.xib */,
 			);
@@ -700,7 +700,7 @@
 				5546F02E1DCB9FDF00D13F1D /* SpinnerView.swift in Sources */,
 				55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */,
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,
-				55E2DE1C1DBA3DD1002C799C /* InfoTemplate.swift in Sources */,
+				55E2DE1C1DBA3DD1002C799C /* InfoLabel.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				552D32A41DB926DD0050E62D /* HTMLStringExtension.swift in Sources */,
 				5562BA551C73663900EF340D /* Utils.swift in Sources */,

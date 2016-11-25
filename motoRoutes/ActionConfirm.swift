@@ -35,7 +35,7 @@ class ActionConfirm: UIView{
         label.text = actionType.confirmText
         self.addSubview(label)
         
-        okButton = ActionButton(initFrame: CGRect(x: 10, y: self.frame.height - 40, width: 40, height: 30), buttonType: actionType.confirmAction)
+        okButton = ActionButton(buttonType: actionType.confirmAction, buttonNumber: 2, xOff: false)
         self.addSubview(okButton)
     }
     

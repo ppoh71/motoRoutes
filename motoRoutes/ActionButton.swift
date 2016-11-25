@@ -14,19 +14,28 @@ protocol ActionButtonDelegate: class{
 
 class ActionButton: UIView {
     weak var delegate: ActionButtonDelegate?
+    var initFrame = CGRect(x: 0, y: 0, width: actionLabelWidth, height: actionLabelHeight)
     var actionButton = UIButton()
     var buttonType = ActionButtonType()
+    let padding = actionLabelPadding
+    var yPos: CGFloat = 0
     
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: initFrame)
         //print("init action button")
-        setupButton()
+        //setupButton()
     }
     
-    convenience init(initFrame: CGRect, buttonType: ActionButtonType) {
-        self.init(frame: initFrame)
+    convenience init(buttonType: ActionButtonType, buttonNumber: Int, xOff: Bool) {
+        self.init(frame: CGRect.zero)
         self.buttonType = buttonType
-        actionButton.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height)
+        self.backgroundColor = UIColor.brown
+        self.frame.origin.y = initFrame.height * CGFloat(buttonNumber) + CGFloat(padding * buttonNumber)
+        
+        if(xOff == true){ //set off screen by x
+            self.frame.origin.x =  -initFrame.width
+        }
+        
         setupButton()
        }
     
@@ -35,12 +44,21 @@ class ActionButton: UIView {
     }
 
     func setupButton(){
+        actionButton.frame = initFrame //assign view frame also to button
         actionButton.setTitle(buttonType.buttonText, for: .normal)
         actionButton.backgroundColor = green1
         actionButton.actionType = buttonType
         actionButton.isUserInteractionEnabled = true
         actionButton.addTarget(self, action: #selector(pressedButton), for: .touchUpInside)
         self.addSubview(actionButton)
+    }
+    
+    func aniToX(_ delay: Double){
+        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
+        }
     }
     
     func pressedButton(_ sender: UIButton){

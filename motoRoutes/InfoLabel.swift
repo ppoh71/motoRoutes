@@ -8,11 +8,11 @@
 
 import UIKit
 
-class InfoTemplate: UIView {
-    var initFrame = CGRect(x: 0, y: 0, width: 125, height: 48)
+class InfoLabel: UIView {
+    var initFrame = CGRect(x: 0, y: 0, width: actionLabelWidth, height: actionLabelHeight)
     let labelWidth = 100
     let labelHeight = 20
-    let padding = 12
+    let padding = actionLabelPadding
     let labelLeftPos = 50
     var labelNumber = 0
     var offset = 6
