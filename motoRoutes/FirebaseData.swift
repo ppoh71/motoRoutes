@@ -253,7 +253,7 @@ class FirebaseData {
     }
     
     func downloadRouteImage(_ imgName: String, id: String){
-        let islandRef = FIR_STORAGE.child("\(id)/\(id).png")
+        let islandRef = FIR_STORAGE.child("routeImage/\(id)/\(id).png")
         
         let localFilename = Utils.getDocumentsDirectory().appendingPathComponent("\(id).png")
         
