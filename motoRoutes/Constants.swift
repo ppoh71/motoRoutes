@@ -53,6 +53,8 @@ let textColor = UIColor.white
 let cornerInfoViews = CGFloat(5)
 
 //Info Labes and Buttons Sizes
+let markerViewRect = CGRect(x: 0, y: 0, width: 160, height: 260)
+let confirmViewRect = CGRect(x: 0, y: 0, width: 125, height: 220)
 let actionLabelWidth = 125;
 let actionLabelHeight = 48;
 let actionLabelPadding = 12;
@@ -76,7 +78,11 @@ let actionButtonConfirmShareText =  NSLocalizedString("ActionButton.confirmShare
 let actionButtonConfirmDownloadText =  NSLocalizedString("ActionButton.confirmDownload", comment: "Confirm Download")
 
 
-
+protocol MarkerViewItems: class {
+    func aniToX(_ delay: Double)
+    func aniToOff(_ delay: Double)
+    func aniOffToLeft(_ delay: Double)
+}
 
 //LabelTYpes
 enum LabelType {
@@ -177,7 +183,6 @@ enum ActionMenuType {
     }
 }
 
-//Display different MarkerViewStates
 enum MarkerViewType {
     case MyRoute
     case FirRoute
@@ -187,4 +192,24 @@ enum MarkerViewType {
     }
 }
 
+enum AnimationType {
+    case offToRight
+    case offToLeft
+    case onFromLeft
+    case onFromLeftSimultan
+    case offToRightSimultan
+    
+    init(){
+        self = .onFromLeft
+    }
+}
 
+enum MarkerViewState{
+    case InfoLabelState
+    case ActionButtonsState
+    case ConfirmViewState
+    
+    init(){
+        self = .InfoLabelState
+    }
+}

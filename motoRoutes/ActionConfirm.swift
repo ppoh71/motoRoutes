@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ActionConfirm: UIView{
+class ActionConfirm: UIView, MarkerViewItems{
     let label = UILabel()
     var okButton = ActionButton()
     var actionType = ActionButtonType()
@@ -16,14 +16,22 @@ class ActionConfirm: UIView{
     override init(frame: CGRect) {
         super.init(frame: frame)
        // print("init markerview frame")
-        setupConfirm(actionType)
+       // setupConfirm(actionType)
     }
     
-    convenience init(frame: CGRect, actionType: ActionButtonType) {
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(frame: CGRect, actionType: ActionButtonType, xOff: Bool) {
         self.init(frame: frame)
         self.backgroundColor = blue2
         self.actionType = actionType
         setupConfirm(actionType)
+        
+        if(xOff == true){ //set off screen by x
+            self.frame.origin.x =  -frame.width
+        }
     }
     
     func setupConfirm(_ actionType: ActionButtonType){
@@ -39,8 +47,28 @@ class ActionConfirm: UIView{
         self.addSubview(okButton)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func aniToX(_ delay: Double){
+        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
+        }
+    }
+    
+    func aniToOff(_ delay: Double){
+        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width*2))
+        }
+    }
+    
+    func aniOffToLeft(_ delay: Double){
+        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionX(self, x: -Double(self.frame.width*2))
+        }
     }
 }
 

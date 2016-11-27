@@ -14,17 +14,18 @@ class MarkerView: MGLAnnotationView {
     let shapeLayer = CAShapeLayer()
     var dotCol = UIColor.blue
     var color = UIColor.clear
-    var initFrame = CGRect(x: 0, y: 0, width: 280, height: 260)
+    var initFrame = markerViewRect
     let offset = CGFloat(0)
     var backView = UIView()
     var clipView = UIView()
+    let confirmView = ActionConfirm(frame: confirmViewRect, actionType: ActionButtonType.DefState, xOff: true)
     let dot = DotAnimation()
-    let confirmView = ActionConfirm(frame: CGRect(x: 140, y: 130, width: 125, height: 100 ), actionType: ActionButtonType.DefState)
     var durationValue = ""
     var highspeedValue = ""
     var altitudeValue = ""
     var actionButtonsArr = [ActionButton]()
     var infoLabelArr = [InfoLabel]()
+    var state = MarkerViewState()
     
     //MARK: INIT
     init(reuseIdentifier: String, routeMaster: RouteMaster, type: MarkerViewType) {
@@ -32,7 +33,7 @@ class MarkerView: MGLAnnotationView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify),
                                                name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
-
+        
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: 0,  dy: -initFrame.height/2)
         
@@ -40,11 +41,11 @@ class MarkerView: MGLAnnotationView {
         dotAnimation()
         
         switch type{
-            case .MyRoute:
-                setupAll(routeMaster)
+        case .MyRoute:
+            setupAll(routeMaster)
             
-            case .FirRoute:
-                setupSpinner()
+        case .FirRoute:
+            setupSpinner()
         }
     }
     
@@ -56,47 +57,50 @@ class MarkerView: MGLAnnotationView {
         removeSpinner()
         setupInfoLabels()
         setupActionMenuButton()
+        setupActionMenuButtonReset()
+        setupActionMenu(actionMenuType: ActionMenuType.MyRoutes)
+        setupConfirmView()
     }
     
     //MARK:
     func actionButtonNotify(_ notification: Notification){
         let notifyObj =  notification.object as! [AnyObject]
-            if let actionType = notifyObj[0] as? ActionButtonType {
+        if let actionType = notifyObj[0] as? ActionButtonType {
+            
+            switch(actionType) {
                 
-                switch(actionType) {
-                    
-                case .Details:
-                    print("NOTFY: Clicked Details")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                    
-                case .DeleteRoute:
-                    print("NOTFY: Delete Route")
-                    setupActionConfirm(actionType: actionType)
-                    
-                case .ShareRoute:
-                    print("NOTFY: Share Route")
-                    setupActionConfirm(actionType: actionType)
-                    
-                case .DownloadRoute:
-                    print("NOTFY: Download Route")
-                    setupActionConfirm(actionType: actionType)
-                    
-                case .ConfirmDelete:
-                    print("NOTFY: Confirm Delete")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                    
-                case .ConfirmShare:
-                    print("NOTFY: Confirm Share")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                    
-                case .ConfirmDownload:
-                    print("NOTFY: Confirm Download")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
-                    
-                default:
-                    print("default click")
-                }
+            case .Details:
+                print("NOTFY: Clicked Details")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            case .DeleteRoute:
+                print("NOTFY: Delete Route")
+                setupActionConfirm(actionType: actionType)
+                
+            case .ShareRoute:
+                print("NOTFY: Share Route")
+                setupActionConfirm(actionType: actionType)
+                
+            case .DownloadRoute:
+                print("NOTFY: Download Route")
+                setupActionConfirm(actionType: actionType)
+                
+            case .ConfirmDelete:
+                print("NOTFY: Confirm Delete")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            case .ConfirmShare:
+                print("NOTFY: Confirm Share")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            case .ConfirmDownload:
+                print("NOTFY: Confirm Download")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                
+            default:
+                print("default click")
             }
+        }
     }
     
     //MARK: Setup UI elements
@@ -117,7 +121,7 @@ class MarkerView: MGLAnnotationView {
         button.addTarget(self, action: #selector(pressedActionMenuButton), for: .touchUpInside)
         self.addSubview(button)
     }
-
+    
     func setupActionMenuButtonReset(){
         let menuImage = UIImage(named: "backBtn") as UIImage?
         let button   = UIButton()
@@ -130,31 +134,38 @@ class MarkerView: MGLAnnotationView {
     }
     
     func pressedActionMenuButton(_ sender: UIButton){
-        print("Pressed Memni")
+        state = .ActionButtonsState
         switch(sender.actionType!) {
-            case .ActionMenuMyRoutes:
-                setupActionMenu(actionMenuType: ActionMenuType.MyRoutes)
-           
-            default:
-                print("xx")
+        case .ActionMenuMyRoutes:
+            
+            animateItems(actionButtonsArr, aniType: .onFromLeft, delay: 0)
+            animateItems(infoLabelArr, aniType: .offToRight, delay: 0)
+            
+        default:
+            print("xx")
         }
     }
     
     func pressedActionMenuResetButton(_ sender: UIButton){
         print("Pressed Memni")
         
-    }
-    
-    func setupSpinner(){
-        let spinner = SpinnerView(frame: CGRect(x: initFrame.width/4, y: initFrame.height/4, width: initFrame.height/6, height: initFrame.height/6))
-        spinner.tag = 99
-        self.addSubview(spinner)
-    }
-    
-    func removeSpinner(){
-        if let viewWithTag = self.viewWithTag(99) {
-            viewWithTag.removeFromSuperview()
+        switch(state){
+        case .ActionButtonsState:
+            state = .InfoLabelState
+            animateItems(actionButtonsArr, aniType: .offToLeft, delay: 0)
+            animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
+       
+        case .ConfirmViewState:
+            state = .ActionButtonsState
+            animateItems(actionButtonsArr, aniType: .onFromLeftSimultan, delay: 0)
+            animateItems([confirmView], aniType: .offToLeft, delay: 0)
+            
+        case .InfoLabelState:
+            print("pressed menu reset cofirm view")
         }
+        
+        //animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
+        
     }
     
     func setupInfoLabels(){
@@ -172,23 +183,13 @@ class MarkerView: MGLAnnotationView {
         clipView.addSubview(speedLabel)
         
         infoLabelArr += [durationLabel, altitudeLabel, speedLabel]
-        animateInfoLabels(infoLabelArr)
+        //animateInfoLabels(infoLabelArr)
+        animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0.4)
         
     }
-
-    func animateInfoLabels(_ infoLabels: [InfoLabel]){
-        var delay = 0.6
-        
-        for item in infoLabels {
-                delay = delay+0.2
-                item.aniToX(delay)
-        }
-    }
-    
     
     func setupActionMenu(actionMenuType: ActionMenuType){
         let actionView = UIView(frame: CGRect(x: 0, y: 0, width: 125, height: 150 ))
-        //actionView.backgroundColor = UIColor.black
         actionView.layer.opacity = 1
         clipView.addSubview(actionView)
         
@@ -198,35 +199,70 @@ class MarkerView: MGLAnnotationView {
         
         switch (actionMenuType){
             
-            case .MyRoutes:
-                let shareButton = ActionButton( buttonType: ActionButtonType.ShareRoute, buttonNumber: 1, xOff: true)
-                actionButtonsArr.append(shareButton)
-                actionView.addSubview(shareButton)
+        case .MyRoutes:
+            let shareButton = ActionButton( buttonType: ActionButtonType.ShareRoute, buttonNumber: 1, xOff: true)
+            actionButtonsArr.append(shareButton)
+            actionView.addSubview(shareButton)
             
-                let deleteButton = ActionButton(buttonType: ActionButtonType.DeleteRoute, buttonNumber: 2, xOff: true)
-                actionButtonsArr.append(deleteButton)
-                actionView.addSubview(deleteButton)
-        
-            case .AllRoutes:
-                let downloadButton = ActionButton(buttonType: ActionButtonType.ConfirmDownload, buttonNumber: 1, xOff: true)
-                actionButtonsArr.append(downloadButton)
-                actionView.addSubview(downloadButton)
+            let deleteButton = ActionButton(buttonType: ActionButtonType.DeleteRoute, buttonNumber: 2, xOff: true)
+            actionButtonsArr.append(deleteButton)
+            actionView.addSubview(deleteButton)
+            
+        case .AllRoutes:
+            let downloadButton = ActionButton(buttonType: ActionButtonType.ConfirmDownload, buttonNumber: 1, xOff: true)
+            actionButtonsArr.append(downloadButton)
+            actionView.addSubview(downloadButton)
         }
-        
-        animateActionButtons(actionButtonsArr)
     }
     
-    func animateActionButtons(_ actionButtons: [ActionButton]){
-        var delay = -0.2
-        
-        for item in actionButtons {
-            delay = delay+0.2
-            item.aniToX(delay)
-        }
+    func setupConfirmView(){
+        clipView.addSubview(confirmView)
     }
     
     func setupActionConfirm(actionType: ActionButtonType){
+        state = .ConfirmViewState
         confirmView.setupConfirm(actionType)
+        animateItems(actionButtonsArr, aniType: .offToRightSimultan, delay: 0)
+        confirmView.aniToX(0)
+    }
+    
+    func animateItems(_ itemArr: [MarkerViewItems], aniType: AnimationType, delay: Double){
+        var _delay = delay
+        
+        for item in itemArr {
+            switch(aniType){
+                
+            case .onFromLeft:
+                item.aniToX(_delay)
+                _delay = _delay+0.2
+                
+            case .onFromLeftSimultan:
+                item.aniToX(_delay)
+                
+            case .offToLeft:
+                item.aniOffToLeft(_delay)
+                _delay = _delay+0.2
+                
+            case .offToRight:
+                item.aniToOff(_delay)
+                _delay = _delay+0.2
+            
+            case .offToRightSimultan:
+                item.aniToOff(_delay)
+            }
+        }
+    }
+    
+    func setupSpinner(){
+        let spinner = SpinnerView(frame: CGRect(x: initFrame.width/4, y: initFrame.height/4, width: initFrame.height/6, height: initFrame.height/6))
+        spinner.tag = 99
+        self.addSubview(spinner)
+    }
+    
+    func removeSpinner(){
+        if let viewWithTag = self.viewWithTag(99) {
+            viewWithTag.removeFromSuperview()
+        }
     }
     
     func dotAnimation(){

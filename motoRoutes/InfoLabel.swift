@@ -8,7 +8,7 @@
 
 import UIKit
 
-class InfoLabel: UIView {
+class InfoLabel: UIView, MarkerViewItems {
     var initFrame = CGRect(x: 0, y: 0, width: actionLabelWidth, height: actionLabelHeight)
     let labelWidth = 100
     let labelHeight = 20
@@ -79,6 +79,22 @@ class InfoLabel: UIView {
         DispatchQueue.main.asyncAfter(deadline: when) {
             //print("animate point x\(self.frame.origin.y)")
             AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
+        }
+    }
+    
+    func aniToOff(_ delay: Double){
+        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width*2))
+        }
+    }
+    
+    func aniOffToLeft(_ delay: Double){
+        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionX(self, x: -Double(self.frame.width*2))
         }
     }
 }
