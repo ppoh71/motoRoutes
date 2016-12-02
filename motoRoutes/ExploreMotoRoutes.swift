@@ -469,7 +469,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
 
         print("##did select marker \(annotation) \(activeRouteMaster._MotoRoute.id)")
         
-        if(annotation.title! == "firebaseMarker" && annotation.title! ==  activeRouteMaster._MotoRoute.id){
+        if(annotation.title! == "firebaseMarker" && annotation.subtitle! !=  activeRouteMaster._MotoRoute.id){
             let routeMaster = findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
             if (!routeMaster._MotoRoute.id.isEmpty) {
 
@@ -485,7 +485,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             }
         }
         
-        if(annotation.title! != "firebaseMarker" && annotation.title! ==  activeRouteMaster._MotoRoute.id){
+        if(annotation.title! != "firebaseMarker" && annotation.subtitle! !=  activeRouteMaster._MotoRoute.id){
             print("do if else")
             let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
             if(index <= myRoutesMaster.count) {
