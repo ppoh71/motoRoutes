@@ -27,6 +27,7 @@
 		553D05E61CE4AB7400D8555D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 553D05E31CE4AB7400D8555D /* Roboto-Regular.ttf */; };
 		553D05E71CE4AB7400D8555D /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 553D05E41CE4AB7400D8555D /* Roboto-Thin.ttf */; };
 		5546F02E1DCB9FDF00D13F1D /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5546F02D1DCB9FDF00D13F1D /* SpinnerView.swift */; };
+		5549DC921DF1CDD3009C2DAF /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5549DC911DF1CDD3009C2DAF /* UIViewExtension.swift */; };
 		554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554EEB4F1D071DCB00307F47 /* AnimationEngine.swift */; };
 		5562BA551C73663900EF340D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5562BA541C73663900EF340D /* Utils.swift */; };
 		556368AA1CEF4681004BBB6F /* Speedometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556368A91CEF4681004BBB6F /* Speedometer.swift */; };
@@ -106,6 +107,7 @@
 		553D05E31CE4AB7400D8555D /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		553D05E41CE4AB7400D8555D /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		5546F02D1DCB9FDF00D13F1D /* SpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
+		5549DC911DF1CDD3009C2DAF /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		554EEB4B1D070F8200307F47 /* motoRoutes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "motoRoutes-Bridging-Header.h"; sourceTree = "<group>"; };
 		554EEB4F1D071DCB00307F47 /* AnimationEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationEngine.swift; sourceTree = "<group>"; };
 		5562BA541C73663900EF340D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				55DC39B31D65AF45002E02EC /* NSDateExtension.swift */,
 				552D32A31DB926DD0050E62D /* HTMLStringExtension.swift */,
 				557E19EC1DC0AE6800CFE07B /* ButtonExtension.swift */,
+				5549DC911DF1CDD3009C2DAF /* UIViewExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 				5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */,
 				55EB15F91D9BFB1E0013528B /* GoogleData.swift in Sources */,
 				557E19ED1DC0AE6800CFE07B /* ButtonExtension.swift in Sources */,
+				5549DC921DF1CDD3009C2DAF /* UIViewExtension.swift in Sources */,
 				551EFF941CC11F640065204D /* ImageUtils.swift in Sources */,
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				55D997001D92B8F200AB7DAB /* ExploreMotoRoutes.swift in Sources */,

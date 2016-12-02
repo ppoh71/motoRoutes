@@ -31,11 +31,10 @@ class MarkerView: MGLAnnotationView {
     init(reuseIdentifier: String, routeMaster: RouteMaster, type: MarkerViewType) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify),
-                                               name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
         
         scalesWithViewingDistance = true
-        centerOffset = CGVector(dx: 0,  dy: -initFrame.height/2)
+        centerOffset = CGVector(dx: initFrame.width/2,  dy: -initFrame.height/2)
         
         setupBackView()
         dotAnimation()
@@ -114,11 +113,12 @@ class MarkerView: MGLAnnotationView {
     func setupActionMenuButton(){
         let menuImage = UIImage(named: "menuBtn") as UIImage?
         let button   = UIButton()
-        let buttonSize = CGPoint(x: 24, y: 24)
-        button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y + (buttonSize.y/2)) , width: buttonSize.x, height: buttonSize.y)
+        let buttonSize = CGPoint(x: 10, y: 10)
+        button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y/2) , width: buttonSize.x, height: buttonSize.y)
         button.setImage(menuImage, for: .normal)
         button.actionType = .ActionMenuMyRoutes
         button.addTarget(self, action: #selector(pressedActionMenuButton), for: .touchUpInside)
+        button.zoomInWithEasing(1.5)
         self.addSubview(button)
     }
     
@@ -266,7 +266,7 @@ class MarkerView: MGLAnnotationView {
     }
     
     func dotAnimation(){
-        dot.frame = CGRect(x: initFrame.width/2, y: initFrame.height, width: 10, height: 10)
+        dot.frame = CGRect(x: 0, y: initFrame.height, width: 10, height: 10)
         self.addSubview(dot)
         dot.addDotAnimation()
     }

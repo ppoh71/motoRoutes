@@ -408,7 +408,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     */
     
     func mapView(_ mapView: MGLMapView, didAdd annotationViews: [MGLAnnotationView]) {
-        print("")
+        print("annotationViews")
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
@@ -446,7 +446,9 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         
         if annotationView == nil {
             let annotationMarkerView = MarkerView(reuseIdentifier: reuseIdentifier, routeMaster: activeRouteMaster, type: viewType)
+            annotationMarkerView.isEnabled = false
             activeAnnotationView = annotationMarkerView
+
             return annotationMarkerView
         } else {
             return annotationView
@@ -454,18 +456,20 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
    }
 
     
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
+        print("didDeselect")
+    }
+    
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {        
+       
         guard let titleID = annotation.subtitle else {
             print("guard exploreMotoRoutes didSelect")
             return
         }
- 
-        //deleteSelectedMarkerView()
-        //selectedMarker = annotation as! MGLPointAnnotation
 
-        print("##did select marker \(annotation) ")
+        print("##did select marker \(annotation) \(activeRouteMaster._MotoRoute.id)")
         
-        if(annotation.title! == "firebaseMarker"){
+        if(annotation.title! == "firebaseMarker" && annotation.title! ==  activeRouteMaster._MotoRoute.id){
             let routeMaster = findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
             if (!routeMaster._MotoRoute.id.isEmpty) {
 
@@ -478,10 +482,11 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
                 } else{
                      activeAnnotationView?.setupAll(routeMaster)
                 }
-                
             }
-            
-        } else {
+        }
+        
+        if(annotation.title! != "firebaseMarker" && annotation.title! ==  activeRouteMaster._MotoRoute.id){
+            print("do if else")
             let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
             if(index <= myRoutesMaster.count) {
                 collection.delegate?.collectionView!(collection, didDeselectItemAt: activeIndex)
@@ -498,6 +503,19 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         //   print("regionDidChangeAnimated")
     }
     
+    func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
+        print("tapOnCalloutFor")
+
+    }
+    
+    func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {
+        print("did select ANNOTATION VIEW")
+       
+        annotationView.isEnabled = false
+        annotationView.isSelected = false
+        annotationView.setSelected(false, animated: false)
+        
+    }
     
     func mapViewRegionIsChanging(_ mapView: MGLMapView) {
         // print("region is chanhing")
@@ -505,6 +523,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        print("annotationCanShowCallout")
         return false
     }
 }
