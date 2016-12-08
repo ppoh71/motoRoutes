@@ -241,6 +241,7 @@ class MarkerView: MGLAnnotationView {
             case .onFromLeftSimultan:
                 item.aniToX(_delay)
                 
+                
             case .offToLeft:
                 item.aniOffToLeft(_delay)
                 _delay = _delay+0.2
@@ -268,7 +269,7 @@ class MarkerView: MGLAnnotationView {
     }
     
     func dotAnimation(){
-        dot.frame = CGRect(x: 0, y: initFrame.height, width: 10, height: 10)
+        dot.frame = CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10)
         self.addSubview(dot)
         dot.addDotAnimation()
     }
