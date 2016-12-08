@@ -79,9 +79,9 @@ let actionButtonConfirmDownloadText =  NSLocalizedString("ActionButton.confirmDo
 
 
 protocol MarkerViewItems: class {
-    func aniToX(_ delay: Double)
-    func aniToOff(_ delay: Double)
-    func aniOffToLeft(_ delay: Double)
+//    func aniToX(_ delay: Double)
+//    func aniToOff(_ delay: Double)
+//    func aniOffToLeft(_ delay: Double)
 }
 
 //LabelTYpes

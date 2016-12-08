@@ -510,10 +510,9 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {
         print("did select ANNOTATION VIEW")
-       
-        annotationView.isEnabled = false
-        annotationView.isSelected = false
-        annotationView.setSelected(false, animated: false)
+//        annotationView.isEnabled = false
+//        annotationView.isSelected = false
+//        annotationView.setSelected(false, animated: false)
         
     }
     

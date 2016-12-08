@@ -46,29 +46,5 @@ class ActionConfirm: UIView, MarkerViewItems{
         okButton = ActionButton(buttonType: actionType.confirmAction, buttonNumber: 2, xOff: false)
         self.addSubview(okButton)
     }
-    
-    func aniToX(_ delay: Double){
-        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            //print("animate point x\(self.frame.origin.y)")
-            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
-        }
-    }
-    
-    func aniToOff(_ delay: Double){
-        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            //print("animate point x\(self.frame.origin.y)")
-            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width*2))
-        }
-    }
-    
-    func aniOffToLeft(_ delay: Double){
-        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            //print("animate point x\(self.frame.origin.y)")
-            AnimationEngine.animationToPositionX(self, x: -Double(self.frame.width*2))
-        }
-    }
-}
+   }
 

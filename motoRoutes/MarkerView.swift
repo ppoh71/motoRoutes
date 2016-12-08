@@ -34,7 +34,7 @@ class MarkerView: MGLAnnotationView {
         NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
         
         scalesWithViewingDistance = true
-        centerOffset = CGVector(dx: initFrame.width/2,  dy: -initFrame.height/2)
+        centerOffset = CGVector(dx: -initFrame.width/2,  dy: -initFrame.height/2)
         
         setupBackView()
         dotAnimation()
@@ -108,6 +108,8 @@ class MarkerView: MGLAnnotationView {
         backView.backgroundColor = blue4
         backView.layer.opacity = 0.5
         self.addSubview(backView)
+        
+        backView.aniToX(1)
     }
     
     func setupActionMenuButton(){
@@ -226,7 +228,7 @@ class MarkerView: MGLAnnotationView {
         confirmView.aniToX(0)
     }
     
-    func animateItems(_ itemArr: [MarkerViewItems], aniType: AnimationType, delay: Double){
+    func animateItems(_ itemArr: [UIView], aniType: AnimationType, delay: Double){
         var _delay = delay
         
         for item in itemArr {
@@ -289,9 +291,9 @@ class MarkerView: MGLAnnotationView {
         super.setSelected(selected, animated: animated)
         
         // Animate the border width in/out, creating an iris effect.
-        let animation = CABasicAnimation(keyPath: "borderWidth")
-        animation.duration = 0.1
-        layer.borderWidth = selected ? frame.width / 4 : 2
-        layer.add(animation, forKey: "borderWidth")
+//        let animation = CABasicAnimation(keyPath: "borderWidth")
+//        animation.duration = 0.1
+//        layer.borderWidth = selected ? frame.width / 4 : 2
+//        layer.add(animation, forKey: "borderWidth")
     }
 }
