@@ -32,7 +32,7 @@ class InfoLabel: UIView, MarkerViewItems {
         self.labelText = labelType.label
         self.labelValue = value
         
-        self.frame.origin.y =  initFrame.height * CGFloat(labelNumber) + CGFloat(padding * labelNumber)
+        self.frame.origin.y =  initFrame.height * CGFloat(labelNumber) + CGFloat(padding/2 * labelNumber)
         
         if(xOff == true){ //set off screen by x
             self.frame.origin.x =  -initFrame.width

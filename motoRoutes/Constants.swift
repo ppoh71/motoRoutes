@@ -34,7 +34,8 @@ let blue0 = ColorUtils.hexTorgbColor("#006499")
 let blue1 = ColorUtils.hexTorgbColor("#006499")
 let blue2 = ColorUtils.hexTorgbColor("#00527A")
 let blue3 = ColorUtils.hexTorgbColor("#00405F")
-let blue4 = ColorUtils.hexTorgbColor("#002C42")
+//let blue4 = ColorUtils.hexTorgbColor("#002C42")
+let blue4 = ColorUtils.hexTorgbColor("#002736")
 
 let red1 = ColorUtils.hexTorgbColor("#F00C00")
 let red2 = ColorUtils.hexTorgbColor("#C10A00")
@@ -53,7 +54,7 @@ let textColor = UIColor.white
 let cornerInfoViews = CGFloat(5)
 
 //Info Labes and Buttons Sizes
-let markerViewRect = CGRect(x: 0, y: 0, width: 160, height: 260)
+let markerViewRect = CGRect(x: 0, y: 0, width: 140, height: 260)
 let confirmViewRect = CGRect(x: 0, y: 0, width: 125, height: 220)
 let actionLabelWidth = 125;
 let actionLabelHeight = 48;

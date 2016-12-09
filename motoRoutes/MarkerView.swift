@@ -104,9 +104,10 @@ class MarkerView: MGLAnnotationView {
     
     //MARK: Setup UI elements
     func setupBackView(){
-        backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10)
+        backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 30)
         backView.backgroundColor = blue4
-        backView.layer.opacity = 0.5
+        backView.layer.opacity = 0.6
+        backView.layer.cornerRadius = 3
         self.addSubview(backView)
         
         backView.aniToX(1)
@@ -115,8 +116,8 @@ class MarkerView: MGLAnnotationView {
     func setupActionMenuButton(){
         let menuImage = UIImage(named: "menuBtn") as UIImage?
         let button   = UIButton()
-        let buttonSize = CGPoint(x: 10, y: 10)
-        button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y/2) , width: buttonSize.x, height: buttonSize.y)
+        let buttonSize = CGPoint(x: 8, y: 8)
+        button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y) , width: buttonSize.x, height: buttonSize.y)
         button.setImage(menuImage, for: .normal)
         button.actionType = .ActionMenuMyRoutes
         button.addTarget(self, action: #selector(pressedActionMenuButton), for: .touchUpInside)
