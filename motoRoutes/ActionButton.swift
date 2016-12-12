@@ -30,7 +30,7 @@ class ActionButton: UIView, MarkerViewItems {
         self.init(frame: CGRect.zero)
         self.buttonType = buttonType
         self.backgroundColor = UIColor.brown
-        self.frame.origin.y = initFrame.height * CGFloat(buttonNumber) + CGFloat(padding * buttonNumber)
+        self.frame.origin.y = initFrame.height * CGFloat(buttonNumber) + CGFloat(padding/2 * buttonNumber)
         
         if(xOff == true){ //set off screen by x
             self.frame.origin.x =  -initFrame.width
@@ -46,14 +46,12 @@ class ActionButton: UIView, MarkerViewItems {
     func setupButton(){
         actionButton.frame = initFrame //assign view frame also to button
         actionButton.setTitle(buttonType.buttonText, for: .normal)
-        actionButton.backgroundColor = green1
+        actionButton.backgroundColor = blue3
         actionButton.actionType = buttonType
         actionButton.isUserInteractionEnabled = true
         actionButton.addTarget(self, action: #selector(pressedButton), for: .touchUpInside)
         self.addSubview(actionButton)
     }
-    
-
     
     func pressedButton(_ sender: UIButton){
         let notifyObj = [sender.actionType]

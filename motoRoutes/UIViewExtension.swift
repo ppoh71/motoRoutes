@@ -45,7 +45,7 @@ extension UIView {
     }
     
     func aniToX(_ delay: Double){
-        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        let when = DispatchTime.now() + delay // change to desired number of seconds
         DispatchQueue.main.asyncAfter(deadline: when) {
             //print("animate point x\(self.frame.origin.y)")
             AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2))
@@ -53,18 +53,18 @@ extension UIView {
     }
     
     func aniToOff(_ delay: Double){
-        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        let when = DispatchTime.now() + delay
         DispatchQueue.main.asyncAfter(deadline: when) {
             //print("animate point x\(self.frame.origin.y)")
-            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width*2))
+            AnimationEngine.animationToPositionX(self, x: Double(self.frame.width/2*3))
         }
     }
     
     func aniOffToLeft(_ delay: Double){
-        let when = DispatchTime.now() + delay // change 2 to desired number of seconds
+        let when = DispatchTime.now() + delay
         DispatchQueue.main.asyncAfter(deadline: when) {
             //print("animate point x\(self.frame.origin.y)")
-            AnimationEngine.animationToPositionX(self, x: -Double(self.frame.width*2))
+            AnimationEngine.animationToPositionX(self, x: -Double(self.frame.width/2))
         }
     }
 

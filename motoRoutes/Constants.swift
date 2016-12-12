@@ -53,9 +53,10 @@ let textColor = UIColor.white
 let cornerInfoViews = CGFloat(5)
 
 //Info Labes and Buttons Sizes
-let markerViewRect = CGRect(x: 0, y: 0, width: 160, height: 260)
-let confirmViewRect = CGRect(x: 0, y: 0, width: 125, height: 220)
-let actionLabelWidth = 125;
+let markerViewRect = CGRect(x: 0, y: 0, width: 150, height: 260)
+let confirmViewRect = CGRect(x: 0, y: 0, width: 130, height: actionLabelHeight*2+actionLabelPadding/2)
+let viewPadding = 10
+let actionLabelWidth = 130;
 let actionLabelHeight = 48;
 let actionLabelPadding = 12;
 
@@ -120,6 +121,9 @@ enum ActionButtonType {
     case ConfirmDownload
     case Cancel
     case ActionMenuMyRoutes
+    case MenuInfoLabels
+    case MenuActionButton
+    case MenuConfirm
     
     var buttonText: String {
         switch self {
@@ -133,6 +137,10 @@ enum ActionButtonType {
         case .ConfirmDownload : return "OK"
         case .Cancel: return "Cancel"
         case .ActionMenuMyRoutes: return "ActionMenuMyRoutes"
+        case .MenuInfoLabels: return "MenuInfoLabels"
+        case .MenuActionButton: return "MenuActionButton"
+        case .MenuConfirm: return "MenuConfirm"
+            
         }
     }
     
@@ -148,6 +156,9 @@ enum ActionButtonType {
         case .ConfirmDownload: return "--"
         case .Cancel: return "---"
         case .ActionMenuMyRoutes: return "---"
+        case .MenuInfoLabels: return "MenuInfoLabels"
+        case .MenuActionButton: return "MenuActionButton"
+        case .MenuConfirm: return "MenuConfirm"
         }
     }
     
@@ -163,9 +174,29 @@ enum ActionButtonType {
         case .ConfirmDownload: return ActionButtonType.ConfirmDownload
         case .Cancel: return ActionButtonType.DefState
         case .ActionMenuMyRoutes: return ActionButtonType.DefState
+        case .MenuInfoLabels: return ActionButtonType.DefState
+        case .MenuActionButton: return ActionButtonType.DefState
+        case .MenuConfirm: return ActionButtonType.DefState
         }
     }
     
+    var buttonImage: UIImage{
+        switch self {
+        case .DefState: return UIImage()
+        case .Details: return UIImage()
+        case .DeleteRoute: return UIImage()
+        case .ShareRoute: return UIImage()
+        case .DownloadRoute: return UIImage()
+        case .ConfirmDelete: return UIImage()
+        case .ConfirmShare: return UIImage()
+        case .ConfirmDownload: return UIImage()
+        case .Cancel: return UIImage()
+        case .ActionMenuMyRoutes: return (UIImage(named: "menuBtn") as UIImage?)!
+        case .MenuInfoLabels: return (UIImage(named: "backBtn") as UIImage?)!
+        case .MenuActionButton: return (UIImage(named: "cancelBtn") as UIImage?)!
+        case .MenuConfirm: return UIImage()
+        }
+    }
     
     init(){
         self = .DefState

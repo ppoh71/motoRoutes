@@ -26,6 +26,7 @@ class MarkerView: MGLAnnotationView {
     var actionButtonsArr = [ActionButton]()
     var infoLabelArr = [InfoLabel]()
     var state = MarkerViewState()
+    var menuButton = UIButton()
     
     //MARK: INIT
     init(reuseIdentifier: String, routeMaster: RouteMaster, type: MarkerViewType) {
@@ -54,14 +55,92 @@ class MarkerView: MGLAnnotationView {
         self.highspeedValue = routeMaster.textHighSpeed
         
         removeSpinner()
+        setupClipView()
         setupInfoLabels()
         setupActionMenuButton()
-        setupActionMenuButtonReset()
         setupActionMenu(actionMenuType: ActionMenuType.MyRoutes)
         setupConfirmView()
     }
     
-    //MARK:
+    //MARK: Setup UI elements
+    func setupBackView(){
+        backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10)
+        backView.backgroundColor = blue4
+        backView.layer.opacity = 0.5
+        self.addSubview(backView)
+        backView.aniToX(100)
+    }
+    
+    func setupActionMenuButton(){
+        let buttonSize = CGPoint(x: 10, y: 10)
+        menuButton.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - 30 , width: buttonSize.x, height: buttonSize.y)
+        menuButton.setImage(ActionButtonType.ActionMenuMyRoutes.buttonImage, for: .normal)
+        menuButton.actionType = .ActionMenuMyRoutes
+        menuButton.addTarget(self, action: #selector(pressedActionMenuButton), for: .touchUpInside)
+        menuButton.zoomInWithEasing(1.5)
+        self.addSubview(menuButton)
+    }
+    
+    func setupClipView(){
+        clipView = UIView(frame: CGRect(x: 10, y: 30, width: actionLabelWidth, height: (actionLabelHeight*3)+(actionLabelPadding)))
+        clipView.clipsToBounds = true
+        self.addSubview(clipView)
+    }
+    
+    func setupInfoLabels(){
+        let durationLabel = InfoLabel(labelNumber: 0, labelType: LabelType.duration, value: durationValue, xOff: true)
+        clipView.addSubview(durationLabel)
+        
+        let altitudeLabel = InfoLabel(labelNumber: 1, labelType: LabelType.altitude, value: altitudeValue, xOff: true)
+        clipView.addSubview(altitudeLabel)
+        
+        let speedLabel = InfoLabel(labelNumber: 2, labelType: LabelType.speed, value: highspeedValue, xOff: true)
+        clipView.addSubview(speedLabel)
+        
+        infoLabelArr += [durationLabel, altitudeLabel, speedLabel]
+        //animateInfoLabels(infoLabelArr)
+        animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0.4)
+    }
+    
+    func setupActionMenu(actionMenuType: ActionMenuType){
+//        let actionView = UIView(frame: CGRect(x: 0, y: 0, width: 125, height: 150 ))
+//        actionView.layer.opacity = 1
+//        clipView.addSubview(actionView)
+        
+        let detailButton = ActionButton(buttonType: ActionButtonType.Details, buttonNumber: 0, xOff: true)
+        clipView.addSubview(detailButton)
+        actionButtonsArr.append(detailButton)
+        
+        switch (actionMenuType){
+            
+        case .MyRoutes:
+            let shareButton = ActionButton( buttonType: ActionButtonType.ShareRoute, buttonNumber: 1, xOff: true)
+            actionButtonsArr.append(shareButton)
+            clipView.addSubview(shareButton)
+            
+            let deleteButton = ActionButton(buttonType: ActionButtonType.DeleteRoute, buttonNumber: 2, xOff: true)
+            actionButtonsArr.append(deleteButton)
+            clipView.addSubview(deleteButton)
+            
+        case .AllRoutes:
+            let downloadButton = ActionButton(buttonType: ActionButtonType.ConfirmDownload, buttonNumber: 1, xOff: true)
+            actionButtonsArr.append(downloadButton)
+            clipView.addSubview(downloadButton)
+        }
+    }
+    
+    func setupConfirmView(){
+        clipView.addSubview(confirmView)
+    }
+    
+    func setupActionConfirm(actionType: ActionButtonType){
+        state = .ConfirmViewState
+        confirmView.setupConfirm(actionType)
+        animateItems(actionButtonsArr, aniType: .offToRightSimultan, delay: 0)
+        confirmView.aniToX(0)
+    }
+
+    //MARK: Actions
     func actionButtonNotify(_ notification: Notification){
         let notifyObj =  notification.object as! [AnyObject]
         if let actionType = notifyObj[0] as? ActionButtonType {
@@ -75,10 +154,12 @@ class MarkerView: MGLAnnotationView {
             case .DeleteRoute:
                 print("NOTFY: Delete Route")
                 setupActionConfirm(actionType: actionType)
+                switchActionMenuButton(.MenuActionButton)
                 
             case .ShareRoute:
                 print("NOTFY: Share Route")
                 setupActionConfirm(actionType: actionType)
+                switchActionMenuButton(.MenuActionButton)
                 
             case .DownloadRoute:
                 print("NOTFY: Download Route")
@@ -102,130 +183,33 @@ class MarkerView: MGLAnnotationView {
         }
     }
     
-    //MARK: Setup UI elements
-    func setupBackView(){
-        backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 10)
-        backView.backgroundColor = blue4
-        backView.layer.opacity = 0.5
-        self.addSubview(backView)
-        
-        backView.aniToX(1)
-    }
-    
-    func setupActionMenuButton(){
-        let menuImage = UIImage(named: "menuBtn") as UIImage?
-        let button   = UIButton()
-        let buttonSize = CGPoint(x: 10, y: 10)
-        button.frame = CGRect(x: (backView.frame.width/2) - (buttonSize.x/2), y: backView.frame.height - (buttonSize.y/2) , width: buttonSize.x, height: buttonSize.y)
-        button.setImage(menuImage, for: .normal)
-        button.actionType = .ActionMenuMyRoutes
-        button.addTarget(self, action: #selector(pressedActionMenuButton), for: .touchUpInside)
-        button.zoomInWithEasing(1.5)
-        self.addSubview(button)
-    }
-    
-    func setupActionMenuButtonReset(){
-        let menuImage = UIImage(named: "backBtn") as UIImage?
-        let button   = UIButton()
-        let buttonSize = CGPoint(x: 24, y: 24)
-        button.frame = CGRect(x: 20, y: backView.frame.height - (buttonSize.y + (buttonSize.y/2)) , width: buttonSize.x, height: buttonSize.y)
-        button.setImage(menuImage, for: .normal)
-        button.actionType = .ActionMenuMyRoutes
-        button.addTarget(self, action: #selector(pressedActionMenuResetButton), for: .touchUpInside)
-        self.addSubview(button)
-    }
-    
     func pressedActionMenuButton(_ sender: UIButton){
         state = .ActionButtonsState
         switch(sender.actionType!) {
-        case .ActionMenuMyRoutes:
-            
+        
+        case .ActionMenuMyRoutes: //switch on menu button
             animateItems(actionButtonsArr, aniType: .onFromLeft, delay: 0)
             animateItems(infoLabelArr, aniType: .offToRight, delay: 0)
+            switchActionMenuButton(.MenuInfoLabels)
+            
+        case .MenuInfoLabels: //switch confirmation
+            animateItems(actionButtonsArr, aniType: .offToLeft, delay: 0)
+            animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
+            switchActionMenuButton(.ActionMenuMyRoutes)
+            
+        case .MenuActionButton: //cancel confirmation
+            animateItems(actionButtonsArr, aniType: .onFromLeftSimultan, delay: 0)
+            animateItems([confirmView], aniType: .offToLeft, delay: 0)
+            switchActionMenuButton(.MenuInfoLabels)
             
         default:
             print("xx")
         }
     }
     
-    func pressedActionMenuResetButton(_ sender: UIButton){
-        print("Pressed Memni")
-        
-        switch(state){
-        case .ActionButtonsState:
-            state = .InfoLabelState
-            animateItems(actionButtonsArr, aniType: .offToLeft, delay: 0)
-            animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
-       
-        case .ConfirmViewState:
-            state = .ActionButtonsState
-            animateItems(actionButtonsArr, aniType: .onFromLeftSimultan, delay: 0)
-            animateItems([confirmView], aniType: .offToLeft, delay: 0)
-            
-        case .InfoLabelState:
-            print("pressed menu reset cofirm view")
-        }
-        
-        //animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
-        
-    }
-    
-    func setupInfoLabels(){
-        clipView = UIView(frame: CGRect(x: 10, y: 30, width: initFrame.width, height: initFrame.height - 30))
-        clipView.clipsToBounds = true
-        self.addSubview(clipView)
-        
-        let durationLabel = InfoLabel(labelNumber: 0, labelType: LabelType.duration, value: durationValue, xOff: true)
-        clipView.addSubview(durationLabel)
-        
-        let altitudeLabel = InfoLabel(labelNumber: 1, labelType: LabelType.altitude, value: altitudeValue, xOff: true)
-        clipView.addSubview(altitudeLabel)
-        
-        let speedLabel = InfoLabel(labelNumber: 2, labelType: LabelType.speed, value: highspeedValue, xOff: true)
-        clipView.addSubview(speedLabel)
-        
-        infoLabelArr += [durationLabel, altitudeLabel, speedLabel]
-        //animateInfoLabels(infoLabelArr)
-        animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0.4)
-        
-    }
-    
-    func setupActionMenu(actionMenuType: ActionMenuType){
-        let actionView = UIView(frame: CGRect(x: 0, y: 0, width: 125, height: 150 ))
-        actionView.layer.opacity = 1
-        clipView.addSubview(actionView)
-        
-        let detailButton = ActionButton(buttonType: ActionButtonType.Details, buttonNumber: 0, xOff: true)
-        actionView.addSubview(detailButton)
-        actionButtonsArr.append(detailButton)
-        
-        switch (actionMenuType){
-            
-        case .MyRoutes:
-            let shareButton = ActionButton( buttonType: ActionButtonType.ShareRoute, buttonNumber: 1, xOff: true)
-            actionButtonsArr.append(shareButton)
-            actionView.addSubview(shareButton)
-            
-            let deleteButton = ActionButton(buttonType: ActionButtonType.DeleteRoute, buttonNumber: 2, xOff: true)
-            actionButtonsArr.append(deleteButton)
-            actionView.addSubview(deleteButton)
-            
-        case .AllRoutes:
-            let downloadButton = ActionButton(buttonType: ActionButtonType.ConfirmDownload, buttonNumber: 1, xOff: true)
-            actionButtonsArr.append(downloadButton)
-            actionView.addSubview(downloadButton)
-        }
-    }
-    
-    func setupConfirmView(){
-        clipView.addSubview(confirmView)
-    }
-    
-    func setupActionConfirm(actionType: ActionButtonType){
-        state = .ConfirmViewState
-        confirmView.setupConfirm(actionType)
-        animateItems(actionButtonsArr, aniType: .offToRightSimultan, delay: 0)
-        confirmView.aniToX(0)
+    func switchActionMenuButton(_ type: ActionButtonType){
+        menuButton.actionType = type
+        menuButton.setImage(type.buttonImage, for: .normal)
     }
     
     func animateItems(_ itemArr: [UIView], aniType: AnimationType, delay: Double){
@@ -236,18 +220,18 @@ class MarkerView: MGLAnnotationView {
                 
             case .onFromLeft:
                 item.aniToX(_delay)
-                _delay = _delay+0.2
+                _delay = _delay+delay
                 
             case .onFromLeftSimultan:
                 item.aniToX(_delay)
                 
             case .offToLeft:
                 item.aniOffToLeft(_delay)
-                _delay = _delay+0.2
+                _delay = _delay+delay
                 
             case .offToRight:
                 item.aniToOff(_delay)
-                _delay = _delay+0.2
+                _delay = _delay+delay
             
             case .offToRightSimultan:
                 item.aniToOff(_delay)

@@ -35,9 +35,9 @@ class ActionConfirm: UIView, MarkerViewItems{
     }
     
     func setupConfirm(_ actionType: ActionButtonType){
-        label.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height/2)
+        label.frame = CGRect(x: 10, y: 20, width: self.frame.width-20, height: self.frame.height/2)
         label.numberOfLines = 0
-        label.font = UIFont(name: "Roboto", size: 8)
+        label.font = UIFont(name: "Roboto", size: 14)
         label.textAlignment = .center
         label.textColor = textColor
         label.text = actionType.confirmText
