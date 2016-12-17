@@ -179,9 +179,7 @@ class RouteMaster {
     
     
     class func realmResultToMasterArray(_ realm: Results<Route>)  -> [RouteMaster]{
-        
         var master = [RouteMaster]()
-        
         for item in realm{
             let newMaster = RouteMaster()
             newMaster.associateRouteOnly(item)
@@ -190,12 +188,17 @@ class RouteMaster {
         return master
     }
     
+    class func findRouteInRouteMasters(_ routes: [RouteMaster], key: String) -> (RouteMaster, Int){
+        var _route = RouteMaster()
+        var index = 0
+        
+        if let i = routes.index(where: {$0._MotoRoute.id == key}) {
+            _route = routes[i]
+            index = i
+        }
+        return (_route, index)
+    }
 }
-
-
-
-
-
 
 // Master Location Model for all Route Operations inside App
 class LocationMaster {
@@ -213,7 +216,6 @@ class LocationMaster {
     var annotation = MGLPointAnnotation()
     
     init(latitude:Double, longitude:Double, altitude:Double,speed:Double, course:Double,timestamp:Date, accuracy:Double, marker:Bool, distance:Double ){
-        
         self.latitude = latitude
         self.longitude = longitude
         self.altitude = altitude
@@ -224,16 +226,13 @@ class LocationMaster {
         self.marker = marker
         self.distance = distance
     }
-    
     init(){
     }
-    
 }
 
 
 // Master Media Model for all Route functions
 class MediaMaster {
-    
     dynamic var image = ""
     dynamic var latitude = 0.0
     dynamic var longitude = 0.0
@@ -245,22 +244,18 @@ class MediaMaster {
     
     init(){
     }
-    
 }
 
 
 // Annotation Class for Marker Sztorage, Deletaion
 class MarkerAnnotation {
-    
     var annotaion: MGLPointAnnotation
     var key: Int
     
     init(annotaion: MGLPointAnnotation, key: Int){
-        
         self.annotaion = annotaion
         self.key = key
     }
-    
 }
 
 

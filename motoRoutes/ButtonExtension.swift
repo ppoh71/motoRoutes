@@ -16,7 +16,7 @@ extension UIButton {
         static var actionType = ActionButtonType()
     }
     
-    //this lets us check to see if the item is supposed to be displayed or not
+    //add actionType property 
     var actionType : ActionButtonType? {
         get {
             return objc_getAssociatedObject(self, &ButtonTypeStruct.actionType) as? ActionButtonType
@@ -28,5 +28,25 @@ extension UIButton {
             }
         }
     }
+    
+    override open var isHighlighted: Bool {
+        didSet {
+            if isHighlighted {
+                if(self.actionType == .ActionMenuMyRoutes || self.actionType == .MenuActionButton || self.actionType == .MenuConfirm || self.actionType == .MenuInfoLabels) {
+                    self.scale(3)
+                }else{
+                    backgroundColor = blue2
+                }
+            } else {
+                if(self.actionType == .ActionMenuMyRoutes || self.actionType == .MenuActionButton || self.actionType == .MenuConfirm || self.actionType == .MenuInfoLabels) {
+                    self.scale(4)
+                }else{
+                    backgroundColor = blue3
+                }
+                
+            }
+        }
+    }
+
 
 }

@@ -161,7 +161,6 @@ class RealmUtils{
             try! realm.write {
                 print("added route to realm")
                 realm.add(_RouteMaster._MotoRoute)
-                
                 FirebaseData.dataService.downloadRouteImage(_RouteMaster._MotoRoute.image, id: _RouteMaster._MotoRoute.id)
             }
         } else {

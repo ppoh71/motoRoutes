@@ -14,7 +14,6 @@ extension UIView {
     
     /**
      Simply zooming in of a view: set view scale to 0 and zoom to Identity on 'duration' time interval.
-     
      - parameter duration: animation duration
      */
     func zoomIn(_ duration: TimeInterval = 0.5, delay:TimeInterval = 0.5) {
@@ -25,9 +24,9 @@ extension UIView {
         }
     }
     
+    
     /**
      Zoom in any view with specified offset magnification.
-     
      - parameter duration:     animation duration.
      - parameter easingOffset: easing offset.
      */
@@ -42,6 +41,27 @@ extension UIView {
             scale?.springSpeed = 15
             self.pop_add(scale, forKey: "scalePosition")
         })
+    }
+    
+    func scaleSize(_ delay: TimeInterval = 1.0, size: Int ) {
+        self.isHidden = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
+            self.isHidden = false;
+            let scale = POPSpringAnimation(propertyNamed: kPOPViewScaleXY)
+            scale?.toValue =  NSValue(cgSize: CGSize(width: size, height: size))
+            scale?.springBounciness = 15
+            scale?.springSpeed = 15
+            self.pop_add(scale, forKey: "scalePosition")
+        })
+    }
+    
+    func scale(_ size: Int ) {
+            let scale = POPSpringAnimation(propertyNamed: kPOPViewScaleXY)
+            scale?.toValue =  NSValue(cgSize: CGSize(width: size, height: size))
+            scale?.springBounciness = 8
+            scale?.springSpeed = 15
+            self.pop_add(scale, forKey: "scalePosition")
     }
     
     func aniToX(_ delay: Double){
@@ -67,7 +87,13 @@ extension UIView {
             AnimationEngine.animationToPositionX(self, x: -Double(self.frame.width/2))
         }
     }
-
     
-    
+    func aniToY(_ delay: Double, y: Double){
+        let when = DispatchTime.now() + delay // change to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            //print("animate point x\(self.frame.origin.y)")
+            AnimationEngine.animationToPositionY(self, y: Double(self.frame.origin.y) + y)
+            print(Double(self.frame.origin.y) + y)
+        }
+    }
 }

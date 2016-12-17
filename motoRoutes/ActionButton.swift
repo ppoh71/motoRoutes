@@ -16,26 +16,23 @@ class ActionButton: UIView, MarkerViewItems {
     weak var delegate: ActionButtonDelegate?
     var initFrame = CGRect(x: 0, y: 0, width: actionLabelWidth, height: actionLabelHeight)
     var actionButton = UIButton()
-    var buttonType = ActionButtonType()
+    var actionType = ActionButtonType()
     let padding = actionLabelPadding
     var yPos: CGFloat = 0
     
     override init(frame: CGRect) {
         super.init(frame: initFrame)
-        //print("init action button")
-        //setupButton()
+        self.backgroundColor = UIColor.black
     }
     
-    convenience init(buttonType: ActionButtonType, buttonNumber: Int, xOff: Bool) {
+    convenience init(actionType: ActionButtonType, buttonNumber: Int, xOff: Bool) {
         self.init(frame: CGRect.zero)
-        self.buttonType = buttonType
-        self.backgroundColor = UIColor.brown
+        self.actionType = actionType
         self.frame.origin.y = initFrame.height * CGFloat(buttonNumber) + CGFloat(padding/2 * buttonNumber)
         
         if(xOff == true){ //set off screen by x
             self.frame.origin.x =  -initFrame.width
         }
-        
         setupButton()
        }
     
@@ -45,9 +42,10 @@ class ActionButton: UIView, MarkerViewItems {
 
     func setupButton(){
         actionButton.frame = initFrame //assign view frame also to button
-        actionButton.setTitle(buttonType.buttonText, for: .normal)
+        actionButton.setTitle(actionType.buttonText, for: .normal)
+        actionButton.titleLabel!.font = buttonFont
         actionButton.backgroundColor = blue3
-        actionButton.actionType = buttonType
+        actionButton.actionType = actionType
         actionButton.isUserInteractionEnabled = true
         actionButton.addTarget(self, action: #selector(pressedButton), for: .touchUpInside)
         self.addSubview(actionButton)

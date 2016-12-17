@@ -5,10 +5,8 @@
 //  Created by Peter Pohlmann on 16.09.16.
 //  Copyright © 2016 Peter Pohlmann. All rights reserved.
 //
-
 import Foundation
 import UIKit
-
 
 //Notification Center keys
 let markerNotSetNotificationKey = "motoRoutes.MarkerNotSet"
@@ -19,22 +17,18 @@ let firbaseGetLocationsNotificationKey = "motoRoutes.getLocationsFromFirebase"
 let googleGetImagesNotificationKey = "motoRoutes.getGoogleImages"
 let actionButtonNotificationKey = "motoRoutes.actionButtons"
 let actionConfirmNotificationKey = "motoRoutes.actionButtonsConfirm"
-
-
-
+let progressDoneNotificationKey = "motoRoutes.actionProgressDone"
 
 //API Keys
 let KEY_UID = "uid"
 let GOOGLE_API_KEY = "AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
 let GOOGLE_URL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
 
-
 //Color Definitions
 let blue0 = ColorUtils.hexTorgbColor("#006499")
 let blue1 = ColorUtils.hexTorgbColor("#006499")
 let blue2 = ColorUtils.hexTorgbColor("#00527A")
 let blue3 = ColorUtils.hexTorgbColor("#00405F")
-//let blue4 = ColorUtils.hexTorgbColor("#002C42")
 let blue4 = ColorUtils.hexTorgbColor("#002736")
 
 let red1 = ColorUtils.hexTorgbColor("#F00C00")
@@ -49,18 +43,17 @@ let green4 = ColorUtils.hexTorgbColor("#005300")
 
 let textColor = UIColor.white
 
-
 //CornerRadius
 let cornerInfoViews = CGFloat(5)
 
 //Info Labes and Buttons Sizes
-let markerViewRect = CGRect(x: 0, y: 0, width: 150, height: 260)
-let confirmViewRect = CGRect(x: 0, y: 0, width: 130, height: actionLabelHeight*2+actionLabelPadding/2)
+let markerViewRect = CGRect(x: 0, y: 0, width: 150, height: 280)
+let confirmViewRect = CGRect(x: 0, y: 0, width: 130, height: 280)
 let viewPadding = 10
 let actionLabelWidth = 130;
 let actionLabelHeight = 48;
 let actionLabelPadding = 12;
-
+let buttonFont = UIFont(name: "Roboto-Bold", size: 14);
 
 // Labels
 let distanceLabelText = NSLocalizedString("View.RouteInfo.DistanceLabel", comment: "distanceLabelText")
@@ -78,6 +71,10 @@ let actionButtonDownloadRouteText = NSLocalizedString("ActionButton.downloadRout
 let actionButtonConfirmDeleteText =  NSLocalizedString("ActionButton.confirmDelete", comment: "Confirm Delete")
 let actionButtonConfirmShareText =  NSLocalizedString("ActionButton.confirmShare", comment: "Confirm Share")
 let actionButtonConfirmDownloadText =  NSLocalizedString("ActionButton.confirmDownload", comment: "Confirm Download")
+let actionButtonProgressShare = NSLocalizedString("ActionButton.progressShare", comment: "Progress Share")
+let actionButtonProgressDelete = NSLocalizedString("ActionButton.progressDelete", comment: "Progress Delete")
+let actionButtonProgressDownload = NSLocalizedString("ActionButton.progressDownload", comment: "Progress Download")
+let actionButtonProgressDone = NSLocalizedString("ActionButton.progressDone", comment: "Progress Done")
 
 
 protocol MarkerViewItems: class {
@@ -109,7 +106,6 @@ enum LabelType {
     }
 }
 
-
 //Action Button Types
 enum ActionButtonType {
     case DefState
@@ -120,7 +116,11 @@ enum ActionButtonType {
     case ConfirmDelete
     case ConfirmShare
     case ConfirmDownload
+    case ProgressShare
+    case ProgressDelete
+    case ProgressDownload
     case Cancel
+    case Done
     case ActionMenuMyRoutes
     case MenuInfoLabels
     case MenuActionButton
@@ -136,12 +136,15 @@ enum ActionButtonType {
         case .ConfirmDelete: return "OK"
         case .ConfirmShare: return "OK"
         case .ConfirmDownload : return "OK"
+        case .ProgressShare: return actionButtonProgressShare
+        case .ProgressDelete: return actionButtonProgressDelete
+        case .ProgressDownload: return actionButtonProgressDownload
         case .Cancel: return "Cancel"
+        case .Done: return actionButtonProgressDone
         case .ActionMenuMyRoutes: return "ActionMenuMyRoutes"
         case .MenuInfoLabels: return "MenuInfoLabels"
         case .MenuActionButton: return "MenuActionButton"
         case .MenuConfirm: return "MenuConfirm"
-            
         }
     }
     
@@ -155,7 +158,11 @@ enum ActionButtonType {
         case .ConfirmDelete: return "---"
         case .ConfirmShare: return "--"
         case .ConfirmDownload: return "--"
+        case .ProgressShare: return "--"
+        case .ProgressDelete: return "--"
+        case .ProgressDownload: return "--"
         case .Cancel: return "---"
+        case .Done: return "---"
         case .ActionMenuMyRoutes: return "---"
         case .MenuInfoLabels: return "MenuInfoLabels"
         case .MenuActionButton: return "MenuActionButton"
@@ -169,11 +176,15 @@ enum ActionButtonType {
         case .Details: return ActionButtonType.Details
         case .DeleteRoute: return ActionButtonType.ConfirmDelete
         case .ShareRoute: return ActionButtonType.ConfirmShare
-        case .DownloadRoute: return ActionButtonType.DownloadRoute
+        case .DownloadRoute: return ActionButtonType.ConfirmDownload
         case .ConfirmDelete: return ActionButtonType.ConfirmDelete
         case .ConfirmShare: return ActionButtonType.ConfirmShare
         case .ConfirmDownload: return ActionButtonType.ConfirmDownload
+        case .ProgressShare: return ActionButtonType.DefState
+        case .ProgressDelete: return ActionButtonType.DefState
+        case .ProgressDownload: return ActionButtonType.DefState
         case .Cancel: return ActionButtonType.DefState
+        case .Done: return ActionButtonType.DefState
         case .ActionMenuMyRoutes: return ActionButtonType.DefState
         case .MenuInfoLabels: return ActionButtonType.DefState
         case .MenuActionButton: return ActionButtonType.DefState
@@ -191,7 +202,11 @@ enum ActionButtonType {
         case .ConfirmDelete: return UIImage()
         case .ConfirmShare: return UIImage()
         case .ConfirmDownload: return UIImage()
+        case .ProgressShare: return UIImage()
+        case .ProgressDelete: return UIImage()
+        case .ProgressDownload: return UIImage()
         case .Cancel: return UIImage()
+        case .Done: return UIImage()
         case .ActionMenuMyRoutes: return (UIImage(named: "menuBtn") as UIImage?)!
         case .MenuInfoLabels: return (UIImage(named: "backBtn") as UIImage?)!
         case .MenuActionButton: return (UIImage(named: "cancelBtn") as UIImage?)!
@@ -203,7 +218,6 @@ enum ActionButtonType {
         self = .DefState
     }
 }
-
 
 //Display different MarkerViewStates
 enum ActionMenuType {
@@ -243,5 +257,15 @@ enum MarkerViewState{
     
     init(){
         self = .InfoLabelState
+    }
+}
+
+enum ProgressDoneType{
+    case ProgressDoneDelete
+    case ProgressDoneDownload
+    case ProgressDoneDef
+    
+    init(){
+        self = .ProgressDoneDef
     }
 }

@@ -64,6 +64,12 @@ class SpinnerView: UIView{
         print("init markerview frame")
     }
     
+    convenience init(frame: CGRect, color: UIColor) {
+        self.init(frame: frame)
+        setup(color)
+        updateAnimation()
+        
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -84,10 +90,10 @@ class SpinnerView: UIView{
     }
 
     
-    func setup() {
-        circleLayer.lineWidth = 4
+    func setup(_ color: UIColor = UIColor.red ) {
+        circleLayer.lineWidth = 2
         circleLayer.fillColor = nil
-        circleLayer.strokeColor = red2.cgColor
+        circleLayer.strokeColor = color.cgColor
         layer.addSublayer(circleLayer)
     }
     

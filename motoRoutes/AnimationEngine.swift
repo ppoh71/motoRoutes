@@ -38,13 +38,12 @@ final class AnimationEngine {
     
     }
     
-    
     //MARK: Animation to Point
     class func animationToPosition(_ view: UIView, position: CGPoint) {
         
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
         moveAnim?.toValue = NSValue(cgPoint: position)
-        moveAnim?.springBounciness = 8
+        moveAnim?.springBounciness = 6
         moveAnim?.springSpeed = 8
         view.pop_add(moveAnim, forKey: "movePosition")
     }
@@ -53,16 +52,24 @@ final class AnimationEngine {
         
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPositionX)
         moveAnim?.toValue = x
-        moveAnim?.springBounciness = 8
+        moveAnim?.springBounciness = 6
         moveAnim?.springSpeed = 15
         view.pop_add(moveAnim, forKey: "movePosition")
     }
-
+    
+    class func animationToPositionY(_ view: UIView, y: Double) {
+        
+        let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPositionY)
+        moveAnim?.toValue = y
+        moveAnim?.springBounciness = 6
+        moveAnim?.springSpeed = 15
+        view.pop_add(moveAnim, forKey: "movePosition")
+    }
     class func animationToPositionImageView(_ view: UIImageView, position: CGPoint) {
         
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
         moveAnim?.toValue = NSValue(cgPoint: position)
-        moveAnim?.springBounciness = 8
+        moveAnim?.springBounciness = 6
         moveAnim?.springSpeed = 8
         view.pop_add(moveAnim, forKey: "movePosition")
     }

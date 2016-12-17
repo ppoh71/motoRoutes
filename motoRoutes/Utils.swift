@@ -138,7 +138,6 @@ final class Utils {
     * return full clock time hh:mm:ss
     */
     static func clockFormat(_ totalSeconds:Int) -> String {
-        
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60) % 60
         let hours: Int = totalSeconds / 3600

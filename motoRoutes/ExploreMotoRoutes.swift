@@ -49,7 +49,6 @@ class ExploreMotoRoutes: UIViewController {
         collection.delegate = self
         collection.dataSource = self
         collection.allowsSelection = true
-        
         updateMyRouteMaster()
         self.view.backgroundColor = UIColor.black
     }
@@ -77,6 +76,11 @@ class ExploreMotoRoutes: UIViewController {
         
         //FirebaseData.dataService.getRoutesFromFIR()
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
+        print("---------active routemaster \(activeRouteMaster._MotoRoute.id)")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func updateMyRouteMaster(){
@@ -86,7 +90,6 @@ class ExploreMotoRoutes: UIViewController {
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
     }
     
-    //print route loaction marker for each route
     func actionMenuConfirm(_ notification: Notification){
         print("###ActionButton NotifY Explore")
         //get object from notification
@@ -109,7 +112,6 @@ class ExploreMotoRoutes: UIViewController {
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
-                
                 addRoutetoRealm(routeMaster: activeRouteMaster)
                 
             default:
@@ -118,7 +120,6 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
     
-    //display Routes routes on map as Marker
     func gotRoutesfromFirbase(_ notification: Notification){
         if let notifyObj =  notification.object as? [RouteMaster] {
             firebaseRouteMasters = notifyObj
@@ -126,11 +127,10 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
     
-    //print route loaction marker for each route
     func gotLocationsFromFirbase(_ notification: Notification){
         print("###got all loctions for fire_route")
         if let notifyObj =  notification.object as? [RouteMaster] {
-            activeAnnotationView?.setupAll(notifyObj[0])
+            activeAnnotationView?.setupAll(notifyObj[0], menuType: ActionMenuType.AllRoutes)
         }
     }
     
@@ -148,18 +148,7 @@ class ExploreMotoRoutes: UIViewController {
             //}
        // }
     }
-    
-    func findRouteInRouteMasters(_ routes: [RouteMaster], key: String) -> (RouteMaster, Int){
-        var _route = RouteMaster()
-        var index = 0
         
-        if let i = routes.index(where: {$0._MotoRoute.id == key}) {
-            _route = routes[i]
-            index = i
-        }
-        return (_route, index)
-    }
-    
     func setRouteMarkers(_ routes: [RouteMaster], markerTitle: String){
         deleteMyRouteMarker()
         for item in routes {
@@ -240,25 +229,27 @@ class ExploreMotoRoutes: UIViewController {
     
     func addRoutetoRealm(routeMaster: RouteMaster){
         print("active id \(routeMaster._MotoRoute.id)")
-        
-        mapView.deselectAnnotation(routeMaster._marker, animated: false)
-        mapView.removeAnnotation(routeMaster._marker)
-        
+        removeAnnotation(routeMaster)
         RealmUtils.saveRouteFromFIR(routeMaster)
-        print("#### marker from delete \(routeMaster._marker)")
-        
+        NotificationCenter.default.post(name: Notification.Name(rawValue: progressDoneNotificationKey), object: [ProgressDoneType.ProgressDoneDownload])
         reloadData()
     }
     
     func deleteRoute(){
         let realm = try! Realm()
         try! realm.write {
-            
-            deleteSelectedMarkerView()
-            print("try delete \(activeRouteMaster) ")
+            removeAnnotation(activeRouteMaster)
+            print("try delete \(activeRouteMaster._MotoRoute.id) ")
             realm.delete(activeRouteMaster._MotoRoute)
             self.reloadData()
+            activeRouteMaster = RouteMaster()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: progressDoneNotificationKey), object: [ProgressDoneType.ProgressDoneDelete])
         }
+    }
+    
+    func removeAnnotation(_ routeMaster: RouteMaster){
+        mapView.deselectAnnotation(routeMaster._marker, animated: false)
+        mapView.removeAnnotation(routeMaster._marker)
     }
     
     func reloadData() {
@@ -297,7 +288,6 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let latitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLat
         let longitude = myRoutesMaster[(indexPath as NSIndexPath).item].startLong
-        //let routeID = myRoutesMaster[(indexPath as NSIndexPath).item]._MotoRoute.id
         let routeMaster = myRoutesMaster[(indexPath as NSIndexPath).item]
         routeMaster.associateRouteListOnly()
         activeRouteMaster = routeMaster
@@ -372,7 +362,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     
    
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        
+        print("mgl annotation image")
         guard let markerTitle = annotation.subtitle else {
             print("guard no tile")
             return nil
@@ -401,18 +391,12 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         return annotationImage
     }
  
-    /*
-    func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {
-        print("explore slect it")
-    }
-    */
-    
     func mapView(_ mapView: MGLMapView, didAdd annotationViews: [MGLAnnotationView]) {
         print("annotationViews")
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-       
+      // print("mgl view annotation")
         guard annotation is MGLPointAnnotation else {
             return nil
         }
@@ -425,7 +409,6 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             return nil
         }
         
-
         var viewType = MarkerViewType()
         
         switch markerTitle! {
@@ -460,34 +443,39 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         print("didDeselect")
     }
     
-    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {        
-       
+    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+        print("test 1")
+        print(annotation)
+        
         guard let titleID = annotation.subtitle else {
             print("guard exploreMotoRoutes didSelect")
             return
         }
 
+         print("test 2")
         print("##did select marker \(annotation) \(activeRouteMaster._MotoRoute.id)")
-        
+       
         if(annotation.title! == "firebaseMarker" && annotation.subtitle! !=  activeRouteMaster._MotoRoute.id){
-            let routeMaster = findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
+            print("test 3")
+            let routeMaster = RouteMaster.findRouteInRouteMasters(firebaseRouteMasters, key: titleID!).0
             if (!routeMaster._MotoRoute.id.isEmpty) {
-
+            print("test 4")
             activeRouteMaster = routeMaster
             setViewMarker(routeMaster, markerTitle: "FirebaseMarkerViewSelected")
-            
+            print("test 5")
                 //get locationsList for this Route from firebase
                 if(routeMaster._MotoRoute.locationsList.count<1){
                         FirebaseData.dataService.geLocationsRouteFIR(routeMaster)
                 } else{
-                     activeAnnotationView?.setupAll(routeMaster)
+                     activeAnnotationView?.setupAll(routeMaster, menuType: ActionMenuType.AllRoutes)
                 }
             }
         }
         
         if(annotation.title! != "firebaseMarker" && annotation.subtitle! !=  activeRouteMaster._MotoRoute.id){
             print("do if else")
-            let index = findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
+            print("test 10")
+            let index = RouteMaster.findRouteInRouteMasters(myRoutesMaster, key: titleID!).1
             if(index <= myRoutesMaster.count) {
                 collection.delegate?.collectionView!(collection, didDeselectItemAt: activeIndex)
                 collection.selectItem(at: IndexPath(item: index, section: 0) , animated: true, scrollPosition: .centeredHorizontally)
