@@ -39,7 +39,6 @@ class RouteMaster {
     var textHighAlt: String { get { return "\(routeHighestAlt) m" } }
     var textHighSpeed: String { get { return "\(routeHighSpeed) km/h" } }
     
-    
     var startLat: Double {
         if(_MotoRoute.startLatitude != 0){
             return _MotoRoute.startLatitude
@@ -63,7 +62,6 @@ class RouteMaster {
             return 0
         }
     }
-    
 
     var cnt = 0
     
@@ -126,13 +124,9 @@ class RouteMaster {
         return newRouteList
     }
     
-    
-    
-    //update the marker object, so we know that the speedmarker has been set
     class func updateMarkerBool(_ RouteList: [LocationMaster], n: Int){
         //the marker for this location has been set
         RouteList[n].marker = true
-        
     }
     
     //get speede, alt, average and stuff

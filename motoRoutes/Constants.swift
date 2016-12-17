@@ -66,13 +66,16 @@ let highestAltitudeLabelText = NSLocalizedString("View.RouteInfo.HighestAltLabel
 //ActionButtons
 let actionButtonDetailsText = NSLocalizedString("ActionButton.details", comment: "Details")
 let actionButtonDeleteRouteText = NSLocalizedString("ActionButton.deleteRoute", comment: "Delete Route")
+let actionButtonDeleteRouteFIRText = NSLocalizedString("ActionButton.deleteRouteFIR", comment: "Delete Route FIR")
 let actionButtonShareRouteText = NSLocalizedString("ActionButton.shareRoute", comment: "Share Route")
 let actionButtonDownloadRouteText = NSLocalizedString("ActionButton.downloadRoute", comment: "Download Route")
 let actionButtonConfirmDeleteText =  NSLocalizedString("ActionButton.confirmDelete", comment: "Confirm Delete")
+let actionButtonConfirmDeleteFIRText =  NSLocalizedString("ActionButton.confirmDeleteFIR", comment: "Confirm Delete FIR")
 let actionButtonConfirmShareText =  NSLocalizedString("ActionButton.confirmShare", comment: "Confirm Share")
 let actionButtonConfirmDownloadText =  NSLocalizedString("ActionButton.confirmDownload", comment: "Confirm Download")
 let actionButtonProgressShare = NSLocalizedString("ActionButton.progressShare", comment: "Progress Share")
 let actionButtonProgressDelete = NSLocalizedString("ActionButton.progressDelete", comment: "Progress Delete")
+let actionButtonProgressDeleteFIR = NSLocalizedString("ActionButton.progressDeleteFIR", comment: "Progress Delete FIR")
 let actionButtonProgressDownload = NSLocalizedString("ActionButton.progressDownload", comment: "Progress Download")
 let actionButtonProgressDone = NSLocalizedString("ActionButton.progressDone", comment: "Progress Done")
 
@@ -111,13 +114,16 @@ enum ActionButtonType {
     case DefState
     case Details
     case DeleteRoute
+    case DeleteRouteFIR
     case ShareRoute
     case DownloadRoute
     case ConfirmDelete
+    case ConfirmDeleteFIR
     case ConfirmShare
     case ConfirmDownload
     case ProgressShare
     case ProgressDelete
+    case ProgressDeleteFIR
     case ProgressDownload
     case Cancel
     case Done
@@ -131,13 +137,16 @@ enum ActionButtonType {
         case .DefState: return "defState"
         case .Details: return actionButtonDetailsText
         case .DeleteRoute: return actionButtonDeleteRouteText
+        case .DeleteRouteFIR: return actionButtonDeleteRouteFIRText
         case .ShareRoute: return actionButtonShareRouteText
         case .DownloadRoute: return actionButtonDownloadRouteText
         case .ConfirmDelete: return "OK"
+        case .ConfirmDeleteFIR: return "OK"
         case .ConfirmShare: return "OK"
         case .ConfirmDownload : return "OK"
         case .ProgressShare: return actionButtonProgressShare
         case .ProgressDelete: return actionButtonProgressDelete
+        case .ProgressDeleteFIR: return actionButtonProgressDeleteFIR
         case .ProgressDownload: return actionButtonProgressDownload
         case .Cancel: return "Cancel"
         case .Done: return actionButtonProgressDone
@@ -153,13 +162,16 @@ enum ActionButtonType {
         case .DefState: return "defState Confirm"
         case .Details: return "show details"
         case .DeleteRoute: return actionButtonConfirmDeleteText
+        case .DeleteRouteFIR: return actionButtonConfirmDeleteFIRText
         case .ShareRoute: return actionButtonConfirmShareText
         case .DownloadRoute: return actionButtonConfirmDownloadText
         case .ConfirmDelete: return "---"
+        case .ConfirmDeleteFIR: return "---"
         case .ConfirmShare: return "--"
         case .ConfirmDownload: return "--"
         case .ProgressShare: return "--"
         case .ProgressDelete: return "--"
+        case .ProgressDeleteFIR: return "--"
         case .ProgressDownload: return "--"
         case .Cancel: return "---"
         case .Done: return "---"
@@ -175,13 +187,16 @@ enum ActionButtonType {
         case .DefState: return ActionButtonType.DefState
         case .Details: return ActionButtonType.Details
         case .DeleteRoute: return ActionButtonType.ConfirmDelete
+        case .DeleteRouteFIR: return ActionButtonType.ConfirmDeleteFIR
         case .ShareRoute: return ActionButtonType.ConfirmShare
         case .DownloadRoute: return ActionButtonType.ConfirmDownload
         case .ConfirmDelete: return ActionButtonType.ConfirmDelete
+        case .ConfirmDeleteFIR: return ActionButtonType.ConfirmDeleteFIR
         case .ConfirmShare: return ActionButtonType.ConfirmShare
         case .ConfirmDownload: return ActionButtonType.ConfirmDownload
         case .ProgressShare: return ActionButtonType.DefState
         case .ProgressDelete: return ActionButtonType.DefState
+        case .ProgressDeleteFIR: return ActionButtonType.DefState
         case .ProgressDownload: return ActionButtonType.DefState
         case .Cancel: return ActionButtonType.DefState
         case .Done: return ActionButtonType.DefState
@@ -197,13 +212,16 @@ enum ActionButtonType {
         case .DefState: return UIImage()
         case .Details: return UIImage()
         case .DeleteRoute: return UIImage()
+        case .DeleteRouteFIR: return UIImage()
         case .ShareRoute: return UIImage()
         case .DownloadRoute: return UIImage()
         case .ConfirmDelete: return UIImage()
+        case .ConfirmDeleteFIR: return UIImage()
         case .ConfirmShare: return UIImage()
         case .ConfirmDownload: return UIImage()
         case .ProgressShare: return UIImage()
         case .ProgressDelete: return UIImage()
+        case .ProgressDeleteFIR: return UIImage()
         case .ProgressDownload: return UIImage()
         case .Cancel: return UIImage()
         case .Done: return UIImage()
@@ -262,6 +280,7 @@ enum MarkerViewState{
 
 enum ProgressDoneType{
     case ProgressDoneDelete
+    case ProgressDoneShare
     case ProgressDoneDownload
     case ProgressDoneDef
     

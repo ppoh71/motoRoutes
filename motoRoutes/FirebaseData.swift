@@ -18,10 +18,10 @@ class FirebaseData {
     static let dataService = FirebaseData()
     
     var r_ = RouteMaster()
-    fileprivate var _REF_BASE = FirDB
-    fileprivate var _REF_ROUTES = FirDB.child("motoRoutes")
-    fileprivate var _REF_LOCATIONS = FirDB.child("Locations")
-    fileprivate var _REF_STORAGE = FirStorage.reference(forURL: "gs://motoroutes-c018f.appspot.com")
+    var _REF_BASE = FirDB
+    var _REF_ROUTES = FirDB.child("motoRoutes")
+    var _REF_LOCATIONS = FirDB.child("Locations")
+    var _REF_STORAGE = FirStorage.reference(forURL: "gs://motoroutes-c018f.appspot.com")
 
     var REF_Base: FIRDatabaseReference{
         return _REF_BASE
@@ -102,12 +102,9 @@ class FirebaseData {
                 print("error: \(error) - \(ref)")
             } else {
                 print("ref: \(ref) - \(error)")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: progressDoneNotificationKey), object: [ProgressDoneType.ProgressDoneShare])
             }
         })
-    }
-    
-    func deleteFIRChild(_ child: String){
-        FIR_LOCATIONS.child("/\(child)").removeValue()
     }
     
     func getRoutesFromFIR(){
@@ -267,5 +264,19 @@ class FirebaseData {
         }
     }
 
+    func deleteFIRLocation(_ child: String){
+        FIR_LOCATIONS.child("/\(child)").removeValue()
+    }
+    
+    func deleteFIRRoute(_ child: String){
+        FIR_ROUTES.child("/\(child)").removeValue()
+    }
+    
+    func deleteFIRRouteData(id: String){
+        print("deleting FIR data \(id)")
+        deleteFIRRoute(id)
+        deleteFIRLocation(id)
+        
+    }
 }
 

@@ -105,10 +105,14 @@ class ExploreMotoRoutes: UIViewController {
             case .ConfirmDelete:
                 print("NOTFY: Confirm Delete")
                 deleteRoute()
+                
+            case .ConfirmDeleteFIR:
+                print("NOTFY: Confirm Delete FIR")
+                FirebaseData.dataService.deleteFIRRouteData(id: self.activeRouteMaster._MotoRoute.id)
                
             case .ConfirmShare:
                 print("NOTFY: Confirm Share")
-                  FirebaseData.dataService.addRouteToFIR(self.activeRouteMaster, keychain: self.firbaseUser)
+                FirebaseData.dataService.addRouteToFIR(self.activeRouteMaster, keychain: self.firbaseUser)
                 
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
@@ -343,14 +347,11 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
         } else{
             return UICollectionViewCell()
         }
- 
     }
  
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 170, height: 170)
@@ -360,7 +361,6 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
 // MARK: - MKMapViewDelegate
 extension ExploreMotoRoutes: MGLMapViewDelegate {
     
-   
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         print("mgl annotation image")
         guard let markerTitle = annotation.subtitle else {
@@ -486,14 +486,12 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         }
     }
     
-    
     func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         //   print("regionDidChangeAnimated")
     }
     
     func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
         print("tapOnCalloutFor")
-
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {

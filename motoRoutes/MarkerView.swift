@@ -126,6 +126,10 @@ class MarkerView: MGLAnnotationView {
             let downloadButton = ActionButton(actionType: ActionButtonType.DownloadRoute, buttonNumber: 1, xOff: true)
             actionButtonsArr.append(downloadButton)
             clipView.addSubview(downloadButton)
+            
+            let deleteButtonFIR = ActionButton(actionType: ActionButtonType.DeleteRouteFIR, buttonNumber: 2, xOff: true)
+            actionButtonsArr.append(deleteButtonFIR)
+            clipView.addSubview(deleteButtonFIR)
         }
     }
     
@@ -154,10 +158,10 @@ class MarkerView: MGLAnnotationView {
     
     //MARK: Actions
     func actionButtonNotify(_ notification: Notification){
-        print("###actionButtonNotify")
+        
         let notifyObj =  notification.object as! [AnyObject]
         if let actionType = notifyObj[0] as? ActionButtonType {
-            
+            print("###actionButtonNotify \(actionType)")
             switch(actionType) {
                 
             case .Details:
@@ -166,6 +170,11 @@ class MarkerView: MGLAnnotationView {
                 
             case .DeleteRoute:
                 print("NOTFY: Delete Route")
+                setupActionConfirm(actionType: actionType)
+                switchActionMenuButton(.MenuActionButton)
+                
+            case .DeleteRouteFIR:
+                print("NOTFY: Delete Route FIR")
                 setupActionConfirm(actionType: actionType)
                 switchActionMenuButton(.MenuActionButton)
                 
@@ -184,9 +193,13 @@ class MarkerView: MGLAnnotationView {
                 confirmView.progressOn(ActionButtonType.ProgressDelete)
                 actionSpinner()
                 menuButton.scaleSize(0, size: 0)
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-//                    self.progressDone(.ProgressDelete)
-//                })
+
+            case .ConfirmDeleteFIR:
+                print("NOTFY: Confirm Delete FIR")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
+                confirmView.progressOn(ActionButtonType.ProgressDeleteFIR)
+                actionSpinner()
+                menuButton.scaleSize(0, size: 0)
                 
             case .ConfirmShare:
                 print("NOTFY: Confirm Share")
@@ -194,11 +207,7 @@ class MarkerView: MGLAnnotationView {
                 confirmView.progressOn(ActionButtonType.ProgressShare)
                 actionSpinner()
                 menuButton.scaleSize(0, size: 0)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                    self.progressFinish(.ProgressShare)
-                })
-                
+            
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
@@ -218,10 +227,14 @@ class MarkerView: MGLAnnotationView {
         if let progressDoneType = notifyObj[0] as? ProgressDoneType {
             
             switch(progressDoneType){
+            
+            case .ProgressDoneShare:
+                print("progress done share")
+                progressFinish(.ProgressShare)
                 
             case .ProgressDoneDownload:
                 print("progress Download Done")
-                progressFinish(.ProgressShare)
+                progressFinish(.ProgressDownload)
             
             case .ProgressDoneDelete:
                 progressFinish(.ProgressDelete)
@@ -296,11 +309,18 @@ class MarkerView: MGLAnnotationView {
             self.switchActionMenuButton(ActionButtonType.ActionMenuMyRoutes)
             
             switch(actionType){
+                
             case .ProgressDelete:
                 self.markerViewOff()
+                
             case .ProgressShare:
                 self.resetToMenu()
                 self.menuButton.scaleSize(0, size: 4)
+                
+            case .ProgressDownload:
+                self.resetToMenu()
+                self.menuButton.scaleSize(0, size: 4)
+                
             default:
                 print("default")
             }
