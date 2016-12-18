@@ -13,7 +13,6 @@
 		552240F31D6DEA7700694E60 /* MotoChart.xib in Resources */ = {isa = PBXBuildFile; fileRef = 552240F21D6DEA7700694E60 /* MotoChart.xib */; };
 		5522D1C71C512FFC005339BD /* addRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C61C512FFC005339BD /* addRouteController.swift */; };
 		5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522D1C81C5132B1005339BD /* motoRouteController.swift */; };
-		552D32A41DB926DD0050E62D /* HTMLStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D32A31DB926DD0050E62D /* HTMLStringExtension.swift */; };
 		553156611D81BDC100A53E8F /* motoRoutesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553156601D81BDC100A53E8F /* motoRoutesTests.swift */; };
 		5532ECD51D919D8200A7942B /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532ECD41D919D8200A7942B /* RealmModel.swift */; };
 		55350C0C1D8846FA00483E1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55350C0B1D8846FA00483E1C /* GoogleService-Info.plist */; };
@@ -62,6 +61,7 @@
 		55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEFA1D07093B0051F338 /* motoButtons.swift */; };
 		A90D6F991C947101002E7980 /* MapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* MapUtils.swift */; };
 		A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* Globals.swift */; };
+		A91844BF1E0706E7008AF267 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91844BE1E0706E7008AF267 /* Enums.swift */; };
 		AE703449D5F95EB9B2319039 /* Pods_motoRoutes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62A2198077AD7DDA6D1770AA /* Pods_motoRoutes.framework */; };
 		B16276BA6816F7823DCECD41 /* Pods_motoRoutesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F3CB5F5EF3BEC3AD2CF536C /* Pods_motoRoutesTests.framework */; };
 /* End PBXBuildFile section */
@@ -87,7 +87,6 @@
 		552240F21D6DEA7700694E60 /* MotoChart.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MotoChart.xib; sourceTree = "<group>"; };
 		5522D1C61C512FFC005339BD /* addRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addRouteController.swift; sourceTree = "<group>"; };
 		5522D1C81C5132B1005339BD /* motoRouteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = motoRouteController.swift; sourceTree = "<group>"; };
-		552D32A31DB926DD0050E62D /* HTMLStringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLStringExtension.swift; sourceTree = "<group>"; };
 		5530AFBC1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		5530AFBD1D104E9800925A07 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5531565E1D81BDC100A53E8F /* motoRoutesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motoRoutesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,6 +148,7 @@
 		74F91450E82751ECAFC45A7C /* Pods-motoRoutesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.release.xcconfig"; sourceTree = "<group>"; };
 		A90D6F981C947101002E7980 /* MapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapUtils.swift; sourceTree = "<group>"; };
 		A90D6F9A1C9471E2002E7980 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		A91844BE1E0706E7008AF267 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +286,7 @@
 			children = (
 				A90D6F9A1C9471E2002E7980 /* Globals.swift */,
 				559160831D8C37CB006BEA7A /* Constants.swift */,
+				A91844BE1E0706E7008AF267 /* Enums.swift */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -335,7 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				55DC39B31D65AF45002E02EC /* NSDateExtension.swift */,
-				552D32A31DB926DD0050E62D /* HTMLStringExtension.swift */,
 				557E19EC1DC0AE6800CFE07B /* ButtonExtension.swift */,
 				5549DC911DF1CDD3009C2DAF /* UIViewExtension.swift */,
 			);
@@ -696,6 +696,7 @@
 				551EFF941CC11F640065204D /* ImageUtils.swift in Sources */,
 				55E1496E1CE1CD7B00B576BB /* motoRouteOptions.swift in Sources */,
 				55D997001D92B8F200AB7DAB /* ExploreMotoRoutes.swift in Sources */,
+				A91844BF1E0706E7008AF267 /* Enums.swift in Sources */,
 				559160841D8C37CB006BEA7A /* Constants.swift in Sources */,
 				55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */,
@@ -706,7 +707,6 @@
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,
 				55E2DE1C1DBA3DD1002C799C /* InfoLabel.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
-				552D32A41DB926DD0050E62D /* HTMLStringExtension.swift in Sources */,
 				5562BA551C73663900EF340D /* Utils.swift in Sources */,
 				552240F11D6DE7EA00694E60 /* MotoChart.swift in Sources */,
 				556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */,

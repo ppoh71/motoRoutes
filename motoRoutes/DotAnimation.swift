@@ -32,14 +32,11 @@ class DotAnimation: UIView {
         super.layoutSubviews()
         //super.layoutSubviews()
     }
- 
     
     func addDotAnimation() {
-        
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: 0,y: 0), radius: CGFloat(5), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
         
         let circlePathOuter = UIBezierPath(arcCenter: CGPoint(x: 0,y: 0), radius: CGFloat(10), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
-        
         
         let shapeLayerOuter = CAShapeLayer()
         shapeLayerOuter.path = circlePathOuter.cgPath
@@ -92,9 +89,5 @@ class DotAnimation: UIView {
         shapeLayer.add(animationLineWidth, forKey: "opacity")
         shapeLayerInner.add(animationOuter, forKey: "inneropacity")
         shapeLayerOuter.add(animationOuter, forKey: "outeropacits")
-        
     }
-
-    
-    
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class InfoLabel: UIView, MarkerViewItems {
+class InfoLabel: UIView{
     var initFrame = CGRect(x: 0, y: 0, width: actionLabelWidth, height: actionLabelHeight)
     let labelWidth = 100
     let labelHeight = 20
@@ -22,7 +22,6 @@ class InfoLabel: UIView, MarkerViewItems {
     
     override init(frame: CGRect) {
         super.init(frame: initFrame)
-        //print("init markerview frame")
     }
     
     convenience init(labelNumber: Int, labelType: LabelType, value: String, xOff: Bool) {
@@ -34,7 +33,7 @@ class InfoLabel: UIView, MarkerViewItems {
         
         self.frame.origin.y =  initFrame.height * CGFloat(labelNumber) + CGFloat(padding/2 * labelNumber)
         
-        if(xOff == true){ //set off screen by x
+        if xOff { //set off screen by x
             self.frame.origin.x =  -self.frame.width
         }
         
@@ -73,5 +72,4 @@ class InfoLabel: UIView, MarkerViewItems {
         info.text = labelValue
         self.addSubview(info)
     }
-    
-    }
+}

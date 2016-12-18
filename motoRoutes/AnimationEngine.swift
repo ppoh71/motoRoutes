@@ -33,14 +33,12 @@ final class AnimationEngine {
         return CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height)
     }
     
-    
     init(){
     
     }
     
     //MARK: Animation to Point
     class func animationToPosition(_ view: UIView, position: CGPoint) {
-        
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
         moveAnim?.toValue = NSValue(cgPoint: position)
         moveAnim?.springBounciness = 6
@@ -49,7 +47,6 @@ final class AnimationEngine {
     }
     
     class func animationToPositionX(_ view: UIView, x: Double) {
-        
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPositionX)
         moveAnim?.toValue = x
         moveAnim?.springBounciness = 6
@@ -58,15 +55,14 @@ final class AnimationEngine {
     }
     
     class func animationToPositionY(_ view: UIView, y: Double) {
-        
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPositionY)
         moveAnim?.toValue = y
         moveAnim?.springBounciness = 6
         moveAnim?.springSpeed = 15
         view.pop_add(moveAnim, forKey: "movePosition")
     }
+    
     class func animationToPositionImageView(_ view: UIImageView, position: CGPoint) {
-        
         let moveAnim = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
         moveAnim?.toValue = NSValue(cgPoint: position)
         moveAnim?.springBounciness = 6
@@ -74,10 +70,7 @@ final class AnimationEngine {
         view.pop_add(moveAnim, forKey: "movePosition")
     }
     
-
-
     //MARK: Animation functions
-    
     class func showViewAnimCenterPosition(_ viewObejct: UIView){
         AnimationEngine.animationToPosition(viewObejct, position: AnimationEngine.screenCenterPosition)
     }
@@ -99,6 +92,33 @@ final class AnimationEngine {
     class func showViewAnimCenterTopPosition(_ viewObject: UIView){
         let position = CGPoint(x: UIScreen.main.bounds.midX, y: 0)
         AnimationEngine.animationToPosition(viewObject, position: position)
+    }
+    
+    class func animateItems(_ itemArr: [UIView], aniType: AnimationType, delay: Double){
+        var _delay = delay
+        
+        for item in itemArr {
+            switch(aniType){
+                
+            case .onFromLeft:
+                item.aniToX(_delay)
+                _delay = _delay+delay
+                
+            case .onFromLeftSimultan:
+                item.aniToX(_delay)
+                
+            case .offToLeft:
+                item.aniOffToLeft(_delay)
+                _delay = _delay+delay
+                
+            case .offToRight:
+                item.aniToOff(_delay)
+                _delay = _delay+delay
+                
+            case .offToRightSimultan:
+                item.aniToOff(_delay)
+            }
+        }
     }
     
  }

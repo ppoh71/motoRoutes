@@ -9,9 +9,7 @@
 import UIKit
 import Mapbox
 
-
 class SpinnerView: UIView{
-
     let circleLayer = CAShapeLayer()
     
     let strokeEndAnimation: CAAnimation = {
@@ -54,9 +52,8 @@ class SpinnerView: UIView{
         return animation
     }()
     
-   var animating: Bool = true     
+    var animating: Bool = true
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -68,13 +65,11 @@ class SpinnerView: UIView{
         self.init(frame: frame)
         setup(color)
         updateAnimation()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -88,7 +83,6 @@ class SpinnerView: UIView{
         circleLayer.position = center
         circleLayer.path = path.cgPath
     }
-
     
     func setup(_ color: UIColor = UIColor.red ) {
         circleLayer.lineWidth = 2
@@ -97,7 +91,6 @@ class SpinnerView: UIView{
         layer.addSublayer(circleLayer)
     }
     
-
     func updateAnimation() {
         if animating {
             circleLayer.add(strokeEndAnimation, forKey: "strokeEnd")
@@ -109,5 +102,5 @@ class SpinnerView: UIView{
             circleLayer.removeAnimation(forKey: "strokeStart")
             circleLayer.removeAnimation(forKey: "rotation")
         }
-    }  
+    }
 }

@@ -89,9 +89,7 @@ class FirebaseData {
                 //do stuff in main thread
             }
         }
-        
        self.uploadRouteImage(motoRoute._MotoRoute.image, id: motoRoute._MotoRoute.id)
-       
     }
     
     // firebase updates
@@ -276,7 +274,5 @@ class FirebaseData {
         print("deleting FIR data \(id)")
         deleteFIRRoute(id)
         deleteFIRLocation(id)
-        
     }
 }
-

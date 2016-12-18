@@ -8,9 +8,7 @@
 
 import UIKit
 
-
 extension UIButton {
-
 
     private struct ButtonTypeStruct {
         static var actionType = ActionButtonType()
@@ -43,10 +41,7 @@ extension UIButton {
                 }else{
                     backgroundColor = blue3
                 }
-                
             }
         }
     }
-
-
 }

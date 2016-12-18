@@ -12,8 +12,7 @@ protocol ActionButtonDelegate: class{
     func pressedActionButton(sender: UIButton)
 }
 
-class ActionButton: UIView, MarkerViewItems {
-    weak var delegate: ActionButtonDelegate?
+class ActionButton: UIView{
     var initFrame = CGRect(x: 0, y: 0, width: actionLabelWidth, height: actionLabelHeight)
     var actionButton = UIButton()
     var actionType = ActionButtonType()
@@ -30,7 +29,7 @@ class ActionButton: UIView, MarkerViewItems {
         self.actionType = actionType
         self.frame.origin.y = initFrame.height * CGFloat(buttonNumber) + CGFloat(padding/2 * buttonNumber)
         
-        if(xOff == true){ //set off screen by x
+        if xOff { //set off screen by x
             self.frame.origin.x =  -initFrame.width
         }
         setupButton()

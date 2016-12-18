@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ActionConfirm: UIView, MarkerViewItems{
+class ActionConfirm: UIView{
     let label = UILabel()
     var okButton = ActionButton()
     var progressButton = ActionButton()
@@ -28,7 +28,7 @@ class ActionConfirm: UIView, MarkerViewItems{
         self.actionType = actionType
         setupConfirm(actionType)
         
-        if(xOff == true){ //set off screen by x
+        if xOff { //set off screen by x
             self.frame.origin.x =  -frame.width
         }
     }
@@ -73,9 +73,5 @@ class ActionConfirm: UIView, MarkerViewItems{
     func progressDone(){
         progressButton.aniOffToLeft(0)
         doneButton.aniToX(0.1)
-    }
-    
-    func resetConfirm(){
-        
     }
 }

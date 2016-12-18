@@ -11,11 +11,7 @@ import UIKit
 import Mapbox
 
 class MarkerView: MGLAnnotationView {
-    let shapeLayer = CAShapeLayer()
-    var dotCol = UIColor.blue
-    var color = UIColor.clear
     var initFrame = markerViewRect
-    let offset = CGFloat(0)
     var backView = UIView()
     var clipView = UIView()
     let confirmView = ActionConfirm(frame: confirmViewRect, actionType: ActionButtonType.DefState, xOff: true)
@@ -25,7 +21,6 @@ class MarkerView: MGLAnnotationView {
     var altitudeValue = ""
     var actionButtonsArr = [ActionButton]()
     var infoLabelArr = [InfoLabel]()
-    var state = MarkerViewState()
     var menuButton = UIButton()
     
     //MARK: INIT
@@ -36,7 +31,6 @@ class MarkerView: MGLAnnotationView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.progressDoneNotify), name: NSNotification.Name(rawValue: progressDoneNotificationKey), object: nil)
         
-        
         scalesWithViewingDistance = true
         centerOffset = CGVector(dx: -initFrame.width/2,  dy: -initFrame.height/2)
         self.clipsToBounds = false
@@ -45,14 +39,14 @@ class MarkerView: MGLAnnotationView {
         
         switch type{
         case .MyRoute:
-            setupAll(routeMaster, menuType: ActionMenuType.MyRoutes)
+            setupAll(routeMaster, menuType: MarkerViewType.MyRoute)
             
         case .FirRoute:
             actionSpinner()
         }
     }
     
-    func setupAll(_ routeMaster: RouteMaster, menuType: ActionMenuType){
+    func setupAll(_ routeMaster: RouteMaster, menuType: MarkerViewType){
         self.durationValue = routeMaster.textDuration
         self.altitudeValue = routeMaster.textHighAlt
         self.highspeedValue = routeMaster.textHighSpeed
@@ -61,7 +55,7 @@ class MarkerView: MGLAnnotationView {
         setupClipView()
         setupInfoLabels()
         setupActionMenuButton()
-        setupActionMenu(actionMenuType: menuType)
+        setupActionMenu(menuType: menuType)
         setupConfirmView()
     }
     
@@ -103,17 +97,16 @@ class MarkerView: MGLAnnotationView {
         clipView.addSubview(speedLabel)
         
         infoLabelArr += [durationLabel, altitudeLabel, speedLabel]
-        //animateInfoLabels(infoLabelArr)
-        animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0.4)
+        AnimationEngine.animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0.4)
     }
     
-    func setupActionMenu(actionMenuType: ActionMenuType){
+    func setupActionMenu(menuType: MarkerViewType){
         let detailButton = ActionButton(actionType: ActionButtonType.Details, buttonNumber: 0, xOff: true)
         clipView.addSubview(detailButton)
         actionButtonsArr.append(detailButton)
         
-        switch (actionMenuType){
-        case .MyRoutes:
+        switch (menuType){
+        case .MyRoute:
             let shareButton = ActionButton( actionType: ActionButtonType.ShareRoute, buttonNumber: 1, xOff: true)
             actionButtonsArr.append(shareButton)
             clipView.addSubview(shareButton)
@@ -122,7 +115,7 @@ class MarkerView: MGLAnnotationView {
             actionButtonsArr.append(deleteButton)
             clipView.addSubview(deleteButton)
             
-        case .AllRoutes:
+        case .FirRoute:
             let downloadButton = ActionButton(actionType: ActionButtonType.DownloadRoute, buttonNumber: 1, xOff: true)
             actionButtonsArr.append(downloadButton)
             clipView.addSubview(downloadButton)
@@ -138,9 +131,8 @@ class MarkerView: MGLAnnotationView {
     }
     
     func setupActionConfirm(actionType: ActionButtonType){
-        state = .ConfirmViewState
         confirmView.setConfirmType(actionType)
-        animateItems(actionButtonsArr, aniType: .offToRightSimultan, delay: 0)
+        AnimationEngine.animateItems(actionButtonsArr, aniType: .offToRightSimultan, delay: 0)
         confirmView.aniToX(0)
     }
     
@@ -158,7 +150,6 @@ class MarkerView: MGLAnnotationView {
     
     //MARK: Actions
     func actionButtonNotify(_ notification: Notification){
-        
         let notifyObj =  notification.object as! [AnyObject]
         if let actionType = notifyObj[0] as? ActionButtonType {
             print("###actionButtonNotify \(actionType)")
@@ -193,7 +184,7 @@ class MarkerView: MGLAnnotationView {
                 confirmView.progressOn(ActionButtonType.ProgressDelete)
                 actionSpinner()
                 menuButton.scaleSize(0, size: 0)
-
+                
             case .ConfirmDeleteFIR:
                 print("NOTFY: Confirm Delete FIR")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
@@ -207,7 +198,7 @@ class MarkerView: MGLAnnotationView {
                 confirmView.progressOn(ActionButtonType.ProgressShare)
                 actionSpinner()
                 menuButton.scaleSize(0, size: 0)
-            
+                
             case .ConfirmDownload:
                 print("NOTFY: Confirm Download")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
@@ -227,7 +218,7 @@ class MarkerView: MGLAnnotationView {
         if let progressDoneType = notifyObj[0] as? ProgressDoneType {
             
             switch(progressDoneType){
-            
+                
             case .ProgressDoneShare:
                 print("progress done share")
                 progressFinish(.ProgressShare)
@@ -235,7 +226,7 @@ class MarkerView: MGLAnnotationView {
             case .ProgressDoneDownload:
                 print("progress Download Done")
                 progressFinish(.ProgressDownload)
-            
+                
             case .ProgressDoneDelete:
                 progressFinish(.ProgressDelete)
                 
@@ -246,58 +237,25 @@ class MarkerView: MGLAnnotationView {
     }
     
     func pressedActionMenuButton(_ sender: UIButton){
-        state = .ActionButtonsState
         switch(sender.actionType!) {
             
         case .ActionMenuMyRoutes: //switch on menu button
-            animateItems(actionButtonsArr, aniType: .onFromLeft, delay: 0)
-            animateItems(infoLabelArr, aniType: .offToRight, delay: 0)
+            AnimationEngine.animateItems(actionButtonsArr, aniType: .onFromLeft, delay: 0)
+            AnimationEngine.animateItems(infoLabelArr, aniType: .offToRight, delay: 0)
             switchActionMenuButton(.MenuInfoLabels)
             
         case .MenuInfoLabels: //switch confirmation
-            animateItems(actionButtonsArr, aniType: .offToLeft, delay: 0)
-            animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
+            AnimationEngine.animateItems(actionButtonsArr, aniType: .offToLeft, delay: 0)
+            AnimationEngine.animateItems(infoLabelArr, aniType: .onFromLeft, delay: 0)
             switchActionMenuButton(.ActionMenuMyRoutes)
             
         case .MenuActionButton: //cancel confirmation
-            animateItems(actionButtonsArr, aniType: .onFromLeftSimultan, delay: 0)
-            animateItems([confirmView], aniType: .offToLeft, delay: 0)
+            AnimationEngine.animateItems(actionButtonsArr, aniType: .onFromLeftSimultan, delay: 0)
+            AnimationEngine.animateItems([confirmView], aniType: .offToLeft, delay: 0)
             switchActionMenuButton(.MenuInfoLabels)
             
         default:
             print("xx")
-        }
-    }
-    
-    func switchActionMenuButton(_ type: ActionButtonType){
-        menuButton.actionType = type
-        menuButton.setImage(type.buttonImage, for: .normal)
-    }
-    
-    func animateItems(_ itemArr: [UIView], aniType: AnimationType, delay: Double){
-        var _delay = delay
-        
-        for item in itemArr {
-            switch(aniType){
-                
-            case .onFromLeft:
-                item.aniToX(_delay)
-                _delay = _delay+delay
-                
-            case .onFromLeftSimultan:
-                item.aniToX(_delay)
-                
-            case .offToLeft:
-                item.aniOffToLeft(_delay)
-                _delay = _delay+delay
-                
-            case .offToRight:
-                item.aniToOff(_delay)
-                _delay = _delay+delay
-                
-            case .offToRightSimultan:
-                item.aniToOff(_delay)
-            }
         }
     }
     
@@ -327,9 +285,14 @@ class MarkerView: MGLAnnotationView {
         })
     }
     
+    func switchActionMenuButton(_ type: ActionButtonType){
+        menuButton.actionType = type
+        menuButton.setImage(type.buttonImage, for: .normal)
+    }
+    
     func resetToMenu(){
-        self.animateItems([self.confirmView], aniType: .offToLeft, delay: 0)
-        self.animateItems(self.infoLabelArr, aniType: .onFromLeft, delay: 0)
+        AnimationEngine.animateItems([self.confirmView], aniType: .offToLeft, delay: 0)
+        AnimationEngine.animateItems(self.infoLabelArr, aniType: .onFromLeft, delay: 0)
     }
     
     func removeSubview(_ tag: Int){
@@ -346,7 +309,7 @@ class MarkerView: MGLAnnotationView {
     }
     
     func markerViewOff(){
-        animateItems([confirmView], aniType: .offToLeft, delay: 0)
+        AnimationEngine.animateItems([confirmView], aniType: .offToLeft, delay: 0)
         removeSubview(99)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
@@ -371,11 +334,5 @@ class MarkerView: MGLAnnotationView {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
-        // Animate the border width in/out, creating an iris effect.
-        //        let animation = CABasicAnimation(keyPath: "borderWidth")
-        //        animation.duration = 0.1
-        //        layer.borderWidth = selected ? frame.width / 4 : 2
-        //        layer.add(animation, forKey: "borderWidth")
     }
 }
