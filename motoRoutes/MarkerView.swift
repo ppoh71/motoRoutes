@@ -15,7 +15,7 @@ class MarkerView: MGLAnnotationView {
     var backView = UIView()
     var clipView = UIView()
     let confirmView = ActionConfirm(frame: confirmViewRect, actionType: ActionButtonType.DefState, xOff: true)
-    let dot = DotAnimation()
+    var dot = DotAnimation()
     var durationValue = ""
     var highspeedValue = ""
     var altitudeValue = ""
@@ -35,14 +35,16 @@ class MarkerView: MGLAnnotationView {
         centerOffset = CGVector(dx: -initFrame.width/2,  dy: -initFrame.height/2)
         self.clipsToBounds = false
         setupBackView()
-        dotAnimation()
+       // dotAnimation()
         
         switch type{
         case .MyRoute:
             setupAll(routeMaster, menuType: MarkerViewType.MyRoute)
-            
+            print("x")
         case .FirRoute:
             actionSpinner()
+        default:
+            break
         }
     }
     
@@ -82,7 +84,7 @@ class MarkerView: MGLAnnotationView {
     
     func setupClipView(){
         clipView = UIView(frame: CGRect(x: 10, y: 30, width: actionLabelWidth, height: (actionLabelHeight*3)+(actionLabelPadding)))
-        clipView.clipsToBounds = true
+        clipView.clipsToBounds = false
         self.addSubview(clipView)
     }
     
@@ -123,7 +125,11 @@ class MarkerView: MGLAnnotationView {
             let deleteButtonFIR = ActionButton(actionType: ActionButtonType.DeleteRouteFIR, buttonNumber: 2, xOff: true)
             actionButtonsArr.append(deleteButtonFIR)
             clipView.addSubview(deleteButtonFIR)
+        default:
+            print("default action menu")
         }
+        
+       
     }
     
     func setupConfirmView(){
@@ -302,7 +308,7 @@ class MarkerView: MGLAnnotationView {
     }
     
     func dotAnimation(){
-        dot.frame = CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10)
+        dot = DotAnimation(frame: CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10), color: green2)
         dot.tag=100
         self.addSubview(dot)
         dot.addDotAnimation()

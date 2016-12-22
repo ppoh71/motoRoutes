@@ -9,6 +9,20 @@
 import Foundation
 import UIKit
 
+enum FuncTypes: String {
+    case Recording
+    case PrintMarker
+    case PrintBaseHeight
+    case PrintAltitude
+    case PrintCircles
+    case PrintStartEnd
+    case Default
+    
+    init(){
+        self = .Default
+    }
+}
+
 enum LabelType {
     case duration
     case altitude
@@ -161,6 +175,7 @@ enum ActionButtonType {
 enum MarkerViewType {
     case MyRoute
     case FirRoute
+    case DotView
     
     init(){
         self = .MyRoute

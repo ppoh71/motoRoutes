@@ -168,7 +168,7 @@ final class ImageUtils{
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         var context = UIGraphicsGetCurrentContext()
         
-        drawCircle(&context!, width: width, height: height, LineColor: color)
+        drawCircleFullLine(&context!, width: width, height: height, LineColor: color)
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -180,6 +180,25 @@ final class ImageUtils{
     static func drawCircle (_ context:inout CGContext, width: Int, height:Int, LineColor : UIColor) {
         context.addArc(center: CGPoint(x: CGFloat(width/2), y: CGFloat(height/2)), radius:  CGFloat(width/2)-1, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
         context.setFillColor(LineColor.cgColor)
+        context.setStrokeColor(LineColor.cgColor)
+        context.drawPath(using: .fillStroke)
+    }
+    
+    static func drawCircleLine (_ context:inout CGContext, width: Int, height:Int, LineColor : UIColor) {
+        context.addArc(center: CGPoint(x: CGFloat(width/2), y: CGFloat(height/2)), radius:  CGFloat(width/2)-1, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
+        context.setFillColor(UIColor.clear.cgColor)
+        context.setStrokeColor(LineColor.cgColor)
+        context.drawPath(using: .fillStroke)
+    }
+    
+    static func drawCircleFullLine (_ context:inout CGContext, width: Int, height:Int, LineColor : UIColor) {
+        context.addArc(center: CGPoint(x: CGFloat(width/2), y: CGFloat(height/2)), radius:  CGFloat(Double(width)/3.5)-1, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
+        context.setFillColor(LineColor.cgColor)
+        context.setStrokeColor(LineColor.cgColor)
+        context.drawPath(using: .fillStroke)
+        
+        context.addArc(center: CGPoint(x: CGFloat(width/2), y: CGFloat(height/2)), radius:  CGFloat(width/2)-1, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
+        context.setFillColor(UIColor.clear.cgColor)
         context.setStrokeColor(LineColor.cgColor)
         context.drawPath(using: .fillStroke)
     }

@@ -59,6 +59,7 @@
 		55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEF51D0700950051F338 /* MsgOverlay.swift */; };
 		55F7CEF81D0700CF0051F338 /* MsgOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */; };
 		55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEFA1D07093B0051F338 /* motoButtons.swift */; };
+		A9062B5B1E0AF28A000F45BE /* MarkerViewDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9062B5A1E0AF28A000F45BE /* MarkerViewDot.swift */; };
 		A90D6F991C947101002E7980 /* MapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* MapUtils.swift */; };
 		A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* Globals.swift */; };
 		A91844BF1E0706E7008AF267 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91844BE1E0706E7008AF267 /* Enums.swift */; };
@@ -146,6 +147,7 @@
 		5D81C0C546C36DA4606FA426 /* Pods-motoRoutes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutes.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutes/Pods-motoRoutes.release.xcconfig"; sourceTree = "<group>"; };
 		62A2198077AD7DDA6D1770AA /* Pods_motoRoutes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_motoRoutes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74F91450E82751ECAFC45A7C /* Pods-motoRoutesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.release.xcconfig"; sourceTree = "<group>"; };
+		A9062B5A1E0AF28A000F45BE /* MarkerViewDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkerViewDot.swift; sourceTree = "<group>"; };
 		A90D6F981C947101002E7980 /* MapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapUtils.swift; sourceTree = "<group>"; };
 		A90D6F9A1C9471E2002E7980 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		A91844BE1E0706E7008AF267 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				55399DE81DA5450500F2337A /* MarkerView.swift */,
+				A9062B5A1E0AF28A000F45BE /* MarkerViewDot.swift */,
 			);
 			name = MarkerView;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 				55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */,
 				55DC39B41D65AF45002E02EC /* NSDateExtension.swift in Sources */,
 				55F72FC51D917C90002C9B4B /* FirebaseData.swift in Sources */,
+				A9062B5B1E0AF28A000F45BE /* MarkerViewDot.swift in Sources */,
 				5574793B1D5B58F900EE8C64 /* GeocodeUtils.swift in Sources */,
 				55EB15F91D9BFB1E0013528B /* GoogleData.swift in Sources */,
 				557E19ED1DC0AE6800CFE07B /* ButtonExtension.swift in Sources */,

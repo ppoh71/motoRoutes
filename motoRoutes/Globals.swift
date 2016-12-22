@@ -9,22 +9,6 @@
 import Foundation
 import UIKit
 
-
-
-
-
-//Enum function types
-enum FuncTypes: String {
-    case Recording
-    case PrintMarker
-    case PrintBaseHeight
-    case PrintAltitude
-    case PrintCircles
-    case PrintStartEnd
-    case Default
-}
-
-
 //dirty globl vars
 final class Global {
     
@@ -118,11 +102,7 @@ final class Global {
     init(gLowesttAlt:Double){
         self.gLowesttAlt = gLowesttAlt
     }
-    
-    
 }
-
-
 
 var globalSpeedSet = Global(speedSet:0)
 var globalColor = Global(gColor: UIColor.white)

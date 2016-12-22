@@ -5,7 +5,6 @@
 //  Created by Peter Pohlmann on 19.10.16.
 //  Copyright © 2016 Peter Pohlmann. All rights reserved.
 //
-
 import Foundation
 import UIKit
 
@@ -16,11 +15,15 @@ class DotAnimation: UIView {
     var outterColor = blue2
     var aniColor = blue3
     
-    
     //init frame
     override init(frame: CGRect) {
         super.init(frame: frame)
         //self.backgroundColor = UIColor.yellow
+    }
+    
+    convenience init(frame: CGRect, color: UIColor) {
+        self.init(frame: frame)
+        aniColor = color
     }
     
     //init coder
@@ -47,39 +50,38 @@ class DotAnimation: UIView {
         
         let shapeLayerInner = CAShapeLayer()
         shapeLayerInner.path = circlePath.cgPath
-        shapeLayerInner.fillColor = red2.cgColor
+        shapeLayerInner.fillColor = blue1.cgColor
         shapeLayerInner.strokeColor = UIColor.white.cgColor
         shapeLayerInner.lineWidth = 1.0
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = circlePath.cgPath
         shapeLayer.fillColor = red1.cgColor
-        shapeLayer.strokeColor = red1.cgColor
+        shapeLayer.strokeColor = aniColor.cgColor
         shapeLayer.lineWidth = 1.0
         shapeLayer.opacity = 0.7
 
-        
         self.layer.addSublayer(shapeLayer)
         self.layer.addSublayer(shapeLayerOuter)
         self.layer.addSublayer(shapeLayerInner)
         
         let animationOuter = CABasicAnimation(keyPath: "opacity")
-        animationOuter.fromValue = 0.2
-        animationOuter.toValue = 0.8
-        animationOuter.duration = 0.7
+        animationOuter.fromValue = 0.1
+        animationOuter.toValue = 0.5
+        animationOuter.duration = 0.4
         animationOuter.autoreverses = true
         animationOuter.repeatCount = 200000
         
         let animation = CABasicAnimation(keyPath: "opacity")
         animation.fromValue = 0.7
-        animation.toValue = 0.3
-        animation.duration = 0.7
+        animation.toValue = 0.1
+        animation.duration = 0.9
         animation.autoreverses = true
         animation.repeatCount = 200000
         
         let animationLineWidth = CABasicAnimation(keyPath: "lineWidth")
         animationLineWidth.fromValue = 10
-        animationLineWidth.toValue = 28
+        animationLineWidth.toValue = 20
         animationLineWidth.duration = 0.9
         animationLineWidth.autoreverses = true
         animationLineWidth.repeatCount = 200000

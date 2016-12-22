@@ -90,34 +90,26 @@ final class MapUtils {
     }
     
     
-    class func printRouteOneColor(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView! ){
-        
-        // let x = CFAbsoluteTimeGetCurrent()
-        
-        //guard for print routes
+    class func printRouteOneColor(_ _LocationMaster:[LocationMaster]!, mapView:MGLMapView!) -> MGLPolyline{
         guard _LocationMaster.count > 2 else {
             print("GUARD print routes: not enough routes")
-            return
+            return MGLPolyline()
         }
         
-        //init coords
         var coords = [CLLocationCoordinate2D]()
         
         // define speedIndex and set first Index
         let speedIndex:Int = Utils.getSpeedIndex(0)
         globalSpeedSet.speedSet = speedIndex
-        
-        //loop through LocationMaster
+
         for location in _LocationMaster {
             coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
         }
         
-        //print route polygon
         let line = MGLPolyline(coordinates: &coords, count: UInt(coords.count))
         mapView.addAnnotation(line)
         
-        //print(" coord count  \(_LocationMaster.count)")
-        //print("Printing Route took \(utils.absolutePeromanceTime(x)) milliseconds")
+        return line
     }
     
     
@@ -144,16 +136,33 @@ final class MapUtils {
                 count = count > gap ? 0 : count
                 
                 if(count==0){
-                   addNewAnnotation(mapView, location: master)
+                    addNewAnnotation(mapView, location: master, delay: 0.3)
                 }
                 count = count + 1
             }
         }
     }
 
+    class func printSingleSpeedMarker( _ mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
+        let newMarker = MGLPointAnnotation()
+        newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        globalSpeed.gSpeed = speed
+        mapView.addAnnotation(newMarker)
+    }
     
-    static func addNewAnnotation(_ mapView:MGLMapView, location: LocationMaster){
-        
+    class func newSingleMarker(_ mapView:MGLMapView!, location: LocationMaster, speedMarker: inout [MGLAnnotation]){
+        let newMarker = MGLPointAnnotation()
+        newMarker.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude)
+        newMarker.title = "SpeedAltMarker"
+        newMarker.subtitle = "SpeedMarker"
+        globalSpeed.gSpeed = location.speed
+        speedMarker.append(newMarker)
+        print(newMarker)
+        mapView.addAnnotation(newMarker)
+        //return newMarker
+    }
+    
+    static func addNewAnnotation(_ mapView:MGLMapView, location: LocationMaster, delay: Double){
         //set speed and altiude globals
         globalSpeed.gSpeed = location.speed
         globalAltitude.gAltitude = location.altitude
@@ -166,14 +175,7 @@ final class MapUtils {
         
     }
     
-    
-    class func printSingleSpeedMarker( _ mapView:MGLMapView!, latitude: Double, longitude: Double, speed: Double){
-        
-        let newMarker = MGLPointAnnotation()
-        newMarker.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        globalSpeed.gSpeed = speed
-        mapView.addAnnotation(newMarker)
-    }
+
     
     
 
@@ -462,5 +464,33 @@ final class MapUtils {
         return centerPoint;
     }
     
+    class func setStartMarker(routeList: [LocationMaster], mapView: MGLMapView!){
+        let endMarker = MGLPointAnnotation()
+        endMarker.coordinate = CLLocationCoordinate2DMake(routeList[routeList.count-1].latitude, routeList[routeList.count-1].longitude)
+        endMarker.title = " motoRoute!.locationEnd"
+        //endMarker.subtitle = motoRoute!.locationEnd
+        mapView.addAnnotation(endMarker)
+    }
     
+    class func getEndMarker(_ routeList: [LocationMaster]) -> MGLPointAnnotation{
+        guard routeList.count>2 else {
+            return MGLPointAnnotation()
+        }
+        
+        let endMarker = MGLPointAnnotation()
+        endMarker.coordinate = CLLocationCoordinate2DMake(routeList[routeList.count-1].latitude, routeList[routeList.count-1].longitude)
+        endMarker.title = "DotMarkerView"
+        endMarker.subtitle = "DotMarkerView"
+        return endMarker
+    }
+    
+    class func makeMarker(_ routeMaster: RouteMaster, markerTitle: String) -> MGLPointAnnotation {
+        let id = routeMaster._MotoRoute.id
+        let newMarker = MGLPointAnnotation()
+        newMarker.coordinate = CLLocationCoordinate2DMake(routeMaster.startLat, routeMaster.startLong)
+        newMarker.title = markerTitle
+        newMarker.subtitle = "\(id)"
+        //markerViewResueIdentifier = "\(id)"
+        return newMarker
+    }
 }
