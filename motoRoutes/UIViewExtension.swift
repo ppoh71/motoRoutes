@@ -10,7 +10,7 @@ import UIKit
 import pop
 
 extension UIView {
-
+    
     func scaleSize(_ delay: TimeInterval = 1.0, size: Int ) {
         self.isHidden = true
         
@@ -21,15 +21,23 @@ extension UIView {
             scale?.springBounciness = 15
             scale?.springSpeed = 15
             self.pop_add(scale, forKey: "scalePosition")
+            
+            scale?.completionBlock = {(animation, finished) in
+                print("#### Animation completed scale size ###")
+            }
         })
     }
     
     func scale(_ size: Int ) {
-            let scale = POPSpringAnimation(propertyNamed: kPOPViewScaleXY)
-            scale?.toValue =  NSValue(cgSize: CGSize(width: size, height: size))
-            scale?.springBounciness = 8
-            scale?.springSpeed = 15
-            self.pop_add(scale, forKey: "scalePosition")
+        let scale = POPSpringAnimation(propertyNamed: kPOPViewScaleXY)
+        scale?.toValue =  NSValue(cgSize: CGSize(width: size, height: size))
+        scale?.springBounciness = 8
+        scale?.springSpeed = 15
+        self.pop_add(scale, forKey: "scalePosition")
+        
+        scale?.completionBlock = {(animation, finished) in
+            print("#### Animation completed ###")
+        }
     }
     
     func aniToX(_ delay: Double){

@@ -321,6 +321,7 @@ class MarkerView: MGLAnnotationView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             self.removeSubview(100)
             self.self.scaleSize(0, size: 0)
+            self.backView.backgroundColor = UIColor.clear
         })
     }
     

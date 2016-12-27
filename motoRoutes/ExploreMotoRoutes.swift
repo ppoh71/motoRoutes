@@ -27,7 +27,7 @@ class ExploreMotoRoutes: UIViewController {
     var activeRouteCell: RouteCell?
     var zoomOnSelect = true
     var timer = Timer()
-    var timeIntervalMarker = 0.06 
+    var timeIntervalMarker = 0.06
     var markerCount = 0
     
     //MARK: explore routes vars
@@ -143,47 +143,46 @@ class ExploreMotoRoutes: UIViewController {
     func startMarkerTimer(){
         print("timer init")
         timer.invalidate()
-        deleteViewMarker(&speedMarker)
+        deleteMarkers(&speedMarker)
         markerCount = 0
         timer = Timer.scheduledTimer(timeInterval: TimeInterval(timeIntervalMarker), target: self, selector: #selector(ExploreMotoRoutes.printSpeeMarker), userInfo: nil, repeats: true)
     }
     
     func printSpeeMarker(){
         let gap = MapUtils.calcMarkerGap(activeRouteMaster._RouteList)
-        print("####Gap \(gap)")
+        //print("####Gap \(gap)")
         markerCount = markerCount+gap
         funcType = .PrintCircles
-        if(markerCount<activeRouteMaster._RouteList.count){
-            print("MarkerCount \(markerCount)")
-            DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async {
+            if(self.markerCount<self.activeRouteMaster._RouteList.count && self.activeRouteMaster._RouteList.count>0){
                 let location = self.activeRouteMaster._RouteList[self.markerCount]
                 MapUtils.newSingleMarker(self.mapView, location: location, speedMarker: &self.speedMarker)
-                DispatchQueue.main.async  { /*nothing in main queue */}
+            } else {
+                self.timer.invalidate()
             }
-        } else {
-            timer.invalidate()
         }
+        DispatchQueue.main.async  { /*nothing in main queue */}
     }
     
     func printAllMarker(_ funcSwitch: FuncTypes, _RouteMaster: RouteMaster){
         self.funcType = funcSwitch
         self.deletRouteLine(routeLine)
         self.startMarkerTimer()
-          DispatchQueue.global(qos: .userInteractive).async {
-          
-           DispatchQueue.main.async  {
-            self.routeLine = MapUtils.printRouteOneColor(_RouteMaster._RouteList, mapView: self.mapView )
+        DispatchQueue.global(qos: .userInteractive).async {
             
-            self.deleteViewMarker(&self.activeDotView)
-            let endMarker = MapUtils.getEndMarker(_RouteMaster._RouteList)
-            self.mapView.addAnnotation(endMarker)
-            self.activeDotView.append(endMarker)
+            DispatchQueue.main.async  {
+                self.routeLine = MapUtils.printRouteOneColor(_RouteMaster._RouteList, mapView: self.mapView )
+                
+                self.deleteMarkers(&self.activeDotView)
+                let endMarker = MapUtils.getEndMarker(_RouteMaster._RouteList)
+                self.mapView.addAnnotation(endMarker)
+                self.activeDotView.append(endMarker)
             }
-         }
+        }
     }
     
     func setRouteMarkers(_ routes: [RouteMaster], markerTitle: String){
-        deleteMyRouteMarker()
+        deleteMarkers(&myRouteMarker)
         for item in routes {
             setMarker(item, markerTitle: markerTitle)
         }
@@ -200,34 +199,18 @@ class ExploreMotoRoutes: UIViewController {
     }
     
     func setViewMarker(_ routeMaster: RouteMaster, markerTitle: String){
-        deleteSelectedMarkerView()
+        deleteMarkers(&selectedMarkerView)
         let newMarker = MapUtils.makeMarker(routeMaster, markerTitle: markerTitle)
         mapView.addAnnotation(newMarker)
         selectedMarkerView.append(newMarker)
     }
     
-    func deleteViewMarker(_ markerViews:inout [MGLAnnotation]){
-        for marker in markerViews{
+    func deleteMarkers(_ markers:inout [MGLAnnotation]){
+        for marker in markers{
             mapView.deselectAnnotation(marker, animated: true)
             mapView.removeAnnotation(marker)
         }
-        markerViews = [MGLAnnotation]()
-    }
-    
-    func deleteSelectedMarkerView(){
-        for marker in selectedMarkerView{
-            mapView.deselectAnnotation(marker, animated: true)
-            mapView.removeAnnotation(marker)
-        }
-        selectedMarkerView = [MGLAnnotation]()
-    }
-    
-    func deleteMyRouteMarker(){
-        for marker in myRouteMarker{
-            mapView.deselectAnnotation(marker, animated: true)
-            mapView.removeAnnotation(marker)
-        }
-        myRouteMarker = [MGLAnnotation]()
+        markers = [MGLAnnotation]()
     }
     
     func deleteAllMarker(){
@@ -265,6 +248,9 @@ class ExploreMotoRoutes: UIViewController {
             realm.delete(activeRouteMaster._MotoRoute)
             self.reloadData()
             activeRouteMaster = RouteMaster()
+            deleteMarkers(&self.activeDotView)
+            deleteMarkers(&speedMarker)
+            deletRouteLine(routeLine)
             NotificationCenter.default.post(name: Notification.Name(rawValue: progressDoneNotificationKey), object: [ProgressDoneType.ProgressDoneDelete])
         }
     }
@@ -382,7 +368,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         var reuseIdentifier = ""
         var markerImage: UIImage?
-     
+        
         guard (annotation.subtitle) != nil else {
             print("guard no tile")
             return nil
@@ -393,10 +379,10 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             return nil
         }
         
-//        guard annotation.title!! != "MyRouteMarkerViewSelected" else {
-//            print("guard annotation no image for: MyRouteMarkerViewSelected")
-//            return nil
-//        }
+        //        guard annotation.title!! != "MyRouteMarkerViewSelected" else {
+        //            print("guard annotation no image for: MyRouteMarkerViewSelected")
+        //            return nil
+        //        }
         
         switch(self.funcType) {
         case .PrintMarker:
@@ -406,14 +392,14 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         case .PrintStartEnd:
             reuseIdentifier = "StartEndMarker"
         default:
-           reuseIdentifier = "Marker-\(annotation.title))"
-        break
+            reuseIdentifier = "Marker-\(annotation.title))"
+            break
         }
-       
+        
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
         if annotationImage == nil {
             if (self.funcType == .Default){
-                 markerImage = ImageUtils.dotColorMarker(15, height: 15, color: UIColor.white)
+                markerImage = ImageUtils.dotColorMarker(15, height: 15, color: UIColor.white)
             } else{
                 let color = ColorUtils.getColorSpeedGlobal()
                 markerImage = ImageUtils.dotColorMarker(5, height: 5, color: color)
@@ -432,8 +418,8 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        // print("mgl view annotation")
-      
+        print("mgl view annotation")
+        
         guard annotation is MGLPointAnnotation else {
             return nil
         }
@@ -480,7 +466,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         } else {
             return annotationView
         }
-
+        
     }
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
