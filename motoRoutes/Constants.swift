@@ -25,7 +25,7 @@ let GOOGLE_API_KEY = "AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
 let GOOGLE_URL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyDBThDDItdOSfIFyB_yahNsXxhslMi34i0"
 
 //Color Definitions
-let blue0 = ColorUtils.hexTorgbColor("#006499")
+let blue0 = ColorUtils.hexTorgbColor("#07A6FB")
 let blue1 = ColorUtils.hexTorgbColor("#006499")
 let blue2 = ColorUtils.hexTorgbColor("#00527A")
 let blue3 = ColorUtils.hexTorgbColor("#00405F")

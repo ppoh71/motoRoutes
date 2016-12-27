@@ -84,7 +84,7 @@ class MarkerView: MGLAnnotationView {
     
     func setupClipView(){
         clipView = UIView(frame: CGRect(x: 10, y: 30, width: actionLabelWidth, height: (actionLabelHeight*3)+(actionLabelPadding)))
-        clipView.clipsToBounds = false
+        clipView.clipsToBounds = true
         self.addSubview(clipView)
     }
     

@@ -148,5 +148,9 @@ final class ColorUtils {
         return gradient!
     }
     
+    class func getColorSpeedGlobal() -> UIColor{
+        return ColorUtils.polylineColors(Utils.getSpeedIndexFull(globalSpeed.gSpeed))
+    }
+    
 }
 

@@ -342,11 +342,7 @@ final class MapUtils {
      * - returns: coordBound struct n,e,s,w with geo bounds rectangle for mapbox
      */
     class func getBoundCoords(_ _locationsMaster:[LocationMaster]) -> (coordbound: MGLCoordinateBounds, coordboundArray: [CLLocationCoordinate2D], distance: Double, distanceFactor: Double) {
-        
-        
-        //print("#################Coords")
-        //print(_locationsMaster)
-        
+
         //create new bound struct
         var newCoordBound = coordBound()
         var coordBounds = MGLCoordinateBounds()
@@ -355,10 +351,9 @@ final class MapUtils {
         var distanceFactor = 1.8
         
         //loop if we have locations
-        guard _locationsMaster.count > 4 else {
+        guard _locationsMaster.count > 2 else {
             print("GUARD bounds: locationRoute count 0")
             let coordBounds = MGLCoordinateBoundsMake(CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 0, longitude: 0))
-            
             return (coordBounds, coordBoundArray, distance, distanceFactor)
         }
         
@@ -398,8 +393,6 @@ final class MapUtils {
         
         coordBoundArray = [CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.west), CLLocationCoordinate2D(latitude: newCoordBound.north, longitude: newCoordBound.east), CLLocationCoordinate2D(latitude: newCoordBound.south, longitude: newCoordBound.west)]
         
-        
-        
         //calc distances of boundigbox rectangle and orientation of rect (horizontal/portrai)
         //to get the correct zoomfactor for map
         let locationSE = CLLocation(latitude: newCoordBound.south, longitude: newCoordBound.east)
@@ -410,16 +403,11 @@ final class MapUtils {
         // calc diagonal distance of boudnig box
         distance = locationNW.distance(from: locationSE)
         
-        
         //cal distance horizontal/portrait bounding box orientation/ NW -> SW ort NW -> NE
         let distanceNorthSouth = locationNW.distance(from: locationSW)
         let distanceNorthEast = locationNW.distance(from: locationNE)
-        
         distanceFactor = distanceNorthSouth > distanceNorthEast ? 1.3 : distanceFactor
-        
-        
         return (coordBounds, coordBoundArray, distance, distanceFactor)
-        
     }
     
     
@@ -464,6 +452,20 @@ final class MapUtils {
         return centerPoint;
     }
     
+    class func centerMapToBounds(_ locations: [LocationMaster], mapView: MGLMapView, pitch: CGFloat, duration: Double){
+        //get bounds, centerpoints, of the whole Route
+        let Bounds = MapUtils.getBoundCoords(locations)
+        let coordArray = Bounds.coordboundArray
+        let distanceDiagonal = Bounds.distance
+        let distanceFactor = Bounds.distanceFactor
+        let centerPoint = MapUtils.getCenterFromBoundig(coordArray)
+
+        let camera = MapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance: distanceDiagonal*distanceFactor, pitch: pitch, heading: 0)
+        
+        mapView.setCamera(camera, withDuration: duration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
+        }
+    }
+
     class func setStartMarker(routeList: [LocationMaster], mapView: MGLMapView!){
         let endMarker = MGLPointAnnotation()
         endMarker.coordinate = CLLocationCoordinate2DMake(routeList[routeList.count-1].latitude, routeList[routeList.count-1].longitude)
@@ -493,4 +495,27 @@ final class MapUtils {
         //markerViewResueIdentifier = "\(id)"
         return newMarker
     }
+    
+    class func calcMarkerGap(_ locations: [LocationMaster]) -> Int{
+        var gap = 10
+        let max = 1000
+        let amout = locations.count
+        if(amout>max){
+            gap = Int(amout/max)*10
+        }
+        return gap
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
