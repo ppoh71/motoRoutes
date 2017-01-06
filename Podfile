@@ -5,7 +5,7 @@ target 'motoRoutes' do
   use_frameworks!
 
 # Pods for motoRoutes
-pod 'Mapbox-iOS-SDK', '~> 3.3.4'
+pod 'Mapbox-iOS-SDK', '~> 3.3.7'
 pod 'pop', '~> 1.0'
 pod 'RealmSwift'
 pod 'Fabric'
