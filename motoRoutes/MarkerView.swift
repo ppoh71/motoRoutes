@@ -27,6 +27,8 @@ class MarkerView: MGLAnnotationView {
     init(reuseIdentifier: String, routeMaster: RouteMaster, type: MarkerViewType) {
         super.init(reuseIdentifier: reuseIdentifier)
         
+        isDraggable = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.actionButtonNotify), name: NSNotification.Name(rawValue: actionButtonNotificationKey), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(MarkerView.progressDoneNotify), name: NSNotification.Name(rawValue: progressDoneNotificationKey), object: nil)
@@ -54,6 +56,7 @@ class MarkerView: MGLAnnotationView {
         self.highspeedValue = routeMaster.textHighSpeed
         
         removeSubview(99)
+        setupCloseButton()
         setupClipView()
         setupInfoLabels()
         setupActionMenuButton()
@@ -128,8 +131,6 @@ class MarkerView: MGLAnnotationView {
         default:
             print("default action menu")
         }
-        
-       
     }
     
     func setupConfirmView(){
@@ -152,6 +153,21 @@ class MarkerView: MGLAnnotationView {
         let spinner = SpinnerView(frame: CGRect(x: initFrame.width/4, y: initFrame.height/4, width: initFrame.height/6, height: initFrame.height/6))
         spinner.tag = 99
         self.addSubview(spinner)
+    }
+    
+    func setupCloseButton(){
+        let closeButton = UIButton(frame: CGRect(x: markerViewRect.width-25, y: 10, width: 15, height: 15))
+        closeButton.isUserInteractionEnabled = true
+        closeButton.actionType = ActionButtonType.CloseMarkerView
+        closeButton.setImage(ActionButtonType.CloseMarkerView.buttonImage, for: .normal)
+        closeButton.addTarget(self, action: #selector(closeMarkerView), for: .touchUpInside)
+        backView.addSubview(closeButton)
+    }
+
+    func closeMarkerView(_ sender: UIButton){
+        let notifyObj = [sender.actionType]
+        print(notifyObj)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: actionConfirmNotificationKey), object: notifyObj)
     }
     
     //MARK: Actions
@@ -342,4 +358,38 @@ class MarkerView: MGLAnnotationView {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+    
+    override func setDragState(_ dragState: MGLAnnotationViewDragState, animated: Bool) {
+        super.setDragState(dragState, animated: animated)
+        
+        switch dragState {
+        case .starting:
+            print("Starting", terminator: "")
+            startDragging()
+        case .dragging:
+            print(".", terminator: "")
+        case .ending, .canceling:
+            print("Ending")
+            endDragging()
+        case .none:
+            return
+        }
+    }
+    
+    // When the user interacts with an annotation, animate opacity and scale changes.
+    func startDragging() {
+//        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+//            self.layer.opacity = 0.8
+//            self.transform = CGAffineTransform.identity.scaledBy(x: 1.5, y: 1.5)
+//        }, completion: nil)
+    }
+    
+    func endDragging() {
+//        transform = CGAffineTransform.identity.scaledBy(x: 1.5, y: 1.5)
+//        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+//            self.layer.opacity = 1
+//            self.transform = CGAffineTransform.identity.scaledBy(x: 1, y: 1)
+//        }, completion: nil)
+    }
 }
+

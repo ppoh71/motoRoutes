@@ -79,7 +79,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
-  - Mapbox-iOS-SDK (~> 3.3.4)
+  - Mapbox-iOS-SDK (~> 3.3.7)
   - pop (~> 1.0)
   - RealmSwift
   - SwiftKeychainWrapper
@@ -109,6 +109,6 @@ SPEC CHECKSUMS:
   RealmSwift: 17d6ee30b6f9df86364408c2197492e33bfea567
   SwiftKeychainWrapper: 38952a3636320ae61bad3513cadd870929de7a4a
 
-PODFILE CHECKSUM: 38587efd0465ee173dc1944ef651bcbf2bcfb282
+PODFILE CHECKSUM: 27067e17c22a83f6d10b6c94b43147cca582d5b3
 
 COCOAPODS: 1.0.1

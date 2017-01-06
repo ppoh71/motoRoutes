@@ -120,6 +120,10 @@ class ExploreMotoRoutes: UIViewController {
                 print("NOTFY: Confirm Download")
                 addRoutetoRealm(routeMaster: activeRouteMaster)
                 
+            case .CloseMarkerView:
+                print("Closer MarkerView \(activeRouteMaster)")
+                deleteMarkers(&selectedMarkerView)
+                
             default:
                 print("default click")
             }

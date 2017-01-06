@@ -66,6 +66,7 @@ enum ActionButtonType {
     case MenuInfoLabels
     case MenuActionButton
     case MenuConfirm
+    case CloseMarkerView
     
     var buttonText: String {
         switch self {
@@ -89,6 +90,7 @@ enum ActionButtonType {
         case .MenuInfoLabels: return "MenuInfoLabels"
         case .MenuActionButton: return "MenuActionButton"
         case .MenuConfirm: return "MenuConfirm"
+        case .CloseMarkerView: return ""
         }
     }
     
@@ -114,6 +116,7 @@ enum ActionButtonType {
         case .MenuInfoLabels: return "MenuInfoLabels"
         case .MenuActionButton: return "MenuActionButton"
         case .MenuConfirm: return "MenuConfirm"
+        case .CloseMarkerView: return "--"
         }
     }
     
@@ -139,6 +142,7 @@ enum ActionButtonType {
         case .MenuInfoLabels: return ActionButtonType.DefState
         case .MenuActionButton: return ActionButtonType.DefState
         case .MenuConfirm: return ActionButtonType.DefState
+        case .CloseMarkerView: return ActionButtonType.DefState
         }
     }
     
@@ -164,6 +168,7 @@ enum ActionButtonType {
         case .MenuInfoLabels: return (UIImage(named: "backBtn") as UIImage?)!
         case .MenuActionButton: return (UIImage(named: "cancelBtn") as UIImage?)!
         case .MenuConfirm: return UIImage()
+        case .CloseMarkerView: return (UIImage(named: "closeBtn") as UIImage?)!
         }
     }
     
