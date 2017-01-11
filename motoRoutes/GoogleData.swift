@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import AlamofireImage
+import SwiftyJSON
 
 
 class GoogleData {
@@ -31,4 +32,30 @@ class GoogleData {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: googleGetImagesNotificationKey), object: returnObj)
         }
     }
+    
+    func getGoogleGeoCode(_ latitude: Double, longitude: Double){
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+String(latitude)+","+String(longitude)+"&sensor=true"
+        Alamofire.request(url).responseJSON { response in
+            print(response.request ?? "no request")  // original URL request
+            print(response.response ?? "no response") // HTTP URL response
+            print(response.data ?? "no data")     // server data
+            print(response.result)   // result of response serialization
+            if let data = response.data {
+                //print("JSON: \(data)")
+                
+                let json = JSON(data: data )
+                print(json)
+                for (key,subJson):(String, JSON) in json {
+                    print(key)
+                }
+                
+                if let userName = json[0]["formatted_address"].string {
+                    //Now you got your value
+                    print(userName)
+                }
+                
+            }
+        }
+    }
+    
 }

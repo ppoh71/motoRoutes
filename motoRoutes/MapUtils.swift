@@ -73,7 +73,7 @@ final class MapUtils {
                 coords = [CLLocationCoordinate2D]()
                 coords.append(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                 
-                print(globalSpeedSet.speedSet)
+                //print(globalSpeedSet.speedSet)
             }
         }
         
@@ -157,7 +157,7 @@ final class MapUtils {
         newMarker.subtitle = "SpeedMarker"
         globalSpeed.gSpeed = location.speed
         speedMarker.append(newMarker)
-        print(newMarker)
+        //print(newMarker)
         mapView.addAnnotation(newMarker)
         //return newMarker
     }
