@@ -47,7 +47,7 @@ class InfoLabel: UIView{
     func setupLabels() {
         let backView = UIView(frame: CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height))
         backView.backgroundColor = blue3
-        backView.layer.opacity = 0.5
+        backView.layer.opacity = 0.7
         self.addSubview(backView)
 
         let iconView = UIImageView(frame: CGRect(x: padding, y: padding, width: 24, height: 24))

@@ -37,7 +37,7 @@ class MarkerView: MGLAnnotationView {
         centerOffset = CGVector(dx: -initFrame.width/2,  dy: -initFrame.height/2)
         self.clipsToBounds = false
         setupBackView()
-       // dotAnimation()
+        dotAnimation()
         
         switch type{
         case .MyRoute:
@@ -68,7 +68,7 @@ class MarkerView: MGLAnnotationView {
     func setupBackView(){
         backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 30)
         backView.backgroundColor = blue4
-        backView.layer.opacity = 0.6
+        backView.layer.opacity = 0.4
         backView.clipsToBounds = false
         backView.layer.cornerRadius = 3
         self.addSubview(backView)
@@ -324,7 +324,7 @@ class MarkerView: MGLAnnotationView {
     }
     
     func dotAnimation(){
-        dot = DotAnimation(frame: CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10), color: green2)
+        dot = DotAnimation(frame: CGRect(x: initFrame.width, y: initFrame.height, width: 10, height: 10), color: red1)
         dot.tag=100
         self.addSubview(dot)
         dot.addDotAnimation()

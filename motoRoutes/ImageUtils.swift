@@ -163,18 +163,24 @@ final class ImageUtils{
         return img!
     }
     
-    class func dotColorMarker(_ width: Int, height: Int, color: UIColor) -> UIImage {
-    
+    class func dotColorMarker(_ width: Int, height: Int, color: UIColor, style: MartkerStyles) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0)
         var context = UIGraphicsGetCurrentContext()
         
-        drawCircleFullLine(&context!, width: width, height: height, LineColor: color)
-        
+        switch(style){
+        case .Circle:
+            drawCircle(&context!, width: width, height: height, LineColor: color)
+        case .CircleLine:
+            drawCircleLine(&context!, width: width, height: height, LineColor: color)
+        case .CircleFullLine:
+            drawCircleFullLine(&context!, width: width, height: height, LineColor: color)
+        }
+
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-
         return img!
     }
+    
     
     /* helper func draw circle line */
     static func drawCircle (_ context:inout CGContext, width: Int, height:Int, LineColor : UIColor) {

@@ -934,7 +934,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ppoh71.ch.motoRoutes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "motoRoutes/motoRoutes-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;

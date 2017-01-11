@@ -219,3 +219,15 @@ enum ProgressDoneType{
         self = .ProgressDoneDef
     }
 }
+
+enum MartkerStyles{
+    case Circle
+    case CircleLine
+    case CircleFullLine
+    
+    init(){
+        self = .Circle
+    }
+}
+
+

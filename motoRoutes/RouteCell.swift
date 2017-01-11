@@ -19,7 +19,8 @@ class RouteCell: UICollectionViewCell {
     @IBOutlet weak var durationLbl: UILabel!
     @IBOutlet weak var viewLabel: UIView!
     @IBOutlet weak var detailBtn: UIButton!
-
+    @IBOutlet weak var backView: UIView!
+    
     var route: RouteMaster!
     var routeId = ""
     var index = 0
@@ -35,40 +36,41 @@ class RouteCell: UICollectionViewCell {
         self.routeId = id
         self.index = index
         self.route = route
-        self.distanceLbl.text = "\(Utils.distanceFormat(route.routeDistance)) km"
-        self.distanceLbl.textColor = blue0
+       // self.distanceLbl.text = "\(Utils.distanceFormat(route.routeDistance)) km"
+        self.distanceLbl.textColor = UIColor.white
         self.routeImage.image = image
         self.layer.cornerRadius = cornerInfoViews
-        self.layer.borderWidth = 1
-        self.layer.borderColor = blue1.cgColor
+        self.backView.backgroundColor = blue3
+       // self.layer.borderWidth = 1
+       // self.layer.borderColor = blue1.cgColor
     }
     
     func toggleSelected ()
     {
         if (isSelected){
-            viewLabel.backgroundColor = blue2
+           // viewLabel.backgroundColor = blue2
             slideUpInfo()
         } else {
-            viewLabel.backgroundColor = blue2
+            //viewLabel.backgroundColor = blue2
             slideDownInfo()
         }
     }
     
     func slideUpInfo(){
-        //print("slide up info")
-        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - offsetUp))
-        AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - offsetUp))
-        isSlideUp = true
+//        //print("slide up info")
+//        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height - offsetUp))
+//        AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2 - offsetUp))
+//        isSlideUp = true
     }
     
     func slideDownInfo(){
-        //print("slide down info")
-        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + offsetDown))
-        
-        if(isSlideUp == true){
-            AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
-            isSlideUp = false
-        }
+//        //print("slide down info")
+//        AnimationEngine.animationToPosition(viewLabel, position: CGPoint(x: self.frame.width/2, y: self.frame.height + offsetDown))
+//        
+//        if(isSlideUp == true){
+//            AnimationEngine.animationToPositionImageView(routeImage, position:  CGPoint(x: routeImage.frame.width/2, y: routeImage.frame.height/2))
+//            isSlideUp = false
+//        }
     }
     
     @IBAction func pressedDetail(_ sender: UIButton){

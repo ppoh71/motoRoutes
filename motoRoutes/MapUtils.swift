@@ -497,8 +497,8 @@ final class MapUtils {
     }
     
     class func calcMarkerGap(_ locations: [LocationMaster]) -> Int{
-        var gap = 10
-        let max = 1000
+        var gap = 5
+        let max = 500
         let amout = locations.count
         if(amout>max){
             gap = Int(amout/max)*10

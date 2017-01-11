@@ -403,10 +403,10 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
         if annotationImage == nil {
             if (self.funcType == .Default){
-                markerImage = ImageUtils.dotColorMarker(15, height: 15, color: UIColor.white)
+                markerImage = ImageUtils.dotColorMarker(15, height: 15, color: UIColor.white, style: .CircleFullLine)
             } else{
                 let color = ColorUtils.getColorSpeedGlobal()
-                markerImage = ImageUtils.dotColorMarker(5, height: 5, color: color)
+                markerImage = ImageUtils.dotColorMarker(6, height: 6, color: color, style: .CircleFullLine)
                 //markerImage = ImageUtils.drawLineOnImage(self.funcType)
                 
             }
