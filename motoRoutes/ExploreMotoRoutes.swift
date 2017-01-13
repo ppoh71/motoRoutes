@@ -77,6 +77,10 @@ class ExploreMotoRoutes: UIViewController {
                                                name: NSNotification.Name(rawValue: firbaseGetLocationsNotificationKey), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.actionMenuConfirm),
                                                name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.geoCode),
+                                               name: NSNotification.Name(rawValue: googleGeoCodeNotificationKey), object: nil)
+        
+        
         
         //FirebaseData.dataService.getRoutesFromFIR()
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
@@ -85,6 +89,13 @@ class ExploreMotoRoutes: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    func geoCode(_ notification: Notification){
+        let notifyObj =  notification.object as! [AnyObject]
+        if let geoCode = notifyObj[0] as? String {
+            print("got sddress from googe:\(geoCode)")
+        }
     }
     
     func updateMyRouteMaster(){
@@ -172,7 +183,9 @@ class ExploreMotoRoutes: UIViewController {
         self.funcType = funcSwitch
         self.deletRouteLine(routeLine)
         self.startMarkerTimer()
-        GoogleData.dataService.getGoogleGeoCode(_RouteMaster._MotoRoute.startLatitude, longitude: _RouteMaster._MotoRoute.startLongitude)
+        
+        //GoogleData.dataService.getGoogleGeoCode(_RouteMaster._MotoRoute.locationsList[0].latitude, longitude: _RouteMaster._MotoRoute.locationsList[0].longitude, field: "from")
+        
         DispatchQueue.global(qos: .userInteractive).async {
             
             DispatchQueue.main.async  {
@@ -343,13 +356,13 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
             var image = UIImage()
             let routeId:String = route._MotoRoute.id
             let imgName = route._MotoRoute.image
-            
+            let label = route._MotoRoute.locationStart
             if(imgName.characters.count > 0){
                 let imgPath = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
                 image = ImageUtils.loadImageFromPath(imgPath as NSString)!
             }
-            
-            cell.configureCell("test", id: routeId, route: route, image: image, index: indexPath.item)
+            print("###label: \(label)")
+            cell.configureCell(label: label, datetime: route.routeDate, id: routeId, route: route, image: image, index: indexPath.item)
             cell.toggleSelected()
             return cell
             
@@ -459,7 +472,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         
         if annotationView == nil {
             if viewType == .DotView{
-                let dotMarkerView = MarkerViewDot(reuseIdentifier: reuseIdentifier!, color: green2)
+                let dotMarkerView = MarkerViewDot(reuseIdentifier: reuseIdentifier!, color: UIColor.cyan)
                 return dotMarkerView
             } else {
                 let markerView = MarkerView(reuseIdentifier: reuseIdentifier!, routeMaster: activeRouteMaster, type: viewType)

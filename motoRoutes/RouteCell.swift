@@ -32,11 +32,12 @@ class RouteCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func configureCell(_ label: String, id: String, route: RouteMaster, image: UIImage, index: Int) {
+    func configureCell(label: String, datetime: String, id: String, route: RouteMaster, image: UIImage, index: Int) {
         self.routeId = id
         self.index = index
         self.route = route
-       // self.distanceLbl.text = "\(Utils.distanceFormat(route.routeDistance)) km"
+        self.distanceLbl.text = "\(label)"
+        self.durationLbl.text = "\(datetime)"
         self.distanceLbl.textColor = UIColor.white
         self.routeImage.image = image
         self.layer.cornerRadius = cornerInfoViews

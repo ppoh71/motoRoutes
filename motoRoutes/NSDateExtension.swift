@@ -35,8 +35,8 @@ extension DateFormatter {
 extension Date {
     
     struct Formatter {
-        static let customDE = DateFormatter(dateFormat: "MMM d, H:mm a")
-        static let customEN = DateFormatter(dateFormat: "MMM d, H:mm a")
+        static let customDE = DateFormatter(dateFormat: "d MMM y | H:mm")
+        static let customEN = DateFormatter(dateFormat: "MMM d y | H:mm")
     }
     
     var customFormatted: String {

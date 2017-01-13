@@ -13,9 +13,6 @@
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
         </array>
-        <array key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-        </array>
     </customFonts>
     <scenes>
         <!--Delegate-->
@@ -75,16 +72,16 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zürich Schewz" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYI-Js-vNT">
-                                                    <rect key="frame" x="17" y="115" width="120" height="18"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23.43.200" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYI-Js-vNT">
+                                                    <rect key="frame" x="14" y="131" width="120" height="18"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="11"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Basel, Switzerland" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="led-Pv-akg">
-                                                    <rect key="frame" x="36" y="129" width="118" height="25"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Basel, Switzerland" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="led-Pv-akg">
+                                                    <rect key="frame" x="13" y="111" width="149" height="24"/>
                                                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -102,20 +99,20 @@
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="NYI-Js-vNT" secondAttribute="trailing" constant="25" id="41y-Du-cbW"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="led-Pv-akg" secondAttribute="bottom" constant="-5" id="ADo-KY-anf"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="NYI-Js-vNT" secondAttribute="trailing" constant="28" id="41y-Du-cbW"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="led-Pv-akg" secondAttribute="bottom" constant="14" id="ADo-KY-anf"/>
                                             <constraint firstAttribute="bottom" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="48" id="CSO-X5-sig"/>
                                             <constraint firstItem="vaL-J6-u60" firstAttribute="top" secondItem="Kc9-W1-h8c" secondAttribute="top" constant="7" id="G9h-N8-j2x"/>
-                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="9" id="Ki8-eR-FXv"/>
-                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="6" id="O4i-Mm-0Bo"/>
+                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="6" id="Ki8-eR-FXv"/>
+                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="22" id="O4i-Mm-0Bo"/>
                                             <constraint firstItem="toc-hm-BKL" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="top" constant="-17" id="X4i-CU-wQk"/>
-                                            <constraint firstItem="led-Pv-akg" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="28" id="aXX-Zo-fen"/>
-                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="20" id="abd-Pl-jqe"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="led-Pv-akg" secondAttribute="trailing" constant="8" id="hMn-dU-Rp9"/>
+                                            <constraint firstItem="led-Pv-akg" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="5" id="aXX-Zo-fen"/>
+                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="2" id="abd-Pl-jqe"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="led-Pv-akg" secondAttribute="trailing" id="hMn-dU-Rp9"/>
                                             <constraint firstAttribute="bottom" secondItem="toc-hm-BKL" secondAttribute="bottom" constant="3" id="lV5-PC-7lJ"/>
                                             <constraint firstItem="toc-hm-BKL" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="mUp-x2-1D6"/>
                                             <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" constant="8" id="oxg-AQ-HLM"/>
-                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="NYI-Js-vNT" secondAttribute="bottom" constant="-4" id="q4y-TV-bDU"/>
+                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="NYI-Js-vNT" secondAttribute="bottom" constant="-38" id="q4y-TV-bDU"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="toc-hm-BKL" secondAttribute="trailing" constant="-15" id="vQg-4D-L5g"/>
                                             <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" constant="6" id="zfi-t6-svw"/>
                                         </constraints>

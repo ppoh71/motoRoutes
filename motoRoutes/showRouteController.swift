@@ -323,11 +323,16 @@ class showRouteController: UIViewController {
             //assign async text to label
           //  GeocodeUtils.getAdressFromCoord(fromLocation, field: "to")
           //  GeocodeUtils.getAdressFromCoord(toLocation, field: "from")
+            GoogleData.dataService.getGoogleGeoCode(route.locationsList[0].latitude, longitude: route.locationsList[0].longitude, field: "from")
+            //GoogleData.dataService.getGoogleGeoCode(route.locationsList[route.locationsList.count-1].latitude, longitude: route.locationsList[route.locationsList.count-1].longitude, field: "to")
+            
             print("location is empty")
         
         } else{
             print("location not empty \(route.locationStart)")
-            setStartEndMarker()
+           // setStartEndMarker()
+            GoogleData.dataService.getGoogleGeoCode(route.locationsList[0].latitude, longitude: route.locationsList[0].longitude, field: "from")
+           // GoogleData.dataService.getGoogleGeoCode(route.locationsList[route.locationsList.count-1].latitude, longitude: route.locationsList[route.locationsList.count-1].longitude, field: "to")
         }
     }
     
@@ -358,10 +363,8 @@ class showRouteController: UIViewController {
     //save location string from geolocation(notification center to realm
     func saveLocationString(_ notification: Notification){
         
-         print("from notifycation 1\(notification.object)")
-        
+         print("from notifycation location\(notification.object)")
         let arrayObject =  notification.object as! [AnyObject]
-        
         if let address = arrayObject[0] as? String {
             if let field = arrayObject[1] as? String {
                 RealmUtils.updateLocation2Realm(motoRoute!, location: address, field: field)
