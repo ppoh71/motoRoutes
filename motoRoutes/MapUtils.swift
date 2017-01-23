@@ -496,13 +496,14 @@ final class MapUtils {
         return newMarker
     }
     
-    class func calcMarkerGap(_ locations: [LocationMaster]) -> Int{
+    class func calcMarkerGap(_ locations: [LocationMaster], route: RouteMaster) -> Int{
         var gap = 5
-        let max = 500
-        let amout = locations.count
-        if(amout>max){
-            gap = Int(amout/max)*10
+        let maxMarker = 250
+        let amount = locations.count
+        if(amount>maxMarker){
+            gap = Int(amount/maxMarker)
         }
+         print("### amount \(locations.count) ###\(gap) ###\(locations.count/gap ) ###  \(route.routeDistance/1000)")
         return gap
     }
 }

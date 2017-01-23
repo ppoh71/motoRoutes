@@ -59,12 +59,14 @@
 		55F7CEF61D0700950051F338 /* MsgOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEF51D0700950051F338 /* MsgOverlay.swift */; };
 		55F7CEF81D0700CF0051F338 /* MsgOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */; };
 		55F7CEFB1D07093B0051F338 /* motoButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7CEFA1D07093B0051F338 /* motoButtons.swift */; };
-		58AC04EEE6544342C6E6E594 /* Pods_motoRoutes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE9AD129BBDFC03177BB8D9 /* Pods_motoRoutes.framework */; };
-		5C4952616E236FE74541B0F9 /* Pods_motoRoutesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ABEDFD4EC0A3787D0B3E2AC /* Pods_motoRoutesTests.framework */; };
+		84676736594BA45DD91D54C7 /* Pods_motoRoutes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEEE1D4CDF1CF963DA59083D /* Pods_motoRoutes.framework */; };
 		A9062B5B1E0AF28A000F45BE /* MarkerViewDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9062B5A1E0AF28A000F45BE /* MarkerViewDot.swift */; };
 		A90D6F991C947101002E7980 /* MapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* MapUtils.swift */; };
 		A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* Globals.swift */; };
 		A91844BF1E0706E7008AF267 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91844BE1E0706E7008AF267 /* Enums.swift */; };
+		A9AE41EB1E3503E90043CE0F /* MotoMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AE41EA1E3503E90043CE0F /* MotoMenu.swift */; };
+		A9AE41ED1E3521FF0043CE0F /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AE41EC1E3521FF0043CE0F /* MenuButton.swift */; };
+		E5D08E927C73DDF02B92077C /* Pods_motoRoutesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19038E4BE208195B3CE9C58D /* Pods_motoRoutesTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -90,7 +92,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3A1D16C4F0D9CF9263D890C2 /* Pods-motoRoutesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		19038E4BE208195B3CE9C58D /* Pods_motoRoutesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_motoRoutesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC3E6448D743A03D95FFC8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5506E0D81C650A230091364B /* ColorUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
 		551EFF931CC11F640065204D /* ImageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
@@ -154,15 +156,17 @@
 		55F7CEF51D0700950051F338 /* MsgOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MsgOverlay.swift; sourceTree = "<group>"; };
 		55F7CEF71D0700CF0051F338 /* MsgOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MsgOverlay.xib; sourceTree = "<group>"; };
 		55F7CEFA1D07093B0051F338 /* motoButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = motoButtons.swift; sourceTree = "<group>"; };
-		5ABEDFD4EC0A3787D0B3E2AC /* Pods_motoRoutesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_motoRoutesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D2D958BA402D702D0000DBA /* Pods-motoRoutes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutes/Pods-motoRoutes.debug.xcconfig"; sourceTree = "<group>"; };
-		A516543AA367712BE6DC362C /* Pods-motoRoutes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutes.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutes/Pods-motoRoutes.release.xcconfig"; sourceTree = "<group>"; };
-		A7765D4F41A9C8FA57EBE31B /* Pods-motoRoutesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.release.xcconfig"; sourceTree = "<group>"; };
+		A3ECF191FFDBB64737747BB2 /* Pods-motoRoutesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9062B5A1E0AF28A000F45BE /* MarkerViewDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkerViewDot.swift; sourceTree = "<group>"; };
 		A90D6F981C947101002E7980 /* MapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapUtils.swift; sourceTree = "<group>"; };
 		A90D6F9A1C9471E2002E7980 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		A91844BE1E0706E7008AF267 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		DBE9AD129BBDFC03177BB8D9 /* Pods_motoRoutes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_motoRoutes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9AE41EA1E3503E90043CE0F /* MotoMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotoMenu.swift; sourceTree = "<group>"; };
+		A9AE41EC1E3521FF0043CE0F /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		B355FC4EACC16E1FB252DA66 /* Pods-motoRoutesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E40FEA1ECD75E6BE6EC9CD68 /* Pods-motoRoutes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutes/Pods-motoRoutes.debug.xcconfig"; sourceTree = "<group>"; };
+		EB1CDCA9908E3749A45525FE /* Pods-motoRoutes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutes.release.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutes/Pods-motoRoutes.release.xcconfig"; sourceTree = "<group>"; };
+		EEEE1D4CDF1CF963DA59083D /* Pods_motoRoutes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_motoRoutes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,7 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C4952616E236FE74541B0F9 /* Pods_motoRoutesTests.framework in Frameworks */,
+				E5D08E927C73DDF02B92077C /* Pods_motoRoutesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,7 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58AC04EEE6544342C6E6E594 /* Pods_motoRoutes.framework in Frameworks */,
+				84676736594BA45DD91D54C7 /* Pods_motoRoutes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,8 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				3BC3E6448D743A03D95FFC8D /* Pods.framework */,
-				DBE9AD129BBDFC03177BB8D9 /* Pods_motoRoutes.framework */,
-				5ABEDFD4EC0A3787D0B3E2AC /* Pods_motoRoutesTests.framework */,
+				EEEE1D4CDF1CF963DA59083D /* Pods_motoRoutes.framework */,
+				19038E4BE208195B3CE9C58D /* Pods_motoRoutesTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -229,7 +233,7 @@
 				5531565F1D81BDC100A53E8F /* motoRoutesTests */,
 				553AB4FF1C50056400AC12A5 /* Products */,
 				52ACE237A2458B42E81E2C00 /* Frameworks */,
-				9914AB65B30FB8F8034B4A4D /* Pods */,
+				5FB29B7F3E6066B40D29E420 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -364,6 +368,7 @@
 		55E1496F1CE22D7E00B576BB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A9AE41E91E3503AB0043CE0F /* MotoMenu */,
 				55C0DD321DBF95EF0005C578 /* ActionMenu */,
 				55399DE71DA544EA00F2337A /* MarkerView */,
 				5571D6EA1DA3E75C000A4A3A /* CollectionView */,
@@ -408,13 +413,13 @@
 			name = Controls;
 			sourceTree = "<group>";
 		};
-		9914AB65B30FB8F8034B4A4D /* Pods */ = {
+		5FB29B7F3E6066B40D29E420 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8D2D958BA402D702D0000DBA /* Pods-motoRoutes.debug.xcconfig */,
-				A516543AA367712BE6DC362C /* Pods-motoRoutes.release.xcconfig */,
-				3A1D16C4F0D9CF9263D890C2 /* Pods-motoRoutesTests.debug.xcconfig */,
-				A7765D4F41A9C8FA57EBE31B /* Pods-motoRoutesTests.release.xcconfig */,
+				E40FEA1ECD75E6BE6EC9CD68 /* Pods-motoRoutes.debug.xcconfig */,
+				EB1CDCA9908E3749A45525FE /* Pods-motoRoutes.release.xcconfig */,
+				B355FC4EACC16E1FB252DA66 /* Pods-motoRoutesTests.debug.xcconfig */,
+				A3ECF191FFDBB64737747BB2 /* Pods-motoRoutesTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -426,6 +431,15 @@
 				5532ECD41D919D8200A7942B /* RealmModel.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		A9AE41E91E3503AB0043CE0F /* MotoMenu */ = {
+			isa = PBXGroup;
+			children = (
+				A9AE41EA1E3503E90043CE0F /* MotoMenu.swift */,
+				A9AE41EC1E3521FF0043CE0F /* MenuButton.swift */,
+			);
+			name = MotoMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -722,11 +736,13 @@
 				5546F02E1DCB9FDF00D13F1D /* SpinnerView.swift in Sources */,
 				55DA72991D0030DD0095C52E /* MRCellViewImage.swift in Sources */,
 				554EEB501D071DCB00307F47 /* AnimationEngine.swift in Sources */,
+				A9AE41ED1E3521FF0043CE0F /* MenuButton.swift in Sources */,
 				55E2DE1C1DBA3DD1002C799C /* InfoLabel.swift in Sources */,
 				5522D1C91C5132B1005339BD /* motoRouteController.swift in Sources */,
 				5562BA551C73663900EF340D /* Utils.swift in Sources */,
 				552240F11D6DE7EA00694E60 /* MotoChart.swift in Sources */,
 				556B8A681CE4B9A4000EE047 /* CameraSlider.swift in Sources */,
+				A9AE41EB1E3503E90043CE0F /* MotoMenu.swift in Sources */,
 				A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */,
 				55E149711CE22DE000B576BB /* RouteSlider.swift in Sources */,
 				553AB5021C50056400AC12A5 /* AppDelegate.swift in Sources */,
@@ -780,7 +796,7 @@
 /* Begin XCBuildConfiguration section */
 		553156651D81BDC100A53E8F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3A1D16C4F0D9CF9263D890C2 /* Pods-motoRoutesTests.debug.xcconfig */;
+			baseConfigurationReference = B355FC4EACC16E1FB252DA66 /* Pods-motoRoutesTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -797,7 +813,7 @@
 		};
 		553156661D81BDC100A53E8F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7765D4F41A9C8FA57EBE31B /* Pods-motoRoutesTests.release.xcconfig */;
+			baseConfigurationReference = A3ECF191FFDBB64737747BB2 /* Pods-motoRoutesTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -901,7 +917,7 @@
 		};
 		553AB5141C50056400AC12A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D2D958BA402D702D0000DBA /* Pods-motoRoutes.debug.xcconfig */;
+			baseConfigurationReference = E40FEA1ECD75E6BE6EC9CD68 /* Pods-motoRoutes.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -941,7 +957,7 @@
 		};
 		553AB5151C50056400AC12A5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A516543AA367712BE6DC362C /* Pods-motoRoutes.release.xcconfig */;
+			baseConfigurationReference = EB1CDCA9908E3749A45525FE /* Pods-motoRoutes.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

@@ -14,6 +14,10 @@ extension UIButton {
         static var actionType = ActionButtonType()
     }
     
+    private struct MenunTypeStruct {
+        static var menuType = MenuButtonType()
+    }
+    
     //add actionType property 
     var actionType : ActionButtonType? {
         get {
@@ -26,6 +30,19 @@ extension UIButton {
             }
         }
     }
+
+    var menuType : MenuButtonType? {
+        get {
+            return objc_getAssociatedObject(self, &MenunTypeStruct.menuType) as? MenuButtonType
+        }
+        
+        set(newValue) {
+            if let newValue = newValue {
+                objc_setAssociatedObject(self, &MenunTypeStruct.menuType, newValue as MenuButtonType?, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
+    }
+
     
     override open var isHighlighted: Bool {
         didSet {
@@ -39,7 +56,7 @@ extension UIButton {
                 if(self.actionType == .ActionMenuMyRoutes || self.actionType == .MenuActionButton || self.actionType == .MenuConfirm || self.actionType == .MenuInfoLabels) {
                     self.scale(4)
                 }else{
-                    backgroundColor = blue3
+                  //  backgroundColor = blue3
                 }
             }
         }

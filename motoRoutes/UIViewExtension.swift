@@ -24,6 +24,7 @@ extension UIView {
             
             scale?.completionBlock = {(animation, finished) in
                 print("#### Animation completed scale size ###")
+                 // NotificationCenter.default.post(name: Notification.Name(rawValue: completionFinishedNotificationKey), object: [self])
             }
         })
     }
@@ -66,6 +67,21 @@ extension UIView {
         DispatchQueue.main.asyncAfter(deadline: when) {
             AnimationEngine.animationToPositionY(self, y: Double(self.frame.origin.y) + y)
             print(Double(self.frame.origin.y) + y)
+        }
+    }
+    
+    func aniToYabsolute(_ delay: Double, y: Double){
+        let when = DispatchTime.now() + delay
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            AnimationEngine.animationToPositionY(self, y:  y)
+            print(Double(self.frame.origin.y) + y)
+        }
+    }
+    
+    func aniToXabsolute(_ delay: Double, x: Double){
+        let when = DispatchTime.now() + delay
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            AnimationEngine.animationToPositionX(self, x:  x)
         }
     }
 }

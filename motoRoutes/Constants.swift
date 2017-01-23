@@ -19,6 +19,7 @@ let googleGeoCodeNotificationKey = "motoRoutes.getGoogleGeoCode"
 let actionButtonNotificationKey = "motoRoutes.actionButtons"
 let actionConfirmNotificationKey = "motoRoutes.actionButtonsConfirm"
 let progressDoneNotificationKey = "motoRoutes.actionProgressDone"
+let completionFinishedNotificationKey = "motoRoutes.completionFinished"
 
 //API Keys
 let KEY_UID = "uid"
@@ -47,6 +48,11 @@ let textColor = UIColor.white
 //CornerRadius
 let cornerInfoViews = CGFloat(5)
 
+//Menu Stuff
+let menuButtonWidth = 130;
+let menuButtonHeight = 48;
+let menuLabelPadding = 24;
+
 //Info Labes and Buttons Sizes
 let markerViewRect = CGRect(x: 0, y: 0, width: 150, height: 280)
 let confirmViewRect = CGRect(x: 0, y: 0, width: 130, height: 280)
@@ -55,6 +61,7 @@ let actionLabelWidth = 130;
 let actionLabelHeight = 48;
 let actionLabelPadding = 12;
 let buttonFont = UIFont(name: "Roboto-Bold", size: 14);
+let menuFont = UIFont(name: "Roboto-Bold", size: 16);
 
 // Labels
 let distanceLabelText = NSLocalizedString("View.RouteInfo.DistanceLabel", comment: "distanceLabelText")

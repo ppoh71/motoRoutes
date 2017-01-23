@@ -63,58 +63,72 @@
                                                     <rect key="frame" x="0.0" y="-10" width="177" height="164"/>
                                                     <color key="backgroundColor" red="0.0" green="0.17759246981202501" blue="0.36826020077720212" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bike-def" translatesAutoresizingMaskIntoConstraints="NO" id="vaL-J6-u60" customClass="MRCellViewImage" customModule="motoRoutes" customModuleProvider="target">
+                                                <view clipsSubviews="YES" clearsContextBeforeDrawing="NO" alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AJD-NW-dun" userLabel="ViewClip">
                                                     <rect key="frame" x="8" y="7" width="156" height="102"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <real key="value" value="0.0"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bike-def" translatesAutoresizingMaskIntoConstraints="NO" id="vaL-J6-u60" customClass="MRCellViewImage" customModule="motoRoutes" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="156" height="102"/>
+                                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                    <real key="value" value="0.0"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </imageView>
+                                                        <button opaque="NO" alpha="0.75" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uA3-tf-Z5W">
+                                                            <rect key="frame" x="0.0" y="0.0" width="156" height="102"/>
+                                                            <color key="backgroundColor" red="0.26667502366822993" green="0.36140743988130369" blue="0.81193329015544036" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                                                            <state key="normal" title="Details">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="pressedDetail:" destination="Kc9-W1-h8c" eventType="touchDown" id="n1w-3Y-T4g"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.0" green="0.17759246980000001" blue="0.36826020079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="AJD-NW-dun" secondAttribute="leading" id="Efh-Pd-ETW"/>
+                                                        <constraint firstItem="uA3-tf-Z5W" firstAttribute="top" secondItem="AJD-NW-dun" secondAttribute="top" id="GQg-Ic-tmi"/>
+                                                        <constraint firstItem="uA3-tf-Z5W" firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="Nkd-lB-mPS"/>
+                                                        <constraint firstItem="uA3-tf-Z5W" firstAttribute="leading" secondItem="vaL-J6-u60" secondAttribute="leading" id="QOy-t0-6Hs"/>
+                                                        <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" id="SGN-hq-CSB"/>
+                                                        <constraint firstItem="uA3-tf-Z5W" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="top" id="cG9-e5-uxa"/>
+                                                        <constraint firstItem="uA3-tf-Z5W" firstAttribute="bottom" secondItem="vaL-J6-u60" secondAttribute="bottom" id="mPE-hJ-hDH"/>
+                                                        <constraint firstAttribute="bottom" secondItem="vaL-J6-u60" secondAttribute="bottom" id="ujT-kV-dbI"/>
+                                                    </constraints>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23.43.200" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYI-Js-vNT">
-                                                    <rect key="frame" x="14" y="131" width="120" height="18"/>
+                                                    <rect key="frame" x="14" y="136" width="120" height="13"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="11"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Basel, Switzerland" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="led-Pv-akg">
-                                                    <rect key="frame" x="13" y="111" width="149" height="24"/>
+                                                    <rect key="frame" x="13" y="121" width="149" height="14"/>
                                                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uA3-tf-Z5W">
-                                                    <rect key="frame" x="13" y="63" width="144" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
-                                                    <state key="normal" title="Details">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="pressedDetail:" destination="Kc9-W1-h8c" eventType="touchDown" id="n1w-3Y-T4g"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="NYI-Js-vNT" secondAttribute="trailing" constant="28" id="41y-Du-cbW"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="led-Pv-akg" secondAttribute="bottom" constant="14" id="ADo-KY-anf"/>
-                                            <constraint firstAttribute="bottom" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="48" id="CSO-X5-sig"/>
-                                            <constraint firstItem="vaL-J6-u60" firstAttribute="top" secondItem="Kc9-W1-h8c" secondAttribute="top" constant="7" id="G9h-N8-j2x"/>
-                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="6" id="Ki8-eR-FXv"/>
-                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="22" id="O4i-Mm-0Bo"/>
-                                            <constraint firstItem="toc-hm-BKL" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="top" constant="-17" id="X4i-CU-wQk"/>
+                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="bottom" secondItem="Kc9-W1-h8c" secondAttribute="bottomMargin" id="DNB-x9-C8c"/>
+                                            <constraint firstItem="AJD-NW-dun" firstAttribute="top" secondItem="Kc9-W1-h8c" secondAttribute="topMargin" constant="-1" id="EQG-2d-UPU"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="AJD-NW-dun" secondAttribute="trailing" constant="-2" id="FfJ-9U-ax1"/>
+                                            <constraint firstItem="AJD-NW-dun" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" id="Kx3-zp-yI8"/>
+                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="AJD-NW-dun" secondAttribute="bottom" constant="12" id="ZJB-SJ-FUg"/>
                                             <constraint firstItem="led-Pv-akg" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="5" id="aXX-Zo-fen"/>
-                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="vaL-J6-u60" secondAttribute="bottom" constant="2" id="abd-Pl-jqe"/>
+                                            <constraint firstItem="toc-hm-BKL" firstAttribute="top" secondItem="Kc9-W1-h8c" secondAttribute="topMargin" constant="-18" id="eQx-FZ-b24"/>
+                                            <constraint firstItem="NYI-Js-vNT" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leadingMargin" constant="6" id="glH-Jz-uLx"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="led-Pv-akg" secondAttribute="trailing" id="hMn-dU-Rp9"/>
                                             <constraint firstAttribute="bottom" secondItem="toc-hm-BKL" secondAttribute="bottom" constant="3" id="lV5-PC-7lJ"/>
                                             <constraint firstItem="toc-hm-BKL" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" id="mUp-x2-1D6"/>
-                                            <constraint firstItem="vaL-J6-u60" firstAttribute="leading" secondItem="Kc9-W1-h8c" secondAttribute="leading" constant="8" id="oxg-AQ-HLM"/>
-                                            <constraint firstItem="led-Pv-akg" firstAttribute="top" secondItem="NYI-Js-vNT" secondAttribute="bottom" constant="-38" id="q4y-TV-bDU"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="toc-hm-BKL" secondAttribute="trailing" constant="-15" id="vQg-4D-L5g"/>
-                                            <constraint firstAttribute="trailing" secondItem="vaL-J6-u60" secondAttribute="trailing" constant="6" id="zfi-t6-svw"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="NYI-Js-vNT" secondAttribute="trailing" constant="28" id="vys-Le-GKA"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="backView" destination="toc-hm-BKL" id="Evw-Zs-Ad1"/>
