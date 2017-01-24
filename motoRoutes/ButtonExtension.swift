@@ -50,7 +50,7 @@ extension UIButton {
                 if(self.actionType == .ActionMenuMyRoutes || self.actionType == .MenuActionButton || self.actionType == .MenuConfirm || self.actionType == .MenuInfoLabels) {
                     self.scale(3)
                 }else{
-                    backgroundColor = blue2
+                  //  backgroundColor = blue2
                 }
             } else {
                 if(self.actionType == .ActionMenuMyRoutes || self.actionType == .MenuActionButton || self.actionType == .MenuConfirm || self.actionType == .MenuInfoLabels) {

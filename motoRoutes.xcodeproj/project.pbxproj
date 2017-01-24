@@ -64,6 +64,7 @@
 		A90D6F991C947101002E7980 /* MapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F981C947101002E7980 /* MapUtils.swift */; };
 		A90D6F9B1C9471E2002E7980 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D6F9A1C9471E2002E7980 /* Globals.swift */; };
 		A91844BF1E0706E7008AF267 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91844BE1E0706E7008AF267 /* Enums.swift */; };
+		A97E4B281E37E739009AFDDB /* MotoMenuInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97E4B271E37E739009AFDDB /* MotoMenuInit.swift */; };
 		A9AE41EB1E3503E90043CE0F /* MotoMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AE41EA1E3503E90043CE0F /* MotoMenu.swift */; };
 		A9AE41ED1E3521FF0043CE0F /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AE41EC1E3521FF0043CE0F /* MenuButton.swift */; };
 		E5D08E927C73DDF02B92077C /* Pods_motoRoutesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19038E4BE208195B3CE9C58D /* Pods_motoRoutesTests.framework */; };
@@ -161,6 +162,7 @@
 		A90D6F981C947101002E7980 /* MapUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapUtils.swift; sourceTree = "<group>"; };
 		A90D6F9A1C9471E2002E7980 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		A91844BE1E0706E7008AF267 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		A97E4B271E37E739009AFDDB /* MotoMenuInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotoMenuInit.swift; sourceTree = "<group>"; };
 		A9AE41EA1E3503E90043CE0F /* MotoMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotoMenu.swift; sourceTree = "<group>"; };
 		A9AE41EC1E3521FF0043CE0F /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		B355FC4EACC16E1FB252DA66 /* Pods-motoRoutesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motoRoutesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-motoRoutesTests/Pods-motoRoutesTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 		A9AE41E91E3503AB0043CE0F /* MotoMenu */ = {
 			isa = PBXGroup;
 			children = (
+				A97E4B271E37E739009AFDDB /* MotoMenuInit.swift */,
 				A9AE41EA1E3503E90043CE0F /* MotoMenu.swift */,
 				A9AE41EC1E3521FF0043CE0F /* MenuButton.swift */,
 			);
@@ -729,6 +732,7 @@
 				55D997001D92B8F200AB7DAB /* ExploreMotoRoutes.swift in Sources */,
 				A91844BF1E0706E7008AF267 /* Enums.swift in Sources */,
 				559160841D8C37CB006BEA7A /* Constants.swift in Sources */,
+				A97E4B281E37E739009AFDDB /* MotoMenuInit.swift in Sources */,
 				55DA4FF61CF5DABB007C0151 /* CameraSliderCustom.swift in Sources */,
 				559A5C4F1C57E0F500B5261F /* MRCellView.swift in Sources */,
 				55C0DD341DBF96230005C578 /* ActionConfirm.swift in Sources */,

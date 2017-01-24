@@ -20,6 +20,8 @@ let actionButtonNotificationKey = "motoRoutes.actionButtons"
 let actionConfirmNotificationKey = "motoRoutes.actionButtonsConfirm"
 let progressDoneNotificationKey = "motoRoutes.actionProgressDone"
 let completionFinishedNotificationKey = "motoRoutes.completionFinished"
+let motoMenuNotificationKey = "motoRoutes.motoMenuNotificationKey"
+let motoMenuActionNotificationKey = "motoRoutes.motoMenuActionNotificationKey"
 
 //API Keys
 let KEY_UID = "uid"

@@ -140,42 +140,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAC-yr-aBN">
-                                <rect key="frame" x="60" y="20" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="ufc-Oe-mPe"/>
-                                </constraints>
-                                <state key="normal" title="My"/>
-                                <connections>
-                                    <action selector="showMyrRoutes:" destination="wc2-zt-K1X" eventType="touchUpInside" id="7S5-C5-3Ai"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aD-9O-qLt">
-                                <rect key="frame" x="20" y="20" width="30" height="30"/>
-                                <state key="normal" title="ALL"/>
-                                <connections>
-                                    <action selector="showFirRoutes:" destination="wc2-zt-K1X" eventType="touchUpInside" id="6XN-JG-v8O"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBF-IH-poM">
-                                <rect key="frame" x="110" y="20" width="30" height="30"/>
-                                <state key="normal" title="Add"/>
-                                <connections>
-                                    <action selector="addRoute:" destination="wc2-zt-K1X" eventType="touchUpInside" id="A8V-3z-hI4"/>
-                                    <segue destination="vMy-ZL-3Vq" kind="show" id="7qH-Fr-7Dx"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9d3-Mx-Wle">
-                                <rect key="frame" x="160" y="20" width="74" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Login"/>
-                                <connections>
-                                    <action selector="addRoute:" destination="wc2-zt-K1X" eventType="touchUpInside" id="tDo-9d-hbu"/>
-                                    <segue destination="vOw-8x-L9k" kind="show" id="EXU-C4-qqy"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rz8-Wo-jK6" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
-                                <rect key="frame" x="319" y="121" width="48" height="48"/>
+                                <rect key="frame" x="388" y="121" width="48" height="48"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="titleShadowOffset" width="8" height="5"/>
                                 <state key="normal" image="ic_panorama_fish_eye_48pt"/>
@@ -186,26 +152,22 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="9aD-9O-qLt" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leadingMargin" constant="4" id="2Dp-i1-NUe"/>
                             <constraint firstAttribute="trailing" secondItem="woV-1i-Vrd" secondAttribute="trailing" id="2Sk-NZ-Tpc"/>
-                            <constraint firstItem="9aD-9O-qLt" firstAttribute="top" secondItem="BKz-0T-I2S" secondAttribute="bottom" id="3OL-y7-iIN"/>
                             <constraint firstAttribute="trailing" secondItem="H4z-9o-iAl" secondAttribute="trailing" id="AcR-GJ-E9G"/>
                             <constraint firstItem="6Jq-hI-DK4" firstAttribute="top" secondItem="woV-1i-Vrd" secondAttribute="bottom" constant="2" id="BGf-BU-Nek"/>
                             <constraint firstItem="woV-1i-Vrd" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="DJN-Co-Fwl"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="rz8-Wo-jK6" secondAttribute="trailing" constant="-8" id="E18-dh-4s7"/>
-                            <constraint firstItem="KAC-yr-aBN" firstAttribute="leading" secondItem="9aD-9O-qLt" secondAttribute="trailing" constant="10" id="EgZ-87-3UX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rz8-Wo-jK6" secondAttribute="trailing" constant="-77" id="E18-dh-4s7"/>
                             <constraint firstItem="H4z-9o-iAl" firstAttribute="top" secondItem="q6j-ht-vRW" secondAttribute="top" id="FbH-Oo-A6D"/>
                             <constraint firstItem="6Jq-hI-DK4" firstAttribute="top" secondItem="rz8-Wo-jK6" secondAttribute="bottom" constant="498" id="cJk-3y-det"/>
                             <constraint firstItem="H4z-9o-iAl" firstAttribute="leading" secondItem="q6j-ht-vRW" secondAttribute="leading" id="h1z-Wh-Yhr"/>
-                            <constraint firstItem="CBF-IH-poM" firstAttribute="leading" secondItem="KAC-yr-aBN" secondAttribute="trailing" constant="4" id="iQ8-O0-5qi"/>
                             <constraint firstAttribute="bottom" secondItem="H4z-9o-iAl" secondAttribute="bottom" id="lyB-99-URp"/>
-                            <constraint firstItem="H4z-9o-iAl" firstAttribute="top" secondItem="CBF-IH-poM" secondAttribute="bottom" constant="-50" id="naq-7K-oGQ"/>
-                            <constraint firstItem="KAC-yr-aBN" firstAttribute="baseline" secondItem="9aD-9O-qLt" secondAttribute="baseline" id="vOp-JS-ecn"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collection" destination="woV-1i-Vrd" id="dUm-UD-BaW"/>
                         <outlet property="mapView" destination="H4z-9o-iAl" id="hzp-l9-vpb"/>
+                        <segue destination="vOw-8x-L9k" kind="show" identifier="settingsSegue" id="36V-ff-eZV"/>
+                        <segue destination="vMy-ZL-3Vq" kind="show" identifier="recordSegue" id="t8z-g8-ris"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rs2-lg-8qa" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -410,7 +372,7 @@
                                 <size key="titleShadowOffset" width="8" height="5"/>
                                 <state key="normal" image="ic_panorama_fish_eye_48pt"/>
                                 <connections>
-                                    <segue destination="Ete-9J-bbM" kind="unwind" unwindAction="closeToMR:" id="3Zk-ej-8dG"/>
+                                    <segue destination="Ete-9J-bbM" kind="unwind" unwindAction="closeToExplore:" id="foL-34-dZz"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0A-Pq-7zG" customClass="buttonSytles" customModule="motoRoutes" customModuleProvider="target">
@@ -1133,6 +1095,6 @@
         <image name="ic_rotate" width="48" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EXU-C4-qqy"/>
+        <segue reference="36V-ff-eZV"/>
     </inferredMetricsTieBreakers>
 </document>

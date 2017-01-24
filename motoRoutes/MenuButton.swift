@@ -50,7 +50,7 @@ class MenuButton: UIView{
     }
     
     func pressedButton(_ sender: UIButton){
-        let notifyObj = [sender.actionType]
-        NotificationCenter.default.post(name: Notification.Name(rawValue: actionButtonNotificationKey), object: notifyObj)
+        let notifyObj = [sender.menuType]
+        NotificationCenter.default.post(name: Notification.Name(rawValue: motoMenuActionNotificationKey), object: notifyObj)
     }
 }

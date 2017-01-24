@@ -47,9 +47,6 @@ class ExploreMotoRoutes: UIViewController {
     var countReuse = 0
     var firbaseUser = ""
     
-    @IBAction func addRoute(_ sender: Any) {
-    }
-    
     //MARK: overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +55,12 @@ class ExploreMotoRoutes: UIViewController {
         collection.allowsSelection = true
         updateMyRouteMaster()
         self.view.backgroundColor = UIColor.black
+        
+        let motoMenu = MotoMenuInit(frame: CGRect(x: self.view.frame.width-80, y: 50, width: 70, height: 70))
+        self.view.addSubview(motoMenu)
+        
+        let menuButtons = MotoMenu(frame: CGRect(x: self.view.frame.width, y: 120, width: 130, height: 300))
+        self.view.addSubview(menuButtons)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,8 +73,7 @@ class ExploreMotoRoutes: UIViewController {
             firbaseUser = (FIRAuth.auth()?.currentUser?.uid)!
         }
 
-        let motoMenu = MotoMenu(frame: CGRect(x: self.view.frame.width-130, y: 30, width: 50, height: 50))
-        self.view.addSubview(motoMenu)
+     
         
         //Listen from FlyoverRoutes if Markers are set
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.gotRoutesfromFirbase),
@@ -82,20 +84,19 @@ class ExploreMotoRoutes: UIViewController {
                                                name: NSNotification.Name(rawValue: actionConfirmNotificationKey), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.geoCode),
                                                name: NSNotification.Name(rawValue: googleGeoCodeNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.menuAction),
+                                               name: NSNotification.Name(rawValue: motoMenuActionNotificationKey), object: nil)
         
         
         
         //FirebaseData.dataService.getRoutesFromFIR()
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         //print("---------active routemaster \(activeRouteMaster._MotoRoute.id)")
-        
-        
-
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
+        
     }
     
     func geoCode(_ notification: Notification){
@@ -111,6 +112,33 @@ class ExploreMotoRoutes: UIViewController {
         myRoutesMaster = RouteMaster.realmResultToMasterArray(myMotoRoutesRealm)
         setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
     }
+    
+    func menuAction(_ notification: Notification){
+        let notifyObj =  notification.object as! [AnyObject]
+        if let menuType = notifyObj[0] as? MenuButtonType {
+            print("##### ACTION BUTTON PRESSED \(menuType)")
+            switch(menuType){
+            case .MenuMyRoutes:
+                print("my")
+                deleteAllMarker()
+                updateMyRouteMaster()
+                collection.reloadData()
+            case .MenuRecord:
+                print("reord")
+                performSegue(withIdentifier: "recordSegue", sender: nil)
+            case .MenuCloud:
+                print("cloud")
+                FirebaseData.dataService.getRoutesFromFIR()
+            case .MenuSettings:
+            print("settings")
+                performSegue(withIdentifier: "settingsSegue", sender: nil)
+            default:
+                print("default")
+            }
+            
+        }
+    }
+    
     
     func actionMenuConfirm(_ notification: Notification){//marker view notification
         //print("###ActionButton NotifY Explore")
@@ -254,7 +282,7 @@ class ExploreMotoRoutes: UIViewController {
         //print("active id \(routeMaster._MotoRoute.id)")
         removeAnnotation(routeMaster)
         RealmUtils.saveRouteFromFIR(routeMaster)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: progressDoneNotificationKey), object: [ProgressDoneType.ProgressDoneDownload])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: motoMenuNotificationKey), object: [])
         reloadData()
     }
     
@@ -283,15 +311,7 @@ class ExploreMotoRoutes: UIViewController {
         collection.reloadData()
     }
     
-    @IBAction func showFirRoutes(_ sender: AnyObject) {
-        FirebaseData.dataService.getRoutesFromFIR()
-    }
-    
-    @IBAction func showMyrRoutes(_ sender: AnyObject) {
-        deleteAllMarker()
-        updateMyRouteMaster()
-        collection.reloadData()
-    }
+
     
     @IBAction func closeToExplore(_ segue:UIStoryboardSegue) {
         //print("close mc \(segue.source)")
