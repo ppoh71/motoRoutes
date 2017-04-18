@@ -14,10 +14,10 @@ import Foundation
 import RealmSwift
 
 class ExploreMotoRoutes: UIViewController {
-    
     @IBOutlet weak var mapView: MGLMapView!
     @IBOutlet weak var collection: UICollectionView!
-    
+    @IBOutlet weak var menuLabel: UIButton!
+
     //MARK: my routes vars
     var myMotoRoutesRealm: Results<Route>!
     var myRoutesMaster = [RouteMaster]()
@@ -42,6 +42,8 @@ class ExploreMotoRoutes: UIViewController {
     var speedMarker = [MGLAnnotation]()
     var markerGap = 1
     
+    var imageCellCache = [Int:UIImage]()
+    
     //MARK: vars
     var funcType = FuncTypes()
     var countReuse = 0
@@ -61,6 +63,8 @@ class ExploreMotoRoutes: UIViewController {
         
         let menuButtons = MotoMenu(frame: CGRect(x: self.view.frame.width, y: 120, width: 130, height: 300))
         self.view.addSubview(menuButtons)
+        
+        setRouteMarkers(myRoutesMaster, markerTitle: "myMarker", funcType: .PrintMyRouteMarker)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,8 +77,6 @@ class ExploreMotoRoutes: UIViewController {
             firbaseUser = (FIRAuth.auth()?.currentUser?.uid)!
         }
 
-     
-        
         //Listen from FlyoverRoutes if Markers are set
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.gotRoutesfromFirbase),
                                                name: NSNotification.Name(rawValue: firbaseGetRoutesNotificationKey), object: nil)
@@ -87,16 +89,12 @@ class ExploreMotoRoutes: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ExploreMotoRoutes.menuAction),
                                                name: NSNotification.Name(rawValue: motoMenuActionNotificationKey), object: nil)
         
-        
-        
         //FirebaseData.dataService.getRoutesFromFIR()
-        setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
         //print("---------active routemaster \(activeRouteMaster._MotoRoute.id)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
-        
     }
     
     func geoCode(_ notification: Notification){
@@ -106,11 +104,45 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
     
+    @IBAction func menuLabelPressed(_ sender: UIButton) {
+        print("menuLabel pressed")
+        centerMap()
+    }
+    
+    func centerMap(){
+        var myRoutesLocationsBounds  = [LocationMaster]()
+        
+        for item in myRoutesMaster {
+            let locationMaster = LocationMaster(latitude: item._MotoRoute.startLatitude, longitude: item._MotoRoute.startLongitude, altitude: 0, speed: 0, course: 0, timestamp: Date(), accuracy: 0, marker: false, distance: 0)
+            myRoutesLocationsBounds.append(locationMaster)
+        }
+    
+        let RouteList = myRoutesLocationsBounds
+        let Bounds = MapUtils.getBoundCoords(RouteList)
+        let coordArray = Bounds.coordboundArray
+//        let distanceDiagonal = Bounds.distance
+//        let distanceFactor = Bounds.distanceFactor
+        
+        if(coordArray.count > 0){
+           // let edges = UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50)
+            //mapView.setVisibleCoordinateBounds(Bounds.coordbound, edgePadding: edges, animated: true)
+            mapView.setZoomLevel(2, animated: true)
+           // mapView.setVisibleCoordinateBounds(Bounds.coordbound, animated: false)
+            
+            //let centerPoint = MapUtils.getCenterFromBoundig(coordArray)
+            //let loca = CLLocationCoordinate2D(latitude: centerPoint.latitude, longitude: centerPoint.longitude)
+           // mapView.setCenter(loca, animated: true)
+//            let camera = MapUtils.cameraDestination(centerPoint.latitude, longitude:centerPoint.longitude, fromDistance:10, pitch: 0, heading: 0)
+//            mapView.setCamera(camera, withDuration: globalCamDuration.gCamDuration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)) {
+//            }
+        }
+    }
+
     func updateMyRouteMaster(){
         let realm = try! Realm()
         myMotoRoutesRealm = realm.objects(Route.self).sorted(byProperty: "timestamp", ascending: false)
         myRoutesMaster = RouteMaster.realmResultToMasterArray(myMotoRoutesRealm)
-        setRouteMarkers(myRoutesMaster, markerTitle: "myMarker")
+        setRouteMarkers(myRoutesMaster, markerTitle: "myMarker", funcType: .PrintMarkerIcon)
     }
     
     func menuAction(_ notification: Notification){
@@ -120,15 +152,16 @@ class ExploreMotoRoutes: UIViewController {
             switch(menuType){
             case .MenuMyRoutes:
                 print("my")
-                deleteAllMarker()
                 updateMyRouteMaster()
                 collection.reloadData()
+                globalActiveMenuButton.activeMenuButton = menuType
             case .MenuRecord:
                 print("reord")
                 performSegue(withIdentifier: "recordSegue", sender: nil)
             case .MenuCloud:
                 print("cloud")
                 FirebaseData.dataService.getRoutesFromFIR()
+                globalActiveMenuButton.activeMenuButton = menuType
             case .MenuSettings:
             print("settings")
                 performSegue(withIdentifier: "settingsSegue", sender: nil)
@@ -179,7 +212,7 @@ class ExploreMotoRoutes: UIViewController {
     func gotRoutesfromFirbase(_ notification: Notification){
         if let notifyObj =  notification.object as? [RouteMaster] {
             firebaseRouteMasters = notifyObj
-            setRouteMarkers(firebaseRouteMasters, markerTitle: "firebaseMarker")
+            setRouteMarkers(firebaseRouteMasters, markerTitle: "firebaseMarker", funcType: .PrintCloudMarker)
         }
     }
     
@@ -227,8 +260,10 @@ class ExploreMotoRoutes: UIViewController {
         }
     }
     
-    func setRouteMarkers(_ routes: [RouteMaster], markerTitle: String){
-        deleteMarkers(&myRouteMarker)
+    func setRouteMarkers(_ routes: [RouteMaster], markerTitle: String, funcType: FuncTypes){
+        //deleteMarkers(&myRouteMarker)
+        deleteAllMarker()
+        self.funcType = funcType
         for item in routes {
             setMarker(item, markerTitle: markerTitle)
         }
@@ -377,11 +412,20 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
             let routeId:String = route._MotoRoute.id
             let imgName = route._MotoRoute.image
             let label = route._MotoRoute.locationStart
-            if(imgName.characters.count > 0){
+            
+            
+            if((imageCellCache[indexPath.row]) != nil && imgName.characters.count > 0){
+                print("image xxx \(imageCellCache[indexPath.row])")
+                image = (imageCellCache[indexPath.row])!
+            } else{
                 let imgPath = Utils.getDocumentsDirectory().appendingPathComponent(imgName)
                 image = ImageUtils.loadImageFromPath(imgPath as NSString)!
+                //image = ImageUtils.resizeImage(image, newWidth: 156)
+                imageCellCache[indexPath.row] = image
+                print("image load \(image)")
             }
-            print("###label: \(label)")
+            
+            //print("###label: \(imageCellCache)")
             cell.configureCell(label: label, datetime: route.routeDate, id: routeId, route: route, image: image, index: indexPath.item)
             cell.toggleSelected()
             return cell
@@ -396,7 +440,7 @@ extension ExploreMotoRoutes: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 170, height: 170)
+        return CGSize(width: 170, height: 135)
     }
 }
 
@@ -424,6 +468,10 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
             reuseIdentifier = "MarkerCircle\(Utils.getSpeed(globalSpeed.gSpeed))-5"
         case .PrintStartEnd:
             reuseIdentifier = "StartEndMarker"
+        case .PrintMyRouteMarker:
+            reuseIdentifier = "MyRoutemarker"
+        case .PrintCloudMarker:
+            reuseIdentifier = "CloudMarker"
         default:
             reuseIdentifier = "Marker-\(annotation.title))"
             break
@@ -431,11 +479,18 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
         
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
         if annotationImage == nil {
-            if (self.funcType == .Default){
-                markerImage = ImageUtils.dotColorMarker(10, height: 10, color: UIColor.white, style: .CircleFullLine)
-            } else{
+            switch(self.funcType) {
+            case .PrintMyRouteMarker:
+                markerImage = ImageUtils.dotColorMarker(12, height: 12, color: UIColor.yellow, style: .CircleFullLine)
+            case .PrintCloudMarker:
+                markerImage = ImageUtils.dotColorMarker(12, height: 12, color: UIColor.cyan, style: .CircleFullLine)
+            case .PrintCircles:
                 let color = ColorUtils.getColorSpeedGlobal()
                 markerImage = ImageUtils.dotColorMarker(5, height: 5, color: color, style: .Circle)
+            case .PrintMarkerIcon:
+                markerImage = UIImage(named: "marker4")
+            default:
+                 markerImage = ImageUtils.dotColorMarker(15, height: 15, color: UIColor.cyan, style: .Circle)
             }
             annotationImage = MGLAnnotationImage(image: markerImage!, reuseIdentifier: reuseIdentifier)
         }
@@ -572,7 +627,7 @@ extension ExploreMotoRoutes: MGLMapViewDelegate {
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        return blue1
+        return blue0
     }
 }
 

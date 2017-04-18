@@ -41,10 +41,12 @@ class RouteCell: UICollectionViewCell {
         self.distanceLbl.textColor = UIColor.white
         self.routeImage.image = image
         self.layer.cornerRadius = cornerInfoViews
-        self.backView.backgroundColor = blue3
-        self.detailBtn.backgroundColor = blue4
-       // self.layer.borderWidth = 1
-       // self.layer.borderColor = blue1.cgColor
+        //self.backView.backgroundColor = blue3
+        //self.detailBtn.backgroundColor = blue4
+        self.layer.borderWidth = 2
+        self.layer.borderColor = blue2.cgColor
+        self.layer.cornerRadius = 10;
+        self.clipsToBounds = true
     }
     
     func toggleSelected ()
@@ -53,7 +55,7 @@ class RouteCell: UICollectionViewCell {
         if (isSelected){
            // viewLabel.backgroundColor = blue2
             slideUpInfo()
-            detailBtn.alpha = 0.8
+            //detailBtn.alpha = 0.8
             detailBtn.aniToYabsolute(0, y: 51)
         } else {
             //viewLabel.backgroundColor = blue2

@@ -16,6 +16,9 @@ enum FuncTypes: String {
     case PrintAltitude
     case PrintCircles
     case PrintStartEnd
+    case PrintMyRouteMarker
+    case PrintCloudMarker
+    case PrintMarkerIcon
     case Default
     
     init(){
@@ -224,11 +227,11 @@ enum ActionButtonType {
         case .ProgressDownload: return UIImage()
         case .Cancel: return UIImage()
         case .Done: return UIImage()
-        case .ActionMenuMyRoutes: return (UIImage(named: "menuBtn") as UIImage?)!
-        case .MenuInfoLabels: return (UIImage(named: "backBtn") as UIImage?)!
-        case .MenuActionButton: return (UIImage(named: "cancelBtn") as UIImage?)!
+        case .ActionMenuMyRoutes: return (UIImage(named: "arrowLeft") as UIImage?)!
+        case .MenuInfoLabels: return (UIImage(named: "closeCircle") as UIImage?)!
+        case .MenuActionButton: return (UIImage(named: "closeCircle") as UIImage?)!
         case .MenuConfirm: return UIImage()
-        case .CloseMarkerView: return (UIImage(named: "closeBtn") as UIImage?)!
+        case .CloseMarkerView: return (UIImage(named: "closeCircle") as UIImage?)!
         }
     }
     

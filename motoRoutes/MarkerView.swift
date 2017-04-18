@@ -68,7 +68,7 @@ class MarkerView: MGLAnnotationView {
     func setupBackView(){
         backView.frame = CGRect(x: 0, y: 0, width: initFrame.width, height: initFrame.height - 30)
         backView.backgroundColor = blue4
-        backView.layer.opacity = 0.4
+        backView.layer.opacity = 0.0
         backView.clipsToBounds = false
         backView.layer.cornerRadius = 3
         self.addSubview(backView)
@@ -156,7 +156,7 @@ class MarkerView: MGLAnnotationView {
     }
     
     func setupCloseButton(){
-        let closeButton = UIButton(frame: CGRect(x: markerViewRect.width-25, y: 10, width: 15, height: 15))
+        let closeButton = UIButton(frame: CGRect(x: markerViewRect.width-35, y: 5, width: 20, height: 20))
         closeButton.isUserInteractionEnabled = true
         closeButton.actionType = ActionButtonType.CloseMarkerView
         closeButton.setImage(ActionButtonType.CloseMarkerView.buttonImage, for: .normal)

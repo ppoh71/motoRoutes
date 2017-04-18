@@ -102,6 +102,11 @@ final class Global {
     init(gLowesttAlt:Double){
         self.gLowesttAlt = gLowesttAlt
     }
+    
+    var activeMenuButton:MenuButtonType = .MenuOff
+    init(activeMenuButton:MenuButtonType){
+        self.activeMenuButton = activeMenuButton
+    }
 }
 
 var globalSpeedSet = Global(speedSet:0)
@@ -120,5 +125,7 @@ var globalHeading = Global(gHeading: -60)
 var globalRoutePos = Global(gRoutePos: 0)
 var globalHighestAlt = Global(gHighestAlt: 0.0)
 var globalLowestAlt = Global(gLowesttAlt: 0.0)
+
+var globalActiveMenuButton = Global(activeMenuButton: .MenuOff)
 
 

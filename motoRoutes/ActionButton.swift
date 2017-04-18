@@ -45,6 +45,7 @@ class ActionButton: UIView{
         actionButton.titleLabel!.font = buttonFont
         actionButton.backgroundColor = blue3
         actionButton.actionType = actionType
+        actionButton.layer.opacity = 0.8
         actionButton.isUserInteractionEnabled = true
         actionButton.addTarget(self, action: #selector(pressedButton), for: .touchUpInside)
         self.addSubview(actionButton)

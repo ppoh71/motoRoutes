@@ -12,11 +12,9 @@ import Photos
 
 class motoRouteCamera: UIViewController {
     
-    
     @IBOutlet weak var cameraButton:UIButton!
     @IBOutlet weak var cancelButton:UIButton!
     @IBOutlet weak var savedImage:UIImageView!
-    
     
     //Capture Session
     let captureSession = AVCaptureSession()
